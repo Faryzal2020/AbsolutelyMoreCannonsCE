@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- M233mmMK1 -->
+  <ThingDef ParentName="BaseArtilleryBuilding">
+    <defName>M233mmMK1_Turret</defName>
+    <label>9.2 Inch (233mm) Mk.I Howitzer</label>
+      <description>Uses the 9.2 Inch (233mm) Mk.I HE shell with 6m explosive radius. 20m min range, 250m max range. Has a reload rate of 15 seconds. Able to shoot over walls.</description>
+    <graphicData>
+        <texPath>Things/Building/M233mmMK1</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(10,10)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(4,6)</size> 
+    <costStuffCount>700</costStuffCount>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>5</ComponentIndustrial>  
+    </costList>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>8000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_M233mmMK1_Weapon</turretGunDef>
+	    <turretTopDrawSize>11</turretTopDrawSize>
+      <turretBurstWarmupTime>2</turretBurstWarmupTime>
+      <turretBurstCooldownTime>2</turretBurstCooldownTime>
+      <buildingTags>
+        <li>Artillery_BaseDestroyer</li>
+        <li>Artillery_MannedMortar</li>
+        <li>Artillery</li>
+      </buildingTags>
+    </building>
+	  <!--<researchPrerequisites Inherit = "False">
+      <li>mark1howitzer</li>
+    </researchPrerequisites>-->
+  <uiIconPath>Things/Icons/M233mmMK1_MenuIcon</uiIconPath>
+  <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseArtilleryWeapon">
+    <defName>Turret_M233mmMK1_Weapon</defName>
+    <label>9.2 Inch (233mm) Mk.I Howitzer</label>
+    <description>Uses the 9.2 Inch (233mm) Mk.I HE shell with 6m explosive radius. 20m min range, 700m max range. Has a reload rate of 15 seconds. Able to shoot over walls.</description>
+    <graphicData>
+      <texPath>Things/Building/M233mmMK1_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawRotated>true</drawRotated>
+    </graphicData>
+    <weaponTags>
+      <li>Artillery_BaseDestroyer</li>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+        <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_233mmMK1_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>20</minRange>
+        <range>700</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_288mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>50</muzzleFlashScale>
+        <circularError>0</circularError>
+        <indirectFirePenalty>0</indirectFirePenalty>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>30</li>
+          <li>50</li>
+          <li>70</li>
+          <li>90</li>
+        </chargeSpeeds>
+      </li>
+      <li Class="CompProperties_ChangeableProjectile" />
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>1</magazineSize>
+        <reloadTime>15</reloadTime>
+        <ammoSet>AmmoSet_233mmMK1_Shells</ammoSet>
+      </li>
+    </comps>
+    <building>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>Ammo233mmMK1Shells</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories>
+            <li>Ammo233mmMK1Shells</li>
+          </categories>
+          <disallowedThingDefs>
+          </disallowedThingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+  </ThingDef>
+  
+</Defs>

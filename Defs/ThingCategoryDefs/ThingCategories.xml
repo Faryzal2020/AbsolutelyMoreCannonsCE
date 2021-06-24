@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThingCategoryDef>
+      <defName>AMCShells</defName>
+      <label>AMC Ammo Shells</label>
+      <parent>Manufactured</parent>
+      <iconPath>Things/Icons/Shells_CategoryIcon</iconPath>
+    </ThingCategoryDef>
+
+    <ThingCategoryDef>
+      <defName>AMCMaterials</defName>
+      <label>AMC Materials</label>
+      <parent>Manufactured</parent>
+      <iconPath>Things/Icons/MenuIcon</iconPath>
+    </ThingCategoryDef>
+</Defs>

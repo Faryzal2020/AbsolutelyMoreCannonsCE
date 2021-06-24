@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>Absolutely More Cannons - CE Version</name>
+	<author>Faryzal2020</author>
+	<url></url>
+	<supportedVersions>
+		<li>1.2</li>
+	</supportedVersions>
+	<description>
+	AMC Combat Extended Version
+
+	This version of AMC shouldn't be used along with the origininal AMC and its addons.
+	</description>
+	<packageId>Faryzal2020.AMC.CE</packageId>
+</ModMetaData>
