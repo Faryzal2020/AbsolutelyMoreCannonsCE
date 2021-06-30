@@ -81,7 +81,7 @@
     </weaponTags>
 
     <statBases>
-      <SightsEfficiency>0.75</SightsEfficiency>
+      <SightsEfficiency>0.9</SightsEfficiency>
     </statBases>
     <verbs>
       <li Class="CombatExtended.VerbPropertiesCE">
