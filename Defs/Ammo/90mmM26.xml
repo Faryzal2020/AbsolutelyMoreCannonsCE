@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-<!-- 600mmKarlGerat -->
+<!-- 90mmM26 -->
 <ThingCategoryDef>
-  <defName>Ammo600mmKarlGeratShells</defName>
-  <label>60cm Karl Gerat shells</label>
+  <defName>Ammo90mmM26Shells</defName>
+  <label>90mm M26 shells</label>
   <parent>AMCShells</parent>
-  <iconPath>Things/Projectile/600mmKarlGeratHE</iconPath>
+  <iconPath>Things/Projectile/90mmM26APHE</iconPath>
 </ThingCategoryDef>
 <!-- ==================== AmmoSet ========================== -->
 
 <CombatExtended.AmmoSetDef>
-	<defName>AmmoSet_600mmKarlGerat_Shells</defName>
-	<label>60cm Karl Gerat Ammunitions</label>
+	<defName>AmmoSet_90mmM26_Shells</defName>
+	<label>90mm M26 Ammunitions</label>
 	<ammoTypes>
-		<Ammo_600mmKarlGerat_HE>Bullet_600mmKarlGerat_HE</Ammo_600mmKarlGerat_HE>
-		<Ammo_600mmKarlGeratLeichte_HE>Bullet_600mmKarlGeratLeichte_HE</Ammo_600mmKarlGeratLeichte_HE>
+		<Ammo_90mmM26_APHE>Bullet_90mmM26_APHE</Ammo_90mmM26_APHE>
+		<Ammo_90mmM26_HE>Bullet_90mmM26_HE</Ammo_90mmM26_HE>
 	</ammoTypes>
-  <isMortarAmmoSet>true</isMortarAmmoSet>	<!-- Delete if not artillery -->
 </CombatExtended.AmmoSetDef>
 
 <!-- ==================== Ammo ========================== -->
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="600mmKarlGeratBase" ParentName="AmmoBase" Abstract="True">
-  	<description>60cm Karl Gerat Ammunitions</description>
+<ThingDef Class="CombatExtended.AmmoDef" Name="90mmM26Base" ParentName="AmmoBase" Abstract="True">
+  	<description>90mm M26 Ammunitions</description>
   	<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
   	</statBases>
   	<thingCategories>
-			<li>Ammo600mmKarlGeratShells</li>
+			<li>Ammo90mmM26Shells</li>
   	</thingCategories>
   	<stackLimit>25</stackLimit>
   	<cookOffFlashScale>30</cookOffFlashScale>
   	<cookOffSound>MortarBomb_Explode</cookOffSound>
-		<isMortarAmmo>true</isMortarAmmo>	<!-- Delete if not artillery -->
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="600mmKarlGeratBaseCraftableBase" ParentName="600mmKarlGeratBase" Abstract="True">
+<ThingDef Class="CombatExtended.AmmoDef" Name="90mmM26BaseCraftableBase" ParentName="90mmM26Base" Abstract="True">
   	<tradeTags>
 		<li>CE_AutoEnableTrade</li>
 		<li>CE_AutoEnableCrafting_TableMachining</li>
   	</tradeTags>  	
   	<comps>
 			<li Class="CompProperties_Explosive">
-	      	<explosiveRadius>4</explosiveRadius>
+	      	<explosiveRadius>2</explosiveRadius>
 		  		<explosiveDamageType>Bomb</explosiveDamageType>
 		  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
 		  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
@@ -54,56 +52,56 @@
   	</comps>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" ParentName="600mmKarlGeratBaseCraftableBase">
-  	<defName>Ammo_600mmKarlGerat_HE</defName>
-  	<label>60cm Schwere Betongranate (HE)</label>
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="90mmM26BaseCraftableBase">
+  	<defName>Ammo_90mmM26_APHE</defName>
+  	<label>90mm M82 (APHE)</label>
   	<graphicData>
-		<texPath>Things/Projectile/600mmKarlGeratHE</texPath>
+		<texPath>Things/Projectile/90mmM26APHE</texPath>
 		<graphicClass>Graphic_Single</graphicClass>
 		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
 		<drawSize>1.1</drawSize>
   	</graphicData>
   	<statBases>	  
-		<MarketValue>5728.03</MarketValue>
-		<Mass>217</Mass>
-		<Bulk>2129.91</Bulk>
+		<MarketValue>50.75</MarketValue>
+		<Mass>19.05</Mass>
+		<Bulk>22.88</Bulk>
   	</statBases>
-  	<ammoClass>GrenadeHE</ammoClass>
+  	<ammoClass>ExplosiveAP</ammoClass>
   	<!-- ammo class choices:
   	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
-  	<detonateProjectile>Bullet_600mmKarlGerat_HE</detonateProjectile>
+  	<detonateProjectile>Bullet_90mmM26_APHE</detonateProjectile>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" ParentName="600mmKarlGeratBaseCraftableBase">
-  	<defName>Ammo_600mmKarlGeratLeichte_HE</defName>
-  	<label>60cm Leichte Betongranate (HE)</label>
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="90mmM26BaseCraftableBase">
+  	<defName>Ammo_90mmM26_HE</defName>
+  	<label>90mm M71 (HE)</label>
   	<graphicData>
-		<texPath>Things/Projectile/600mmKarlGeratLeichteHE</texPath>
+		<texPath>Things/Projectile/90mmM26HE</texPath>
 		<graphicClass>Graphic_Single</graphicClass>
 		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
 		<drawSize>1.1</drawSize>
   	</graphicData>
   	<statBases>	  
-		<MarketValue>4505.79</MarketValue>
-		<Mass>170</Mass>
-		<Bulk>1688.83</Bulk>
+		<MarketValue>60.4</MarketValue>
+		<Mass>18.66</Mass>
+		<Bulk>22.88</Bulk>
   	</statBases>
   	<ammoClass>GrenadeHE</ammoClass>
   	<!-- ammo class choices:
   	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
-  	<detonateProjectile>Bullet_600mmKarlGeratLeichte_HE</detonateProjectile>
+  	<detonateProjectile>Bullet_90mmM26_HE</detonateProjectile>
 </ThingDef>
 
 <!-- ================== Projectiles ================== -->
 
-<ThingDef Name="Base600mmKarlGeratShell" ParentName="BaseBullet" Abstract="true">
+<ThingDef Name="Base90mmM26Shell" ParentName="BaseBullet" Abstract="true">
   	<graphicData>
     	<shaderType>TransparentPostLight</shaderType>
   	</graphicData>
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<speed>1</speed>
 			<flyOverhead>false</flyOverhead>
-			<dropsCasings>false</dropsCasings>
+			<dropsCasings>true</dropsCasings>
 			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
 			<!--
 			<soundExplode>MortarBomb_Explode</soundExplode>
@@ -111,94 +109,77 @@
 		</projectile>
 </ThingDef>
 
-<!-- HE Projectile -->
+<!-- APHE Projectile -->
 
-<ThingDef ParentName="Base600mmKarlGeratShell">
-  	<defName>Bullet_600mmKarlGerat_HE</defName>
-  	<label>60cm Schwere Betongranate (HE)</label>
-  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+<ThingDef ParentName="Base90mmM26Shell">
+  	<defName>Bullet_90mmM26_APHE</defName>
+  	<label>90mm M82 (APHE)</label>
+  	<!--<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> -->
   	<graphicData>
-				<texPath>Things/Projectile/Bullet_Big</texPath>
+      	<texPath>Things/Projectile/LargeShell</texPath>
+				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
 				<!-- <texPath>Things/Projectile/RodShell</texPath> -->
 				<!-- <texPath>Things/Projectile/FinShell</texPath> -->
       	<graphicClass>Graphic_Single</graphicClass>
     	<shaderType>TransparentPostLight</shaderType>
-	    <drawSize>(2,2)</drawSize>
+	    <drawSize>(1,1)</drawSize>
   	</graphicData>
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<speed>44</speed>
-			<damageDef>Bomb</damageDef>
-			<damageAmountBase>3870</damageAmountBase>
-			<armorPenetrationSharp>0</armorPenetrationSharp>
-			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<explosionRadius>16</explosionRadius>
+			<speed>163</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>408</damageAmountBase>
+			<armorPenetrationSharp>173</armorPenetrationSharp>
+			<armorPenetrationBlunt>72310</armorPenetrationBlunt>
+			<!--
 			<flyOverhead>true</flyOverhead>
 			<soundExplode>MortarBomb_Explode</soundExplode>
-			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
-			<soundAmbient>MortarRound_Ambient</soundAmbient>
-			<gravityFactor>5</gravityFactor>
-			<!--
-			<explosionRadius>5</explosionRadius>
-			<soundExplode>MortarBomb_Explode</soundExplode>
-			for HE -->
-			<!--
+			for artillery -->
 			<secondaryDamage>
         <li>
           <def>Bomb_Secondary</def>
-          <amount></amount>
+          <amount>102</amount>
         </li>
 	    </secondaryDamage>
-	  	-->
   	</projectile>
   	<comps>
-  	<!-- 
-			<li Class="CombatExtended.CompProperties_ExplosiveCE">
-				<damageAmountBase>208</damageAmountBase>
-				<explosiveDamageType>Bomb</explosiveDamageType>
-				<explosiveRadius>1.5</explosiveRadius>
-				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-				<ai_IsIncendiary>true</ai_IsIncendiary>
-			</li>
-		for HEAT -->
 			<li Class="CombatExtended.CompProperties_Fragments">
 		  	<fragments>
-				<Fragment_Large>40</Fragment_Large>
-				<Fragment_Small>80</Fragment_Small>
+				<Fragment_Large>20</Fragment_Large>
+				<Fragment_Small>6</Fragment_Small>
 		  	</fragments>
-			</li> <!-- delete if no fragments -->
+			</li>
   	</comps>
 </ThingDef>
 
 <!-- HE Projectile -->
 
-<ThingDef ParentName="Base600mmKarlGeratShell">
-  	<defName>Bullet_600mmKarlGeratLeichte_HE</defName>
-  	<label>60cm Leichte Betongranate (HE)</label>
-  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+<ThingDef ParentName="Base90mmM26Shell">
+  	<defName>Bullet_90mmM26_HE</defName>
+  	<label>90mm M71 (HE)</label>
+  	<!--<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> -->
   	<graphicData>
-				<texPath>Things/Projectile/Bullet_Big</texPath>
+      	<texPath>Things/Projectile/LargeShell</texPath>
+				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
 				<!-- <texPath>Things/Projectile/RodShell</texPath> -->
 				<!-- <texPath>Things/Projectile/FinShell</texPath> -->
       	<graphicClass>Graphic_Single</graphicClass>
     	<shaderType>TransparentPostLight</shaderType>
-	    <drawSize>(2,2)</drawSize>
+	    <drawSize>(1,1)</drawSize>
   	</graphicData>
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<speed>57</speed>
+			<speed>165</speed>
 			<damageDef>Bomb</damageDef>
-			<damageAmountBase>3349</damageAmountBase>
+			<damageAmountBase>126</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<explosionRadius>16</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<explosionRadius>2.5</explosionRadius>
+			<!--
 			<flyOverhead>true</flyOverhead>
 			<soundExplode>MortarBomb_Explode</soundExplode>
+			<explosionRadius></explosionRadius>
 			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
-			<soundAmbient>MortarRound_Ambient</soundAmbient>
-			<gravityFactor>5</gravityFactor>
+			for artillery -->
 			<!--
 			<secondaryDamage>
         <li>
@@ -209,10 +190,11 @@
 	  	-->
   	</projectile>
   	<comps>
+
 			<li Class="CombatExtended.CompProperties_Fragments">
 		  	<fragments>
-				<Fragment_Large>40</Fragment_Large>
-				<Fragment_Small>80</Fragment_Small>
+				<Fragment_Large>36</Fragment_Large>
+				<Fragment_Small>70</Fragment_Small>
 		  	</fragments>
 			</li>
   	</comps>
@@ -221,11 +203,11 @@
 <!-- ==================== Recipes ========================== -->
 
 <RecipeDef ParentName="AmmoRecipeBase">
-  	<defName>MakeAmmo_600mmKarlGerat_HE</defName>
-  	<label>make 60cm Schwere Betongranate HE x1</label>
-  	<description>Turrets that uses this ammunition: 60cm Karl Gerat</description>
-  	<jobString>Making 60cm Schwere Betongranate HE cannon shells.</jobString>
-  	<workAmount>16470</workAmount>
+  	<defName>MakeAmmo_90mmM26_APHE</defName>
+  	<label>make 90mm M82 APHE x10</label>
+  	<description>Turrets that uses this ammunition: M26</description>
+  	<jobString>Making 90mm M82 APHE cannon shells.</jobString>
+  	<workAmount>3005</workAmount>
   	<ingredients>
 	    <li>
 		  	<filter>
@@ -233,15 +215,7 @@
 				  	<li>Steel</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>217</count>
-	    </li>
-	    <li>
-		  	<filter>
-			    <thingDefs>
-				  	<li>ComponentIndustrial</li>
-			    </thingDefs>
-		  	</filter>
-		  	<count>1</count>
+		  	<count>192</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -249,18 +223,17 @@
 				  	<li>FSX</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>527</count>
+		  	<count>5</count>
 	    </li>
   	</ingredients>
   	<fixedIngredientFilter>
     	<thingDefs>
 		  	<li>Steel</li>
 		  	<li>FSX</li>
-				<li>ComponentIndustrial</li>
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_600mmKarlGerat_HE>1</Ammo_600mmKarlGerat_HE>
+    	<Ammo_90mmM26_APHE>10</Ammo_90mmM26_APHE>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>
@@ -268,11 +241,11 @@
 </RecipeDef>
 
 <RecipeDef ParentName="AmmoRecipeBase">
-  	<defName>MakeAmmo_600mmKarlGeratLeichte_HE</defName>
-  	<label>make 60cm Leichte Betongranate HE x1</label>
-  	<description>Turrets that uses this ammunition: 60cm Karl Gerat</description>
-  	<jobString>Making 60cm Leichte Betongranate HE cannon shells.</jobString>
-  	<workAmount>12940</workAmount>
+  	<defName>MakeAmmo_90mmM26_HE</defName>
+  	<label>make 90mm M71 HE x10</label>
+  	<description>Turrets that uses this ammunition: M26</description>
+  	<jobString>Making 90mm M71 HE cannon shells.</jobString>
+  	<workAmount></workAmount>
   	<ingredients>
 	    <li>
 		  	<filter>
@@ -280,7 +253,7 @@
 				  	<li>Steel</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>170</count>
+		  	<count>188</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -288,7 +261,7 @@
 				  	<li>ComponentIndustrial</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>1</count>
+		  	<count>2</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -296,7 +269,7 @@
 				  	<li>FSX</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>414</count>
+		  	<count>18</count>
 	    </li>
   	</ingredients>
   	<fixedIngredientFilter>
@@ -307,7 +280,7 @@
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_600mmKarlGeratLeichte_HE>1</Ammo_600mmKarlGeratLeichte_HE>
+    	<Ammo_90mmM26_HE>10</Ammo_90mmM26_HE>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>
