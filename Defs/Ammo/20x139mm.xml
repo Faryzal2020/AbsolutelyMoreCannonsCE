@@ -1,83 +1,83 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-<!-- 30x184mm -->
+<!-- 20x139mm -->
 <ThingCategoryDef>
-  <defName>Ammo30x184mmShells</defName>
-  <label>30x184mm shells</label>
+  <defName>Ammo20x139mmShells</defName>
+  <label>20x139mm shells</label>
   <parent>AMCShells</parent>
-  <iconPath>Things/Projectile/30x184mm/HEI/HEI_a</iconPath>
+  <iconPath>Things/Projectile/20x139mm/HEI/HEI_a</iconPath>
 </ThingCategoryDef>
 <!-- ==================== AmmoSet ========================== -->
 
 <CombatExtended.AmmoSetDef>
-	<defName>AmmoSet_30x184mm_Shells</defName>
-	<label>30x184mm Ammunitions</label>
+	<defName>AmmoSet_20x139mm_Shells</defName>
+	<label>20x139mm Ammunitions</label>
 	<ammoTypes>
-		<Ammo_30x184mm_HEI>Bullet_30x184mm_HEI</Ammo_30x184mm_HEI>
-		<Ammo_30x184mm_AP>Bullet_30x184mm_AP</Ammo_30x184mm_AP>
+		<Ammo_20x139mm_HEI>Bullet_20x139mm_HEI</Ammo_20x139mm_HEI>
+		<Ammo_20x139mm_APDS>Bullet_20x139mm_APDS</Ammo_20x139mm_APDS>
 	</ammoTypes>
 </CombatExtended.AmmoSetDef>
 
 <!-- ==================== Ammo ========================== -->
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="30x184mmBase" ParentName="SmallAmmoBase" Abstract="True">
-  	<description>Ammunitions for MK 103 gun</description>
+<ThingDef Class="CombatExtended.AmmoDef" Name="20x139mmBase" ParentName="SmallAmmoBase" Abstract="True">
+  	<description>Ammunitions for Mk 20 Rh-202 gun</description>
   	<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
   	</statBases>
   	<thingCategories>
-			<li>Ammo30x184mmShells</li>
+			<li>Ammo20x139mmShells</li>
   	</thingCategories>
-  	<stackLimit>150</stackLimit>
+  	<stackLimit>750</stackLimit>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="30x184mmBaseCraftableBase" ParentName="30x184mmBase" Abstract="True">
+<ThingDef Class="CombatExtended.AmmoDef" Name="20x139mmBaseCraftableBase" ParentName="20x139mmBase" Abstract="True">
   	<tradeTags>
 		<li>CE_AutoEnableTrade</li>
 		<li>CE_AutoEnableCrafting_TableMachining</li>
   	</tradeTags>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" ParentName="30x184mmBaseCraftableBase">
-  	<defName>Ammo_30x184mm_HEI</defName>
-  	<label>30x184mm M.Gr. (HEI)</label>
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="20x139mmBaseCraftableBase">
+  	<defName>Ammo_20x139mm_HEI</defName>
+  	<label>20x139mm (HEI)</label>
   	<graphicData>
-			<texPath>Things/Projectile/30x184mm/HEI</texPath>
+			<texPath>Things/Projectile/20x139mm/HEI</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
   	</graphicData>
   	<statBases>	  
-			<MarketValue>4.58</MarketValue>
-			<Mass>0.8</Mass>
-			<Bulk>1.14</Bulk>
+			<MarketValue>3.29</MarketValue>
+			<Mass>0.634</Mass>
+			<Bulk>0.47</Bulk>
   	</statBases>
   	<ammoClass>GrenadeHE</ammoClass>
   	<!-- ammo class choices:
   	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
-  	<detonateProjectile>Bullet_30x184mm_HEI</detonateProjectile>
+  	<detonateProjectile>Bullet_20x139mm_HEI</detonateProjectile>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" ParentName="30x184mmBaseCraftableBase">
-  	<defName>Ammo_30x184mm_AP</defName>
-  	<label>30x184mm Pz.Gr. H (AP)</label>
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="20x139mmBaseCraftableBase">
+  	<defName>Ammo_20x139mm_APDS</defName>
+  	<label>20x139mm (APDS)</label>
   	<graphicData>
-			<texPath>Things/Projectile/30x184mm/AP</texPath>
+			<texPath>Things/Projectile/20x139mm/APDS</texPath>
 			<graphicClass>Graphic_StackCount</graphicClass>
   	</graphicData>
   	<statBases>	  
-			<MarketValue>1.61</MarketValue>
-			<Mass>0.825</Mass>
-			<Bulk>1.14</Bulk>
+			<MarketValue>2.95</MarketValue>
+			<Mass>0.608</Mass>
+			<Bulk>0.47</Bulk>
   	</statBases>
-  	<ammoClass>ArmorPiercing</ammoClass>
+  	<ammoClass>Sabot</ammoClass>
   	<!-- ammo class choices:
   	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
-  	<detonateProjectile>Bullet_30x184mm_AP</detonateProjectile>
+  	<detonateProjectile>Bullet_20x139mm_APDS</detonateProjectile>
 </ThingDef>
 
 <!-- ================== Projectiles ================== -->
 
-<ThingDef Name="Base30x184mmShell" ParentName="BaseBullet" Abstract="true">
+<ThingDef Name="Base20x139mmShell" ParentName="BaseBullet" Abstract="true">
   	<graphicData>
 			<texPath>Things/Projectile/Bullet_Big</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
@@ -91,14 +91,14 @@
 
 <!-- HEI Projectile -->
 
-<ThingDef ParentName="Base30x184mmShell">
-  	<defName>Bullet_30x184mm_HEI</defName>
-  	<label>30x184mm M.Gr. (HEI)</label>
+<ThingDef ParentName="Base20x139mmShell">
+  	<defName>Bullet_20x139mm_HEI</defName>
+  	<label>20x139mm (HEI)</label>
   	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<speed>172</speed>
+			<speed>209</speed>
 			<damageDef>Bomb</damageDef>
-			<damageAmountBase>12</damageAmountBase>
+			<damageAmountBase>13</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
 			<explosionRadius>0.5</explosionRadius>
@@ -106,31 +106,32 @@
 			<secondaryDamage>
         <li>
           <def>Flame_Secondary</def>
-          <amount>17</amount>
+          <amount>12</amount>
         </li>
 	    </secondaryDamage>
   	</projectile>
   	<comps>
 			<li Class="CombatExtended.CompProperties_Fragments">
 		  	<fragments>
-				<Fragment_Large>2</Fragment_Large>
+				<Fragment_Large>1</Fragment_Large>
 				<Fragment_Small>3</Fragment_Small>
 		  	</fragments>
 			</li> <!-- delete if no fragments -->
   	</comps>
 </ThingDef>
 
-<!-- AP Projectile -->
+<!-- APDS Projectile -->
 
-<ThingDef ParentName="Base30x184mmShell">
-  	<defName>Bullet_30x184mm_AP</defName>
-  	<label>30x184mm Pz.Gr. H (AP)</label>
+<ThingDef ParentName="Base20x139mmShell">
+  	<defName>Bullet_20x139mm_APDS</defName>
+  	<label>20x139mm (APDS)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<speed>188</speed>
+			<speed>220</speed>
 			<damageDef>Bullet</damageDef>
-			<damageAmountBase>74</damageAmountBase>
-			<armorPenetrationSharp>95</armorPenetrationSharp>
-			<armorPenetrationBlunt>3136.78</armorPenetrationBlunt>
+			<damageAmountBase>42</damageAmountBase>
+			<armorPenetrationSharp>57</armorPenetrationSharp>
+			<armorPenetrationBlunt>1306.8</armorPenetrationBlunt>
 			<!--
 			<explosionRadius>5</explosionRadius>
 			<soundExplode>MortarBomb_Explode</soundExplode>
@@ -151,11 +152,11 @@
 <!-- ==================== Recipes ========================== -->
 
 <RecipeDef ParentName="AmmoRecipeBase">
-  	<defName>MakeAmmo_30x184mm_HEI</defName>
-  	<label>make 30x184mm M.Gr. HEI x50</label>
-  	<description>30x184mm M.Gr. HEI ammunitions for MK 103 gun</description>
-  	<jobString>Making 30x184mm M.Gr. HEI cannon shells.</jobString>
-  	<workAmount>970</workAmount>
+  	<defName>MakeAmmo_20x139mm_HEI</defName>
+  	<label>make 20x139mm HEI x100</label>
+  	<description>20x139mm HEI ammunitions for Mk 20 Rh-202 gun</description>
+  	<jobString>Making 20x139mm HEI cannon shells.</jobString>
+  	<workAmount>1390</workAmount>
   	<ingredients>
 	    <li>
 		  	<filter>
@@ -163,7 +164,7 @@
 				  	<li>Steel</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>41</count>
+		  	<count>64</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -171,7 +172,7 @@
 				  	<li>ComponentIndustrial</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>3</count>
+		  	<count>4</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -179,7 +180,7 @@
 				  	<li>Prometheum</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>4</count>
+		  	<count>3</count>
 	    </li>
 	    <li>
 		  	<filter>
@@ -187,19 +188,19 @@
 				  	<li>FSX</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>3</count>
+		  	<count>6</count>
 	    </li>
   	</ingredients>
   	<fixedIngredientFilter>
     	<thingDefs>
 		  	<li>Steel</li>
-		  	<li>FSX</li>
-		  	<li>Prometheum</li>
 				<li>ComponentIndustrial</li>
+		  	<li>Prometheum</li>
+		  	<li>FSX</li>
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_30x184mm_HEI>50</Ammo_30x184mm_HEI>
+    	<Ammo_20x139mm_HEI>100</Ammo_20x139mm_HEI>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>
@@ -207,11 +208,11 @@
 </RecipeDef>
 
 <RecipeDef ParentName="AmmoRecipeBase">
-  	<defName>MakeAmmo_30x184mm_AP</defName>
-  	<label>make 30x184mm Pz.Gr. H AP x50</label>
-  	<description>30x184mm Pz.Gr. H AP ammunitions for MK 103 gun</description>
-  	<jobString>Making 30x184mm Pz.Gr. H AP cannon shells.</jobString>
-  	<workAmount></workAmount>
+  	<defName>MakeAmmo_20x139mm_APDS</defName>
+  	<label>make 20x139mm APDS x100</label>
+  	<description>20x139mm APDS ammunitions for Mk 20 Rh-202 gun</description>
+  	<jobString>Making 20x139mm APDS cannon shells.</jobString>
+  	<workAmount>1630</workAmount>
   	<ingredients>
 	    <li>
 		  	<filter>
@@ -219,16 +220,25 @@
 				  	<li>Steel</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>42</count>
+		  	<count>50</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Plasteel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>22</count>
 	    </li>
   	</ingredients>
   	<fixedIngredientFilter>
     	<thingDefs>
 		  	<li>Steel</li>
+		  	<li>Plasteel</li>
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_30x184mm_AP>50</Ammo_30x184mm_AP>
+    	<Ammo_20x139mm_APDS>100</Ammo_20x139mm_APDS>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 <!-- M60cmKarlGerat -->
-  <ThingDef ParentName="BaseArtilleryBuilding">
+  <ThingDef ParentName="AMCArtilleryBase">
     <defName>M60cmKarlGerat_Turret</defName>
     <label>60cm Karl Gerät Howitzer</label>
       <description>Uses the 60cm schwere Betongranate HE shell with 8m explosive radius. 25m min range, 400m max range. Has reload rate of 40 seconds. Able to shoot over walls. Consumes 500W of power.</description>
@@ -49,7 +49,7 @@
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <building Inherit="False">
       <turretGunDef>Turret_M60cmKarlGerat_Weapon</turretGunDef>
-	    <turretTopDrawSize>11</turretTopDrawSize>
+	    <turretTopDrawSize>14</turretTopDrawSize>
       <turretBurstWarmupTime>2</turretBurstWarmupTime>
       <turretBurstCooldownTime>2</turretBurstCooldownTime>
       <buildingTags>
@@ -72,8 +72,6 @@
     <graphicData>
       <texPath>Things/Building/M60cmKarlGerat_Top</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
-      <drawRotated>true</drawRotated>
     </graphicData>
     <weaponTags>
       <li>Artillery_BaseDestroyer</li>
@@ -88,7 +86,7 @@
         <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
         <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Bullet_60cmSchwere</defaultProjectile>
+        <defaultProjectile>Bullet_600mmKarlGerat_HE</defaultProjectile>
         <warmupTime>1</warmupTime>
         <minRange>25</minRange>
         <range>800</range>
@@ -116,21 +114,21 @@
       <li Class="CombatExtended.CompProperties_AmmoUser">
         <magazineSize>1</magazineSize>
         <reloadTime>40</reloadTime>
-        <ammoSet>AmmoSet_60cmBtGr_Shells</ammoSet>
+        <ammoSet>AmmoSet_600mmKarlGerat_Shells</ammoSet>
       </li>
     </comps>
     <building>
       <fixedStorageSettings>
         <filter>
           <categories>
-            <li>Ammo60cmBtGrShells</li>
+            <li>Ammo600mmKarlGeratShells</li>
           </categories>
         </filter>
       </fixedStorageSettings>
       <defaultStorageSettings>
         <filter>
           <categories>
-            <li>Ammo60cmBtGrShells</li>
+            <li>Ammo600mmKarlGeratShells</li>
           </categories>
           <disallowedThingDefs>
           </disallowedThingDefs>

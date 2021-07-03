@@ -15,7 +15,6 @@
 	<label>150mm sIG33 Ammunitions</label>
 	<ammoTypes>
 		<Ammo_150mmSIG33_HE>Bullet_150mmSIG33_HE</Ammo_150mmSIG33_HE>
-		<Ammo_150mmSIG33_BB>Bullet_150mmSIG33_BB</Ammo_150mmSIG33_BB>
 	</ammoTypes>
   <isMortarAmmoSet>true</isMortarAmmoSet>	<!-- Delete if not artillery -->
 </CombatExtended.AmmoSetDef>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 <!-- M233mmMK1 -->
-  <ThingDef ParentName="BaseArtilleryBuilding">
+  <ThingDef ParentName="AMCArtilleryBase">
     <defName>M233mmMK1_Turret</defName>
     <label>9.2 Inch (233mm) Mk.I Howitzer</label>
       <description>Uses the 9.2 Inch (233mm) Mk.I HE shell with 6m explosive radius. 20m min range, 250m max range. Has a reload rate of 15 seconds. Able to shoot over walls.</description>
@@ -38,7 +38,7 @@
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <building Inherit="False">
       <turretGunDef>Turret_M233mmMK1_Weapon</turretGunDef>
-	    <turretTopDrawSize>11</turretTopDrawSize>
+	    <turretTopDrawSize>10</turretTopDrawSize>
       <turretBurstWarmupTime>2</turretBurstWarmupTime>
       <turretBurstCooldownTime>2</turretBurstCooldownTime>
       <buildingTags>
@@ -61,8 +61,6 @@
     <graphicData>
       <texPath>Things/Building/M233mmMK1_Top</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
-      <drawRotated>true</drawRotated>
     </graphicData>
     <weaponTags>
       <li>Artillery_BaseDestroyer</li>
@@ -77,7 +75,7 @@
         <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
         <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Bullet_233mmMK1_HE</defaultProjectile>
+        <defaultProjectile>Bullet_233mmBLMK1_HE</defaultProjectile>
         <warmupTime>1</warmupTime>
         <minRange>20</minRange>
         <range>700</range>
@@ -105,21 +103,21 @@
       <li Class="CombatExtended.CompProperties_AmmoUser">
         <magazineSize>1</magazineSize>
         <reloadTime>15</reloadTime>
-        <ammoSet>AmmoSet_233mmMK1_Shells</ammoSet>
+        <ammoSet>AmmoSet_233mmBLMK1_Shells</ammoSet>
       </li>
     </comps>
     <building>
       <fixedStorageSettings>
         <filter>
           <categories>
-            <li>Ammo233mmMK1Shells</li>
+            <li>Ammo233mmBLMK1Shells</li>
           </categories>
         </filter>
       </fixedStorageSettings>
       <defaultStorageSettings>
         <filter>
           <categories>
-            <li>Ammo233mmMK1Shells</li>
+            <li>Ammo233mmBLMK1Shells</li>
           </categories>
           <disallowedThingDefs>
           </disallowedThingDefs>

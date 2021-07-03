@@ -1,153 +1,109 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-<!-- xx -->
+<!-- 20x138mm -->
 <ThingCategoryDef>
-  <defName>AmmoxxShells</defName>
-  <label>yy shells</label>
+  <defName>Ammo20x138mmShells</defName>
+  <label>20x138mm shells</label>
   <parent>AMCShells</parent>
-  <iconPath>Things/Projectile/xx</iconPath>
+  <iconPath>Things/Projectile/20x138mm/API/API_a</iconPath>
 </ThingCategoryDef>
 <!-- ==================== AmmoSet ========================== -->
 
 <CombatExtended.AmmoSetDef>
-	<defName>AmmoSet_xx_Shells</defName>
-	<label>yy Ammunitions</label>
+	<defName>AmmoSet_20x138mm_Shells</defName>
+	<label>20x138mm Ammunitions</label>
 	<ammoTypes>
-		<Ammo_xx_HE>Bullet_xx_HE</Ammo_xx_HE>
+		<Ammo_20x138mm_API>Bullet_20x138mm_API</Ammo_20x138mm_API>
 	</ammoTypes>
-	<isMortarAmmoSet>true</isMortarAmmoSet>
 </CombatExtended.AmmoSetDef>
 
 <!-- ==================== Ammo ========================== -->
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="xxBase" ParentName="AmmoBase" Abstract="True">
-  	<description>yy Ammunitions</description>
+<ThingDef Class="CombatExtended.AmmoDef" Name="20x138mmBase" ParentName="SmallAmmoBase" Abstract="True">
+  	<description>Ammunitions for Flak 38 gun</description>
   	<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
   	</statBases>
   	<thingCategories>
-			<li>AmmoxxShells</li>
+			<li>Ammo20x138mmShells</li>
   	</thingCategories>
-  	<stackLimit>25</stackLimit>
-  	<cookOffFlashScale>30</cookOffFlashScale>
-  	<cookOffSound>MortarBomb_Explode</cookOffSound>
-  	<isMortarAmmo>true</isMortarAmmo>
+  	<stackLimit>1000</stackLimit>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" Name="xxBaseCraftableBase" ParentName="xxBase" Abstract="True">
+<ThingDef Class="CombatExtended.AmmoDef" Name="20x138mmBaseCraftableBase" ParentName="20x138mmBase" Abstract="True">
   	<tradeTags>
 		<li>CE_AutoEnableTrade</li>
 		<li>CE_AutoEnableCrafting_TableMachining</li>
   	</tradeTags>
 </ThingDef>
 
-<ThingDef Class="CombatExtended.AmmoDef" ParentName="xxBaseCraftableBase">
-  	<defName>Ammo_xx_HE</defName>
-  	<label>yy (HE)</label>
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="20x138mmBaseCraftableBase">
+  	<defName>Ammo_20x138mm_API</defName>
+  	<label>20x138mm (API)</label>
   	<graphicData>
-		<texPath>Things/Projectile/xx</texPath>
-		<graphicClass>Graphic_Single</graphicClass>
-		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
-		<drawSize>1.1</drawSize>
+			<texPath>Things/Projectile/20x138mm/API</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
   	</graphicData>
   	<statBases>	  
-		<MarketValue>35</MarketValue>
-		<Mass>1</Mass>
-		<Bulk>1</Bulk>
+			<MarketValue>0.99</MarketValue>
+			<Mass>0.42</Mass>
+			<Bulk>0.39</Bulk>
   	</statBases>
-  	<ammoClass>GrenadeHE</ammoClass>
+  	<ammoClass>ArmorPiercing</ammoClass>
   	<!-- ammo class choices:
   	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
-  	<detonateProjectile>Bullet_xx_HE</detonateProjectile>
-  	<comps>
-		<li Class="CompProperties_Explosive">
-      		<explosiveRadius>4</explosiveRadius>
-	  		<explosiveDamageType>Bomb</explosiveDamageType>
-	  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
-	  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
-	  		<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-	  		<explodeOnKilled>True</explodeOnKilled>
-	  		<wickTicks>30~60</wickTicks>
-		</li>
-  	</comps>
+  	<detonateProjectile>Bullet_20x138mm_API</detonateProjectile>
 </ThingDef>
 
 <!-- ================== Projectiles ================== -->
 
-<ThingDef Name="BasexxShell" ParentName="BaseBullet" Abstract="true">
-	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+<ThingDef Name="Base20x138mmShell" ParentName="BaseBullet" Abstract="true">
   	<graphicData>
-      	<texPath>Things/Projectile/LargeShell</texPath>
-				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
-      	<graphicClass>Graphic_Single</graphicClass>
-    	<shaderType>TransparentPostLight</shaderType>
-	    <drawSize>(2,2)</drawSize>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
   	</graphicData>
-  	<!--
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
-			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
-			<soundAmbient>MortarRound_Ambient</soundAmbient>
-			<flyOverhead>true</flyOverhead>
-			<dropsCasings>false</dropsCasings>
-			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
-			<gravityFactor>5</gravityFactor>
-  	</projectile>
-  	for artillery -->
-  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<damageDef>Bullet</damageDef>
-			<speed>205</speed>
+			<speed>1</speed>
 			<dropsCasings>true</dropsCasings>
-			<!--
-			<soundExplode>MortarBomb_Explode</soundExplode>
-			for HE -->
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
 		</projectile>
 </ThingDef>
 
-<ThingDef ParentName="BasexxShell">
-  	<defName>Bullet_xx_HE</defName>
-  	<label>yy (HE)</label>
+<!-- API Projectile -->
+
+<ThingDef ParentName="Base20x138mmShell">
+  	<defName>Bullet_20x138mm_API</defName>
+  	<label>20x138mm (API)</label>
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<speed>0</speed>
+			<speed>180</speed>
 			<damageDef>Bullet</damageDef>
-			<damageAmountBase>285</damageAmountBase>
-			<armorPenetrationSharp>0</armorPenetrationSharp>
-			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<!-- <explosionRadius>2.8</explosionRadius>
-			<flyOverhead>true</flyOverhead>
-			<soundExplode>MortarBomb_Explode</soundExplode>
-			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
-			<ai_IsIncendiary>true</ai_IsIncendiary> for artillery -->
+			<damageAmountBase>43</damageAmountBase>
+			<armorPenetrationSharp>36</armorPenetrationSharp>
+			<armorPenetrationBlunt>972</armorPenetrationBlunt>
 			<!--
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
 			<secondaryDamage>
         <li>
-          <def>Bomb_Secondary</def>
-          <amount>18</amount>
+          <def>Flame_Secondary</def>
+          <amount>11</amount>
         </li>
 	    </secondaryDamage>
-	  	-->
   	</projectile>
   	<comps>
-  	<!-- 
-		<li Class="CombatExtended.CompProperties_Fragments">
-	  	<fragments>
-			<Fragment_Large>40</Fragment_Large>
-			<Fragment_Small>80</Fragment_Small>
-	  	</fragments>
-		</li>
-		for artillery -->
   	</comps>
 </ThingDef>
 
 <!-- ==================== Recipes ========================== -->
 
 <RecipeDef ParentName="AmmoRecipeBase">
-  	<defName>MakeAmmo_xx_HE</defName>
-  	<label>make yy HE x10</label>
-  	<description>Turrets that uses this ammunition: </description>
-  	<jobString>Making yy HE cannon shells.</jobString>
-  	<workAmount>1200</workAmount>
+  	<defName>MakeAmmo_20x138mm_API</defName>
+  	<label>make 20x138mm API x100</label>
+  	<description>20x138mm API ammunitions for Flak 38 gun</description>
+  	<jobString>Making 20x138mm API cannon shells.</jobString>
+  	<workAmount>750</workAmount>
   	<ingredients>
 	    <li>
 		  	<filter>
@@ -155,34 +111,25 @@
 				  	<li>Steel</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>63</count>
+		  	<count>42</count>
 	    </li>
 	    <li>
 		  	<filter>
 			    <thingDefs>
-				  	<li>ComponentIndustrial</li>
+				  	<li>Prometheum</li>
 			    </thingDefs>
 		  	</filter>
-		  	<count>2</count>
-	    </li>
-	    <li>
-		  	<filter>
-			    <thingDefs>
-				  	<li>FSX</li>
-			    </thingDefs>
-		  	</filter>
-		  	<count>102</count>
+		  	<count>3</count>
 	    </li>
   	</ingredients>
   	<fixedIngredientFilter>
     	<thingDefs>
 		  	<li>Steel</li>
-		  	<li>FSX</li>
-				<li>ComponentIndustrial</li>
+				<li>Prometheum</li>
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_xx_HE>10</Ammo_xx_HE>
+    	<Ammo_20x138mm_API>100</Ammo_20x138mm_API>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>

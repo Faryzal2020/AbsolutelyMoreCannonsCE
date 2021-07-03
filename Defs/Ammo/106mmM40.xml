@@ -15,7 +15,6 @@
 	<label>106mm M40 Ammunitions</label>
 	<ammoTypes>
 		<Ammo_106mmM40_HEAT>Bullet_106mmM40_HEAT</Ammo_106mmM40_HEAT>
-		<Ammo_106mmM40_BB>Bullet_106mmM40_BB</Ammo_106mmM40_BB>
 	</ammoTypes>
 </CombatExtended.AmmoSetDef>
 
@@ -135,7 +134,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_106mmM40_HEAT</defName>
   	<label>make 106mm M344 HEAT x10</label>
-  	<description>Turrets that uses this ammunition: </description>
+  	<description>Turrets that uses this ammunition: M40 Recoilless Rifle</description>
   	<jobString>Making 106mm M344 HEAT cannon shells.</jobString>
   	<workAmount>3580</workAmount>
   	<ingredients>

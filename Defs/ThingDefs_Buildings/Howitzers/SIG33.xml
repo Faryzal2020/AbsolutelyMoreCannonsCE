@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <ThingDef ParentName="BaseArtilleryBuilding">
+  <ThingDef ParentName="AMCArtilleryBase">
     <defName>M15cmSIG33_Turret</defName>
     <label>15cm sIG 33 Howitzer</label>
     <description>Uses the 150mm I Gr 33 Shell with 4m explosive radius. 15m min range, 150m max range. Has a reload rate of 20 seconds. Able to shoot over walls.</description>
     <graphicData>
         <texPath>Things/Building/M15cmSIG33</texPath>
         <graphicClass>Graphic_Single</graphicClass>
-        <drawSize>(11,11)</drawSize>
+        <drawSize>(9,9)</drawSize>
         <damageData>
           <rect>(0.2,0.2,0.6,0.6)</rect>
           <cornerTL>Damage/Corner</cornerTL>
@@ -45,7 +45,7 @@
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <building Inherit="False">
       <turretGunDef>Turret_M15cmSIG33_Weapon</turretGunDef>
-	    <turretTopDrawSize>11</turretTopDrawSize>
+	    <turretTopDrawSize>9</turretTopDrawSize>
       <turretBurstWarmupTime>2</turretBurstWarmupTime>
       <turretBurstCooldownTime>2</turretBurstCooldownTime>
       <buildingTags>
@@ -84,7 +84,7 @@
         <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
         <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Bullet_150mmIGR33_HE</defaultProjectile>
+        <defaultProjectile>Bullet_150mmSIG33_HE</defaultProjectile>
         <warmupTime>1</warmupTime>
         <minRange>15</minRange>
         <range>700</range>
@@ -112,21 +112,21 @@
       <li Class="CombatExtended.CompProperties_AmmoUser">
         <magazineSize>1</magazineSize>
         <reloadTime>15</reloadTime>
-        <ammoSet>AmmoSet_150mmIGR33_Shells</ammoSet>
+        <ammoSet>AmmoSet_150mmSIG33_Shells</ammoSet>
       </li>
     </comps>
     <building>
       <fixedStorageSettings>
         <filter>
           <categories>
-            <li>Ammo150mmIGR33Shells</li>
+            <li>Ammo150mmSIG33Shells</li>
           </categories>
         </filter>
       </fixedStorageSettings>
       <defaultStorageSettings>
         <filter>
           <categories>
-            <li>Ammo150mmIGR33Shells</li>
+            <li>Ammo150mmSIG33Shells</li>
           </categories>
           <disallowedThingDefs>
           </disallowedThingDefs>

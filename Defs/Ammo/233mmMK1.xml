@@ -15,7 +15,6 @@
 	<label>BL 9.2-inch MK I Ammunitions</label>
 	<ammoTypes>
 		<Ammo_233mmBLMK1_HE>Bullet_233mmBLMK1_HE</Ammo_233mmBLMK1_HE>
-		<Ammo_233mmBLMK1_BB>Bullet_233mmBLMK1_BB</Ammo_233mmBLMK1_BB>
 	</ammoTypes>
   <isMortarAmmoSet>true</isMortarAmmoSet>	<!-- Delete if not artillery -->
 </CombatExtended.AmmoSetDef>
@@ -43,7 +42,7 @@
   	</tradeTags>  	
   	<comps>
 			<li Class="CompProperties_Explosive">
-	      	<explosiveRadius></explosiveRadius>
+	      	<explosiveRadius>4</explosiveRadius>
 		  		<explosiveDamageType>Bomb</explosiveDamageType>
 		  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
 		  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
@@ -156,7 +155,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_233mmBLMK1_HE</defName>
   	<label>make 233mm Mk.I HE x1</label>
-  	<description>Turrets that uses this ammunition: </description>
+  	<description>Turrets that uses this ammunition: BL 9.2-Inch Howitzer</description>
   	<jobString>Making 233mm Mk.I HE cannon shells.</jobString>
   	<workAmount>2690</workAmount>
   	<ingredients>
@@ -193,7 +192,7 @@
     	</thingDefs>
   	</fixedIngredientFilter>
   	<products>
-    	<Ammo_233mmBLMK1_HE>1=</Ammo_233mmBLMK1_HE>
+    	<Ammo_233mmBLMK1_HE>1</Ammo_233mmBLMK1_HE>
   	</products>
   	<recipeUsers>
 	  	<li>CNCmachine</li>
