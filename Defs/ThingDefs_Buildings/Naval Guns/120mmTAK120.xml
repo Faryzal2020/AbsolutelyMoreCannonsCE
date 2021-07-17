@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 120mmTAK120 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>120mmTAK120_Turret</defName>
+    <label>12cm/46 TAK120</label>
+    <description>Gun: 120mm/46</description>
+    <graphicData>
+        <texPath>Things/Building/M120mmTAK120</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(14,14)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(5,5)</size> 
+    <costStuffCount>1100</costStuffCount>
+    <constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>50</Plasteel>
+      <ComponentIndustrial>40</ComponentIndustrial>
+      <ComponentSpacer>10</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>6000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>8500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_120mmTAK120_Weapon</turretGunDef>
+	    <turretTopDrawSize>14</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>2</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_120mmTAK120</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M120mmTAK120_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_120mmTAK120_Weapon</defName>
+    <label>120mm/46</label>
+    <description>Ammo: 120mmTAK120</description>
+    <graphicData>
+      <texPath>Things/Building/M120mmTAK120_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_120mmTAK120_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>10</minRange>
+        <range>250</range>
+        <ticksBetweenBurstShots>45</ticksBetweenBurstShots>
+        <burstShotCount>6</burstShotCount>
+        <soundCast>Sound_120mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>100</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>52</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_120mmTAK120_Shells</ammoSet>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

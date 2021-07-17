@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 100mmModel1953 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>100mmModel1953_Turret</defName>
+    <label>10cm/55 Model 1953</label>
+    <description>Gun: 100mm/55</description>
+    <graphicData>
+        <texPath>Things/Building/M100mmModel1953</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(8,8)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(5,5)</size> 
+    <costStuffCount>1000</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>50</Plasteel>
+      <ComponentIndustrial>30</ComponentIndustrial>
+      <ComponentSpacer>8</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>6000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>6500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_100mmModel1953_Weapon</turretGunDef>
+	    <turretTopDrawSize>10</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>1</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_100mmModel1953</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M100mmModel1953_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_100mmModel1953_Weapon</defName>
+    <label>100mm/55</label>
+    <description>Ammo: 100mmModel1953</description>
+    <graphicData>
+      <texPath>Things/Building/M100mmModel1953_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_100mmModel1953_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>10</minRange>
+        <range>150</range>
+        <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_Naval100mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>70</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>100</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_100mmModel1953_Shells</ammoSet>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

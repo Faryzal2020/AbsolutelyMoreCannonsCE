@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+<!-- 30x165mm -->
+<ThingCategoryDef>
+  <defName>Ammo30x165mmShells</defName>
+  <label>30x165mm shells</label>
+  <parent>AMCShells</parent>
+  <iconPath>Things/Projectile/30x165mm/HEI/HEI_a</iconPath>
+</ThingCategoryDef>
+<!-- ==================== AmmoSet ========================== -->
+
+<CombatExtended.AmmoSetDef>
+	<defName>AmmoSet_30x165mm_Shells</defName>
+	<label>30x165mm Ammunitions</label>
+	<ammoTypes>
+		<Ammo_30x165mm_HEI>Bullet_30x165mm_HEI</Ammo_30x165mm_HEI>
+		<Ammo_30x165mm_APDS>Bullet_30x165mm_APDS</Ammo_30x165mm_APDS>
+	</ammoTypes>
+</CombatExtended.AmmoSetDef>
+
+<!-- ==================== Ammo ========================== -->
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="30x165mmBase" ParentName="SmallAmmoBase" Abstract="True">
+  	<description>Ammunitions for 2A42 Shipunov gun</description>
+  	<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+  	</statBases>
+  	<thingCategories>
+			<li>Ammo30x165mmShells</li>
+  	</thingCategories>
+  	<stackLimit>200</stackLimit>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="30x165mmBaseCraftableBase" ParentName="30x165mmBase" Abstract="True">
+  	<tradeTags>
+		<li>CE_AutoEnableTrade</li>
+		<li>CE_AutoEnableCrafting_TableMachining</li>
+  	</tradeTags>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="30x165mmBaseCraftableBase">
+  	<defName>Ammo_30x165mm_HEI</defName>
+  	<label>30x165mm (HEI)</label>
+  	<graphicData>
+			<texPath>Things/Projectile/30x165mm/HEI</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+  	</graphicData>
+  	<statBases>	  
+			<MarketValue>5.06</MarketValue>
+			<Mass>0.837</Mass>
+			<Bulk>1</Bulk>
+  	</statBases>
+  	<ammoClass>GrenadeHE</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_30x165mm_HEI</detonateProjectile>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="30x165mmBaseCraftableBase">
+  	<defName>Ammo_30x165mm_APDS</defName>
+  	<label>30x165mm (APDS)</label>
+  	<graphicData>
+			<texPath>Things/Projectile/30x165mm/APDS</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+  	</graphicData>
+  	<statBases>	  
+			<MarketValue>6.49</MarketValue>
+			<Mass>0.752</Mass>
+			<Bulk>1</Bulk>
+  	</statBases>
+  	<ammoClass>Sabot</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_30x165mm_APDS</detonateProjectile>
+</ThingDef>
+
+<!-- ================== Projectiles ================== -->
+
+<ThingDef Name="Base30x165mmShell" ParentName="BaseBullet" Abstract="true">
+  	<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>1</speed>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
+		</projectile>
+</ThingDef>
+
+<!-- HEI Projectile -->
+
+<ThingDef ParentName="Base30x165mmShell">
+  	<defName>Bullet_30x165mm_HEI</defName>
+  	<label>30x165mm (HEI)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>192</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>17</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>Small_Pop</soundExplode>
+			<secondaryDamage>
+        <li>
+          <def>Flame_Secondary</def>
+          <amount>19</amount>
+        </li>
+	    </secondaryDamage>
+  	</projectile>
+  	<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+		  	<fragments>
+				<Fragment_Large>2</Fragment_Large>
+				<Fragment_Small>4</Fragment_Small>
+		  	</fragments>
+			</li> <!-- delete if no fragments -->
+  	</comps>
+</ThingDef>
+
+<!-- APDS Projectile -->
+
+<ThingDef ParentName="Base30x165mmShell">
+  	<defName>Bullet_30x165mm_APDS</defName>
+  	<label>30x165mm (APDS)</label>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>224</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>69</damageAmountBase>
+			<armorPenetrationSharp>3813.38</armorPenetrationSharp>
+			<armorPenetrationBlunt>82</armorPenetrationBlunt>
+			<!--
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
+			<!--
+			<secondaryDamage>
+        <li>
+          <def>Bomb_Secondary</def>
+          <amount></amount>
+        </li>
+	    </secondaryDamage>
+	  	-->
+  	</projectile>
+  	<comps>
+  	</comps>
+</ThingDef>
+
+<!-- ==================== Recipes ========================== -->
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_30x165mm_HEI</defName>
+  	<label>make 30x165mm HEI 50x</label>
+  	<description>30x165mm HEI ammunitions for 2A42 Shipunov gun</description>
+  	<jobString>Making 30x165mm HEI cannon shells.</jobString>
+  	<workAmount>1050</workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>43</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>ComponentIndustrial</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>3</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Prometheum</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>4</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>FSX</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>5</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+				<li>ComponentIndustrial</li>
+		  	<li>Prometheum</li>
+		  	<li>FSX</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_30x165mm_HEI>50</Ammo_30x165mm_HEI>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_30x165mm_APDS</defName>
+  	<label>make 30x165mm APDS 50x</label>
+  	<description>30x165mm APDS ammunitions for 2A42 Shipunov gun</description>
+  	<jobString>Making 30x165mm APDS cannon shells.</jobString>
+  	<workAmount></workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>23</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Plasteel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>31</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+		  	<li>Plasteel</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_30x165mm_APDS>50</Ammo_30x165mm_APDS>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+</Defs>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 127mmTypeC -->
+  <ThingDef ParentName="AMCArtilleryBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>127mmTypeC_Turret</defName>
+    <label>12.7cm 3rd Year Type C</label>
+    <description>Gun: 127mm/50</description>
+    <graphicData>
+        <texPath>Things/Building/M127mmTypeC</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(11,11)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(5,5)</size> 
+    <costStuffCount>1200</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>60</Plasteel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+      <ComponentSpacer>5</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>8500</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>9000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_127mmTypeC_Weapon</turretGunDef>
+	    <turretTopDrawSize>10</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>13.6</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_127mmTypeC</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M127mmTypeC_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_127mmTypeC_Weapon</defName>
+    <label>127mm/50</label>
+    <description>Ammo: 127mmTypeC</description>
+    <graphicData>
+      <texPath>Things/Building/M127mmTypeC_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>13.6</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_127mmTypeC_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>20</minRange>
+        <range>250</range>
+        <ticksBetweenBurstShots>-1</ticksBetweenBurstShots>
+        <burstShotCount>2</burstShotCount>
+        <soundCast>Sound_Double127mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>100</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+
+        <circularError>1</circularError>
+        <indirectFirePenalty>0.1</indirectFirePenalty>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>80</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_127mmTypeC_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

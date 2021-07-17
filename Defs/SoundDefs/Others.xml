@@ -48,4 +48,29 @@
       </li>
     </subSounds>
   </SoundDef>
+
+  <SoundDef>
+    <defName>Small_Pop</defName>  
+    <context>MapOnly</context>
+    <eventNames />  
+    <maxSimultaneous>50</maxSimultaneous>  
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Small_Pop</clipFolderPath>
+          </li>
+        </grains>
+        <pitchRange>
+          <min>0.5</min>        
+          <max>1.5</max>
+        </pitchRange>       
+        <volumeRange>
+          <min>50</min>        
+          <max>100</max>
+        </volumeRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
 </Defs>

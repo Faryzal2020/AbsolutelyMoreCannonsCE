@@ -223,7 +223,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_600mmKarlGerat_HE</defName>
   	<label>make 60cm Schwere Betongranate HE x1</label>
-  	<description>Turrets that uses this ammunition: 60cm Karl Gerat</description>
+  	<description>60cm Schwere Betongranate HE Ammunitions for 60cm Karl Gerat gun</description>
   	<jobString>Making 60cm Schwere Betongranate HE cannon shells.</jobString>
   	<workAmount>16470</workAmount>
   	<ingredients>
@@ -270,7 +270,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_600mmKarlGeratLeichte_HE</defName>
   	<label>make 60cm Leichte Betongranate HE x1</label>
-  	<description>Turrets that uses this ammunition: 60cm Karl Gerat</description>
+  	<description>60cm Leichte Betongranate HE Ammunitions for 60cm Karl Gerat gun</description>
   	<jobString>Making 60cm Leichte Betongranate HE cannon shells.</jobString>
   	<workAmount>12940</workAmount>
   	<ingredients>

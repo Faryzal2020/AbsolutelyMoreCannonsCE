@@ -201,7 +201,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_75mmPAK40_APHE</defName>
   	<label>make 75mm Pzgr. 39 APHE x10</label>
-  	<description>Turrets that uses this ammunition: 75mm Pak 40</description>
+  	<description>75mm Pzgr. 39 APHE Ammunitions for 7.5/L46 gun</description>
   	<jobString>Making 75mm Pzgr. 39 APHE cannon shells.</jobString>
   	<workAmount>2310</workAmount>
   	<ingredients>
@@ -239,7 +239,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_75mmPAK40_HE</defName>
   	<label>make 75mm Sprgr. 34 HE x10</label>
-  	<description>Turrets that uses this ammunition: 75mm Pak 40</description>
+  	<description>75mm Sprgr. 34 HE Ammunitions for 7.5/L46 Pak 40 gun</description>
   	<jobString>Making 75mm Sprgr. 34 HE cannon shells.</jobString>
   	<workAmount>2295</workAmount>
   	<ingredients>

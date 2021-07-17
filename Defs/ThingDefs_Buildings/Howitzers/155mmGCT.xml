@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 155mmGCT -->
+  <ThingDef ParentName="AMCArtilleryBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>155mmGCT_Turret</defName>
+    <label>155mm GCT AUF1</label>
+    <description>Gun: 155mm CN 155 AUF1</description>
+    <graphicData>
+        <texPath>Things/Building/M155mmGCT</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(17,17)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(4,4)</size> 
+    <costStuffCount>900</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <ComponentIndustrial>20</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>2500</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>5500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_155mmGCT_Weapon</turretGunDef>
+	    <turretTopDrawSize>18</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>9</turretBurstCooldownTime>
+      <buildingTags>
+        <li>Artillery_MannedMortar</li>
+        <li>Artillery</li>
+      </buildingTags>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_155mmGCT</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M155mmGCT_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_155mmGCT_Weapon</defName>
+    <label>155mm CN 155 AUF1</label>
+    <description>Ammo: 155mmGCT</description>
+    <graphicData>
+      <texPath>Things/Building/M155mmGCT_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_155mmGCT_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>20</minRange>
+        <range>300</range>
+        <ticksBetweenBurstShots>300</ticksBetweenBurstShots>
+        <burstShotCount>3</burstShotCount>
+        <soundCast>Sound_155mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>120</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+
+        <circularError>1</circularError>
+        <indirectFirePenalty>0.1</indirectFirePenalty>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>42</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_155mmGCT_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

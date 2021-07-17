@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 20mmSPzMarder -->
+  <ThingDef ParentName="AMCTurretMannedBase">
+    <defName>20mmSPzMarder_Turret</defName>
+    <label>SPz Marder</label>
+    <description>Gun: Mk 20 Rh-202</description>
+    <graphicData>
+        <texPath>Things/Building/M20mmSPzMarder</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(13,13)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(2,2)</size> 
+    <costStuffCount>250</costStuffCount>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>2</Plasteel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>3200</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_20mmSPzMarder_Weapon</turretGunDef>
+	    <turretTopDrawSize>13</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>1.5</turretBurstCooldownTime>
+    </building>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_20mmSPzMarder</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M20mmSPzMarder_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_20mmSPzMarder_Weapon</defName>
+    <label>Mk 20 Rh-202</label>
+    <description>Ammo: 20x139mm</description>
+    <graphicData>
+      <texPath>Things/Building/M20mmSPzMarder_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>2.5</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.4</SwayFactor>
+      <RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_20x139mm_HEI</defaultProjectile>
+        <warmupTime>0.5</warmupTime>
+        <range>70</range>
+        <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+        <burstShotCount>15</burstShotCount>
+        <soundCast>Sound_RH202</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>25</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>1250</magazineSize>
+        <reloadTime>5</reloadTime>
+        <ammoSet>AmmoSet_20x139mm_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aimedBurstShotCount>6</aimedBurstShotCount>
+        <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
+        <!--<noSingleShot>true</noSingleShot>-->
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

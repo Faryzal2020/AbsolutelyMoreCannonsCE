@@ -172,7 +172,7 @@
 			<damageAmountBase>289</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundExplode>Small_Pop</soundExplode>
 			<explosionRadius>3.5</explosionRadius>
 			<!--
 			<flyOverhead>true</flyOverhead>
@@ -204,7 +204,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_128mmPAK44_AP</defName>
   	<label>make 128mm Pzgr. AP x5</label>
-  	<description>Turrets that uses this ammunition: 128mm Pak44</description>
+  	<description>128mm Pzgr. AP Ammunitions for 12.8/L55 Pak44 gun</description>
   	<jobString>Making 128mm Pzgr. AP cannon shells.</jobString>
   	<workAmount>3205</workAmount>
   	<ingredients>
@@ -242,7 +242,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_128mmPAK44_HE</defName>
   	<label>make 128mm Sprgr. L/5 HE x5</label>
-  	<description>Turrets that uses this ammunition: 128mm Pak44</description>
+  	<description>128mm Sprgr. L/5 HE Ammunitions for 12.8/L55 Pak44 gun</description>
   	<jobString>Making 128mm Sprgr. L/5 HE cannon shells.</jobString>
   	<workAmount>3880</workAmount>
   	<ingredients>

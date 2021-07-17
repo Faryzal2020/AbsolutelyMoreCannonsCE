@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- M600mmKarlGerat -->
+  <ThingDef ParentName="AMCArtilleryBase">
+    <defName>M600mmKarlGerat_Turret</defName>
+    <label>Karl-Gerät 040</label>
+      <description>Gun: 60cm Karl Gerat</description>
+    <graphicData>
+        <texPath>Things/Building/M600mmKarlGerat</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(14,14)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <!--<li Class="CompProperties_Explosive">
+        <wickTicks>240</wickTicks>
+        <explosiveRadius>4.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+      </li> -->
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>500</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+    <size>(7,7)</size> 
+    <costStuffCount>1600</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>50</Plasteel>
+      <ComponentIndustrial>10</ComponentIndustrial>  
+    </costList>
+    <statBases>
+      <MaxHitPoints>3000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>17000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_M600mmKarlGerat_Weapon</turretGunDef>
+	    <turretTopDrawSize>14</turretTopDrawSize>
+      <turretBurstWarmupTime>2</turretBurstWarmupTime>
+      <turretBurstCooldownTime>2</turretBurstCooldownTime>
+      <buildingTags>
+        <li>Artillery_BaseDestroyer</li>
+        <li>Artillery_MannedMortar</li>
+        <li>Artillery</li>
+      </buildingTags>
+    </building>
+	  <!--<researchPrerequisites Inherit = "False">
+      <li>ArtilleryGun</li>
+    </researchPrerequisites>-->
+    <uiIconPath>Things/Icons/M600mmKarlGerat_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseArtilleryWeapon">
+    <defName>Turret_M600mmKarlGerat_Weapon</defName>
+    <label>60cm Karl Gerat</label>
+    <description>Ammo: 600mmKarlGerat</description>
+    <graphicData>
+      <texPath>Things/Building/M600mmKarlGerat_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>Artillery_BaseDestroyer</li>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>0.9</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>100</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+        <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_600mmKarlGerat_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>25</minRange>
+        <range>800</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_600mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>60</muzzleFlashScale>
+        <circularError>1</circularError>
+        <indirectFirePenalty>0.1</indirectFirePenalty>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>
+      <li Class="CompProperties_ChangeableProjectile" />
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>1</magazineSize>
+        <reloadTime>40</reloadTime>
+        <ammoSet>AmmoSet_600mmKarlGerat_Shells</ammoSet>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

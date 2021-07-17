@@ -102,7 +102,7 @@
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
 			<explosionRadius>0.5</explosionRadius>
-			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundExplode>Small_Pop</soundExplode>
 			<secondaryDamage>
         <li>
           <def>Flame_Secondary</def>

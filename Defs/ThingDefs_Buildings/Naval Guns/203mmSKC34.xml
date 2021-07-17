@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 203mmSKC34 -->
+  <ThingDef ParentName="AMCArtilleryBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>203mmSKC34_Turret</defName>
+    <label>20.3cm SK C/34</label>
+    <description>Gun: 203mm/60</description>
+    <graphicData>
+        <texPath>Things/Building/M203mmSKC34</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(25,25)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-5)</interactionCellOffset>
+    <size>(8,8)</size> 
+    <costStuffCount>1500</costStuffCount>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>150</Plasteel>
+      <ComponentIndustrial>25</ComponentIndustrial>
+      <ComponentSpacer>6</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>9000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>9500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_203mmSKC34_Weapon</turretGunDef>
+	    <turretTopDrawSize>25</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>12</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_203mmSKC34</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M203mmSKC34_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_203mmSKC34_Weapon</defName>
+    <label>203mm/60</label>
+    <description>Ammo: 203mmSKC34</description>
+    <graphicData>
+      <texPath>Things/Building/M203mmSKC34_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>12</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_203mmSKC34_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>30</minRange>
+        <range>350</range>
+        <ticksBetweenBurstShots>-1</ticksBetweenBurstShots>
+        <burstShotCount>2</burstShotCount>
+        <soundCast>Sound_203mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>140</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+
+        <circularError>1</circularError>
+        <indirectFirePenalty>0.1</indirectFirePenalty>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>55</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_203mmSKC34_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

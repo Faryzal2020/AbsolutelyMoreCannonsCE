@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+<!-- 155mmGCT -->
+<ThingCategoryDef>
+  <defName>Ammo155mmGCTShells</defName>
+  <label>155mm CN 155 AUF1 shells</label>
+  <parent>AMCShells</parent>
+  <iconPath>Things/Projectile/155mmGCTHE</iconPath>
+</ThingCategoryDef>
+<!-- ==================== AmmoSet ========================== -->
+
+<CombatExtended.AmmoSetDef>
+	<defName>AmmoSet_155mmGCT_Shells</defName>
+	<label>155mm CN 155 AUF1 Ammunitions</label>
+	<ammoTypes>
+		<Ammo_155mmGCT_HE>Bullet_155mmGCT_HE</Ammo_155mmGCT_HE>
+	</ammoTypes>
+  <isMortarAmmoSet>true</isMortarAmmoSet>	<!-- Delete if not artillery -->
+</CombatExtended.AmmoSetDef>
+
+<!-- ==================== Ammo ========================== -->
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="155mmGCTBase" ParentName="AmmoBase" Abstract="True">
+  	<description>Ammunitions for 155mm CN 155 AUF1 gun</description>
+  	<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+  	</statBases>
+  	<thingCategories>
+			<li>Ammo155mmGCTShells</li>
+  	</thingCategories>
+  	<stackLimit>25</stackLimit>
+  	<cookOffFlashScale>30</cookOffFlashScale>
+  	<cookOffSound>MortarBomb_Explode</cookOffSound>
+		<isMortarAmmo>true</isMortarAmmo>	<!-- Delete if not artillery -->
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="155mmGCTBaseCraftableBase" ParentName="155mmGCTBase" Abstract="True">
+  	<tradeTags>
+		<li>CE_AutoEnableTrade</li>
+		<li>CE_AutoEnableCrafting_TableMachining</li>
+  	</tradeTags>  	
+  	<comps>
+			<li Class="CompProperties_Explosive">
+	      	<explosiveRadius>3</explosiveRadius>
+		  		<explosiveDamageType>Bomb</explosiveDamageType>
+		  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
+		  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+		  		<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		  		<explodeOnKilled>True</explodeOnKilled>
+		  		<wickTicks>30~60</wickTicks>
+			</li>
+  	</comps>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="155mmGCTBaseCraftableBase">
+  	<defName>Ammo_155mmGCT_HE</defName>
+  	<label>155mm M795 (HE)</label>
+  	<graphicData>
+		<texPath>Things/Projectile/155mmGCTHE</texPath>
+		<graphicClass>Graphic_Single</graphicClass>
+		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
+		<drawSize>1.1</drawSize>
+  	</graphicData>
+  	<statBases>	  
+		<MarketValue>332.36</MarketValue>
+		<Mass>46.7</Mass>
+		<Bulk>47.73</Bulk>
+  	</statBases>
+  	<ammoClass>GrenadeHE</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_155mmGCT_HE</detonateProjectile>
+</ThingDef>
+
+<!-- ================== Projectiles ================== -->
+
+<ThingDef Name="Base155mmGCTShell" ParentName="BaseBullet" Abstract="true">
+  	<graphicData>
+    	<shaderType>TransparentPostLight</shaderType>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>1</speed>
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
+			<!--
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
+		</projectile>
+</ThingDef>
+
+<!-- HE Projectile -->
+
+<ThingDef ParentName="Base155mmGCTShell">
+  	<defName>Bullet_155mmGCT_HE</defName>
+  	<label>155mm M795 (HE)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+  	<graphicData>
+				<texPath>Things/Projectile/Bullet_Big</texPath>
+				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
+				<!-- <texPath>Things/Projectile/RodShell</texPath> -->
+				<!-- <texPath>Things/Projectile/FinShell</texPath> -->
+      	<graphicClass>Graphic_Single</graphicClass>
+    	<shaderType>TransparentPostLight</shaderType>
+	    <drawSize>(1,1)</drawSize>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>140</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>549</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<explosionRadius>5.5</explosionRadius>
+			<flyOverhead>true</flyOverhead>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<gravityFactor>5</gravityFactor>
+			<!--
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
+			<!--
+			<secondaryDamage>
+        <li>
+          <def>Bomb_Secondary</def>
+          <amount></amount>
+        </li>
+	    </secondaryDamage>
+	  	-->
+  	</projectile>
+  	<comps>
+  	<!-- 
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>208</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1.5</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+				<ai_IsIncendiary>true</ai_IsIncendiary>
+			</li>
+		for HEAT -->
+			<li Class="CombatExtended.CompProperties_Fragments">
+		  	<fragments>
+				<Fragment_Large>40</Fragment_Large>
+				<Fragment_Small>80</Fragment_Small>
+		  	</fragments>
+			</li> <!-- delete if no fragments -->
+  	</comps>
+</ThingDef>
+
+<!-- ==================== Recipes ========================== -->
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_155mmGCT_HE</defName>
+  	<label>make 155mm M795 HE x1</label>
+  	<description>155mm M795 HE ammunitions for 155mm CN 155 AUF1 gun</description>
+  	<jobString>Making 155mm M795 HE cannon shells.</jobString>
+  	<workAmount>1270</workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>47</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>ComponentIndustrial</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>1</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>FSX</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>21</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+		  	<li>FSX</li>
+				<li>ComponentIndustrial</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_155mmGCT_HE>1</Ammo_155mmGCT_HE>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+</Defs>

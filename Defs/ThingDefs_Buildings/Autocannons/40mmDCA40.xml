@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 40mmDCA40 -->
+  <ThingDef ParentName="AMCTurretMannedBase">
+    <defName>40mmDCA40_Turret</defName>
+    <label>DCA 40</label>
+    <description>Gun: Bofors 40mm L/70</description>
+    <graphicData>
+        <texPath>Things/Building/M40mmDCA40</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(6,6)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+
+    </comps>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>300</costStuffCount>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <ComponentIndustrial>2</ComponentIndustrial>  
+    </costList>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>3000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_40mmDCA40_Weapon</turretGunDef>
+	    <turretTopDrawSize>6</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>0.8</turretBurstCooldownTime>
+    </building>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_40mmDCA40</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M40mmDCA40_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_40mmDCA40_Weapon</defName>
+    <label>Bofors 40mm L/70</label>
+    <description>Ammo: 40x365mm</description>
+    <graphicData>
+      <texPath>Things/Building/M40mmDCA40_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>2.3</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>0.8</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>0</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_40x365mm_HEI</defaultProjectile>
+        <warmupTime>0.5</warmupTime>
+        <range>60</range>
+        <ticksBetweenBurstShots>11</ticksBetweenBurstShots>
+        <burstShotCount>4</burstShotCount>
+        <soundCast>Sound_40mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>30</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>80</magazineSize>
+        <reloadTime>5</reloadTime>
+        <ammoSet>AmmoSet_40x365mm_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aimedBurstShotCount>5</aimedBurstShotCount>
+        <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

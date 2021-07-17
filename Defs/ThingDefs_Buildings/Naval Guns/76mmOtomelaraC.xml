@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 76mmOtomelaraC -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>76mmOtomelaraC_Turret</defName>
+    <label>OTO Melara 76/62C</label>
+    <description>Gun: 76mm/62</description>
+    <graphicData>
+        <texPath>Things/Building/M76mmOtomelaraC</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(16,16)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>900</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(4,4)</size> 
+    <costStuffCount>1000</costStuffCount>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>100</Plasteel>
+      <ComponentIndustrial>45</ComponentIndustrial>
+      <ComponentSpacer>10</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>6000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>9000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_76mmOtomelaraC_Weapon</turretGunDef>
+	    <turretTopDrawSize>16</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>2</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_76mmOtomelaraC</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M76mmOtomelaraC_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_76mmOtomelaraC_Weapon</defName>
+    <label>76mm/62</label>
+    <description>Ammo: 76mmOtomelaraC</description>
+    <graphicData>
+      <texPath>Things/Building/M76mmOtomelaraC_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_76mmOtomelaraC_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>10</minRange>
+        <range>200</range>
+        <ticksBetweenBurstShots>36</ticksBetweenBurstShots>
+        <burstShotCount>10</burstShotCount>
+        <soundCast>Sound_Single127mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>50</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>200</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_76mmOtomelaraC_Shells</ammoSet>
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

@@ -134,7 +134,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_106mmM40_HEAT</defName>
   	<label>make 106mm M344 HEAT x10</label>
-  	<description>Turrets that uses this ammunition: M40 Recoilless Rifle</description>
+  	<description>106mm M344 HEAT Ammunitions for M40 Recoilless Rifle gun</description>
   	<jobString>Making 106mm M344 HEAT cannon shells.</jobString>
   	<workAmount>3580</workAmount>
   	<ingredients>

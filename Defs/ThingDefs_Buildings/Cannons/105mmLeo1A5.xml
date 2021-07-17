@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 105mmLeo1A5 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>105mmLeo1A5_Turret</defName>
+    <label>Leopard 1A5</label>
+    <description>Gun: 105mm L7A3</description>
+    <graphicData>
+        <texPath>Things/Building/M105mmLeo1A5</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(11,11)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>550</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>20</Plasteel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer> 
+    </costList>
+    <statBases>
+      <MaxHitPoints>4500</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>4500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_105mmLeo1A5_Weapon</turretGunDef>
+	    <turretTopDrawSize>14</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>6.5</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_105mmLeo1A5</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M105mmLeo1A5_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_105mmLeo1A5_Weapon</defName>
+    <label>105mm L7A3</label>
+    <description>Ammo: 105mmL7A3</description>
+    <graphicData>
+      <texPath>Things/Building/M105mmLeo1A5_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>6.5</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_105mmL7A3_HEAT</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>0</minRange>
+        <range>110</range>
+        <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_Leo1A5</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>55</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>55</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_105mmL7A3_Shells</ammoSet>
+      </li>
+      <!--
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>-->
+    </comps>
+  </ThingDef>
+  
+</Defs>

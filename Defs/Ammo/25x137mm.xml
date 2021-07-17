@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+<!-- 25x137mm -->
+<ThingCategoryDef>
+  <defName>Ammo25x137mmShells</defName>
+  <label>25x137mm shells</label>
+  <parent>AMCShells</parent>
+  <iconPath>Things/Projectile/25x137mm/HEI/HEI_a</iconPath>
+</ThingCategoryDef>
+<!-- ==================== AmmoSet ========================== -->
+
+<CombatExtended.AmmoSetDef>
+	<defName>AmmoSet_25x137mm_Shells</defName>
+	<label>25x137mm Ammunitions</label>
+	<ammoTypes>
+		<Ammo_25x137mm_HEI>Bullet_25x137mm_HEI</Ammo_25x137mm_HEI>
+		<Ammo_25x137mm_APDS>Bullet_25x137mm_APDS</Ammo_25x137mm_APDS>
+	</ammoTypes>
+</CombatExtended.AmmoSetDef>
+
+<!-- ==================== Ammo ========================== -->
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="25x137mmBase" ParentName="SmallAmmoBase" Abstract="True">
+  	<description>Ammunitions for 25mm Oerlikon KBA gun</description>
+  	<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+  	</statBases>
+  	<thingCategories>
+			<li>Ammo25x137mmShells</li>
+  	</thingCategories>
+  	<stackLimit>500</stackLimit>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="25x137mmBaseCraftableBase" ParentName="25x137mmBase" Abstract="True">
+  	<tradeTags>
+		<li>CE_AutoEnableTrade</li>
+		<li>CE_AutoEnableCrafting_TableMachining</li>
+  	</tradeTags>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="25x137mmBaseCraftableBase">
+  	<defName>Ammo_25x137mm_HEI</defName>
+  	<label>25x137mm M792 (HEI)</label>
+  	<graphicData>
+			<texPath>Things/Projectile/25x137mm/HEI</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+  	</graphicData>
+  	<statBases>	  
+			<MarketValue>3.61</MarketValue>
+			<Mass>0.502</Mass>
+			<Bulk>0.64</Bulk>
+  	</statBases>
+  	<ammoClass>GrenadeHE</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_25x137mm_HEI</detonateProjectile>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="25x137mmBaseCraftableBase">
+  	<defName>Ammo_25x137mm_APDS</defName>
+  	<label>25x137mm M791 (APDS)</label>
+  	<graphicData>
+			<texPath>Things/Projectile/25x137mm/APDS</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+  	</graphicData>
+  	<statBases>	  
+			<MarketValue>3.06</MarketValue>
+			<Mass>0.454</Mass>
+			<Bulk>0.65</Bulk>
+  	</statBases>
+  	<ammoClass>Sabot</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_25x137mm_APDS</detonateProjectile>
+</ThingDef>
+
+<!-- ================== Projectiles ================== -->
+
+<ThingDef Name="Base25x137mmShell" ParentName="BaseBullet" Abstract="true">
+  	<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>1</speed>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
+		</projectile>
+</ThingDef>
+
+<!-- HEI Projectile -->
+
+<ThingDef ParentName="Base25x137mmShell">
+  	<defName>Bullet_25x137mm_HEI</defName>
+  	<label>25x137mm M792 (HEI)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>220</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>18</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<explosionRadius>0.5</explosionRadius>
+			<soundExplode>Small_Pop</soundExplode>
+			<secondaryDamage>
+        <li>
+          <def>Flame_Secondary</def>
+          <amount>15</amount>
+        </li>
+	    </secondaryDamage>
+  	</projectile>
+  	<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+		  	<fragments>
+				<Fragment_Large>1</Fragment_Large>
+				<Fragment_Small>5</Fragment_Small>
+		  	</fragments>
+			</li> <!-- delete if no fragments -->
+  	</comps>
+</ThingDef>
+
+<!-- APDS Projectile -->
+
+<ThingDef ParentName="Base25x137mmShell">
+  	<defName>Bullet_25x137mm_APDS</defName>
+  	<label>25x137mm M791 (APDS)</label>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>269</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>56</damageAmountBase>
+			<armorPenetrationSharp>2424.1</armorPenetrationSharp>
+			<armorPenetrationBlunt>81</armorPenetrationBlunt>
+			<!--
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>Small_Pop</soundExplode>
+			for HE -->
+			<!--
+			<secondaryDamage>
+        <li>
+          <def>Bomb_Secondary</def>
+          <amount></amount>
+        </li>
+	    </secondaryDamage>
+	  	-->
+  	</projectile>
+  	<comps>
+
+  	</comps>
+</ThingDef>
+
+<!-- ==================== Recipes ========================== -->
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_25x137mm_HEI</defName>
+  	<label>make 25x137mm M792 HEI 100x</label>
+  	<description>25x137mm M792 HEI ammunitions for 25mm Oerlikon KBA gun</description>
+  	<jobString>Making 25x137mm M792 HEI cannon shells.</jobString>
+  	<workAmount>1360</workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>51</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>ComponentIndustrial</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>4</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Prometheum</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>4</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>FSX</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>11</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+				<li>ComponentIndustrial</li>
+		  	<li>Prometheum</li>
+		  	<li>FSX</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_25x137mm_HEI>100</Ammo_25x137mm_HEI>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_25x137mm_APDS</defName>
+  	<label>make 25x137mm M791 APDS 100x</label>
+  	<description>25x137mm M791 APDS ammunitions for 25mm Oerlikon KBA gun</description>
+  	<jobString>Making 25x137mm M791 APDS cannon shells.</jobString>
+  	<workAmount>1560</workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>32</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Plasteel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>27</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+		  	<li>Plasteel</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_25x137mm_APDS>100</Ammo_25x137mm_APDS>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+</Defs>

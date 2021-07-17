@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 90mmM26 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>90mmM26_Turret</defName>
+    <label>M26</label>
+    <description>Gun: 90mm M3</description>
+    <graphicData>
+        <texPath>Things/Building/M90mmM26</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(11,11)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>500</costStuffCount>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>4000</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_90mmM26_Weapon</turretGunDef>
+	    <turretTopDrawSize>14</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>8</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_90mmM26</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M90mmM26_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_90mmM26_Weapon</defName>
+    <label>90mm M3</label>
+    <description>Ammo: 90mmM26</description>
+    <graphicData>
+      <texPath>Things/Building/M90mmM26_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_90mmM26_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>0</minRange>
+        <range>90</range>
+        <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_M26</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>35</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>70</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_90mmM26_Shells</ammoSet>
+      </li>
+      <!--
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>-->
+    </comps>
+  </ThingDef>
+  
+</Defs>

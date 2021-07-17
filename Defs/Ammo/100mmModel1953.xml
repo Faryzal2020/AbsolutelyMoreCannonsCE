@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+<!-- 100mmModel1953 -->
+<ThingCategoryDef>
+  <defName>Ammo100mmModel1953Shells</defName>
+  <label>100mm/55 shells</label>
+  <parent>AMCShells</parent>
+  <iconPath>Things/Projectile/100mmModel1953HE</iconPath>
+</ThingCategoryDef>
+<!-- ==================== AmmoSet ========================== -->
+
+<CombatExtended.AmmoSetDef>
+	<defName>AmmoSet_100mmModel1953_Shells</defName>
+	<label>100mm/55 Ammunitions</label>
+	<ammoTypes>
+		<Ammo_100mmModel1953_HE>Bullet_100mmModel1953_HE</Ammo_100mmModel1953_HE>
+	</ammoTypes>
+</CombatExtended.AmmoSetDef>
+
+<!-- ==================== Ammo ========================== -->
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="100mmModel1953Base" ParentName="AmmoBase" Abstract="True">
+  	<description>Ammunitions for 100mm/55 gun</description>
+  	<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+  	</statBases>
+  	<thingCategories>
+			<li>Ammo100mmModel1953Shells</li>
+  	</thingCategories>
+  	<stackLimit>25</stackLimit>
+  	<cookOffFlashScale>30</cookOffFlashScale>
+  	<cookOffSound>MortarBomb_Explode</cookOffSound>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="100mmModel1953BaseCraftableBase" ParentName="100mmModel1953Base" Abstract="True">
+  	<tradeTags>
+		<li>CE_AutoEnableTrade</li>
+		<li>CE_AutoEnableCrafting_TableMachining</li>
+  	</tradeTags>  	
+  	<comps>
+			<li Class="CompProperties_Explosive">
+	      	<explosiveRadius>2</explosiveRadius>
+		  		<explosiveDamageType>Bomb</explosiveDamageType>
+		  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
+		  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+		  		<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		  		<explodeOnKilled>True</explodeOnKilled>
+		  		<wickTicks>30~60</wickTicks>
+			</li>
+  	</comps>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="100mmModel1953BaseCraftableBase">
+  	<defName>Ammo_100mmModel1953_HE</defName>
+  	<label>100mm OEA F1 (HE)</label>
+  	<graphicData>
+		<texPath>Things/Projectile/100mmModel1953HE</texPath>
+		<graphicClass>Graphic_Single</graphicClass>
+		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
+		<drawSize>1.1</drawSize>
+  	</graphicData>
+  	<statBases>	  
+		<MarketValue>72.4</MarketValue>
+		<Mass>23.5</Mass>
+		<Bulk>25.57</Bulk>
+  	</statBases>
+  	<ammoClass>GrenadeHE</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_100mmModel1953_HE</detonateProjectile>
+</ThingDef>
+
+<!-- ================== Projectiles ================== -->
+
+<ThingDef Name="Base100mmModel1953Shell" ParentName="BaseBullet" Abstract="true">
+  	<graphicData>
+    	<shaderType>TransparentPostLight</shaderType>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>1</speed>
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
+		</projectile>
+</ThingDef>
+
+<!-- HE Projectile -->
+
+<ThingDef ParentName="Base100mmModel1953Shell">
+  	<defName>Bullet_100mmModel1953_HE</defName>
+  	<label>100mm OEA F1 (HE)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+  	<graphicData>
+      	<texPath>Things/Projectile/LargeShell</texPath>
+				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
+				<!-- <texPath>Things/Projectile/RodShell</texPath> -->
+				<!-- <texPath>Things/Projectile/FinShell</texPath> -->
+      	<graphicClass>Graphic_Single</graphicClass>
+    	<shaderType>TransparentPostLight</shaderType>
+	    <drawSize>(1,1)</drawSize>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>174</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>139</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<!--
+			<explosionRadius>5</explosionRadius>
+			<flyOverhead>true</flyOverhead>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<gravityFactor>5</gravityFactor>
+			for artillery -->
+			<explosionRadius>2.5</explosionRadius>
+			<soundExplode>Small_Pop</soundExplode>
+			<!--
+			<secondaryDamage>
+        <li>
+          <def>Bomb_Secondary</def>
+          <amount></amount>
+        </li>
+	    </secondaryDamage>
+	  	-->
+  	</projectile>
+  	<comps>
+  	<!-- 
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>208</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1.5</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+				<ai_IsIncendiary>true</ai_IsIncendiary>
+			</li>
+		for HEAT -->
+			<li Class="CombatExtended.CompProperties_Fragments">
+		  	<fragments>
+				<Fragment_Large>40</Fragment_Large>
+				<Fragment_Small>80</Fragment_Small>
+		  	</fragments>
+			</li> <!-- delete if no fragments -->
+  	</comps>
+</ThingDef>
+
+<!-- ==================== Recipes ========================== -->
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_100mmModel1953_HE</defName>
+  	<label>make 100mm OEA F1 HE x10</label>
+  	<description>100mm OEA F1 HE ammunitions for 100mm/55 gun</description>
+  	<jobString>Making 100mm OEA F1 HE cannon shells.</jobString>
+  	<workAmount>4130</workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>235</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>ComponentIndustrial</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>2</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>FSX</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>21</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+		  	<li>FSX</li>
+				<li>ComponentIndustrial</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_100mmModel1953_HE>10</Ammo_100mmModel1953_HE>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+</Defs>

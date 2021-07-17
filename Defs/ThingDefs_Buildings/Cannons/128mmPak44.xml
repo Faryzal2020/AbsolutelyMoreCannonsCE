@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 128mmPak44 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>128mmPak44_Turret</defName>
+    <label>Pak 44</label>
+    <description>Gun: 12.8 cm L55</description>
+    <graphicData>
+        <texPath>Things/Building/M128mmPak44</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(10,10)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+    </comps>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(4,4)</size> 
+    <costStuffCount>400</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>5</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>780</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_128mmPak44_Weapon</turretGunDef>
+	    <turretTopDrawSize>14</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>15</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_128mmPak44</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M128mmPak44_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+    <!-- delete if not minifiable -->
+    <thingCategories>
+      <li>BuildingsSecurity</li>
+    </thingCategories>
+    <minifiedDef>MinifiedThing</minifiedDef>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_128mmPak44_Weapon</defName>
+    <label>12.8 cm L55</label>
+    <description>Ammo: 128mmPAK44</description>
+    <graphicData>
+      <texPath>Things/Building/M128mmPak44_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount></recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_128mmPAK44_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>0</minRange>
+        <range>110</range>
+        <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_Pak44</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>55</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>1</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_128mmPAK44_Shells</ammoSet>
+      </li>
+      <!--
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>-->
+    </comps>
+  </ThingDef>
+  
+</Defs>

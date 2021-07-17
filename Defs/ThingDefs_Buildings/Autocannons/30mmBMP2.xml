@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 30mmBMP2 -->
+  <ThingDef ParentName="AMCTurretMannedBase">
+    <defName>30mmBMP2_Turret</defName>
+    <label>BMP-2</label>
+    <description>Gun: 2A42 Shipunov</description>
+    <graphicData>
+        <texPath>Things/Building/M30mmBMP2</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(13,13)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>300</costStuffCount>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>2</Plasteel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+    </costList>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_30mmBMP2_Weapon</turretGunDef>
+	    <turretTopDrawSize>13</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>1</turretBurstCooldownTime>
+    </building>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_30mmBMP2</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M30mmBMP2_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_30mmBMP2_Weapon</defName>
+    <label>2A42 Shipunov</label>
+    <description>Ammo: 30x165mm</description>
+    <graphicData>
+      <texPath>Things/Building/M30mmBMP2_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>2</SightsEfficiency>
+      <ShotSpread>0.04</ShotSpread>
+      <SwayFactor>0.5</SwayFactor>
+      <RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_30x165mm_HEI</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <range>70</range>
+        <ticksBetweenBurstShots>7</ticksBetweenBurstShots>
+        <burstShotCount>8</burstShotCount>
+        <soundCast>Sound_BMP2</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>30</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>500</magazineSize>
+        <reloadTime>5</reloadTime>
+        <ammoSet>AmmoSet_30x165mm_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aimedBurstShotCount>4</aimedBurstShotCount>
+        <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
+        <!--<noSingleShot>true</noSingleShot>-->
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

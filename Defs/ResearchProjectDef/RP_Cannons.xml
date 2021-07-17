@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <ResearchProjectDef>
-    <defName>6PdrCannon</defName>
-    <label>6Pdr Cannon</label>
-      <description>Uses the 57mm Shot MK-8T AP shell. 3m Min Range, 70m Max Range. 4 Seconds Reload.</description>
+    <defName>Research_57mmDeacon</defName>
+    <label>AEC Deacon</label>
+      <description>Allows you to build AEC Deacon Turret</description> 
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
@@ -14,52 +14,52 @@
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>75mmPak40</defName>
-    <label>75mm Pak 40</label>
-    <description>Uses the 75mm PzGr 39 Shell. 5 seconds reload. 3m Min Range, 90m Max Range.</description>
+    <defName>Research_75mmPak40</defName>
+    <label>Pak 40</label>
+    <description>Allows you to build Pak 40 Field Gun</description> 
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>6PdrCannon</li>
+      <li>Research_57mmDeacon</li>
     </prerequisites>
     <researchViewX>2</researchViewX>
     <researchViewY>1</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>FlakCannon</defName>
-    <label>88mm Flak 41</label>
-    <description>Uses the 88mm PzGr 39 Shell. 8 seconds reload. 3m Min Range, 100m Max Range.</description>
+    <defName>Research_88mmFlak41</defName>
+    <label>Flak 41</label>
+    <description>Allows you to build Flak 41 Field Gun</description> 
     <baseCost>700</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>75mmPak40</li>
+      <li>Research_75mmPak40</li>
     </prerequisites>
     <researchViewX>3</researchViewX>
     <researchViewY>1</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>BS3</defName>
-    <label>100mm M1944 BS-3</label>
-    <description>Uses the BR-412D shell. 3m Min range, 100m Max range. 10 seconds reload.</description>
+    <defName>Research_100mmBS3</defName>
+    <label>M1944 BS-3</label>
+    <description>Allows you to build M1944 BS-3 Field Gun</description> 
     <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>FlakCannon</li>
+      <li>Research_88mmFlak41</li>
     </prerequisites>
     <researchViewX>4</researchViewX>
     <researchViewY>1</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>Pak44</defName>
-    <label>128mm Pak 44</label>
-    <description>Uses 128mm PzGr shell. 3m Min range, 110m Max range. 15 seconds reload.</description>
+    <defName>Research_128mmPak44</defName>
+    <label>Pak 44</label>
+    <description>Allows you to build Pak 44 Field Gun</description> 
     <baseCost>2000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>BS3</li>
+      <li>Research_100mmBS3</li>
     </prerequisites>
     <researchViewX>5</researchViewX>
     <researchViewY>1</researchViewY>
@@ -67,52 +67,52 @@
   </ResearchProjectDef>
 
   <ResearchProjectDef>
-    <defName>M26</defName>
-    <label>90mm M26</label>
-    <description>Uses 90mm M82 shell. 4m Min range, 90m Max range. 8 seconds reload. Has internal ammo capacity of 70 rounds.</description>
+    <defName>Research_90mmM26</defName>
+    <label>M26</label>
+    <description>Allows you to build M26 Turret</description> 
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>6PdrCannon</li>
+      <li>Research_57mmDeacon</li>
     </prerequisites>
     <researchViewX>2</researchViewX>
     <researchViewY>2</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>T54</defName>
-    <label>100mm T54</label>
-    <description>Uses 100mm BR-412D shell. 4m Min range, 95m Max range. 7.1 seconds reload. Has internal ammo capacity of 34 rounds.</description>
+    <defName>Research_100mmT54</defName>
+    <label>T-54</label>
+    <description>Allows you to build T-54 Turret</description> 
     <baseCost>800</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>M26</li>
+      <li>Research_90mmM26</li>
     </prerequisites>
     <researchViewX>3</researchViewX>
     <researchViewY>2</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>M40</defName>
-    <label>106mm M40</label>
-    <description>Uses the 106mm M344 HEAT shell. Shoots a salvo of 2 rounds. 4m Min range, 100m Max range. 5 seconds reload.</description>
+    <defName>Research_106mmM40</defName>
+    <label>R3-T106</label>
+    <description>Allows you to build R3-T106 Turret</description> 
     <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>T54</li>
+      <li>Research_100mmT54</li>
     </prerequisites>
     <researchViewX>4</researchViewX>
     <researchViewY>2</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>Leo1A5</defName>
-    <label>105mm Leopard 1A5</label>
-    <description>Uses 105mm DM23 APFSDS shell. 4m Min range, 110m Max range. 6.5 seconds reload. Has internal ammo capacity of 55 rounds. Requires 200W of power to operate.</description>
+    <defName>Research_105mmLeo1A5</defName>
+    <label>Leopard 1A5</label>
+    <description>Allows you to build Leopard 1A5 Turret</description> 
     <baseCost>3000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>M40</li>
+      <li>Research_106mmM40</li>
     </prerequisites>
     <researchViewX>5</researchViewX>
     <researchViewY>2</researchViewY>
@@ -133,14 +133,14 @@
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
-    <defName>Unmanned6PdrCannon</defName>
-    <label>Unmanned 6Pdr Cannon</label>
-    <description>Uses the 57mm Shot MK-8T AP shell. 3m Min Range, 80m Max Range. 3.5 Seconds Reload. Requires 300W of power.</description>
+    <defName>Research_U57mmDeacon</defName>
+    <label>Unmanned AEC Deacon</label>
+    <description>Allows you to build Unmanned AEC Deacon Turret</description> 
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>UnmannedLargeCannons</li>
-      <li>6PdrCannon</li>
+      <li>Research_57mmDeacon</li>
     </prerequisites>
     <researchViewX>2</researchViewX>
     <researchViewY>0</researchViewY>

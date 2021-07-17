@@ -173,7 +173,7 @@
 			<damageAmountBase>209</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundExplode>Small_Pop</soundExplode>
 			<explosionRadius>3</explosionRadius>
 			<!--
 			<flyOverhead>true</flyOverhead>
@@ -205,7 +205,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_100mmBS3_APHE</defName>
   	<label>make 100mm BR-412D APHE x10</label>
-  	<description>Turrets that uses this ammunition: 100mm BS-3, 100mm T-54</description>
+  	<description>100mm BR-412D APHE Ammunitions for 100mm BS-3 gun</description>
   	<jobString>Making 100mm BR-412D APHE cannon shells.</jobString>
   	<workAmount>4950</workAmount>
   	<ingredients>
@@ -243,7 +243,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_100mmBS3_HE</defName>
   	<label>make 100mm OF-412 HE x10</label>
-  	<description>Turrets that uses this ammunition: 100mm BS-3, 100mm T-54</description>
+  	<description>100mm OF-412 HE Ammunitions for 100mm BS-3 gun</description>
   	<jobString>Making 100mm OF-412 HE cannon shells.</jobString>
   	<workAmount>5605</workAmount>
   	<ingredients>

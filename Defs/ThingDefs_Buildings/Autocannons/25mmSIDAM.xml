@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 25mmSIDAM -->
+  <ThingDef ParentName="AMCTurretMannedBase">
+    <defName>25mmSIDAM_Turret</defName>
+    <label>SIDAM 25</label>
+    <description>Gun: 4x 25mm Oerlikon KBA</description>
+    <graphicData>
+        <texPath>Things/Building/M25mmSIDAM</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(13,13)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+    </comps>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(2,2)</size> 
+    <costStuffCount>340</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <Plasteel>5</Plasteel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <ComponentSpacer>6</ComponentSpacer>
+    </costList>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>4500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_25mmSIDAM_Weapon</turretGunDef>
+	    <turretTopDrawSize>13</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>0.5</turretBurstCooldownTime>
+    </building>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_25mmSIDAM</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M25mmSIDAM_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_25mmSIDAM_Weapon</defName>
+    <label>25mm Oerlikon KBA</label>
+    <description>Ammo: 25x137mm</description>
+    <graphicData>
+      <texPath>Things/Building/M25mmSIDAM_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>2</SightsEfficiency>
+      <ShotSpread>0.04</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>0.5</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_25x137mm_HEI</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <range>80</range>
+        <ticksBetweenBurstShots>6</ticksBetweenBurstShots>
+        <burstShotCount>10</burstShotCount>
+        <soundCast>Sound_SIDAM</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>30</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>600</magazineSize>
+        <reloadTime>5</reloadTime>
+        <ammoSet>AmmoSet_25x137mm_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aimedBurstShotCount>24</aimedBurstShotCount>
+        <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
+        <!--<noSingleShot>true</noSingleShot>-->
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>

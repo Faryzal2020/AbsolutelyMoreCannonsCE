@@ -4,7 +4,7 @@
 <!-- 90mmM26 -->
 <ThingCategoryDef>
   <defName>Ammo90mmM26Shells</defName>
-  <label>90mm M26 shells</label>
+  <label>90mm M3 shells</label>
   <parent>AMCShells</parent>
   <iconPath>Things/Projectile/90mmM26APHE</iconPath>
 </ThingCategoryDef>
@@ -12,7 +12,7 @@
 
 <CombatExtended.AmmoSetDef>
 	<defName>AmmoSet_90mmM26_Shells</defName>
-	<label>90mm M26 Ammunitions</label>
+	<label>90mm M3 Ammunitions</label>
 	<ammoTypes>
 		<Ammo_90mmM26_APHE>Bullet_90mmM26_APHE</Ammo_90mmM26_APHE>
 		<Ammo_90mmM26_HE>Bullet_90mmM26_HE</Ammo_90mmM26_HE>
@@ -22,7 +22,7 @@
 <!-- ==================== Ammo ========================== -->
 
 <ThingDef Class="CombatExtended.AmmoDef" Name="90mmM26Base" ParentName="AmmoBase" Abstract="True">
-  	<description>90mm M26 Ammunitions</description>
+  	<description>90mm M3 Ammunitions</description>
   	<statBases>
 			<MaxHitPoints>200</MaxHitPoints>
   	</statBases>
@@ -172,7 +172,7 @@
 			<damageAmountBase>126</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundExplode>Small_Pop</soundExplode>
 			<explosionRadius>2.5</explosionRadius>
 			<!--
 			<flyOverhead>true</flyOverhead>
@@ -205,7 +205,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_90mmM26_APHE</defName>
   	<label>make 90mm M82 APHE x10</label>
-  	<description>Turrets that uses this ammunition: M26</description>
+  	<description>90mm M82 APHE Ammunitions for 90mm M3 gun</description>
   	<jobString>Making 90mm M82 APHE cannon shells.</jobString>
   	<workAmount>3005</workAmount>
   	<ingredients>
@@ -243,7 +243,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_90mmM26_HE</defName>
   	<label>make 90mm M71 HE x10</label>
-  	<description>Turrets that uses this ammunition: M26</description>
+  	<description>90mm M71 HE Ammunitions for 90mm M3 gun</description>
   	<jobString>Making 90mm M71 HE cannon shells.</jobString>
   	<workAmount></workAmount>
   	<ingredients>

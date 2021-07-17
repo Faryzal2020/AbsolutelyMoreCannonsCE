@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 88mmFlak41 -->
+  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
+    <defName>88mmFlak41_Turret</defName>
+    <label>Flak 41</label>
+    <description>Gun: 8.8 cm L72</description>
+    <graphicData>
+        <texPath>Things/Building/M88mmFlak41</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(6,6)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+    </comps>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(4,4)</size> 
+    <costStuffCount>250</costStuffCount>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>3500</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_88mmFlak41_Weapon</turretGunDef>
+	    <turretTopDrawSize>13</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>8</turretBurstCooldownTime>
+    </building>
+    <researchPrerequisites Inherit = "False">
+      <li>Research_88mmFlak41</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M88mmFlak41_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+    <!-- delete if not minifiable -->
+    <thingCategories>
+      <li>BuildingsSecurity</li>
+    </thingCategories>
+    <minifiedDef>MinifiedThing</minifiedDef>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_88mmFlak41_Weapon</defName>
+    <label>8.8 cm L72</label>
+    <description>Ammo: 88mmFLAK41</description>
+    <graphicData>
+      <texPath>Things/Building/M88mmFlak41_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.9</SwayFactor>
+      <RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_88mmFLAK41_HE</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <minRange>0</minRange>
+        <range>100</range>
+        <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Sound_88mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>35</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>1</magazineSize>
+        <reloadTime>1</reloadTime>
+        <ammoSet>AmmoSet_88mmFLAK41_Shells</ammoSet>
+      </li>
+      <!--
+      <li Class="CombatExtended.CompProperties_Charges">
+        <chargeSpeeds>
+          <li>10</li>
+          <li>25</li>
+          <li>45</li>
+          <li>70</li>
+          <li>100</li>
+          <li>135</li>
+        </chargeSpeeds>
+      </li>-->
+    </comps>
+  </ThingDef>
+  
+</Defs>

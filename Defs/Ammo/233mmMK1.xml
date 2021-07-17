@@ -155,7 +155,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_233mmBLMK1_HE</defName>
   	<label>make 233mm Mk.I HE x1</label>
-  	<description>Turrets that uses this ammunition: BL 9.2-Inch Howitzer</description>
+  	<description>233mm Mk.I HE Ammunitions for 9.2-Inch Howitzer gun</description>
   	<jobString>Making 233mm Mk.I HE cannon shells.</jobString>
   	<workAmount>2690</workAmount>
   	<ingredients>

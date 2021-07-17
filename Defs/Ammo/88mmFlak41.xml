@@ -173,7 +173,7 @@
 			<damageAmountBase>132</damageAmountBase>
 			<armorPenetrationSharp>0</armorPenetrationSharp>
 			<armorPenetrationBlunt>0</armorPenetrationBlunt>
-			<soundExplode>MortarBomb_Explode</soundExplode>
+			<soundExplode>Small_Pop</soundExplode>
 			<explosionRadius>2.5</explosionRadius>
 			<!--
 			<flyOverhead>true</flyOverhead>
@@ -202,7 +202,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_88mmFLAK41_APHE</defName>
   	<label>make 88mm Pzgr. 39 APHE x10</label>
-  	<description>Turrets that uses this ammunition: 88mm Flak 41</description>
+  	<description>88mm Pzgr. 39 APHE Ammunitions for 8.8/L72 Flak 41 gun</description>
   	<jobString>Making 88mm Pzgr. 39 APHE cannon shells.</jobString>
   	<workAmount>3760</workAmount>
   	<ingredients>
@@ -240,7 +240,7 @@
 <RecipeDef ParentName="AmmoRecipeBase">
   	<defName>MakeAmmo_88mmFLAK41_HE</defName>
   	<label>make 88mm Sprgr. 43 HE x10</label>
-  	<description>Turrets that uses this ammunition: 88mm Flak 41</description>
+  	<description>88mm Sprgr. 43 HE Ammunitions for 8.8/L72 Flak 41 gun</description>
   	<jobString>Making 88mm Sprgr. 43 HE cannon shells.</jobString>
   	<workAmount>3870</workAmount>
   	<ingredients>

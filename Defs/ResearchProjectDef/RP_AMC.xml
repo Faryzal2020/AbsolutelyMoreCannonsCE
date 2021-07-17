@@ -62,7 +62,7 @@
     <baseCost>100</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>127mmNaval</li>
+      <li>Research_127mmSKC34</li>
       <li>AdvancedFabrication</li>
     </prerequisites>
     <researchViewX>8</researchViewX>
@@ -76,7 +76,7 @@
     <baseCost>100</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>127mmNaval</li>
+      <li>Research_127mmSKC34</li>
     </prerequisites>
     <researchViewX>8</researchViewX>
     <researchViewY>5</researchViewY>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+<!-- 122mm2A12 -->
+<ThingCategoryDef>
+  <defName>Ammo122mm2A12Shells</defName>
+  <label>122mm 2A12 shells</label>
+  <parent>AMCShells</parent>
+  <iconPath>Things/Projectile/122mm2A12HE</iconPath>
+</ThingCategoryDef>
+<!-- ==================== AmmoSet ========================== -->
+
+<CombatExtended.AmmoSetDef>
+	<defName>AmmoSet_122mm2A12_Shells</defName>
+	<label>122mm 2A12 Ammunitions</label>
+	<ammoTypes>
+		<Ammo_122mm2A12_HE>Bullet_122mm2A12_HE</Ammo_122mm2A12_HE>
+	</ammoTypes>
+  <isMortarAmmoSet>true</isMortarAmmoSet>	<!-- Delete if not artillery -->
+</CombatExtended.AmmoSetDef>
+
+<!-- ==================== Ammo ========================== -->
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="122mm2A12Base" ParentName="AmmoBase" Abstract="True">
+  	<description>Ammunitions for 122mm 2A12 gun</description>
+  	<statBases>
+			<MaxHitPoints>200</MaxHitPoints>
+  	</statBases>
+  	<thingCategories>
+			<li>Ammo122mm2A12Shells</li>
+  	</thingCategories>
+  	<stackLimit>25</stackLimit>
+  	<cookOffFlashScale>30</cookOffFlashScale>
+  	<cookOffSound>MortarBomb_Explode</cookOffSound>
+		<isMortarAmmo>true</isMortarAmmo>	<!-- Delete if not artillery -->
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" Name="122mm2A12BaseCraftableBase" ParentName="122mm2A12Base" Abstract="True">
+  	<tradeTags>
+		<li>CE_AutoEnableTrade</li>
+		<li>CE_AutoEnableCrafting_TableMachining</li>
+  	</tradeTags>  	
+  	<comps>
+			<li Class="CompProperties_Explosive">
+	      	<explosiveRadius>2</explosiveRadius>
+		  		<explosiveDamageType>Bomb</explosiveDamageType>
+		  		<!--<explosiveExpandPerStackcount>0.4</explosiveExpandPerStackcount>-->
+		  		<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+		  		<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		  		<explodeOnKilled>True</explodeOnKilled>
+		  		<wickTicks>30~60</wickTicks>
+			</li>
+  	</comps>
+</ThingDef>
+
+<ThingDef Class="CombatExtended.AmmoDef" ParentName="122mm2A12BaseCraftableBase">
+  	<defName>Ammo_122mm2A12_HE</defName>
+  	<label>122mm OF-462 (HE)</label>
+  	<graphicData>
+		<texPath>Things/Projectile/122mm2A12HE</texPath>
+		<graphicClass>Graphic_Single</graphicClass>
+		<!--<graphicClass>Graphic_StackCount</graphicClass>-->
+		<drawSize>1.1</drawSize>
+  	</graphicData>
+  	<statBases>	  
+		<MarketValue>136.71</MarketValue>
+		<Mass>30.06</Mass>
+		<Bulk>35.25</Bulk>
+  	</statBases>
+  	<ammoClass>GrenadeHE</ammoClass>
+  	<!-- ammo class choices:
+  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+  	<detonateProjectile>Bullet_122mm2A12_HE</detonateProjectile>
+</ThingDef>
+
+<!-- ================== Projectiles ================== -->
+
+<ThingDef Name="Base122mm2A12Shell" ParentName="BaseBullet" Abstract="true">
+  	<graphicData>
+    	<shaderType>TransparentPostLight</shaderType>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>1</speed>
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Mote_BigShell</casingMoteDefname>
+			<!--
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
+		</projectile>
+</ThingDef>
+
+<!-- HE Projectile -->
+
+<ThingDef ParentName="Base122mm2A12Shell">
+  	<defName>Bullet_122mm2A12_HE</defName>
+  	<label>122mm OF-462 (HE)</label>
+  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
+  	<graphicData>
+      	<texPath>Things/Projectile/LargeShell</texPath>
+				<!-- <texPath>Things/Projectile/Bullet_Big</texPath> -->
+				<!-- <texPath>Things/Projectile/RodShell</texPath> -->
+				<!-- <texPath>Things/Projectile/FinShell</texPath> -->
+      	<graphicClass>Graphic_Single</graphicClass>
+    	<shaderType>TransparentPostLight</shaderType>
+	    <drawSize>(1,1)</drawSize>
+  	</graphicData>
+  	<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>136</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>279</damageAmountBase>
+			<armorPenetrationSharp>0</armorPenetrationSharp>
+			<armorPenetrationBlunt>0</armorPenetrationBlunt>
+			<explosionRadius>3.5</explosionRadius>
+			<flyOverhead>true</flyOverhead>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<soundImpactAnticipate>MortarRound_PreImpact</soundImpactAnticipate>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<gravityFactor>5</gravityFactor>
+			<!--
+			<explosionRadius>5</explosionRadius>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			for HE -->
+			<!--
+			<secondaryDamage>
+        <li>
+          <def>Bomb_Secondary</def>
+          <amount></amount>
+        </li>
+	    </secondaryDamage>
+	  	-->
+  	</projectile>
+  	<comps>
+  	<!-- 
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>208</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1.5</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+				<ai_IsIncendiary>true</ai_IsIncendiary>
+			</li>
+		for HEAT -->
+			<li Class="CombatExtended.CompProperties_Fragments">
+		  	<fragments>
+				<Fragment_Large>40</Fragment_Large>
+				<Fragment_Small>80</Fragment_Small>
+		  	</fragments>
+			</li> <!-- delete if no fragments -->
+  	</comps>
+</ThingDef>
+
+<!-- ==================== Recipes ========================== -->
+
+<RecipeDef ParentName="AmmoRecipeBase">
+  	<defName>MakeAmmo_122mm2A12_HE</defName>
+  	<label>make 122mm OF-462 HE x5</label>
+  	<description>122mm OF-462 HE ammunitions for 122 mm 2A12 gun</description>
+  	<jobString>Making 122mm OF-462 HE cannon shells.</jobString>
+  	<workAmount></workAmount>
+  	<ingredients>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>Steel</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>151</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>ComponentIndustrial</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>2</count>
+	    </li>
+	    <li>
+		  	<filter>
+			    <thingDefs>
+				  	<li>FSX</li>
+			    </thingDefs>
+		  	</filter>
+		  	<count>33</count>
+	    </li>
+  	</ingredients>
+  	<fixedIngredientFilter>
+    	<thingDefs>
+		  	<li>Steel</li>
+		  	<li>FSX</li>
+				<li>ComponentIndustrial</li>
+    	</thingDefs>
+  	</fixedIngredientFilter>
+  	<products>
+    	<Ammo_122mm2A12_HE>5</Ammo_122mm2A12_HE>
+  	</products>
+  	<recipeUsers>
+	  	<li>CNCmachine</li>
+	</recipeUsers>
+</RecipeDef>
+
+</Defs>

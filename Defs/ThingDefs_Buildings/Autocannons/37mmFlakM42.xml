@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+<!-- 37mmFlakM42 -->
+  <ThingDef ParentName="AMCTurretMannedBase">
+    <defName>37mmFlakM42_Turret</defName>
+    <label>3.7cm Flak M42</label>
+    <description>Gun: 3.7cm Flak M42</description>
+    <graphicData>
+        <texPath>Things/Building/M37mmFlakM42</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(8,8)</drawSize>
+        <damageData>
+          <rect>(0.2,0.2,0.6,0.6)</rect>
+          <cornerTL>Damage/Corner</cornerTL>
+        </damageData>
+        <shadowData>
+          <offset>(0,0,0)</offset>
+          <volume>(2,1.5,2)</volume>
+        </shadowData>
+    </graphicData>
+	  <comps>
+
+    </comps>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>220</costStuffCount>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+	  <costList Inherit="False">
+      <ComponentIndustrial>3</ComponentIndustrial>  
+    </costList>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>3000</WorkToBuild>
+      <Mass>200</Mass>
+    </statBases>
+    <tradeTags>
+      <li>CE_Turret</li>
+    </tradeTags>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building Inherit="False">
+      <turretGunDef>Turret_37mmFlakM42_Weapon</turretGunDef>
+	    <turretTopDrawSize>8</turretTopDrawSize>
+      <turretBurstWarmupTime>0</turretBurstWarmupTime>
+      <turretBurstCooldownTime>0.3</turretBurstCooldownTime>
+    </building>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_37mmFlakM42</li>
+    </researchPrerequisites>
+    <uiIconPath>Things/Icons/M37mmFlakM42_MenuIcon</uiIconPath>
+    <uiIconScale>0.9</uiIconScale>
+
+  </ThingDef>
+
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_37mmFlakM42_Weapon</defName>
+    <label>3.7cm Flak M42</label>
+    <description>Ammo: 37x249mm</description>
+    <graphicData>
+      <texPath>Things/Building/M37mmFlakM42_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <weaponTags>
+      <li>TurretGun</li>
+    </weaponTags>
+
+    <statBases>
+      <SightsEfficiency>1.5</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.5</SwayFactor>
+      <RangedWeapon_Cooldown>0.3</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li Class="CombatExtended.VerbPropertiesCE">
+        <recoilAmount>1.5</recoilAmount>
+        <verbClass>CombatExtended.Verb_ShootCE</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_37x249mm_HEI</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <range>60</range>
+        <ticksBetweenBurstShots>14</ticksBetweenBurstShots>
+        <burstShotCount>5</burstShotCount>
+        <soundCast>Sound_37mm</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>30</muzzleFlashScale>
+        <recoilPattern>Mounted</recoilPattern>
+      </li>
+    </verbs>
+    <comps>
+      <li Class="CombatExtended.CompProperties_AmmoUser">
+        <magazineSize>300</magazineSize>
+        <reloadTime>5</reloadTime>
+        <ammoSet>AmmoSet_37x249mm_Shells</ammoSet>
+      </li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aimedBurstShotCount>5</aimedBurstShotCount>
+        <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
+        <!--<noSingleShot>true</noSingleShot>-->
+      </li>
+    </comps>
+  </ThingDef>
+  
+</Defs>
