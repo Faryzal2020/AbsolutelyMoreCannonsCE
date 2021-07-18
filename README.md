@@ -8,3 +8,4 @@ To do:
 - Testing all the existing turrets
 - Adding a new 75mm Howitzer
 - Adding some new unmanned turrets
+- Updating to Rimworld 1.3
