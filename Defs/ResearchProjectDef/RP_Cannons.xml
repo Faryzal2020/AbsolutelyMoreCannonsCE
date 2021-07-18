@@ -56,7 +56,7 @@
     <defName>Research_128mmPak44</defName>
     <label>Pak 44</label>
     <description>Allows you to build Pak 44 Field Gun</description> 
-    <baseCost>2000</baseCost>
+    <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_100mmBS3</li>
@@ -96,7 +96,7 @@
     <defName>Research_106mmM40</defName>
     <label>R3-T106</label>
     <description>Allows you to build R3-T106 Turret</description> 
-    <baseCost>1200</baseCost>
+    <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_100mmT54</li>
@@ -109,7 +109,7 @@
     <defName>Research_105mmLeo1A5</defName>
     <label>Leopard 1A5</label>
     <description>Allows you to build Leopard 1A5 Turret</description> 
-    <baseCost>3000</baseCost>
+    <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_106mmM40</li>

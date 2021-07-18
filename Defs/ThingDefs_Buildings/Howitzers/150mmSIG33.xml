@@ -54,9 +54,9 @@
         <li>Artillery</li>
       </buildingTags>
     </building>
-	  <!--<researchPrerequisites Inherit = "False">
-      <li>sIG33Howitzer</li>
-    </researchPrerequisites>-->
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_150mmSIG33</li>
+    </researchPrerequisites>
   <uiIconPath>Things/Icons/M150mmSIG33_MenuIcon</uiIconPath>
   <uiIconScale>0.9</uiIconScale>
   </ThingDef>

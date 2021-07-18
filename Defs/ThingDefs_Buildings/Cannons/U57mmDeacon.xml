@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-<!-- 127mmOtobredaC -->
-  <ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase | AMCArtilleryBase | AMCArtilleryAutoBase -->
-    <defName>127mmOtobredaC_Turret</defName>
-    <label>Otobreda 127/54C</label>
-    <description>Gun: 127mm/54</description>
+<!-- U57mmDeacon -->
+  <ThingDef ParentName="AMCTurretAutoBase">
+    <defName>U57mmDeacon_Turret</defName>
+    <label>Unmanned AEC Deacon</label>
+    <description>Gun: OQF 6-pounder 7 cwt</description>
     <graphicData>
-        <texPath>Things/Building/M127mmOtobredaC</texPath>
+        <texPath>Things/Building/U57mmDeacon</texPath>
         <graphicClass>Graphic_Single</graphicClass>
-        <drawSize>(16,16)</drawSize>
+        <drawSize>(11,11)</drawSize>
         <damageData>
           <rect>(0.2,0.2,0.6,0.6)</rect>
           <cornerTL>Damage/Corner</cornerTL>
@@ -18,25 +18,24 @@
           <volume>(2,1.5,2)</volume>
         </shadowData>
     </graphicData>
-	  <comps>
+    <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>700</basePowerConsumption>
+        <basePowerConsumption>300</basePowerConsumption>
       </li>
     </comps>
-    <interactionCellOffset>(0,0,-4)</interactionCellOffset>
-    <size>(6,6)</size> 
-    <costStuffCount>1000</costStuffCount>
-    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <size>(3,3)</size> 
+    <costStuffCount>400</costStuffCount>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 	  <costList Inherit="False">
-      <Plasteel>40</Plasteel>
-      <ComponentIndustrial>25</ComponentIndustrial>
-      <ComponentSpacer>5</ComponentSpacer> 
+      <ComponentIndustrial>4</ComponentIndustrial>  
+      <FCSComputer>1</FCSComputer> 
     </costList>
     <statBases>
-      <MaxHitPoints>6000</MaxHitPoints>
+      <MaxHitPoints>1500</MaxHitPoints>
       <Flammability>0.7</Flammability>
-      <WorkToBuild>6000</WorkToBuild>
+      <WorkToBuild>4000</WorkToBuild>
       <Mass>200</Mass>
     </statBases>
     <tradeTags>
@@ -44,24 +43,25 @@
     </tradeTags>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <building Inherit="False">
-      <turretGunDef>Turret_127mmOtobredaC_Weapon</turretGunDef>
-	    <turretTopDrawSize>17</turretTopDrawSize>
+      <turretGunDef>Turret_U57mmDeacon_Weapon</turretGunDef>
+	    <turretTopDrawSize>11</turretTopDrawSize>
       <turretBurstWarmupTime>0</turretBurstWarmupTime>
-      <turretBurstCooldownTime>1.5</turretBurstCooldownTime>
+      <turretBurstCooldownTime>4</turretBurstCooldownTime>
     </building>
-    <researchPrerequisites Inherit = "False">
-      <li>Research_127mmOtobredaC</li>
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_U57mmDeacon</li>
     </researchPrerequisites>
-    <uiIconPath>Things/Icons/M127mmOtobredaC_MenuIcon</uiIconPath>
+    <uiIconPath>Things/Icons/U57mmDeacon_MenuIcon</uiIconPath>
     <uiIconScale>0.9</uiIconScale>
+
   </ThingDef>
 
   <ThingDef ParentName="BaseTurretGun">
-    <defName>Turret_127mmOtobredaC_Weapon</defName>
-    <label>127mm/54</label>
-    <description>Ammo: 127mmMark16</description>
+    <defName>Turret_U57mmDeacon_Weapon</defName>
+    <label>OQF 6-pounder 7 cwt</label>
+    <description>Ammo: 57mmOQF</description>
     <graphicData>
-      <texPath>Things/Building/M127mmOtobredaC_Top</texPath>
+      <texPath>Things/Building/M57mmDeacon_Top</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <weaponTags>
@@ -69,33 +69,32 @@
     </weaponTags>
 
     <statBases>
-      <SightsEfficiency>4</SightsEfficiency>
+      <SightsEfficiency>2</SightsEfficiency>
       <ShotSpread>0.01</ShotSpread>
-      <SwayFactor>0.2</SwayFactor>
-      <RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+      <SwayFactor>0.5</SwayFactor>
+      <RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
     </statBases>
     <verbs>
       <li Class="CombatExtended.VerbPropertiesCE">
         <recoilAmount>1</recoilAmount>
         <verbClass>CombatExtended.Verb_ShootCE</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Bullet_127mmMark16_HE</defaultProjectile>
+        <defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
         <warmupTime>1</warmupTime>
-        <minRange>10</minRange>
-        <range>200</range>
+        <range>70</range>
         <ticksBetweenBurstShots>0</ticksBetweenBurstShots>
         <burstShotCount>1</burstShotCount>
-        <soundCast>Sound_Single127mm</soundCast>
+        <soundCast>Sound_6Pdr</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
-        <muzzleFlashScale>100</muzzleFlashScale>
+        <muzzleFlashScale>20</muzzleFlashScale>
         <recoilPattern>Mounted</recoilPattern>
       </li>
     </verbs>
     <comps>
       <li Class="CombatExtended.CompProperties_AmmoUser">
-        <magazineSize>85</magazineSize>
+        <magazineSize>24</magazineSize>
         <reloadTime>1</reloadTime>
-        <ammoSet>AmmoSet_127mmMark16_Shells</ammoSet>
+        <ammoSet>AmmoSet_57mmOQF_Shells</ammoSet>
       </li>
     </comps>
   </ThingDef>

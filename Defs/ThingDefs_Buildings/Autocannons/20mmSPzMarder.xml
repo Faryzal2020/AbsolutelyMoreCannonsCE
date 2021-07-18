@@ -70,10 +70,10 @@
     </weaponTags>
 
     <statBases>
-      <SightsEfficiency>2.5</SightsEfficiency>
-      <ShotSpread>0.01</ShotSpread>
-      <SwayFactor>0.4</SwayFactor>
-      <RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+      <SightsEfficiency>3</SightsEfficiency>
+      <ShotSpread>0.001</ShotSpread>
+      <SwayFactor>0.1</SwayFactor>
+      <RangedWeapon_Cooldown>0.5</RangedWeapon_Cooldown>
     </statBases>
     <verbs>
       <li Class="CombatExtended.VerbPropertiesCE">
@@ -84,7 +84,7 @@
         <warmupTime>0.5</warmupTime>
         <range>70</range>
         <ticksBetweenBurstShots>5</ticksBetweenBurstShots>
-        <burstShotCount>15</burstShotCount>
+        <burstShotCount>10</burstShotCount>
         <soundCast>Sound_RH202</soundCast>
         <soundCastTail>GunTail_Heavy</soundCastTail>
         <muzzleFlashScale>25</muzzleFlashScale>

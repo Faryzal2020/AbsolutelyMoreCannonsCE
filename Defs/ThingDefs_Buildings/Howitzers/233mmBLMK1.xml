@@ -47,9 +47,9 @@
         <li>Artillery</li>
       </buildingTags>
     </building>
-	  <!--<researchPrerequisites Inherit = "False">
-      <li>mark1howitzer</li>
-    </researchPrerequisites>-->
+	  <researchPrerequisites Inherit = "False">
+      <li>Research_233mmBLMK1</li>
+    </researchPrerequisites>
   <uiIconPath>Things/Icons/M233mmBLMK1_MenuIcon</uiIconPath>
   <uiIconScale>0.9</uiIconScale>
   </ThingDef>

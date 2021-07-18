@@ -64,9 +64,9 @@
     </weaponTags>
 
     <statBases>
-      <SightsEfficiency>1</SightsEfficiency>
-      <ShotSpread>0.04</ShotSpread>
-      <SwayFactor>0.9</SwayFactor>
+      <SightsEfficiency>3</SightsEfficiency>
+      <ShotSpread>0.01</ShotSpread>
+      <SwayFactor>0.5</SwayFactor>
       <RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
     </statBases>
     <verbs>

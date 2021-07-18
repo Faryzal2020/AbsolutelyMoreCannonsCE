@@ -21,7 +21,6 @@
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_150mmSIG33</li>
-      <li>Fabrication</li>
     </prerequisites>
     <researchViewX>3</researchViewX>
     <researchViewY>4.5</researchViewY>
@@ -35,7 +34,6 @@
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_233mmBLMK1</li>
-      <li>AdvancedFabrication</li>
     </prerequisites>
     <researchViewX>4</researchViewX>
     <researchViewY>4.5</researchViewY>
@@ -85,11 +83,11 @@
     <defName>Research_155mmGCT</defName>
     <label>155mm GCT AUF1</label>
       <description>Allows you to build 155mm GCT AUF1 Howitzer Turret</description> 
-    <baseCost>3000</baseCost>
+    <baseCost>2000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_152mmMsta</li>
-      <li>AdvancedFabrication</li>
+      <li>Fabrication</li>
     </prerequisites>
     <researchViewX>5</researchViewX>
     <researchViewY>5.5</researchViewY>

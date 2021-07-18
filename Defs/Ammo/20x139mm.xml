@@ -125,7 +125,6 @@
 <ThingDef ParentName="Base20x139mmShell">
   	<defName>Bullet_20x139mm_APDS</defName>
   	<label>20x139mm (APDS)</label>
-  	<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass> <!-- Delete if not HE -->
   	<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<speed>220</speed>
 			<damageDef>Bullet</damageDef>

@@ -31,7 +31,7 @@
     <defName>Research_127mmTypeC</defName>
     <label>12.7cm 3rd Year Type C</label>
     <description>Allows you to build 12.7cm 3rd Year Type C Naval Turret</description> 
-    <baseCost>2000</baseCost>
+    <baseCost>1500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>HeavyNavalGuns</li>
@@ -44,7 +44,7 @@
     <defName>Research_150mmKC36T</defName>
     <label>15cm Tbts KC/36T</label>
       <description>Allows you to build 15cm Tbts KC/36T Naval Turret</description> 
-    <baseCost>2000</baseCost>
+    <baseCost>1500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>HeavyNavalGuns</li>
@@ -99,7 +99,7 @@
     <defName>Research_100mmModel1953</defName>
     <label>10cm/55 Model 1953</label>
     <description>Allows you to build 10cm/55 Model 1953 Naval Turret</description> 
-    <baseCost>2000</baseCost>
+    <baseCost>1500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_127mmOtobredaC</li>
@@ -112,7 +112,7 @@
     <defName>Research_120mmTAK120</defName>
     <label>12cm/46 TAK120</label>
     <description>Allows you to build 12cm/46 TAK120 Naval Turret</description> 
-    <baseCost>3000</baseCost>
+    <baseCost>2000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_100mmModel1953</li>
@@ -125,7 +125,7 @@
     <defName>Research_76mmOtomelaraC</defName>
     <label>OTO Melara 76/62C</label>
       <description>Allows you to build OTO Melara 76/62C Naval Turret</description> 
-    <baseCost>3000</baseCost>
+    <baseCost>2500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_100mmModel1953</li>

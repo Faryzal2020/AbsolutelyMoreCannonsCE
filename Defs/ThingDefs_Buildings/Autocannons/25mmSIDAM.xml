@@ -98,7 +98,7 @@
         <ammoSet>AmmoSet_25x137mm_Shells</ammoSet>
       </li>
       <li Class="CombatExtended.CompProperties_FireModes">
-        <aimedBurstShotCount>24</aimedBurstShotCount>
+        <aimedBurstShotCount>6</aimedBurstShotCount>
         <!--<aiUseBurstMode>FALSE</aiUseBurstMode>-->
         <!--<noSingleShot>true</noSingleShot>-->
       </li>

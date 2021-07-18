@@ -44,7 +44,7 @@
     <defName>Research_30mmKugelblitz</defName>
     <label>30mm FlakPz IV Kugelblitz</label>
     <description>Allows you to build FlakPz IV Kugelblitz</description>
-    <baseCost>1200</baseCost>
+    <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_30mmFV510</li>
@@ -57,7 +57,7 @@
     <defName>Research_40mmM247</defName>
     <label>40mm M247</label>
     <description>Allows you to build M247</description>
-    <baseCost>2000</baseCost>
+    <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_30mmKugelblitz</li>
@@ -99,7 +99,7 @@
     <defName>Research_30mmBMP2</defName>
     <label>30mm BMP-2</label>
     <description>Allows you to build BMP-2</description>
-    <baseCost>1200</baseCost>
+    <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_20mmSPzMarder</li>
@@ -112,7 +112,7 @@
     <defName>Research_25mmSIDAM</defName>
     <label>25mm SIDAM 25</label>
     <description>Allows you to build SIDAM 25</description>
-    <baseCost>2000</baseCost>
+    <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>Research_30mmBMP2</li>
