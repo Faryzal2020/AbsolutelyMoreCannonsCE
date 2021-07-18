@@ -1,4 +1,4 @@
-# AbsolutelyMoreCannonsCE
+# AbsolutelyMoreCannonsCE (Beta Testing)
 CE Version of Absolutely More Cannons mod for Rimworld 1.2
 
 **Turret and Ammo Stats spreadsheet**
