@@ -124,8 +124,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(3.8,0.3)</li>
-								<li>(3.8,-0.3)</li>
+								<li>(3.6,0.3)</li>
+								<li>(3.6,-0.3)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>

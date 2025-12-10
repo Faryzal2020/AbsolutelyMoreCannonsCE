@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_25mmSIDAM_Base</defName>
 		<label>SIDAM 25</label>
-    <description>Use ammo set:25x137mm M792 \nThe Italian SIDAM 25 mounts quad 25mm Oerlikon KBA cannons for mobile anti-air defense. It holds a 600-round magazine and is incapable of settlement bombardment. Power: 200, HP: 585, Cooldown: 0.1s, Range: 3-80, Rate of Fire: 600 rounds per minute, Aimed Burst: 12, Reload Time: 5s.</description>
+    	<description>Use ammo set:25x137mm M792 \nThe Italian SIDAM 25 mounts quad 25mm Oerlikon KBA cannons for mobile anti-air defense. It holds a 600-round magazine and is incapable of settlement bombardment. Power: 200, HP: 585, Cooldown: 0.1s, Range: 3-80, Rate of Fire: 600 rounds per minute, Aimed Burst: 12, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M25mmSIDAM</texPath>
@@ -26,12 +26,12 @@
 		<costList>
 			<Steel>340</Steel>
 			<Plasteel>5</Plasteel>
-      <ComponentIndustrial>6</ComponentIndustrial>
-      <ComponentSpacer>6</ComponentSpacer>
+        <ComponentIndustrial>6</ComponentIndustrial>
+        <ComponentSpacer>6</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_25mmSIDAM_Weapon</turretGunDef>
-      <turretTopDrawSize>16</turretTopDrawSize>
+      		<turretTopDrawSize>16</turretTopDrawSize>
 			<turretBurstCooldownTime>0.1</turretBurstCooldownTime>
 		</building>
 		<comps>
@@ -39,17 +39,59 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>2,2</size>
+    	<size>2,2</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_25mmSIDAM</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelGraphic>
+			<texPath>Things/Building/M25mmSIDAM_Barrel</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>16.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>2</barrelAmount>
+			<barrelSpacing>0.5</barrelSpacing>
+			<sequentialFiring>true</sequentialFiring>
+			<recoilAnimation>
+				<maxDistance>0.6</maxDistance>
+				<recoilDuration>20</recoilDuration>
+				<returnDuration>15</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>15</flashSize>
+				<flashBrightness>2.5</flashBrightness>
+				<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>      <!-- Full brightness at start -->
+					<li>(0.3, 0.9)</li>  <!-- Still bright -->
+					<li>(0.6, 0.6)</li>  <!-- Fading -->
+					<li>(1, 0)</li>      <!-- Faded out -->
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">

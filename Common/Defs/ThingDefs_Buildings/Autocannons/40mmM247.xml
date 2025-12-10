@@ -65,21 +65,21 @@
         <barrelSpacing>0.5</barrelSpacing>
 		<sequentialFiring>true</sequentialFiring>
         <recoilAnimation>
-          <maxDistance>0.8</maxDistance>
+          <maxDistance>0.6</maxDistance>
           <recoilDuration>20</recoilDuration>
-          <returnDuration>20</returnDuration>
+          <returnDuration>15</returnDuration>
           <useRecoilCurve>true</useRecoilCurve>
           <useReturnCurve>false</useReturnCurve>
           <affectsRotation>false</affectsRotation>
         </recoilAnimation>
         <firingAnimation>
           <enabled>true</enabled>
-          <durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+          <durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 		  <drawFlash>true</drawFlash>
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 		  <flashSize>15</flashSize>
 		  <flashBrightness>2.5</flashBrightness>
-		  <flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+		  <flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>
 			<points>
