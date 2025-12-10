@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo75mmLEIG18Shells</defName>
+		<label>7.5cm L11.2 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/75mmLEIG18HE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_75mmLEIG18_Shells</defName>
+		<label>7.5cm L11.2 ammunitions</label>
+		<ammoTypes>
+			<Ammo_75mmLEIG18_HE>Bullet_75mmLEIG18_HE</Ammo_75mmLEIG18_HE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_75mmLEIG18_indirect_Shells</defName>
+		<label>7.5cm L11.2 ammunitions</label>
+		<ammoTypes>
+			<Ammo_75mmLEIG18_HE>Bullet_75mmLEIG18_indirect_HE</Ammo_75mmLEIG18_HE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo75mmLEIG18Base" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 7.5cm L11.2 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo75mmLEIG18Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo75mmLEIG18Base">
+		<defName>Ammo_75mmLEIG18_HE</defName>
+		<label>75mm Jgr. 18 (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/75mmLEIG18HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>130.08</MarketValue>
+			<Mass>6.5</Mass>
+			<Bulk>5.39</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_75mmLEIG18_HE</detonateProjectile>
+	</ThingDef>
+
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base75mmLEIG18Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base75mmLEIG18Bullet">
+		<defName>Bullet_75mmLEIG18_HE</defName>
+		<label>75mm Jgr. 18 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>56</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>328</damageAmountBase>
+			<explosionRadius>4</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>6</Fragment_Large>
+					<Fragment_Small>3</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base75mmLEIG18IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.10</tilesPerTick>
+				<range>6</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base75mmLEIG18IndirectBullet">
+		<defName>Bullet_75mmLEIG18_indirect_HE</defName>
+		<label>75mm Jgr. 18 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>328</damageAmountBase>
+			<explosionRadius>4</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>0.26</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>6</Fragment_Large>
+					<Fragment_Small>3</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_75mmLEIG18_HE</defName>
+		<label>make 75mm Jgr. 18 (HE) ammo x10</label>
+		<description>Craft 10 75mm Jgr. 18 (HE).</description>
+		<jobString>Making 75mm Jgr. 18 (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>130</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>105</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_75mmLEIG18_HE>10</Ammo_75mmLEIG18_HE>
+		</products>
+		<workAmount>56200</workAmount>
+	</RecipeDef>
+
+</Defs>

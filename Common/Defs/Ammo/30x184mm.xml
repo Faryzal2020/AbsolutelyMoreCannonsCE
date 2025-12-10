@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo30x184mmShells</defName>
+		<label>MK103 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/30x184mm/HEI/HEI_b</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_30x184mm_Shells</defName>
+		<label>MK103 ammunitions</label>
+		<ammoTypes>
+			<Ammo_30x184mm_HE>Bullet_30x184mm_HE</Ammo_30x184mm_HE>
+			<Ammo_30x184mm_AP>Bullet_30x184mm_AP</Ammo_30x184mm_AP>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo30x184mmBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for MK103 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo30x184mmShells</li>
+		</thingCategories>
+		<stackLimit>150</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo30x184mmBase">
+		<defName>Ammo_30x184mm_HE</defName>
+		<label>30x184mm M.Gr. (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/30x184mm/HEI</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>6.65</MarketValue>
+			<Mass>0.8</Mass>
+			<Bulk>1.14</Bulk>
+		</statBases>
+		<ammoClass>GrenadeIncendiary</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_30x184mm_HE</cookOffProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo30x184mmBase">
+		<defName>Ammo_30x184mm_AP</defName>
+		<label>30x184mm Pz.Gr. H (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/30x184mm/AP</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.92</MarketValue>
+			<Mass>0.825</Mass>
+			<Bulk>1.14</Bulk>
+		</statBases>
+		<ammoClass>ArmorPiercing</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_30x184mm_AP</cookOffProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base30x184mmBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_RifleAmmoCasings_HighCal</casingMoteDefname>
+			<casingFilthDefname>Filth_RifleAmmoCasings_HighCal</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base30x184mmBullet">
+		<defName>Bullet_30x184mm_HE</defName>
+		<label>30x184mm M.Gr. shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>ThumpCannon_Impact</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
+			<speed>159</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>15</damageAmountBase>
+			<explosionRadius>0.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>1</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base30x184mmBullet">
+		<defName>Bullet_30x184mm_AP</defName>
+		<label>30x184mm Pz.Gr. H shell (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>170</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>74</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>95</armorPenetrationSharp>
+			<armorPenetrationBlunt>3136.78</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_30x184mm_HE</defName>
+		<label>make 30x184mm M.Gr. (HE) ammo x50</label>
+		<description>Craft 50 30x184mm M.Gr. (HE).</description>
+		<jobString>Making 30x184mm M.Gr. (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>82</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>3</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>5</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_30x184mm_HE>50</Ammo_30x184mm_HE>
+		</products>
+		<workAmount>12000</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_30x184mm_AP</defName>
+		<label>make 30x184mm Pz.Gr. H (AP) ammo x50</label>
+		<description>Craft 50 30x184mm Pz.Gr. H (AP).</description>
+		<jobString>Making 30x184mm Pz.Gr. H (AP).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>84</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_30x184mm_AP>50</Ammo_30x184mm_AP>
+		</products>
+		<workAmount>10080</workAmount>
+	</RecipeDef>
+
+</Defs>

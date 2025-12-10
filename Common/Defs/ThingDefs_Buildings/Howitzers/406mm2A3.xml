@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 2A3 Kondensator 2P ===============-->
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_406mm2A3_indirect_Base</defName>
+		<label>2A3 Kondensator 2P (indirect)</label>
+    <description>The 2A3 Kondensator 2P was a Soviet experimental nuclear-capable self-propelled howitzer developed during the Cold War. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 700, HP: 5145, Cooldown: 80.0s, Range: 25600, Shelling Range: 24. Ammunition: 406mm W23 (HE, Damage: 3162, Explosion Radius: 50, Secondary Damage: 50, Secondary Damage Type: Thermobaric, Secondary Damage Radius: 100).</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M406mm2A3</texPath>
+			<drawSize>(27,27)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M406mm2A3_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>5145</MaxHitPoints>
+			<WorkToBuild>80000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1700</Steel>
+      <ComponentIndustrial>15</ComponentIndustrial>
+			<Plasteel>60</Plasteel>
+      <ComponentSpacer>4</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_406mm2A3_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>0</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>28</turretTopDrawSize>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>600</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(7,7)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_406mm2A3</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-4)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_406mm2A3_indirect_Weapon</defName>
+		<label>2A3 Kondensator 2P Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M406mm2A3_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 2A3 Kondensator 2P was a Soviet experimental nuclear-capable self-propelled howitzer developed during the Cold War. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 700, HP: 6500, Cooldown: 80.0s, Range: 25600, Shelling Range: 24. Ammunition: 406mm W23 (HE, Damage: 3162, Explosion Radius: 28.5).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>2</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_406mm2A3_indirect_Nuclear</defaultProjectile>
+				<warmupTime>10</warmupTime>
+        <minRange>100</minRange>
+				<range>25600</range>
+				<soundCast>Sound_406mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>200</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>70</li>
+					<li>90</li>
+					<li>120</li>
+					<li>160</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>60</reloadTime>
+				<ammoSet>AmmoSet_406mm2A3_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

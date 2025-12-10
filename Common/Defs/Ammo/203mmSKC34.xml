@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo203mmSKC34Shells</defName>
+		<label>203mm/60 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/203mmSKC34HE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_203mmSKC34_Shells</defName>
+		<label>203mm/60 ammunitions</label>
+		<ammoTypes>
+			<Ammo_203mmSKC34_HE>Bullet_203mmSKC34_HE</Ammo_203mmSKC34_HE>
+			<Ammo_203mmSKC34_APHE>Bullet_203mmSKC34_APHE</Ammo_203mmSKC34_APHE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_203mmSKC34_indirect_Shells</defName>
+		<label>203mm/60 ammunitions</label>
+		<ammoTypes>
+			<Ammo_203mmSKC34_HE>Bullet_203mmSKC34_indirect_HE</Ammo_203mmSKC34_HE>
+			<Ammo_203mmSKC34_APHE>Bullet_203mmSKC34_indirect_APHE</Ammo_203mmSKC34_APHE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo203mmSKC34Base" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 203mm/60 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo203mmSKC34Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo203mmSKC34Base">
+		<defName>Ammo_203mmSKC34_HE</defName>
+		<label>20.3cm Spgr. L/4,7 Kz (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/203mmSKC34HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>737.58</MarketValue>
+			<Mass>122</Mass>
+			<Bulk>92.54</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_203mmSKC34_HE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo203mmSKC34Base">
+		<defName>Ammo_203mmSKC34_APHE</defName>
+		<label>20.3 cm Pzgr. L/4,4 (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/203mmSKC34APHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>855.4</MarketValue>
+			<Mass>122</Mass>
+			<Bulk>87.39</Bulk>
+		</statBases>
+		<ammoClass>ExplosiveAP</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_203mmSKC34_APHE</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base203mmSKC34Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base203mmSKC34Bullet">
+		<defName>Bullet_203mmSKC34_HE</defName>
+		<label>20.3cm Spgr. L/4,7 Kz shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>168</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>490</damageAmountBase>
+			<explosionRadius>5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>40</Fragment_Large>
+					<Fragment_Small>6</Fragment_Small>
+				</fragments>
+				<fragAngleRange>0~10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base203mmSKC34Bullet">
+		<defName>Bullet_203mmSKC34_APHE</defName>
+		<label>20.3 cm Pzgr. L/4,4 shell (APHE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>168</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>1704</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>290</armorPenetrationSharp>
+			<armorPenetrationBlunt>1043862.5</armorPenetrationBlunt>
+			<secondaryDamage>
+		        <li>
+		          <def>Bomb_Secondary</def>
+		          <amount>2555</amount>
+		        </li>
+		    </secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base203mmSKC34IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>36</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base203mmSKC34IndirectBullet">
+		<defName>Bullet_203mmSKC34_indirect_HE</defName>
+		<label>20.3cm Spgr. L/4,7 Kz shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>490</damageAmountBase>
+			<explosionRadius>5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>0.41</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>40</Fragment_Large>
+					<Fragment_Small>6</Fragment_Small>
+				</fragments>
+				<fragAngleRange>0~10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base203mmSKC34IndirectBullet">
+		<defName>Bullet_203mmSKC34_indirect_APHE</defName>
+		<label>20.3 cm Pzgr. L/4,4 shell (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>1704</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_203mmSKC34_HE</defName>
+		<label>make 20.3cm Spgr. L/4,7 Kz (HE) ammo x1</label>
+		<description>Craft 1 20.3cm Spgr. L/4,7 Kz (HE).</description>
+		<jobString>Making 20.3cm Spgr. L/4,7 Kz (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>244</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>17</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_203mmSKC34_HE>1</Ammo_203mmSKC34_HE>
+		</products>
+		<workAmount>31800</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_203mmSKC34_APHE</defName>
+		<label>make 20.3 cm Pzgr. L/4,4 (APHE) ammo x1</label>
+		<description>Craft 1 20.3 cm Pzgr. L/4,4 (APHE).</description>
+		<jobString>Making 20.3 cm Pzgr. L/4,4 (APHE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>244</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>34</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_203mmSKC34_APHE>1</Ammo_203mmSKC34_APHE>
+		</products>
+		<workAmount>38000</workAmount>
+	</RecipeDef>
+
+</Defs>

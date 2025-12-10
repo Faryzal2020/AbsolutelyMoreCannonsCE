@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo76mmOtomelaraCShells</defName>
+		<label>76mm/62 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/76mmOtomelaraCHE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_76mmOtomelaraC_Shells</defName>
+		<label>76mm/62 ammunitions</label>
+		<ammoTypes>
+			<Ammo_76mmOtomelaraC_HE>Bullet_76mmOtomelaraC_HE</Ammo_76mmOtomelaraC_HE>
+			<Ammo_76mmOtomelaraC_SAP>Bullet_76mmOtomelaraC_SAP</Ammo_76mmOtomelaraC_SAP>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_76mmOtomelaraC_indirect_Shells</defName>
+		<label>76mm/62 ammunitions</label>
+		<ammoTypes>
+			<Ammo_76mmOtomelaraC_HE>Bullet_76mmOtomelaraC_indirect_HE</Ammo_76mmOtomelaraC_HE>
+			<Ammo_76mmOtomelaraC_SAP>Bullet_76mmOtomelaraC_indirect_SAP</Ammo_76mmOtomelaraC_SAP>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo76mmOtomelaraCBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 76mm/62 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo76mmOtomelaraCShells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo76mmOtomelaraCBase">
+		<defName>Ammo_76mmOtomelaraC_HE</defName>
+		<label>76x636mm (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/76mmOtomelaraCHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>84.34</MarketValue>
+			<Mass>12.34</Mass>
+			<Bulk>12.32</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_76mmOtomelaraC_HE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo76mmOtomelaraCBase">
+		<defName>Ammo_76mmOtomelaraC_SAP</defName>
+		<label>76x636mm (SAP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/76mmOtomelaraCSAP</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>75.72</MarketValue>
+			<Mass>12.34</Mass>
+			<Bulk>12.32</Bulk>
+		</statBases>
+		<ammoClass>ExplosiveAP</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_76mmOtomelaraC_SAP</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base76mmOtomelaraCBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCBullet">
+		<defName>Bullet_76mmOtomelaraC_HE</defName>
+		<label>76x636mm shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>168</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>132</damageAmountBase>
+			<explosionRadius>2.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>12</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+				<fragAngleRange>0~10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCBullet">
+		<defName>Bullet_76mmOtomelaraC_SAP</defName>
+		<label>76x636mm shell (SAP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>168</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>435</damageAmountBase>
+			<armorPenetrationSharp>60</armorPenetrationSharp>
+			<armorPenetrationBlunt>53818.82</armorPenetrationBlunt>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>652</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base76mmOtomelaraCIndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>18</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCIndirectBullet">
+		<defName>Bullet_76mmOtomelaraC_indirect_HE</defName>
+		<label>76x636mm shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>132</damageAmountBase>
+			<explosionRadius>2.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>0.09428571428571429</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>12</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCIndirectBullet">
+		<defName>Bullet_76mmOtomelaraC_indirect_SAP</defName>
+		<label>76x636mm shell (SAP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>435</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_76mmOtomelaraC_HE</defName>
+		<label>make 76x636mm (HE) ammo x10</label>
+		<description>Craft 10 76x636mm (HE).</description>
+		<jobString>Making 76x636mm (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>248</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>24</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_76mmOtomelaraC_HE>10</Ammo_76mmOtomelaraC_HE>
+		</products>
+		<workAmount>35600</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_76mmOtomelaraC_SAP</defName>
+		<label>make 76x636mm (SAP) ammo x10</label>
+		<description>Craft 10 76x636mm (SAP).</description>
+		<jobString>Making 76x636mm (SAP).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>248</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>22</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_76mmOtomelaraC_SAP>10</Ammo_76mmOtomelaraC_SAP>
+		</products>
+		<workAmount>33600</workAmount>
+	</RecipeDef>
+
+</Defs>

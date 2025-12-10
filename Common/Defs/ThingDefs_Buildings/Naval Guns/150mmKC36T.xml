@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 15cm Tbts KC/36T ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_150mmKC36T</defName>
+		<label>15cm Tbts KC/36T</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_150mmKC36T_Base</defName>
+		<label>15cm Tbts KC/36T</label>
+    <description>The 15cm Tbts KC/36T was an experimental German turret with an armor-piercing upgrade for anti-ship combat. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 3500, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 300 penetration.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M150mmKC36T</texPath>
+			<drawSize>(17,17)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M150mmKC36T_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>3500</MaxHitPoints>
+			<WorkToBuild>65000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1400</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      <ComponentSpacer>5</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_150mmKC36T_Weapon</turretGunDef>
+      <turretTopDrawSize>14</turretTopDrawSize>
+			<turretBurstCooldownTime>8</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_150mmKC36T</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>5,5</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_150mmKC36T</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_150mmKC36T_Weapon</defName>
+		<label>15cm Tbts KC/36T Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M150mmKC36T_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 15cm Tbts KC/36T was an experimental German turret with an armor-piercing upgrade for anti-ship combat. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 6000, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 300 penetration.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_150mmKC36_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>8</minRange>
+				<range>23000</range>
+				<soundCast>Sound_Naval150mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>120</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+				<burstShotCount>2</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>120</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_150mmKC36_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_150mmKC36T_indirect_Base</defName>
+		<label>15cm Tbts KC/36T (indirect)</label>
+    <description>The 15cm Tbts KC/36T was an experimental German turret with an armor-piercing upgrade for anti-ship combat. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 6000, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 300 penetration.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M150mmKC36T</texPath>
+			<drawSize>(17,17)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M150mmKC36T_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>3500</MaxHitPoints>
+			<WorkToBuild>65000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1400</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      <ComponentSpacer>5</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_150mmKC36T_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>8</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>14</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_150mmKC36T</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(5,5)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_150mmKC36T</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_150mmKC36T_indirect_Weapon</defName>
+		<label>15cm Tbts KC/36T Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M150mmKC36T_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 15cm Tbts KC/36T was an experimental German turret with an armor-piercing upgrade for anti-ship combat. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 6000, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 300 penetration.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_150mmKC36_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>70</minRange>
+				<range>23000</range>
+				<soundCast>Sound_Naval150mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>120</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+				<burstShotCount>2</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>120</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_150mmKC36_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

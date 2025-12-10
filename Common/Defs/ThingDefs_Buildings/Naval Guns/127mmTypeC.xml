@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 12.7cm 3rd Year Type C ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_127mmTypeC</defName>
+		<label>12.7cm 3rd Year Type C</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_127mmTypeC_Base</defName>
+		<label>12.7cm 3rd Year Type C</label>
+    <description>The 12.7cm 3rd Year Type C was a Japanese naval gun mounted on destroyers and light cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 1440, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M127mmTypeC</texPath>
+			<drawSize>(9,9)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M127mmTypeC_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1440</MaxHitPoints>
+			<WorkToBuild>41500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1200</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>60</Plasteel>
+      <ComponentSpacer>5</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_127mmTypeC_Weapon</turretGunDef>
+      <turretTopDrawSize>9</turretTopDrawSize>
+			<turretBurstCooldownTime>13.6</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_127mmTypeC</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>400</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_127mmTypeC</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_127mmTypeC_Weapon</defName>
+		<label>12.7cm 3rd Year Type C Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M127mmTypeC_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 12.7cm 3rd Year Type C was a Japanese naval gun mounted on destroyers and light cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>13.6</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_127mmTypeC_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>14800</range>
+				<soundCast>Sound_Double127mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+				<burstShotCount>2</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>80</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_127mmTypeC_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_127mmTypeC_indirect_Base</defName>
+		<label>12.7cm 3rd Year Type C (indirect)</label>
+    <description>The 12.7cm 3rd Year Type C was a Japanese naval gun mounted on destroyers and light cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M127mmTypeC</texPath>
+			<drawSize>(9,9)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M127mmTypeC_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1440</MaxHitPoints>
+			<WorkToBuild>41500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1200</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>60</Plasteel>
+      <ComponentSpacer>5</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_127mmTypeC_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>13.6</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>9</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_127mmTypeC</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>400</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(4,4)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_127mmTypeC</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_127mmTypeC_indirect_Weapon</defName>
+		<label>12.7cm 3rd Year Type C Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M127mmTypeC_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 12.7cm 3rd Year Type C was a Japanese naval gun mounted on destroyers and light cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>13.6</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_127mmTypeC_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>50</minRange>
+				<range>14800</range>
+				<soundCast>Sound_Double127mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+				<burstShotCount>2</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>80</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_127mmTypeC_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

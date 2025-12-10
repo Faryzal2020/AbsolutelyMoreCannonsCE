@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_autocannon</defName>
+		<label>autocannons</label>
+	</DesignatorDropdownGroupDef>
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_cannon</defName>
+		<label>cannons</label>
+	</DesignatorDropdownGroupDef>
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_artillery</defName>
+		<label>artilleries</label>
+	</DesignatorDropdownGroupDef>
+	
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_naval</defName>
+		<label>naval guns</label>
+	</DesignatorDropdownGroupDef>
+	
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_autocannon_autoloaders</defName>
+		<label>autocannon autoloaders</label>
+	</DesignatorDropdownGroupDef>
+	
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_cannon_autoloaders</defName>
+		<label>cannon autoloaders</label>
+	</DesignatorDropdownGroupDef>
+	
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_artillery_autoloaders</defName>
+		<label>artillery autoloaders</label>
+	</DesignatorDropdownGroupDef>
+	
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_navalgun_autoloaders</defName>
+		<label>naval gun autoloaders</label>
+	</DesignatorDropdownGroupDef>
+</Defs>

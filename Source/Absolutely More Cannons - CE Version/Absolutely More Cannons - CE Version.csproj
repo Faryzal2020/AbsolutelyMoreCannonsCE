@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>AbsolutelyMoreCannons</AssemblyName>
+    <RootNamespace>AbsolutelyMoreCannons</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <LangVersion>latest</LangVersion>
+    <BaseOutputPath>G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Assemblies</BaseOutputPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- RimWorld and Unity references via NuGet -->
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" GeneratePathProperty="true" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Try to auto-detect RimWorld path from common locations -->
+    <RimWorldPath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld')">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <RimWorldPath Condition="Exists('C:\Steam\steamapps\common\RimWorld')">C:\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <RimWorldPath Condition="Exists('D:\Steam\steamapps\common\RimWorld')">D:\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <RimWorldPath Condition="'$(RimWorldPath)' == '' AND Exists('$(HOME)\.steam\steam\steamapps\common\RimWorld')">$(HOME)/.steam/steam/steamapps/common/RimWorld</RimWorldPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Combat Extended reference - checks multiple possible locations -->
+    <!-- 1. Check Steam Workshop -->
+    <Reference Include="CombatExtended" Condition="Exists('$(RimWorldPath)\..\..\workshop\content\294100\2890901044\Assemblies\CombatExtended.dll')">
+      <HintPath>$(RimWorldPath)\..\..\workshop\content\294100\2890901044\Assemblies\CombatExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 2. Check local Mods folder -->
+    <Reference Include="CombatExtended" Condition="Exists('$(RimWorldPath)\Mods\CombatExtended\Assemblies\CombatExtended.dll') AND !Exists('$(RimWorldPath)\..\..\workshop\content\294100\2890901044\Assemblies\CombatExtended.dll')">
+      <HintPath>$(RimWorldPath)\Mods\CombatExtended\Assemblies\CombatExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- 3. Fallback to relative path from your mod's location -->
+    <Reference Include="CombatExtended" Condition="Exists('..\CombatExtended\Assemblies\CombatExtended.dll') AND !Exists('$(RimWorldPath)\..\..\workshop\content\294100\2890901044\Assemblies\CombatExtended.dll') AND !Exists('$(RimWorldPath)\Mods\CombatExtended\Assemblies\CombatExtended.dll')">
+      <HintPath>..\CombatExtended\Assemblies\CombatExtended.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

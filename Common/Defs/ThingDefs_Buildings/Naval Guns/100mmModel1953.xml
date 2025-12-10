@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 10cm/55 Model 1953 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_100mmModel1953</defName>
+		<label>100mm Creusot-Loire</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_100mmModel1953_Base</defName>
+		<label>100mm Creusot-Loire</label>
+    <description>The 100mm Creusot-Loire was a French dual-purpose naval gun designed for frigates and destroyers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 250, HP: 2250, Cooldown: 3.5s, Range: 7-16000, Rate of Fire: 17 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M100mmModel1953</texPath>
+			<drawSize>(9,9)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M100mmModel1953_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>2250</MaxHitPoints>
+			<WorkToBuild>31500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>30</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+      <ComponentSpacer>8</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_100mmModel1953_Weapon</turretGunDef>
+      <turretTopDrawSize>9</turretTopDrawSize>
+			<turretBurstCooldownTime>1</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_100mmModel1953</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>5,5</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_100mmModel1953</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_100mmModel1953_Weapon</defName>
+		<label>10cm/55 Model 1953 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M100mmModel1953_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 100mm Creusot-Loire was a French dual-purpose naval gun designed for frigates and destroyers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 250, HP: 5500, Cooldown: 3.5s, Range: 7-16000, Rate of Fire: 17 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_100mmModel1953_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>19500</range>
+				<soundCast>Sound_Naval100mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>100</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_100mmModel1953_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_100mmModel1953_indirect_Base</defName>
+		<label>100mm Creusot-Loire (indirect)</label>
+    <description>The 100mm Creusot-Loire was a French dual-purpose naval gun designed for frigates and destroyers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 250, HP: 5500, Cooldown: 3.5s, Range: 7-16000, Rate of Fire: 17 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M100mmModel1953</texPath>
+			<drawSize>(9,9)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M100mmModel1953_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>2250</MaxHitPoints>
+			<WorkToBuild>31500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>30</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+      <ComponentSpacer>8</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_100mmModel1953_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>1</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>9</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_100mmModel1953</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(5,5)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_100mmModel1953</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_100mmModel1953_indirect_Weapon</defName>
+		<label>10cm/55 Model 1953 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M100mmModel1953_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 100mm Creusot-Loire was a French dual-purpose naval gun designed for frigates and destroyers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 250, HP: 5500, Cooldown: 3.5s, Range: 7-16000, Rate of Fire: 17 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius.</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>1</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_100mmModel1953_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>19500</range>
+				<soundCast>Sound_Naval100mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>100</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_100mmModel1953_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

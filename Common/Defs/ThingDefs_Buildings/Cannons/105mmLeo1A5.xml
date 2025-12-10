@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Leopard 1A5 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_105mmLeo1A5_Base</defName>
+		<label>Leopard 1A5</label>
+    <description>The Leopard 1A5 was a German Cold War main battle tank designed for speed and firepower. It has an internal magazine of 55 rounds and no indirect fire capability. Power: 200, HP: 1025, Cooldown: 6.5s, Range: 130, Rate of Fire: 9 rounds per minute. Ammunition types: 105mm DM23 (AP, Penetration: 408), 105mm DM12 (HE, Explosion Radius: 5).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M105mmLeo1A5</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M105mmLeo1A5_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1025</MaxHitPoints>
+			<WorkToBuild>31500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>550</Steel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+			<Plasteel>20</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_105mmLeo1A5_Weapon</turretGunDef>
+      <turretTopDrawSize>16</turretTopDrawSize>
+			<turretBurstCooldownTime>6.5</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_105mmLeo1A5</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_105mmLeo1A5_Weapon</defName>
+		<label>Leopard 1A5 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M105mmLeo1A5_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:105mm DM23 \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.005</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>6.5</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_105mmL7A3_APFSDS</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>8</minRange>
+				<range>130</range>
+				<soundCast>Sound_Leo1A5</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>55</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_105mmL7A3_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

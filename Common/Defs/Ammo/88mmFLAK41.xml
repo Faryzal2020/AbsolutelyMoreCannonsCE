@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo88mmFLAK41Shells</defName>
+		<label>8.8cm L72 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/88mmFLAK41APHE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_88mmFLAK41_Shells</defName>
+		<label>8.8cm L72 ammunitions</label>
+		<ammoTypes>
+			<Ammo_88mmFLAK41_APHE>Bullet_88mmFLAK41_APHE</Ammo_88mmFLAK41_APHE>
+			<Ammo_88mmFLAK41_HE>Bullet_88mmFLAK41_HE</Ammo_88mmFLAK41_HE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo88mmFLAK41Base" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 8.8cm L72 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo88mmFLAK41Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+		<isMortarAmmo>true</isMortarAmmo>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo88mmFLAK41Base">
+		<defName>Ammo_88mmFLAK41_APHE</defName>
+		<label>88mm Pzgr 39 (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/88mmFLAK41APHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>134.8</MarketValue>
+			<Mass>22.8</Mass>
+			<Bulk>32.08</Bulk>
+		</statBases>
+		<ammoClass>ExplosiveAP</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<detonateProjectile>Bullet_88mmFLAK41_APHE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo88mmFLAK41Base">
+		<defName>Ammo_88mmFLAK41_HE</defName>
+		<label>88mm Sprgr. 43 (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/88mmFLAK41HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>127.29</MarketValue>
+			<Mass>22.04</Mass>
+			<Bulk>31.45</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<detonateProjectile>Bullet_88mmFLAK41_HE</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base88mmFLAK41Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base88mmFLAK41Bullet">
+		<defName>Bullet_88mmFLAK41_APHE</defName>
+		<label>88mm Pzgr 39 shell (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>ThumpCannon_Impact</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
+			<speed>178</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>570</damageAmountBase>
+			<armorPenetrationSharp>230</armorPenetrationSharp>
+			<armorPenetrationBlunt>101600</armorPenetrationBlunt>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>855</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base88mmFLAK41Bullet">
+		<defName>Bullet_88mmFLAK41_HE</defName>
+		<label>88mm Sprgr. 43 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>154</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>132</damageAmountBase>
+			<explosionRadius>2.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>19</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_88mmFLAK41_APHE</defName>
+		<label>make 88mm Pzgr 39 (APHE) ammo x10</label>
+		<description>Craft 10 88mm Pzgr 39 (APHE).</description>
+		<jobString>Making 88mm Pzgr 39 (APHE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>458</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>35</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_88mmFLAK41_APHE>10</Ammo_88mmFLAK41_APHE>
+		</products>
+		<workAmount>59800</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_88mmFLAK41_HE</defName>
+		<label>make 88mm Sprgr. 43 (HE) ammo x10</label>
+		<description>Craft 10 88mm Sprgr. 43 (HE).</description>
+		<jobString>Making 88mm Sprgr. 43 (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>442</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>23</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_88mmFLAK41_HE>10</Ammo_88mmFLAK41_HE>
+		</products>
+		<workAmount>54600</workAmount>
+	</RecipeDef>
+
+</Defs>

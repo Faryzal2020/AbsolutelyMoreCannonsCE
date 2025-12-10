@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Karl-Gerät 040 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_600mmKarlGerat</defName>
+		<label>Karl-Gerät 040</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_600mmKarlGerat_Base</defName>
+		<label>Karl-Gerät 040</label>
+    <description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 2160, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M600mmKarlGerat</texPath>
+			<drawSize>(12,12)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M600mmKarlGerat_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>2160</MaxHitPoints>
+			<WorkToBuild>87500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1600</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_600mmKarlGerat_Weapon</turretGunDef>
+      <turretTopDrawSize>12</turretTopDrawSize>
+			<turretBurstCooldownTime>0</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_600mmKarlGerat</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>6,6</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_600mmKarlGerat</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_600mmKarlGerat_Weapon</defName>
+		<label>Karl-Gerät 040 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M600mmKarlGerat_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>2</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_600mmKarlGerat_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>4500</range>
+				<soundCast>Sound_600mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>150</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>40</reloadTime>
+				<ammoSet>AmmoSet_600mmKarlGerat_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_600mmKarlGerat_indirect_Base</defName>
+		<label>Karl-Gerät 040 (indirect)</label>
+    <description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M600mmKarlGerat</texPath>
+			<drawSize>(12,12)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M600mmKarlGerat_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>2160</MaxHitPoints>
+			<WorkToBuild>87500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1600</Steel>
+      <ComponentIndustrial>10</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_600mmKarlGerat_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>0</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>12</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_600mmKarlGerat</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(6,6)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_600mmKarlGerat</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_600mmKarlGerat_indirect_Weapon</defName>
+		<label>Karl-Gerät 040 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M600mmKarlGerat_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>2</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_600mmKarlGerat_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>40</minRange>
+				<range>4500</range>
+				<soundCast>Sound_600mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>150</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>60</li>
+					<li>90</li>
+					<li>120</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>40</reloadTime>
+				<ammoSet>AmmoSet_600mmKarlGerat_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

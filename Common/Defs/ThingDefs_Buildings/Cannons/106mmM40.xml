@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== R3-T106 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_106mmM40_Base</defName>
+		<label>R3-T106</label>
+    <description>The R3-T106 was an Italian recoilless rifle platform designed for airborne and light reconnaissance units. It has an internal magazine of 12 rounds and no indirect fire capability. Power: None, HP: 180, Cooldown: 5.0s, Range: 100, Burst: 2 shots per cycle, Effective Rate of Fire: 24 rounds per minute. Ammunition types: 106mm M344 (AP, Penetration: 400), 106mm M346 (HE, Explosion Radius: 5).</description>
+		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M106mmM40</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M106mmM40_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>180</MaxHitPoints>
+			<WorkToBuild>7000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>250</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_106mmM40_Weapon</turretGunDef>
+      <turretTopDrawSize>12</turretTopDrawSize>
+			<turretBurstCooldownTime>5</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>2,2</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_106mmM40</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_106mmM40_Weapon</defName>
+		<label>R3-T106 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M106mmM40_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:106mm M344 \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>5</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>0</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_106mmM40_HEAT</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>2</minRange>
+				<range>100</range>
+				<soundCast>Sound_M40</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>10</ticksBetweenBurstShots>
+				<burstShotCount>2</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>12</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_106mmM40_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

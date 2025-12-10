@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 15 cm sIG 33 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_150mmSIG33</defName>
+		<label>15 cm sIG 33</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_150mmSIG33_Base</defName>
+		<label>15 cm sIG 33</label>
+    <description>The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 495, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).</description>
+		<constructionSkillPrerequisite>2</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M150mmSIG33</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M150mmSIG33_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>495</MaxHitPoints>
+			<WorkToBuild>22500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>500</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_150mmSIG33_Weapon</turretGunDef>
+      <turretTopDrawSize>11</turretTopDrawSize>
+			<turretBurstCooldownTime>0</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_150mmSIG33</designatorDropdown>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_150mmSIG33</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_150mmSIG33_Weapon</defName>
+		<label>15 cm sIG 33 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M150mmSIG33_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 800, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_150mmSIG33_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>10</minRange>
+				<range>4700</range>
+				<soundCast>Sound_sIG33</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>15</reloadTime>
+				<ammoSet>AmmoSet_150mmSIG33_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_150mmSIG33_indirect_Base</defName>
+		<label>15 cm sIG 33 (indirect)</label>
+    <description>The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 800, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).</description>
+		<constructionSkillPrerequisite>2</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M150mmSIG33</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M150mmSIG33_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>495</MaxHitPoints>
+			<WorkToBuild>22500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>500</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_150mmSIG33_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>0</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>11</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_150mmSIG33</designatorDropdown>
+    <size>(3,3)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_150mmSIG33</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_150mmSIG33_indirect_Weapon</defName>
+		<label>15 cm sIG 33 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M150mmSIG33_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 800, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_150mmSIG33_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>15</minRange>
+				<range>4700</range>
+				<soundCast>Sound_sIG33</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>60</li>
+					<li>90</li>
+					<li>120</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>15</reloadTime>
+				<ammoSet>AmmoSet_150mmSIG33_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo127mmMark16Shells</defName>
+		<label>127mm/54 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/127mmMark16HE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_127mmMark16_Shells</defName>
+		<label>127mm/54 ammunitions</label>
+		<ammoTypes>
+			<Ammo_127mmMark16_HE>Bullet_127mmMark16_HE</Ammo_127mmMark16_HE>
+			<Ammo_127mmMark16_APHE>Bullet_127mmMark16_APHE</Ammo_127mmMark16_APHE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_127mmMark16_indirect_Shells</defName>
+		<label>127mm/54 ammunitions</label>
+		<ammoTypes>
+			<Ammo_127mmMark16_HE>Bullet_127mmMark16_indirect_HE</Ammo_127mmMark16_HE>
+			<Ammo_127mmMark16_APHE>Bullet_127mmMark16_indirect_APHE</Ammo_127mmMark16_APHE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo127mmMark16Base" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 127mm/54 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo127mmMark16Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo127mmMark16Base">
+		<defName>Ammo_127mmMark16_HE</defName>
+		<label>5" HC Mark 41 Mod 0 (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/127mmMark16HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>279.68</MarketValue>
+			<Mass>45.615</Mass>
+			<Bulk>56.86</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_127mmMark16_HE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo127mmMark16Base">
+		<defName>Ammo_127mmMark16_APHE</defName>
+		<label>5" AP Mark 46 (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/127mmMark16APHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>297.32</MarketValue>
+			<Mass>45.85</Mass>
+			<Bulk>55.91</Bulk>
+		</statBases>
+		<ammoClass>ExplosiveAP</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_127mmMark16_APHE</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base127mmMark16Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base127mmMark16Bullet">
+		<defName>Bullet_127mmMark16_HE</defName>
+		<label>5" HC Mark 41 Mod 0 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>152</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>262</damageAmountBase>
+			<explosionRadius>3.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>40</Fragment_Large>
+					<Fragment_Small>2</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base127mmMark16Bullet">
+		<defName>Bullet_127mmMark16_APHE</defName>
+		<label>5" AP Mark 46 shell (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>151</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>822</damageAmountBase>
+			<armorPenetrationSharp>150</armorPenetrationSharp>
+			<armorPenetrationBlunt>203200</armorPenetrationBlunt>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>1082</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base127mmMark16IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>24</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base127mmMark16IndirectBullet">
+		<defName>Bullet_127mmMark16_indirect_HE</defName>
+		<label>5" HC Mark 41 Mod 0 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>262</damageAmountBase>
+			<explosionRadius>3.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>0.21</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>40</Fragment_Large>
+					<Fragment_Small>2</Fragment_Small>
+				</fragments>
+				<fragAngleRange>0~10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base127mmMark16IndirectBullet">
+		<defName>Bullet_127mmMark16_indirect_APHE</defName>
+		<label>5" AP Mark 46 shell (APHE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>822</damageAmountBase>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>1082</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_127mmMark16_HE</defName>
+		<label>make 5" HC Mark 41 Mod 0 (HE) ammo x5</label>
+		<description>Craft 5 5" HC Mark 41 Mod 0 (HE).</description>
+		<jobString>Making 5" HC Mark 41 Mod 0 (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>458</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>33</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_127mmMark16_HE>5</Ammo_127mmMark16_HE>
+		</products>
+		<workAmount>60200</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_127mmMark16_APHE</defName>
+		<label>make 5" AP Mark 46 (APHE) ammo x5</label>
+		<description>Craft 5 5" AP Mark 46 (APHE).</description>
+		<jobString>Making 5" AP Mark 46 (APHE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>460</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>50</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_127mmMark16_APHE>5</Ammo_127mmMark16_APHE>
+		</products>
+		<workAmount>66000</workAmount>
+	</RecipeDef>
+
+</Defs>

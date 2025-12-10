@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== OTO Melara 76/62C ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_76mmOtomelaraC</defName>
+		<label>OTO Melara 76/62C</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_76mmOtomelaraC_Base</defName>
+		<label>OTO Melara 76/62C</label>
+    <description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M76mmOtomelaraC</texPath>
+			<drawSize>(15,15)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M76mmOtomelaraC_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>720</MaxHitPoints>
+			<WorkToBuild>22500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>45</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_76mmOtomelaraC_Weapon</turretGunDef>
+      <turretTopDrawSize>14</turretTopDrawSize>
+			<turretBurstCooldownTime>2</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_76mmOtomelaraC</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>900</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_76mmOtomelaraC</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(1,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_76mmOtomelaraC_Weapon</defName>
+		<label>OTO Melara 76/62C Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M76mmOtomelaraC_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.005</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_76mmOtomelaraC_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>16000</range>
+				<soundCast>Sound_76mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>50</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>42</ticksBetweenBurstShots>
+				<burstShotCount>10</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>200</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_76mmOtomelaraC_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_76mmOtomelaraC_indirect_Base</defName>
+		<label>OTO Melara 76/62C (indirect)</label>
+    <description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M76mmOtomelaraC</texPath>
+			<drawSize>(15,15)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M76mmOtomelaraC_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>720</MaxHitPoints>
+			<WorkToBuild>22500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>45</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_76mmOtomelaraC_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>2</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>14</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_76mmOtomelaraC</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>900</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(3,3)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_76mmOtomelaraC</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(1,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_76mmOtomelaraC_indirect_Weapon</defName>
+		<label>OTO Melara 76/62C Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M76mmOtomelaraC_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.005</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_76mmOtomelaraC_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>16000</range>
+				<soundCast>Sound_76mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>50</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>42</ticksBetweenBurstShots>
+				<burstShotCount>10</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+					<li>80</li>
+					<li>90</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>200</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_76mmOtomelaraC_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

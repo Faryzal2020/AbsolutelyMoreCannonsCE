@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo406mm2A3Shells</defName>
+		<label>406mm SM-54 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/406mm2A3Nuclear</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_406mm2A3_indirect_Shells</defName>
+		<label>406mm SM-54 ammunitions</label>
+		<ammoTypes>
+			<Ammo_406mm2A3_Nuclear>Bullet_406mm2A3_indirect_Nuclear</Ammo_406mm2A3_Nuclear>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo406mm2A3Base" ParentName="HeavyAmmoBase" Abstract="True">
+		<description>Ammunitions for 406mm SM-54 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo406mm2A3Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo406mm2A3Base">
+		<defName>Ammo_406mm2A3_Nuclear</defName>
+		<label>406mm W23 (Nuclear)</label>
+		<graphicData>
+			<texPath>Things/Projectile/406mm2A3Nuclear</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>5788.56</MarketValue>
+			<Mass>720</Mass>
+			<Bulk>621.42</Bulk>
+		</statBases>
+		<ammoClass>Antigrain</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_406mm2A3_indirect_Nuclear</detonateProjectile>
+		<comps>
+			<!-- Vanilla values -->
+			<li Class="CompProperties_Explosive">
+				<explosiveRadius>14.9</explosiveRadius>
+				<damageAmountBase>300</damageAmountBase>
+				<explosiveDamageType>BombSuper</explosiveDamageType>
+				<startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+				<chanceToStartFire>0.22</chanceToStartFire>
+				<damageFalloff>true</damageFalloff>
+				<explosionEffect>GiantExplosion</explosionEffect>
+				<explosionSound>Explosion_GiantBomb</explosionSound>
+				<wickTicks>60~120</wickTicks>
+				<explodeOnKilled>True</explodeOnKilled>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base406mm2A3IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>4</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>24</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base406mm2A3IndirectBullet">
+		<defName>Bullet_406mm2A3_indirect_Nuclear</defName>
+		<label>406mm W23 shell (Nuclear)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>BombSuper</damageDef>
+			<damageAmountBase>31620</damageAmountBase>
+	        <postExplosionSpawnThingDef>Filth_Ash</postExplosionSpawnThingDef>
+	        <postExplosionSpawnChance>1</postExplosionSpawnChance>
+	        <postExplosionSpawnThingCount>1</postExplosionSpawnThingCount>
+			<explosionRadius>50</explosionRadius>
+			<explosionChanceToStartFire>1</explosionChanceToStartFire>
+        	<explosionDamageFalloff>true</explosionDamageFalloff>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<explosionEffect>AMC_NukeEffect</explosionEffect>
+			<soundExplode>AMC_NukeExplosionSound</soundExplode>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<explosionDelay>30</explosionDelay>
+			<shellingProps>
+				<damage>5.2</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>50</damageAmountBase>
+				<explosiveDamageType>Thermobaric</explosiveDamageType>
+				<explosiveRadius>100</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>40</Fragment_Large>
+					<Fragment_Small>80</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_406mm2A3_Nuclear</defName>
+		<label>make 406mm W23 (Nuclear) ammo x1</label>
+		<description>Craft 1 406mm W23 (Nuclear).</description>
+		<jobString>Making 406mm W23 (Nuclear).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>440</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>5</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>20</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Shell_AntigrainWarhead</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+				<li>Shell_AntigrainWarhead</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_406mm2A3_Nuclear>1</Ammo_406mm2A3_Nuclear>
+		</products>
+		<workAmount>144600</workAmount>
+	</RecipeDef>
+
+</Defs>

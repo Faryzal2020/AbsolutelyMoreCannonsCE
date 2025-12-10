@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo600mmKarlGeratShells</defName>
+		<label>60cm Karl Gerat shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/600mmKarlGeratHE</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_600mmKarlGerat_Shells</defName>
+		<label>60cm Karl Gerat ammunitions</label>
+		<ammoTypes>
+			<Ammo_600mmKarlGerat_HE>Bullet_600mmKarlGerat_HE</Ammo_600mmKarlGerat_HE>
+			<Ammo_600mmKarlGeratLeichte_HE>Bullet_600mmKarlGeratLeichte_HE</Ammo_600mmKarlGeratLeichte_HE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_600mmKarlGerat_indirect_Shells</defName>
+		<label>60cm Karl Gerat ammunitions</label>
+		<ammoTypes>
+			<Ammo_600mmKarlGerat_HE>Bullet_600mmKarlGerat_indirect_HE</Ammo_600mmKarlGerat_HE>
+			<Ammo_600mmKarlGeratLeichte_HE>Bullet_600mmKarlGeratLeichte_indirect_HE</Ammo_600mmKarlGeratLeichte_HE>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo600mmKarlGeratBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 60cm Karl Gerat weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo600mmKarlGeratShells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo600mmKarlGeratBase">
+		<defName>Ammo_600mmKarlGerat_HE</defName>
+		<label>60cm Sch.Btgr (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/600mmKarlGeratHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>3276.82</MarketValue>
+			<Mass>217</Mass>
+			<Bulk>2129.91</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_600mmKarlGerat_HE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo600mmKarlGeratBase">
+		<defName>Ammo_600mmKarlGeratLeichte_HE</defName>
+		<label>60cm Lch.Btgr (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/600mmKarlGeratLeichteHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>2581.62</MarketValue>
+			<Mass>170</Mass>
+			<Bulk>1688.83</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHE</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_600mmKarlGeratLeichte_HE</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base600mmKarlGeratBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base600mmKarlGeratBullet">
+		<defName>Bullet_600mmKarlGerat_HE</defName>
+		<label>60cm Sch.Btgr shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>58</speed>
+			<damageDef>BombSuper</damageDef>
+			<damageAmountBase>3870</damageAmountBase>
+			<explosionRadius>16</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>14</Fragment_Large>
+					<Fragment_Small>80</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base600mmKarlGeratBullet">
+		<defName>Bullet_600mmKarlGeratLeichte_HE</defName>
+		<label>60cm Lch.Btgr shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>69</speed>
+			<damageDef>BombSuper</damageDef>
+			<damageAmountBase>3349</damageAmountBase>
+			<explosionRadius>14.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>10</Fragment_Large>
+					<Fragment_Small>80</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ================== Indirect ================== -->
+	<ThingDef Name="Base600mmKarlGeratIndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>false</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>6</range>
+			</shellingProps>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base600mmKarlGeratIndirectBullet">
+		<defName>Bullet_600mmKarlGerat_indirect_HE</defName>
+		<label>60cm Sch.Btgr shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>BombSuper</damageDef>
+			<damageAmountBase>3870</damageAmountBase>
+			<explosionRadius>16</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>3.642352941176471</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>14</Fragment_Large>
+					<Fragment_Small>80</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base600mmKarlGeratIndirectBullet">
+		<defName>Bullet_600mmKarlGeratLeichte_indirect_HE</defName>
+		<label>60cm Lch.Btgr shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>BombSuper</damageDef>
+			<damageAmountBase>3349</damageAmountBase>
+			<explosionRadius>14.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<shellingProps>
+				<damage>3.132935483870968</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>10</Fragment_Large>
+					<Fragment_Small>80</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_600mmKarlGerat_HE</defName>
+		<label>make 60cm Sch.Btgr (HE) ammo x1</label>
+		<description>Craft 1 60cm Sch.Btgr (HE).</description>
+		<jobString>Making 60cm Sch.Btgr (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>434</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>253</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_600mmKarlGerat_HE>1</Ammo_600mmKarlGerat_HE>
+		</products>
+		<workAmount>145200</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_600mmKarlGeratLeichte_HE</defName>
+		<label>make 60cm Lch.Btgr (HE) ammo x1</label>
+		<description>Craft 1 60cm Lch.Btgr (HE).</description>
+		<jobString>Making 60cm Lch.Btgr (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>340</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>199</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_600mmKarlGeratLeichte_HE>1</Ammo_600mmKarlGeratLeichte_HE>
+		</products>
+		<workAmount>114200</workAmount>
+	</RecipeDef>
+
+</Defs>

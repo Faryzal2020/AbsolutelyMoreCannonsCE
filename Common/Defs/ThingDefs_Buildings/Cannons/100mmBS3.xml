@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== M1944 BS-3 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_100mmBS3_Base</defName>
+		<label>M1944 BS-3</label>
+    <description>The M1944 BS-3 was a Soviet heavy anti-tank gun introduced late in WWII, capable of destroying even the heaviest enemy armor. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 400, Cooldown: 10.0s, Range: 110, Rate of Fire: 6 rounds per minute. Ammunition types: 100mm BR-412D (AP, Penetration: 239), 100mm OF-412 (HE, Explosion Radius: 5).</description>
+		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M100mmBS3</texPath>
+			<drawSize>(10,10)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M100mmBS3_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>400</MaxHitPoints>
+			<WorkToBuild>16500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>300</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_100mmBS3_Weapon</turretGunDef>
+      <turretTopDrawSize>14</turretTopDrawSize>
+			<turretBurstCooldownTime>10</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_100mmBS3</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_100mmBS3_Weapon</defName>
+		<label>M1944 BS-3 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M100mmBS3_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:100mm BR-412D \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_100mmBS3_APHE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>110</range>
+				<soundCast>Sound_Russian100mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_100mmBS3_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

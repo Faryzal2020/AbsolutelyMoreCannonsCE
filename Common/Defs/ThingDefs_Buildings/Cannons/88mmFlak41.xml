@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Flak 41 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_88mmFlak41_Base</defName>
+		<label>Flak 41</label>
+    <description>The Flak 41 was Germany's improved 8.8cm anti-aircraft and anti-tank gun introduced during WWII. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 400, Cooldown: 8.0s, Range: 100, Rate of Fire: 7 rounds per minute. Ammunition types: 88mm Pzgr 39 (AP, Penetration: 230), 88mm Sprgr (HE, Explosion Radius: 3).</description>
+		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M88mmFlak41</texPath>
+			<drawSize>(6,6)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M88mmFlak41_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>400</MaxHitPoints>
+			<WorkToBuild>16000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>250</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_88mmFlak41_Weapon</turretGunDef>
+      <turretTopDrawSize>13</turretTopDrawSize>
+			<turretBurstCooldownTime>8</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_88mmFlak41</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_88mmFlak41_Weapon</defName>
+		<label>Flak 41 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M88mmFlak41_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:88mm Pzgr 39 \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_88mmFLAK41_APHE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>6</minRange>
+				<range>100</range>
+				<soundCast>Sound_88mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>50</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_88mmFLAK41_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

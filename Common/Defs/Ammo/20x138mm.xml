@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo20x138mmShells</defName>
+		<label>Flak 38 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/20x138mm/API/API_b</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_20x138mm_Shells</defName>
+		<label>Flak 38 ammunitions</label>
+		<ammoTypes>
+			<Ammo_20x138mm_AP>Bullet_20x138mm_AP</Ammo_20x138mm_AP>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo20x138mmBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for Flak 38 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo20x138mmShells</li>
+		</thingCategories>
+		<stackLimit>1000</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo20x138mmBase">
+		<defName>Ammo_20x138mm_AP</defName>
+		<label>20x138mm Swiss (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/20x138mm/API</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.09</MarketValue>
+			<Mass>0.42</Mass>
+			<Bulk>0.39</Bulk>
+		</statBases>
+		<ammoClass>IncendiaryAP</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_20x138mm_AP</cookOffProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base20x138mmBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_RifleAmmoCasings_HighCal</casingMoteDefname>
+			<casingFilthDefname>Filth_RifleAmmoCasings_HighCal</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x138mmBullet">
+		<defName>Bullet_20x138mm_AP</defName>
+		<label>20x138mm Swiss shell (AP)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>165</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>43</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>36</armorPenetrationSharp>
+			<armorPenetrationBlunt>972</armorPenetrationBlunt>
+			<secondaryDamage>
+		        <li>
+		          <def>Flame_Secondary</def>
+		          <amount>26</amount>
+		        </li>
+		    </secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_20x138mm_AP</defName>
+		<label>make 20x138mm Swiss (AP) ammo x100</label>
+		<description>Craft 100 20x138mm Swiss (AP).</description>
+		<jobString>Making 20x138mm Swiss (AP).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>84</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>6</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_20x138mm_AP>100</Ammo_20x138mm_AP>
+		</products>
+		<workAmount>14800</workAmount>
+	</RecipeDef>
+
+
+</Defs>

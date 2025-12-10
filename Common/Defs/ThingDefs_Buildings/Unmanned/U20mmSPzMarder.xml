@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Auto Spz Marder ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_U20mmSPzMarder</defName>
+		<label>Auto Spz Marder</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_U20mmSPzMarder_Base</defName>
+		<label>Auto Spz Marder (Auto)</label>
+    <description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 546, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U20mmSPzMarder</texPath>
+			<drawSize>(13,13)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U20mmSPzMarder_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>546</MaxHitPoints>
+			<WorkToBuild>7500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>0.95</AimingAccuracy>
+		</statBases>
+		<costList>
+			<Steel>300</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+			<Plasteel>7</Plasteel>
+      <ComponentSpacer>3</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_U20mmSPzMarder_Weapon</turretGunDef>
+      <turretTopDrawSize>13</turretTopDrawSize>
+			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_U20mmSPzMarder</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>300</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>2,2</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U20mmSPzMarder</li>
+		</researchPrerequisites>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseAutoTurretGun">
+		<defName>Turret_U20mmSPzMarder_Weapon</defName>
+		<label>Auto Spz Marder Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U20mmSPzMarder_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 1100, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_20x139mm_HE</defaultProjectile>
+				<warmupTime>3.0500000000000003</warmupTime>
+        <minRange>3</minRange>
+				<range>80</range>
+				<soundCast>Sound_RH202</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>25</muzzleFlashScale>
+				<ticksBetweenBurstShots>5</ticksBetweenBurstShots>
+				<burstShotCount>16</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1250</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_20x139mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>4</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

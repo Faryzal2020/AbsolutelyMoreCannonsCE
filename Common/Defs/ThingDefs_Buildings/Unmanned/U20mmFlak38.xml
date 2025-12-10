@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Auto Flak 38 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_U20mmFlak38</defName>
+		<label>Auto Flak 38</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_U20mmFlak38_Base</defName>
+		<label>Auto Flak 38 (Auto)</label>
+    <description>The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8) and requires 200 power to operate. Power: 200, HP: 390, Cooldown: 0.4s, Range: 70, Rate of Fire: 1200 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U20mmFlak38</texPath>
+			<drawSize>(9,9)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U20mmFlak38_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>390</MaxHitPoints>
+			<WorkToBuild>5625</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>0.95</AimingAccuracy>
+		</statBases>
+		<costList>
+			<Steel>300</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_U20mmFlak38_Weapon</turretGunDef>
+      <turretTopDrawSize>10</turretTopDrawSize>
+			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_U20mmFlak38</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U20mmFlak38</li>
+		</researchPrerequisites>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseAutoTurretGun">
+		<defName>Turret_U20mmFlak38_Weapon</defName>
+		<label>Auto Flak 38 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U20mmFlak38_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8) and requires 200 power to operate. Power: 200, HP: 500, Cooldown: 0.4s, Range: 70, Rate of Fire: 1200 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.04</ShotSpread>
+			<SwayFactor>0.4</SwayFactor>
+			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
+      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_20x138mm_AP</defaultProjectile>
+				<warmupTime>3.0500000000000003</warmupTime>
+        <minRange>2</minRange>
+				<range>70</range>
+				<soundCast>Sound_Flak38</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>20</muzzleFlashScale>
+				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
+				<burstShotCount>12</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>8</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_20x138mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>3</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ResearchProjectDef>
+    <defName>Research_57mmDeacon</defName>
+    <label>AEC Deacon</label>
+      <description>**AEC Deacon**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 57mmOQF, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe AEC Deacon has a burst cooldown of 4.0s and a reload time of 1s per shell. With a max range of 90 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. It features a magazine size of 24, allowing for sustained engagements before reloading. Standard durability, able to withstand moderate fire.</description> 
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>HeavyCannons</li>
+    </prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_75mmPak40</defName>
+    <label>Pak 40</label>
+    <description>**Pak 40**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 75mmPAK40, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe Pak 40 has a burst cooldown of 5.0s and a reload time of 1s per shell. With a max range of 100 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. This turret lacks an internal magazine and must be reloaded after every shot. Fragile and requires protection.</description> 
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_57mmDeacon</li>
+    </prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_88mmFlak41</defName>
+    <label>Flak 41</label>
+    <description>**Flak 41**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 88mmFLAK41, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe Flak 41 has a burst cooldown of 8.0s and a reload time of 1s per shell. With a max range of 100 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. This turret lacks an internal magazine and must be reloaded after every shot. Fragile and requires protection.</description> 
+    <baseCost>700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_75mmPak40</li>
+    </prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_100mmBS3</defName>
+    <label>M1944 BS-3</label>
+    <description>**M1944 BS-3**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 100mmBS3, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe M1944 BS-3 has a burst cooldown of 10.0s and a reload time of 1s per shell. With a max range of 110 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. This turret lacks an internal magazine and must be reloaded after every shot. Fragile and requires protection.</description> 
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_88mmFlak41</li>
+    </prerequisites>
+    <researchViewX>5</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_128mmPak44</defName>
+    <label>Pak 44</label>
+    <description>**Pak 44**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 128mmPAK44, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe Pak 44 has a burst cooldown of 15.0s and a reload time of 1s per shell. With a max range of 130 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. This turret lacks an internal magazine and must be reloaded after every shot. Fragile and requires protection.</description> 
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_100mmBS3</li>
+    </prerequisites>
+    <researchViewX>6</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_90mmM26</defName>
+    <label>M26</label>
+    <description>**M26**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 90mmM26, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe M26 has a burst cooldown of 8.0s and a reload time of 1s per shell. With a max range of 100 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. It features a magazine size of 70, allowing for sustained engagements before reloading. Heavily armored and resilient against attacks.</description> 
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_57mmDeacon</li>
+    </prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>0.5</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_100mmT54</defName>
+    <label>T-54</label>
+    <description>**T-54**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 100mmBS3, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe T-54 has a burst cooldown of 7.1s and a reload time of 1s per shell. With a max range of 100 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. It features a magazine size of 34, allowing for sustained engagements before reloading. Heavily armored and resilient against attacks.</description> 
+    <baseCost>800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_90mmM26</li>
+    </prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>0.5</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_106mmM40</defName>
+    <label>R3-T106</label>
+    <description>**R3-T106**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 106mmM40, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe R3-T106 has a burst cooldown of 5.0s and a reload time of 1s per shell. With a max range of 100 and a minimum range of 2 (indirect: 1), it is effective at direct fire support only. It features a magazine size of 12, allowing for sustained engagements before reloading. Fragile and requires protection.</description> 
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_100mmT54</li>
+    </prerequisites>
+    <researchViewX>5</researchViewX>
+    <researchViewY>0.5</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_105mmLeo1A5</defName>
+    <label>Leopard 1A5</label>
+    <description>**Leopard 1A5**\nA powerful turret designed to deliver devastating firepower on the battlefield. Utilizing 105mmL7A3, this turret only fires directly at targets, making it a versatile addition to any defense network.\nThe Leopard 1A5 has a burst cooldown of 6.5s and a reload time of 1s per shell. With a max range of 130 and a minimum range of 4 (indirect: 1), it is effective at direct fire support only. It features a magazine size of 55, allowing for sustained engagements before reloading. Heavily armored and resilient against attacks.</description> 
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_106mmM40</li>
+    </prerequisites>
+    <researchViewX>6</researchViewX>
+    <researchViewY>0.5</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>UnmannedLargeCannons</defName>
+    <label>Unmanned Cannon Turrets</label>
+    <description>Allows you to research and build the unmanned variant of large cannons.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Automated_FCS</li>
+    </prerequisites>
+    <researchViewX>9</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+</Defs>

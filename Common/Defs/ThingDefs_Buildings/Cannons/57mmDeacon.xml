@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== AEC Deacon ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_57mmDeacon_Base</defName>
+		<label>AEC Deacon</label>
+    <description>The AEC Deacon was a British self-propelled gun developed during WWII for mobile anti-tank operations in North Africa. It has an internal magazine of 24 rounds and no indirect fire capability. Power: None, HP: 450, Cooldown: 4.0s, Range: 90, Rate of Fire: 15 rounds per minute. Ammunition types: 57mm Shot Mk.8 (AP, Penetration: 116).</description>
+		<constructionSkillPrerequisite>2</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M57mmDeacon</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M57mmDeacon_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>450</MaxHitPoints>
+			<WorkToBuild>9000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>300</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_57mmDeacon_Weapon</turretGunDef>
+      <turretTopDrawSize>11</turretTopDrawSize>
+			<turretBurstCooldownTime>4</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_57mmDeacon</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_57mmDeacon_Weapon</defName>
+		<label>AEC Deacon Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M57mmDeacon_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:57mm Shot Mk.8 \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>3</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>4</minRange>
+				<range>90</range>
+				<soundCast>Sound_6Pdr</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>40</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>24</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_57mmOQF_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

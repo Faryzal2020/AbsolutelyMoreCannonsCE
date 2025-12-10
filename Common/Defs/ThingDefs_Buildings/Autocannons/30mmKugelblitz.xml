@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== FlakPz IV Kugelblitz ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_30mmKugelblitz_Base</defName>
+		<label>FlakPz IV Kugelblitz</label>
+    <description>Use ammo set:30x184mm M.Gr. \nThe Flakpanzer IV Kugelblitz mounted twin 30mm autocannons as a German WWII anti-aircraft platform. It has a 200-round magazine and is incapable of settlement bombardment. Power: 100, HP: 765, Cooldown: 0.2s, Range: 3-70, Rate of Fire: 300 rounds per minute, Aimed Burst: 8, Reload Time: 5s.</description>
+		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M30mmKugelblitz</texPath>
+			<drawSize>(14,14)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M30mmKugelblitz_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>765</MaxHitPoints>
+			<WorkToBuild>13500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>400</Steel>
+			<Plasteel>4</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <ComponentSpacer>1</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_30mmKugelblitz_Weapon</turretGunDef>
+      <turretTopDrawSize>17</turretTopDrawSize>
+			<turretBurstCooldownTime>0.2</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>100</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_30mmKugelblitz</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(-1,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_30mmKugelblitz_Weapon</defName>
+		<label>FlakPz IV Kugelblitz Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M30mmKugelblitz_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:30x184mm M.Gr. \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>1.5</SightsEfficiency>
+			<ShotSpread>0.04</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>0.2</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_30x184mm_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>3</minRange>
+				<range>70</range>
+				<soundCast>Sound_Kugelblitz</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>25</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>12</ticksBetweenBurstShots>
+				<burstShotCount>10</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern> <!--
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>10</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos> -->
+			</li>
+		</verbs>
+		<comps> <!--
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+				</chargeSpeeds>
+			</li> -->
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>200</magazineSize>
+				<reloadTime>5</reloadTime>
+				<ammoSet>AmmoSet_30x184mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>4</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

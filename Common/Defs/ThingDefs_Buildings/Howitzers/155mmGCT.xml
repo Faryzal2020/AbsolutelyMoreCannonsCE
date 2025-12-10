@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 155mm GCT AUF1 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_155mmGCT</defName>
+		<label>155mm GCT AUF1</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_155mmGCT_Base</defName>
+		<label>155mm GCT AUF1</label>
+    <description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 1720, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M155mmGCT</texPath>
+			<drawSize>(17,17)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M155mmGCT_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1720</MaxHitPoints>
+			<WorkToBuild>50000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>900</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+      <ComponentSpacer>1</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_155mmGCT_Weapon</turretGunDef>
+      <turretTopDrawSize>18</turretTopDrawSize>
+			<turretBurstCooldownTime>9</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_155mmGCT</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_155mmGCT_Weapon</defName>
+		<label>155mm GCT AUF1 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M155mmGCT_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_155mmGCT_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>23500</range>
+				<soundCast>Sound_155mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>22</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>300</ticksBetweenBurstShots>
+				<burstShotCount>3</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>42</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_155mmGCT_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_155mmGCT_indirect_Base</defName>
+		<label>155mm GCT AUF1 (indirect)</label>
+    <description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M155mmGCT</texPath>
+			<drawSize>(17,17)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M155mmGCT_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1720</MaxHitPoints>
+			<WorkToBuild>50000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>900</Steel>
+      <ComponentIndustrial>20</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+      <ComponentSpacer>1</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_155mmGCT_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>9</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>18</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(4,4)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_155mmGCT</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_155mmGCT_indirect_Weapon</defName>
+		<label>155mm GCT AUF1 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M155mmGCT_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_155mmGCT_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>23500</range>
+				<soundCast>Sound_155mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>22</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>300</ticksBetweenBurstShots>
+				<burstShotCount>3</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>42</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_155mmGCT_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

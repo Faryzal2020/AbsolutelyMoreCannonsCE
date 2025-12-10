@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 2S1 Gvozdika ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_122mmGvozdika</defName>
+		<label>2S1 Gvozdika</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_122mmGvozdika_Base</defName>
+		<label>2S1 Gvozdika</label>
+    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 720, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M122mmGvozdika</texPath>
+			<drawSize>(13,13)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M122mmGvozdika_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>720</MaxHitPoints>
+			<WorkToBuild>27500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>500</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_122mmGvozdika_Weapon</turretGunDef>
+      <turretTopDrawSize>13</turretTopDrawSize>
+			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_122mmGvozdika</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_122mmGvozdika</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_122mmGvozdika_Weapon</defName>
+		<label>2S1 Gvozdika Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M122mmGvozdika_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_122mm2A12_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>6</minRange>
+				<range>15300</range>
+				<soundCast>Sound_122mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>40</magazineSize>
+				<reloadTime>5</reloadTime>
+				<ammoSet>AmmoSet_122mm2A12_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_122mmGvozdika_indirect_Base</defName>
+		<label>2S1 Gvozdika (indirect)</label>
+    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M122mmGvozdika</texPath>
+			<drawSize>(13,13)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M122mmGvozdika_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>720</MaxHitPoints>
+			<WorkToBuild>27500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>500</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_122mmGvozdika_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>13</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_122mmGvozdika</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>200</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(3,3)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_122mmGvozdika</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_122mmGvozdika_indirect_Weapon</defName>
+		<label>2S1 Gvozdika Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M122mmGvozdika_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_122mm2A12_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>15300</range>
+				<soundCast>Sound_122mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>40</magazineSize>
+				<reloadTime>5</reloadTime>
+				<ammoSet>AmmoSet_122mm2A12_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ResearchProjectDef>
+    <defName>Research_20mmFlak38</defName>
+    <label>20mm Flak 38</label>
+    <description>Flak 38 is a relatively weak turret, effective from 2 to 50 meters. This turret supports multiple ammunition types: 20x138mm Swiss (armor-piercing, 43.0 damage per shot, 107.5 DPS). It has a magazine capacity of 8 rounds, requiring 1 seconds per reload.</description>
+    <baseCost>200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>HeavyAutocannons</li>
+    </prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_40mmDCA40</defName>
+    <label>40mm DCA 40</label>
+    <description>DCA 40 is a moderately durable turret, effective from 4 to 60 meters. This turret supports multiple ammunition types: 40x365mm M811 (explosive, 36.0 damage per shot, 1.0-meter blast radius, 45.0 DPS); 40x365mm M822 (armor-piercing, 123.0 damage per shot, 153.8 DPS). It has a magazine capacity of 80 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_20mmFlak38</li>
+    </prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>1.7</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_30mmFV510</defName>
+    <label>30mm FV 510 Warrior</label>
+    <description>FV 510 Warrior: FV 510 Warrior is a moderately durable turret, effective from 4 to 70 meters. This turret supports multiple ammunition types: 30x170mm (explosive, 20.0 damage per shot, 1.0-meter blast radius, 13.3 DPS); 30x170mm (armor-piercing, 71.0 damage per shot, 47.3 DPS). It has a magazine capacity of 100 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_40mmDCA40</li>
+    </prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>1.7</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_30mmKugelblitz</defName>
+    <label>30mm FlakPz IV Kugelblitz</label>
+    <description>FlakPz IV Kugelblitz is a heavily armored turret, effective from 3 to 70 meters. This turret supports multiple ammunition types: 30x184mm M.Gr. (explosive, 15.0 damage per shot, 0.5-meter blast radius, 75.0 DPS); 30x184mm Pz.Gr. H (armor-piercing, 74.0 damage per shot, 370.0 DPS). It has a magazine capacity of 200 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_30mmFV510</li>
+    </prerequisites>
+    <researchViewX>5</researchViewX>
+    <researchViewY>1.7</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_40mmM247</defName>
+    <label>40mm M247</label>
+    <description>M247 is a heavily armored turret, effective from 4 to 80 meters. This turret supports multiple ammunition types: 40x365mm M811 (explosive, 36.0 damage per shot, 1.0-meter blast radius, 180.0 DPS); 40x365mm M822 (armor-piercing, 123.0 damage per shot, 615.0 DPS). It has a magazine capacity of 580 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_30mmKugelblitz</li>
+      <li>AdvancedFabrication</li>
+    </prerequisites>
+    <researchViewX>6</researchViewX>
+    <researchViewY>1.7</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Research_37mmFlakM42</defName>
+    <label>37mm Flak M42</label>
+    <description>3.7cm Flak M42 is a relatively weak turret, effective from 4 to 60 meters. This turret supports multiple ammunition types: 37x249mm (explosive, 29.0 damage per shot, 1.0-meter blast radius, 96.7 DPS); 37x249mm (armor-piercing, 90.0 damage per shot, 300.0 DPS). It has a magazine capacity of 300 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_20mmFlak38</li>
+    </prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_20mmSPzMarder</defName>
+    <label>20mm SPz Marder</label>
+    <description>SPz Marder is a moderately durable turret, effective from 3 to 70 meters. This turret supports multiple ammunition types: 20x139mm (explosive, 16.0 damage per shot, 1.0-meter blast radius, 10.7 DPS); 20x139mm (armor-piercing, 42.0 damage per shot, 28.0 DPS). It has a magazine capacity of 1250 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>800</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_37mmFlakM42</li>
+      <li>Fabrication</li>
+    </prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_30mmBMP2</defName>
+    <label>30mm BMP-2</label>
+    <description>BMP-2 is a moderately durable turret, effective from 3 to 70 meters. This turret supports multiple ammunition types: 30x165mm (explosive, 22.0 damage per shot, 1.0-meter blast radius, 22.0 DPS); 30x165mm (armor-piercing, 69.0 damage per shot, 69.0 DPS). It has a magazine capacity of 500 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_20mmSPzMarder</li>
+    </prerequisites>
+    <researchViewX>5</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_25mmSIDAM</defName>
+    <label>25mm SIDAM 25</label>
+    <description>SIDAM 25 is a moderately durable turret, effective from 3 to 80 meters. This turret supports multiple ammunition types: 25x137mm M792 (explosive, 23.0 damage per shot, 1.0-meter blast radius, 230.0 DPS); 25x137mm M791 (armor-piercing, 56.0 damage per shot, 560.0 DPS). It has a magazine capacity of 600 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_30mmBMP2</li>
+      <li>AdvancedFabrication</li>
+    </prerequisites>
+    <researchViewX>6</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+
+  <ResearchProjectDef>
+    <defName>UnmannedLargeAutocannons</defName>
+    <label>Unmanned Autocannon Turrets</label>
+    <description>Allows you to research and build the unmanned variant of autocannon turrets.</description>
+    <baseCost>2000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Automated_FCS</li>
+    </prerequisites>
+    <researchViewX>9</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+</Defs>

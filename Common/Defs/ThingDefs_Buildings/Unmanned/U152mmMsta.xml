@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Auto 2S19 Msta ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_U152mmMsta</defName>
+		<label>Auto 2S19 Msta</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_U152mmMsta_Base</defName>
+		<label>Auto 2S19 Msta (Auto)</label>
+    <description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 3020, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5). Capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U152mmMsta</texPath>
+			<drawSize>(22,22)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U152mmMsta_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>3020</MaxHitPoints>
+			<WorkToBuild>56250</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>0.95</AimingAccuracy>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>15</ComponentIndustrial>
+			<Plasteel>10</Plasteel>
+      <ComponentSpacer>4</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_U152mmMsta_Weapon</turretGunDef>
+      <turretTopDrawSize>21</turretTopDrawSize>
+			<turretBurstCooldownTime>9</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_U152mmMsta</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>5,5</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U152mmMsta</li>
+		</researchPrerequisites>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseAutoTurretGun">
+		<defName>Turret_U152mmMsta_Weapon</defName>
+		<label>Auto 2S19 Msta Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U152mmMsta_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 2600, Cooldown: 9.0s, Range: 24700, Indirect Range: 20-24700, Rate of Fire: 6 rounds per minute. Ammunition: HE (Explosion Radius 4.5). Capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.4</SwayFactor>
+			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
+      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_152mm2A65_HE</defaultProjectile>
+				<warmupTime>3.0500000000000003</warmupTime>
+        <minRange>7</minRange>
+				<range>24700</range>
+				<soundCast>Sound_152mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>120</muzzleFlashScale>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>100</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_152mm2A65_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>FALSE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+      </li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryAutoBase">
+		<defName>Turret_U152mmMsta_indirect_Base</defName>
+		<label>Auto 2S19 Msta (indirect)</label>
+    <description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 2600, Cooldown: 9.0s, Range: 24700, Indirect Range: 20-24700, Rate of Fire: 6 rounds per minute. Ammunition: HE (Explosion Radius 4.5). Capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U152mmMsta</texPath>
+			<drawSize>(22,22)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U152mmMsta_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>3020</MaxHitPoints>
+			<WorkToBuild>56250</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>1</AimingAccuracy>
+      <ShootingAccuracyTurret>1.5</ShootingAccuracyTurret>
+		</statBases>
+		<costList>
+			<Steel>1000</Steel>
+      <ComponentIndustrial>15</ComponentIndustrial>
+			<Plasteel>10</Plasteel>
+      <ComponentSpacer>4</ComponentSpacer>
+		</costList>
+		<tradeTags>
+			<li>CE_Turret</li>
+		</tradeTags>
+		<building>
+			<turretGunDef>Turret_U152mmMsta_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>9</turretBurstCooldownTime>
+      <turretTopDrawSize>21</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_U152mmMsta</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(5,5)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U152mmMsta</li>
+		</researchPrerequisites>
+    <interactionCellOffset>()</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_U152mmMsta_indirect_Weapon</defName>
+		<label>Auto 2S19 Msta Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U152mmMsta_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 2600, Cooldown: 9.0s, Range: 24700, Indirect Range: 20-24700, Rate of Fire: 6 rounds per minute. Ammunition: HE (Explosion Radius 4.5). Capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.4</SwayFactor>
+			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_152mm2A65_indirect_HE</defaultProjectile>
+				<warmupTime>3.0500000000000003</warmupTime>
+        <minRange>20</minRange>
+				<range>24700</range>
+				<soundCast>Sound_152mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>120</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+					<li>80</li>
+					<li>90</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>100</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_152mm2A65_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

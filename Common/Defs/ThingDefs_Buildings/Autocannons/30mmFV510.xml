@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== FV 510 Warrior ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_30mmFV510_Base</defName>
+		<label>FV 510 Warrior</label>
+    <description>Use ammo set:30x170mm HE-I \nThe 30mm Rarden cannon equipped on the British FV510 Warrior IFV was designed for accurate infantry support fire. It features a 100-round magazine and is incapable of settlement bombardment. Power: 100, HP: 585, Cooldown: 1.5s, Range: 4-70, Rate of Fire: 92 rounds per minute, Aimed Burst: 3, Reload Time: 5s.</description>
+		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M30mmFV510</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M30mmFV510_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>585</MaxHitPoints>
+			<WorkToBuild>10000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>350</Steel>
+			<Plasteel>2</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_30mmFV510_Weapon</turretGunDef>
+      <turretTopDrawSize>15</turretTopDrawSize>
+			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>100</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_30mmFV510</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(1,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_30mmFV510_Weapon</defName>
+		<label>FV 510 Warrior Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M30mmFV510_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:30x170mm HE-I \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>1.5</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.9</SwayFactor>
+			<RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_30x170mm_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>4</minRange>
+				<range>70</range>
+				<soundCast>Sound_RARDEN</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>25</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>39</ticksBetweenBurstShots>
+				<burstShotCount>6</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern> <!--
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>10</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos> -->
+			</li>
+		</verbs>
+		<comps> <!--
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+				</chargeSpeeds>
+			</li> -->
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>100</magazineSize>
+				<reloadTime>5</reloadTime>
+				<ammoSet>AmmoSet_30x170mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>3</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

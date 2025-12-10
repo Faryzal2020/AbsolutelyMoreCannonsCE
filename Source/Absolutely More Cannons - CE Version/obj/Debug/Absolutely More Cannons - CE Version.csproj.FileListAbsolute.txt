@@ -1,0 +1,7 @@
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\Absolutely More Cannons - CE Version.csproj.AssemblyReference.cache
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\Absolutely More Cannons - CE Version.GeneratedMSBuildEditorConfig.editorconfig
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\Absolutely More Cannons - CE Version.AssemblyInfoInputs.cache
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\Absolutely More Cannons - CE Version.AssemblyInfo.cs
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\Absolutely More Cannons - CE Version.csproj.CoreCompileInputs.cache
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Assemblies\AbsolutelyMoreCannons.dll
+G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Source\Absolutely More Cannons - CE Version\obj\Debug\AbsolutelyMoreCannons.dll

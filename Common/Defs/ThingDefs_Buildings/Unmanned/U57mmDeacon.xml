@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Auto AEC Deacon ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_U57mmDeacon</defName>
+		<label>Auto AEC Deacon</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_U57mmDeacon_Base</defName>
+		<label>Auto AEC Deacon (Auto)</label>
+    <description>The Auto AEC Deacon is a British 6-pounder self-propelled gun retrofitted with automatic targeting systems. It has an internal magazine (Mag Size: 60) and requires 500 power to operate. Power: 500, HP: 518, Cooldown: 4.0s, Range: 110, Rate of Fire: 15 rounds per minute. Ammunition: AP (Penetration 116 / 177). Not capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U57mmDeacon</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U57mmDeacon_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>518</MaxHitPoints>
+			<WorkToBuild>11250</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>0.95</AimingAccuracy>
+		</statBases>
+		<costList>
+			<Steel>450</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_U57mmDeacon_Weapon</turretGunDef>
+      <turretTopDrawSize>11</turretTopDrawSize>
+			<turretBurstCooldownTime>4</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_U57mmDeacon</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U57mmDeacon</li>
+		</researchPrerequisites>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseAutoTurretGun">
+		<defName>Turret_U57mmDeacon_Weapon</defName>
+		<label>Auto AEC Deacon Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U57mmDeacon_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto AEC Deacon is a British 6-pounder self-propelled gun retrofitted with automatic targeting systems. It has an internal magazine (Mag Size: 60) and requires 500 power to operate. Power: 500, HP: 1600, Cooldown: 4.0s, Range: 110, Rate of Fire: 15 rounds per minute. Ammunition: AP (Penetration 116 / 177). Not capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.3</SwayFactor>
+			<RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
+      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
+				<warmupTime>3.05</warmupTime>
+        <minRange>4</minRange>
+				<range>110</range>
+				<soundCast>Sound_6Pdr</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>40</muzzleFlashScale>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>60</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_57mmOQF_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>FALSE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+</Defs>

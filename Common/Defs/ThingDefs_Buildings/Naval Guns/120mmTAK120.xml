@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 12cm/46 TAK120 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_120mmTAK120</defName>
+		<label>12cm/46 TAK120</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_120mmTAK120_Base</defName>
+		<label>12cm/46 TAK120</label>
+    <description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 1680, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M120mmTAK120</texPath>
+			<drawSize>(12,12)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M120mmTAK120_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1680</MaxHitPoints>
+			<WorkToBuild>35000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1100</Steel>
+      <ComponentIndustrial>40</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_120mmTAK120_Weapon</turretGunDef>
+      <turretTopDrawSize>12</turretTopDrawSize>
+			<turretBurstCooldownTime>2</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_120mmTAK120</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_120mmTAK120</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_120mmTAK120_Weapon</defName>
+		<label>12cm/46 TAK120 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M120mmTAK120_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 6000, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.005</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_120mmTAK120_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>8</minRange>
+				<range>18000</range>
+				<soundCast>Sound_120mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>45</ticksBetweenBurstShots>
+				<burstShotCount>6</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>52</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_120mmTAK120_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+
+<!-- INDIRECT -->
+	<ThingDef ParentName="AMCArtilleryBase">
+		<defName>Turret_120mmTAK120_indirect_Base</defName>
+		<label>12cm/46 TAK120 (indirect)</label>
+    <description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 6000, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M120mmTAK120</texPath>
+			<drawSize>(12,12)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M120mmTAK120_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>1680</MaxHitPoints>
+			<WorkToBuild>35000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1100</Steel>
+      <ComponentIndustrial>40</ComponentIndustrial>
+			<Plasteel>50</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_120mmTAK120_indirect_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
+			<turretBurstCooldownTime>2</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+      <turretTopDrawSize>12</turretTopDrawSize>
+		</building>
+		<designatorDropdown>Group_AMC_120mmTAK120</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+		</comps>
+    <size>(4,4)</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_120mmTAK120</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseArtilleryWeapon">
+		<defName>Turret_120mmTAK120_indirect_Weapon</defName>
+		<label>12cm/46 TAK120 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M120mmTAK120_Top_Indirect</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 6000, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.005</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<weaponTags>
+			<li>TurretGun</li>
+			<li>Artillery_BaseDestroyer</li>
+		</weaponTags>
+		<soundInteract>AMC_Large_Reload</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
+				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+				<recoilAmount>1.5</recoilAmount>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_120mmTAK120_indirect_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>25</minRange>
+				<range>18000</range>
+				<soundCast>Sound_120mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>45</ticksBetweenBurstShots>
+				<burstShotCount>6</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>1</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>50</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
+				</chargeSpeeds>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>52</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_120mmTAK120_indirect_Shells</ammoSet>
+			</li>
+		</comps>
+	</ThingDef>
+	
+</Defs>

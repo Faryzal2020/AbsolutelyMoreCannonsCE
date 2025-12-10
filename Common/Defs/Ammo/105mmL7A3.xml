@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo105mmL7A3Shells</defName>
+		<label>L7A3 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/105mmL7A3APFSDS</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_105mmL7A3_Shells</defName>
+		<label>L7A3 ammunitions</label>
+		<ammoTypes>
+			<Ammo_105mmL7A3_APFSDS>Bullet_105mmL7A3_APFSDS</Ammo_105mmL7A3_APFSDS>
+			<Ammo_105mmL7A3_HEAT>Bullet_105mmL7A3_HEAT</Ammo_105mmL7A3_HEAT>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo105mmL7A3Base" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for L7A3 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo105mmL7A3Shells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+		<isMortarAmmo>true</isMortarAmmo>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo105mmL7A3Base">
+		<defName>Ammo_105mmL7A3_APFSDS</defName>
+		<label>105mm DM23 (APFSDS)</label>
+		<graphicData>
+			<texPath>Things/Projectile/105mmL7A3APFSDS</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>92.18</MarketValue>
+			<Mass>15.39</Mass>
+			<Bulk>50.23</Bulk>
+		</statBases>
+		<ammoClass>Sabot</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<detonateProjectile>Bullet_105mmL7A3_APFSDS</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo105mmL7A3Base">
+		<defName>Ammo_105mmL7A3_HEAT</defName>
+		<label>105mm DM12 (HEAT)</label>
+		<graphicData>
+			<texPath>Things/Projectile/105mmL7A3HEAT</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>130.4</MarketValue>
+			<Mass>21.8</Mass>
+			<Bulk>49.73</Bulk>
+		</statBases>
+		<ammoClass>RocketHEAT</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<detonateProjectile>Bullet_105mmL7A3_HEAT</detonateProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base105mmL7A3Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
+		<graphicData>
+			<shaderType>TransparentPostLight</shaderType>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base105mmL7A3Bullet">
+		<defName>Bullet_105mmL7A3_APFSDS</defName>
+		<label>105mm DM23 shell (APFSDS)</label>
+		<graphicData>
+			<texPath>Things/Projectile/RodShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>236</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>182</damageAmountBase>
+			<armorPenetrationSharp>408</armorPenetrationSharp>
+			<armorPenetrationBlunt>80235.24</armorPenetrationBlunt>
+		</projectile>
+
+	</ThingDef>
+
+	<ThingDef ParentName="Base105mmL7A3Bullet">
+		<defName>Bullet_105mmL7A3_HEAT</defName>
+		<label>105mm DM12 shell (HEAT)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/FinShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>201</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>248</damageAmountBase>
+			<explosionRadius>1.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>400</armorPenetrationSharp>
+			<armorPenetrationBlunt>45.584</armorPenetrationBlunt>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<damageAmountBase>855</damageAmountBase>
+				<explosiveDamageType>Bomb</explosiveDamageType>
+				<explosiveRadius>1</explosiveRadius>
+				<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			</li>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>10</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+				<fragAngleRange>-90~-10</fragAngleRange>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_105mmL7A3_APFSDS</defName>
+		<label>make 105mm DM23 (APFSDS) ammo x10</label>
+		<description>Craft 10 105mm DM23 (APFSDS).</description>
+		<jobString>Making 105mm DM23 (APFSDS).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>232</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_105mmL7A3_APFSDS>10</Ammo_105mmL7A3_APFSDS>
+		</products>
+		<workAmount>46000</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_105mmL7A3_HEAT</defName>
+		<label>make 105mm DM12 (HEAT) ammo x10</label>
+		<description>Craft 10 105mm DM12 (HEAT).</description>
+		<jobString>Making 105mm DM12 (HEAT).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>436</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>28</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_105mmL7A3_HEAT>10</Ammo_105mmL7A3_HEAT>
+		</products>
+		<workAmount>56000</workAmount>
+	</RecipeDef>
+
+</Defs>

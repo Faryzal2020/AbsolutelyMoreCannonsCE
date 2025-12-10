@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Muzzle Flash</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+			    <!-- //////////////////////////////////// -->
+			    <!-- ////////////Autocannons///////////// -->
+			    <!-- //////////////////////////////////// -->
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_20mmFlak38_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.5,1.5)</drawSize>
+							<offsets>
+								<li>(2.4,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_20mmSPzMarder_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.5,1.5)</drawSize>
+							<offsets>
+								<li>(1.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_25mmSIDAM_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.8,1.8)</drawSize>
+							<offsets>
+								<li>(1.6,0.7)</li>
+								<li>(1.6,-0.7)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_30mmBMP2_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(2.4,2)</drawSize>
+							<offsets>
+								<li>(2.8,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_30mmFV510_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.4,2)</drawSize>
+							<offsets>
+								<li>(3.6,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_30mmKugelblitz_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(2.4,2)</drawSize>
+							<offsets>
+								<li>(2.7,0.2)</li>
+								<li>(2.7,-0.2)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_37mmFlakM42_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3.2,2.8)</drawSize>
+							<offsets>
+								<li>(3.1,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_40mmDCA40_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3,3)</drawSize>
+							<offsets>
+								<li>(3.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_40mmM247_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3,3)</drawSize>
+							<offsets>
+								<li>(3.8,0.3)</li>
+								<li>(3.8,-0.3)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+			    <!-- //////////////////////////////////// -->
+			    <!-- //////////////Cannons/////////////// -->
+			    <!-- //////////////////////////////////// -->
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_57mmDeacon_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2,2)</drawSize>
+							<offsets>
+								<li>(3.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_U57mmDeacon_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2,2)</drawSize>
+							<offsets>
+								<li>(3.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_75mmPak40_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(2.1,2.1)</drawSize>
+							<offsets>
+								<li>(2.7,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_88mmFlak41_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(3.2,3.2)</drawSize>
+							<offsets>
+								<li>(4.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_90mmM26_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.6,3.2)</drawSize>
+							<offsets>
+								<li>(5.6,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_100mmBS3_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.2,3)</drawSize>
+							<offsets>
+								<li>(4.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_100mmT54_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(3.6,3.2)</drawSize>
+							<offsets>
+								<li>(6.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_105mmLeo1A5_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3.6,3.2)</drawSize>
+							<offsets>
+								<li>(6.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_106mmM40_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3,3)</drawSize>
+							<offsets>
+								<li>(2.8,0.2)</li>
+								<li>(2.8,-0.2)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_128mmPak44_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.6,3.2)</drawSize>
+							<offsets>
+								<li>(5.8,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+			    <!-- //////////////////////////////////// -->
+			    <!-- //////////////Howitzers/////////////// -->
+			    <!-- //////////////////////////////////// -->
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_75mmLEIG18_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.5,1.5)</drawSize>
+							<offsets>
+								<li>(2.4,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_122mmGvozdika_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.5,1.5)</drawSize>
+							<offsets>
+								<li>(5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_150mmSIG33_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.4,2)</drawSize>
+							<offsets>
+								<li>(2.8,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_152mmAkatsiya_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.8,4)</drawSize>
+							<offsets>
+								<li>(6.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_152mmMsta_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.8,4)</drawSize>
+							<offsets>
+								<li>(9,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_155mmGCT_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(4.2,3.8)</drawSize>
+							<offsets>
+								<li>(7.6,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_233mmBLMK1_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshTwo</def>
+							<drawSize>(3,3)</drawSize>
+							<offsets>
+								<li>(2.9,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_600mmKarlGerat_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3,3)</drawSize>
+							<offsets>
+								<li>(2.9,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+
+			
+			    <!-- //////////////////////////////////// -->
+			    <!-- /////////////Naval Guns///////////// -->
+			    <!-- //////////////////////////////////// -->
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmSKC34_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(4.7,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmMark16_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(6.1,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_120mmTAK120_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(5.6,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmTypeC_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(5.8,0.4)</li>
+								<li>(5.8,-0.4)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmOtobredaC_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_150mmKC36_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(5.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_150mmKC36T_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(6,0.6)</li>
+								<li>(6,-0.6)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_203mmSKC34_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(10.8,1.2)</li>
+								<li>(10.8,-1.2)</li>
+							</offsets>
+							<isAlternately>true</isAlternately>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_100mmModel1953_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_76mmOtomelaraC_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(5,5)</drawSize>
+							<offsets>
+								<li>(4.7,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			</operations>
+		</match>
+	</Operation>
+
+</Patch>

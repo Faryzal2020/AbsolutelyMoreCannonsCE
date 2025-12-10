@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?><Defs>
+
+  <SoundDef>
+    <defName>Sound_Railgun</defName>  
+    <context>MapOnly</context>
+    <eventNames />  
+    <maxSimultaneous>10</maxSimultaneous>  
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>railgun</clipPath>
+          </li>
+        </grains>
+        <pitchRange>
+          <min>0.9</min>        
+          <max>1.1</max>
+        </pitchRange>       
+        <volumeRange>
+          <min>100</min>        
+          <max>100</max>
+        </volumeRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>  
+  <SoundDef>
+    <defName>Big_Explosion</defName>  
+    <context>MapOnly</context>
+    <eventNames />  
+    <maxSimultaneous>10</maxSimultaneous>  
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>big_explosion</clipPath>
+          </li>
+        </grains>
+        <pitchRange>
+          <min>0.9</min>        
+          <max>1.1</max>
+        </pitchRange>       
+        <volumeRange>
+          <min>100</min>        
+          <max>100</max>
+        </volumeRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>Small_Pop</defName>  
+    <context>MapOnly</context>
+    <eventNames />  
+    <maxSimultaneous>50</maxSimultaneous>  
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Small_Pop</clipPath>
+          </li>
+        </grains>
+        <pitchRange>
+          <min>0.5</min>        
+          <max>1.5</max>
+        </pitchRange>       
+        <volumeRange>
+          <min>50</min>        
+          <max>100</max>
+        </volumeRange>
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_AutoloaderS_loading</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/Small</clipPath>
+          </li>
+        </grains>
+        <volumeRange>50~25</volumeRange>
+        <pitchRange>0.8~1.2</pitchRange>
+        <distRange>0~49.53489</distRange>
+        <sustainLoop>False</sustainLoop>
+        <sustainIntervalRange>-0.75~-0.75</sustainIntervalRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_AutoloaderM_loading</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/AutoloaderL</clipPath>
+          </li>
+        </grains>
+        <volumeRange>50~25</volumeRange>
+        <pitchRange>0.8~1.2</pitchRange>
+        <distRange>0~49.53489</distRange>
+        <sustainLoop>False</sustainLoop>
+        <sustainIntervalRange>-1.5~-1.5</sustainIntervalRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Large_Reload</defName>  
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxVoices>8</maxVoices>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/Large</clipPath>
+          </li>
+        </grains>   
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Small_Interact</defName>  
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxVoices>8</maxVoices>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/Small</clipPath>
+          </li>
+        </grains>   
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Large_Interact</defName>  
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxVoices>8</maxVoices>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/ShortLarge</clipPath>
+          </li>
+        </grains>   
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Directfire_PreImpact</defName>  
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Flyby/Cannon</clipPath>
+          </li>
+        </grains>
+        <volumeRange>28.82353~37.05883</volumeRange>
+        <tempoAffectedByGameSpeed>true</tempoAffectedByGameSpeed>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_NukeExplosionSound</defName>  
+    <context>MapOnly</context> 
+    <maxSimultaneous>1</maxSimultaneous>  
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>NuclearExplosion</clipPath>
+          </li>
+        </grains>      
+        <volumeRange>60~65</volumeRange>      
+        <pitchRange>0.98~1.02</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Turret_Small_Reload</defName>  
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxVoices>8</maxVoices>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/Small</clipPath>
+          </li>
+        </grains>   
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>AMC_Turret_Medium_Reload</defName>  
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxVoices>8</maxVoices>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipPath>Reload/AutoloaderL</clipPath>
+          </li>
+        </grains>   
+        <sustainLoop>False</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

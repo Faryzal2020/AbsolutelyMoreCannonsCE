@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Auto DCA 40 ===============-->
+
+	<DesignatorDropdownGroupDef>
+		<defName>Group_AMC_U40mmDCA40</defName>
+		<label>Auto DCA 40</label>
+	</DesignatorDropdownGroupDef>
+
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_U40mmDCA40_Base</defName>
+		<label>Auto DCA 40 (Auto)</label>
+    <description>The Auto DCA 40 is a French 40mm twin anti-aircraft turret modified for unmanned operation. It has an internal magazine (Mag Size: 160) and requires 300 power to operate. Power: 300, HP: 460, Cooldown: 0.8s, Range: 80, Rate of Fire: 75 rounds per minute. Ammunition: AP (Penetration 94). Not capable of settlement bombardment.</description>
+		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/U40mmDCA40</texPath>
+			<drawSize>(6,6)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/U40mmDCA40_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>460</MaxHitPoints>
+			<WorkToBuild>8750</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+      <AimingAccuracy>0.95</AimingAccuracy>
+		</statBases>
+		<costList>
+			<Steel>400</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+      <ComponentSpacer>3</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_U40mmDCA40_Weapon</turretGunDef>
+      <turretTopDrawSize>6</turretTopDrawSize>
+			<turretBurstCooldownTime>0.8</turretBurstCooldownTime>
+			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
+		</building>
+		<designatorDropdown>Group_AMC_U40mmDCA40</designatorDropdown>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>300</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_U40mmDCA40</li>
+		</researchPrerequisites>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseAutoTurretGun">
+		<defName>Turret_U40mmDCA40_Weapon</defName>
+		<label>Auto DCA 40 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/U40mmDCA40_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>The Auto DCA 40 is a French 40mm twin anti-aircraft turret modified for unmanned operation. It has an internal magazine (Mag Size: 160) and requires 300 power to operate. Power: 300, HP: 1100, Cooldown: 0.8s, Range: 80, Rate of Fire: 75 rounds per minute. Ammunition: AP (Penetration 94). Not capable of settlement bombardment.</description>
+		<statBases>
+			<SightsEfficiency>2.9</SightsEfficiency>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.4</SwayFactor>
+			<RangedWeapon_Cooldown>0.8</RangedWeapon_Cooldown>
+      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_40x365mm_AP</defaultProjectile>
+				<warmupTime>3.05</warmupTime>
+        <minRange>4</minRange>
+				<range>80</range>
+				<soundCast>Sound_40mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>30</muzzleFlashScale>
+				<ticksBetweenBurstShots>11</ticksBetweenBurstShots>
+				<burstShotCount>6</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>160</magazineSize>
+				<reloadTime>0.5</reloadTime>
+				<ammoSet>AmmoSet_40x365mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>2</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+</Defs>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo20x139mmShells</defName>
+		<label>Mk 20 Rh-202 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/20x139mm/HEI/HEI_b</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_20x139mm_Shells</defName>
+		<label>Mk 20 Rh-202 ammunitions</label>
+		<ammoTypes>
+			<Ammo_20x139mm_HE>Bullet_20x139mm_HE</Ammo_20x139mm_HE>
+			<Ammo_20x139mm_APDS>Bullet_20x139mm_APDS</Ammo_20x139mm_APDS>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo20x139mmBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for Mk 20 Rh-202 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo20x139mmShells</li>
+		</thingCategories>
+		<stackLimit>750</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo20x139mmBase">
+		<defName>Ammo_20x139mm_HE</defName>
+		<label>20x139mm (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/20x139mm/HEI</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>5.06</MarketValue>
+			<Mass>0.634</Mass>
+			<Bulk>0.47</Bulk>
+		</statBases>
+		<ammoClass>GrenadeIncendiary</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_20x139mm_HE</cookOffProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo20x139mmBase">
+		<defName>Ammo_20x139mm_APDS</defName>
+		<label>20x139mm (APDS)</label>
+		<graphicData>
+			<texPath>Things/Projectile/20x139mm/APDS</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>5.46</MarketValue>
+			<Mass>0.608</Mass>
+			<Bulk>0.47</Bulk>
+		</statBases>
+		<ammoClass>Sabot</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_20x139mm_APDS</cookOffProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base20x139mmBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_RifleAmmoCasings_HighCal</casingMoteDefname>
+			<casingFilthDefname>Filth_RifleAmmoCasings_HighCal</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x139mmBullet">
+		<defName>Bullet_20x139mm_HE</defName>
+		<label>20x139mm shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>ThumpCannon_Impact</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
+			<speed>184</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>16</damageAmountBase>
+			<explosionRadius>1</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>1</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x139mmBullet">
+		<defName>Bullet_20x139mm_APDS</defName>
+		<label>20x139mm shell (APDS)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>192</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>42</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>57</armorPenetrationSharp>
+			<armorPenetrationBlunt>1306.8</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_20x139mm_HE</defName>
+		<label>make 20x139mm (HE) ammo x100</label>
+		<description>Craft 100 20x139mm (HE).</description>
+		<jobString>Making 20x139mm (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>128</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>4</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>9</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_20x139mm_HE>100</Ammo_20x139mm_HE>
+		</products>
+		<workAmount>18800</workAmount>
+	</RecipeDef>
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_20x139mm_APDS</defName>
+		<label>make 20x139mm (APDS) ammo x100</label>
+		<description>Craft 100 20x139mm (APDS).</description>
+		<jobString>Making 20x139mm (APDS).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>100</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Plasteel</li>
+					</thingDefs>
+				</filter>
+				<count>26</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>Plasteel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_20x139mm_APDS>100</Ammo_20x139mm_APDS>
+		</products>
+		<workAmount>25500</workAmount>
+	</RecipeDef>
+
+
+</Defs>

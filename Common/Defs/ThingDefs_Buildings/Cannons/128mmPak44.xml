@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== Pak 44 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_128mmPak44_Base</defName>
+		<label>Pak 44</label>
+    <description>The Pak 44 was Germany's most powerful anti-tank gun of WWII, designed to counter the heaviest Allied armor. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 720, Cooldown: 15.0s, Range: 130, Rate of Fire: 4 rounds per minute. Ammunition types: 128mm Pzgr. (AP, Penetration: 252), 128mm Sprgr. (HE, Explosion Radius: 5).</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M128mmPak44</texPath>
+			<drawSize>(10,10)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M128mmPak44_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>720</MaxHitPoints>
+			<WorkToBuild>27500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>400</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+			<Plasteel>5</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_128mmPak44_Weapon</turretGunDef>
+      <turretTopDrawSize>14</turretTopDrawSize>
+			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_128mmPak44</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_128mmPak44_Weapon</defName>
+		<label>Pak 44 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M128mmPak44_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:128mm Pzgr. \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>2</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_128mmPAK44_APHE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>7</minRange>
+				<range>130</range>
+				<soundCast>Sound_Pak44</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>100</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_128mmPAK44_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

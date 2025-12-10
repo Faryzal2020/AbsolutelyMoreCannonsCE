@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== 3.7cm Flak M42 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_37mmFlakM42_Base</defName>
+		<label>3.7cm Flak M42</label>
+    <description>Use ammo set:37x249mm HEF-I \nThe 3.7cm Flak M42 was a late-war German anti-aircraft autocannon upgrade. It carries a 300-round magazine and is incapable of settlement bombardment. Power: N/A, HP: 360, Cooldown: 0.3s, Range: 4-60, Rate of Fire: 257 rounds per minute, Aimed Burst: 3, Reload Time: 5s.</description>
+		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M37mmFlakM42</texPath>
+			<drawSize>(7,7)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M37mmFlakM42_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>360</MaxHitPoints>
+			<WorkToBuild>6000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>220</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_37mmFlakM42_Weapon</turretGunDef>
+      <turretTopDrawSize>8</turretTopDrawSize>
+			<turretBurstCooldownTime>0.3</turretBurstCooldownTime>
+		</building>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_37mmFlakM42</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_37mmFlakM42_Weapon</defName>
+		<label>3.7cm Flak M42 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M37mmFlakM42_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:37x249mm HEF-I \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>1.5</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>0.3</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1.5</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_37x249mm_HE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>4</minRange>
+				<range>60</range>
+				<soundCast>Sound_37mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>30</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>14</ticksBetweenBurstShots>
+				<burstShotCount>5</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern> <!--
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>10</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos> -->
+			</li>
+		</verbs>
+		<comps> <!--
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+				</chargeSpeeds>
+			</li> -->
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>300</magazineSize>
+				<reloadTime>5</reloadTime>
+				<ammoSet>AmmoSet_37x249mm_Shells</ammoSet>
+			</li>
+      <li Class="CombatExtended.CompProperties_FireModes">
+        <aiUseBurstMode>TRUE</aiUseBurstMode>
+        <aiAimMode>AimedShot</aiAimMode>
+        <aimedBurstShotCount>2</aimedBurstShotCount>
+      </li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

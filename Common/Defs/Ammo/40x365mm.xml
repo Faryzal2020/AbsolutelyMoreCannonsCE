@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>Ammo40x365mmShells</defName>
+		<label>40mm Bofors L/70 shells</label>
+		<parent>AMCShells</parent>
+		<iconPath>Things/Projectile/40x365mm/HEI/HEI_b</iconPath>
+	</ThingCategoryDef>
+
+	<!-- ==================== AmmoSet ========================== -->
+
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_40x365mm_Shells</defName>
+		<label>40mm Bofors L/70 ammunitions</label>
+		<ammoTypes>
+			<Ammo_40x365mm_HE>Bullet_40x365mm_HE</Ammo_40x365mm_HE>
+			<Ammo_40x365mm_AP>Bullet_40x365mm_AP</Ammo_40x365mm_AP>
+		</ammoTypes>
+		<isMortarAmmoSet>true</isMortarAmmoSet>
+	</CombatExtended.AmmoSetDef>
+
+
+	<!-- ==================== Ammo ========================== -->
+
+	<ThingDef Class="CombatExtended.AmmoDef" Name="Ammo40x365mmBase" ParentName="MediumAmmoBase" Abstract="True">
+		<description>Ammunitions for 40mm Bofors L/70 weapon type</description>
+		<tradeTags>
+			<li>CE_AutoEnableTrade</li>
+			<li>CE_AutoEnableCrafting_CNCmachine</li>
+			<li>CE_AutoEnableCrafting_TableMachining</li>
+			<li MayRequire="AMandRP10.ND">CE_AutoEnableCrafting_ArtilleryMachining</li>
+		</tradeTags>
+		<thingCategories>
+			<li>Ammo40x365mmShells</li>
+		</thingCategories>
+		<stackLimit>25</stackLimit>
+		<cookOffFlashScale>25</cookOffFlashScale>
+		<cookOffSound>MortarBomb_Explode</cookOffSound>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo40x365mmBase">
+		<defName>Ammo_40x365mm_HE</defName>
+		<label>40x365mm M811 (HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/40x365mm/HEI</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>16.72</MarketValue>
+			<Mass>2.15</Mass>
+			<Bulk>4.69</Bulk>
+		</statBases>
+		<ammoClass>GrenadeIncendiary</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_40x365mm_HE</cookOffProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo40x365mmBase">
+		<defName>Ammo_40x365mm_AP</defName>
+		<label>40x365mm M822 (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/40x365mm/AP</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>10.07</MarketValue>
+			<Mass>2.15</Mass>
+			<Bulk>4.44</Bulk>
+		</statBases>
+		<ammoClass>ArmorPiercing</ammoClass>
+	  	<!-- ammo class choices:
+	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
+		<isMortarAmmo>false</isMortarAmmo>
+		<cookOffProjectile>Bullet_40x365mm_AP</cookOffProjectile>
+	</ThingDef>
+
+	<!-- ================== Projectiles ================== -->
+
+	<ThingDef Name="Base40x365mmBullet" ParentName="BaseBulletCE" Abstract="true">
+		<graphicData>
+			<drawSize>1.1</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<flyOverhead>false</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base40x365mmBullet">
+		<defName>Bullet_40x365mm_HE</defName>
+		<label>40x365mm M811 shell (HE)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+            <soundExplode>ThumpCannon_Impact</soundExplode>
+			<screenShakeFactor>0.3</screenShakeFactor>
+			<speed>182</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>36</damageAmountBase>
+			<explosionRadius>1</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Large>2</Fragment_Large>
+					<Fragment_Small>1</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base40x365mmBullet">
+		<defName>Bullet_40x365mm_AP</defName>
+		<label>40x365mm M822 shell (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Bullet_Big</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<speed>182</speed>
+			<damageDef>Bullet</damageDef>
+			<damageAmountBase>123</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<armorPenetrationSharp>94</armorPenetrationSharp>
+			<armorPenetrationBlunt>10184.64</armorPenetrationBlunt>
+		</projectile>
+	</ThingDef>
+
+	<!-- ==================== Recipes ========================== -->
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_40x365mm_HE</defName>
+		<label>make 40x365mm M811 (HE) ammo x25</label>
+		<description>Craft 25 40x365mm M811 (HE).</description>
+		<jobString>Making 40x365mm M811 (HE).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>108</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>3</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>8</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_40x365mm_HE>25</Ammo_40x365mm_HE>
+		</products>
+		<workAmount>15800</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_40x365mm_AP</defName>
+		<label>make 40x365mm M822 (AP) ammo x25</label>
+		<description>Craft 25 40x365mm M822 (AP).</description>
+		<jobString>Making 40x365mm M822 (AP).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>108</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_40x365mm_AP>25</Ammo_40x365mm_AP>
+		</products>
+		<workAmount>12960</workAmount>
+	</RecipeDef>
+
+</Defs>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+									
+	<!--=============== T-54 ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_100mmT54_Base</defName>
+		<label>T-54</label>
+    <description>The T-54 was a Soviet main battle tank that became one of the most widely produced tanks in history. It has an internal magazine of 34 rounds and no indirect fire capability. Power: 150, HP: 990, Cooldown: 7.1s, Range: 100, Rate of Fire: 8 rounds per minute. Ammunition types: 100mm BR-412D (AP, Penetration: 239), 100mm OF-412 (HE, Explosion Radius: 5).</description>
+		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M100mmT54</texPath>
+			<drawSize>(11,11)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M100mmT54_MenuIcon</uiIconPath>
+		<statBases>
+			<MaxHitPoints>990</MaxHitPoints>
+			<WorkToBuild>25000</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>560</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+			<Plasteel>15</Plasteel>
+		</costList>
+		<building>
+			<turretGunDef>Turret_100mmT54_Weapon</turretGunDef>
+      <turretTopDrawSize>16</turretTopDrawSize>
+			<turretBurstCooldownTime>7.1</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>150</basePowerConsumption>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    <size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_100mmT54</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_100mmT54_Weapon</defName>
+		<label>T-54 Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M100mmT54_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:100mm BR-412D \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.01</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>7.1</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Large_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_100mmBS3_APHE</defaultProjectile>
+				<warmupTime>0.5</warmupTime>
+        <minRange>8</minRange>
+				<range>100</range>
+				<soundCast>Sound_Russian100mm</soundCast>
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>70</muzzleFlashScale>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
+				<burstShotCount>1</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+			</li>
+		</verbs>
+		<comps>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>34</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_100mmBS3_Shells</ammoSet>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>
