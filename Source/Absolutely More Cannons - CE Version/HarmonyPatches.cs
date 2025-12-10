@@ -435,6 +435,16 @@ namespace AbsolutelyMoreCannons
 
                 if (turret != null)
                 {
+                    // Debug: Log turret top altitude
+                    string turretTopAltitudeKey = $"TURRETTOP_ALTITUDE_{turret.def.defName}";
+                    if (!AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Contains(turretTopAltitudeKey))
+                    {
+                        AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Add(turretTopAltitudeKey);
+                        // Try to get turret top draw position
+                        var turretTopDrawPos = turret.DrawPos;
+                        Verse.Log.Message($"[Altitude Debug] Turret Top (via parent turret) Y position: {turretTopDrawPos.y:F3}");
+                    }
+                    
                     var barrelComp = turret.GetComp<CompTurretBarrel>();
                     if (barrelComp != null && barrelComp.Extension != null)
                     {

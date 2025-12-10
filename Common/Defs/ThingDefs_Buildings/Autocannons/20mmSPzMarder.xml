@@ -58,14 +58,19 @@
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>(3,3)</drawSize>
         </barrelGraphic>
+        <underBarrelGraphic>
+          <texPath>Things/Building/M20mmSPzMarder_UnderBarrel</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>(3,3)</drawSize>
+        </underBarrelGraphic>
         <barrelOffset>(0,0,0.0)</barrelOffset>
         <barrelDrawSize>14.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <barrelAmount>1</barrelAmount>
         <recoilAnimation>
-          <maxDistance>0.6</maxDistance>
-          <recoilDuration>20</recoilDuration>
-          <returnDuration>15</returnDuration>
+          <maxDistance>0.2</maxDistance>
+          <recoilDuration>1</recoilDuration>
+          <returnDuration>2</returnDuration>
           <useRecoilCurve>true</useRecoilCurve>
           <useReturnCurve>false</useReturnCurve>
           <affectsRotation>false</affectsRotation>
@@ -75,8 +80,8 @@
           <durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 		  <drawFlash>true</drawFlash>
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-		  <flashSize>15</flashSize>
-		  <flashBrightness>2.5</flashBrightness>
+		  <flashSize>10</flashSize>
+		  <flashBrightness>1.5</flashBrightness>
 		  <flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>

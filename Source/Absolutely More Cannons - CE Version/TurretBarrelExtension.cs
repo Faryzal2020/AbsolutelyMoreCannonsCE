@@ -20,6 +20,12 @@ namespace AbsolutelyMoreCannons
         public GraphicData barrelGraphic;
 
         /// <summary>
+        /// Optional graphic that is drawn under the barrel but above the turret base.
+        /// Rotates with the turret top but has no movement mechanics (no recoil, no firing animation).
+        /// </summary>
+        public GraphicData underBarrelGraphic;
+
+        /// <summary>
         /// Offset from turret center to barrel pivot point.
         /// </summary>
         public UnityEngine.Vector3 barrelOffset = UnityEngine.Vector3.zero;

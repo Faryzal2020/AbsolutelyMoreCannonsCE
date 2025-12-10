@@ -16,7 +16,7 @@ namespace AbsolutelyMoreCannons
     public class CompTurretBarrel : ThingComp
     {
         // Static cache to track which types we've already logged debug info for
-        private static HashSet<string> loggedTypes = new HashSet<string>();
+        public static HashSet<string> loggedTypes = new HashSet<string>();
         
         // Static flash material for muzzle flash
         private static Material flashMaterial;
@@ -60,6 +60,8 @@ namespace AbsolutelyMoreCannons
 
         private Graphic barrelGraphic;
         private Material barrelMaterial;
+        private Graphic underBarrelGraphic;
+        private Material underBarrelMaterial;
 
         /// <summary>
         /// Gets the turret this component is attached to.
@@ -202,12 +204,6 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         private void InitializeGraphics()
         {
-            // Skip if already initialized
-            if (barrelGraphic != null)
-            {
-                return;
-            }
-            
             // Safety checks - ensure parent is spawned and in a map
             // Drawing methods (PostDraw, DrawBarrelNow) are guaranteed to run on main thread
             if (parent == null || !parent.Spawned || parent.Map == null || Find.CurrentMap == null)
@@ -215,20 +211,43 @@ namespace AbsolutelyMoreCannons
                 return; // Not safe to load graphics yet
             }
 
-            // Initialize graphics
-            if (Extension.barrelGraphic != null)
+            // Initialize barrel graphics (only if not already initialized)
+            if (Extension.barrelGraphic != null && barrelGraphic == null)
             {
                 try
-            {
-                barrelGraphic = Extension.barrelGraphic.Graphic;
-                if (barrelGraphic != null)
                 {
-                    barrelMaterial = barrelGraphic.MatSingle;
-                }
+                    barrelGraphic = Extension.barrelGraphic.Graphic;
+                    if (barrelGraphic != null)
+                    {
+                        barrelMaterial = barrelGraphic.MatSingle;
+                    }
                 }
                 catch (Exception ex)
                 {
                     Log.Warning($"[Barrel Debug] Error initializing graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
+                }
+            }
+
+            // Initialize under-barrel graphic (only if not already initialized)
+            if (Extension.underBarrelGraphic != null && underBarrelGraphic == null)
+            {
+                try
+                {
+                    Log.Message($"[Under-Barrel Debug] Attempting to initialize under-barrel graphic for {parent?.def?.defName ?? "unknown"}. TexPath: {Extension.underBarrelGraphic.texPath}");
+                    underBarrelGraphic = Extension.underBarrelGraphic.Graphic;
+                    if (underBarrelGraphic != null)
+                    {
+                        underBarrelMaterial = underBarrelGraphic.MatSingle;
+                        Log.Message($"[Under-Barrel Debug] Successfully initialized under-barrel graphic for {parent?.def?.defName ?? "unknown"}");
+                    }
+                    else
+                    {
+                        Log.Warning($"[Under-Barrel Debug] Under-barrel graphic is null after loading for {parent?.def?.defName ?? "unknown"}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[Barrel Debug] Error initializing under-barrel graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
                 }
             }
         }
@@ -282,12 +301,9 @@ namespace AbsolutelyMoreCannons
             base.PostDraw();
 
             // Ensure graphics are initialized (safety check for save/load issues)
-            if (barrelGraphic == null)
-            {
-                InitializeGraphics();
-            }
+            InitializeGraphics();
 
-            if (barrelGraphic == null || !ShouldDraw())
+            if (!ShouldDraw())
                 return;
 
             // Only draw here if drawOnTop is false (draw below turret top)
@@ -304,12 +320,9 @@ namespace AbsolutelyMoreCannons
         public void DrawBarrelNow()
         {
             // Ensure graphics are initialized (safety check for save/load issues)
-            if (barrelGraphic == null)
-            {
-                InitializeGraphics();
-            }
+            InitializeGraphics();
 
-            if (barrelGraphic == null || !ShouldDraw())
+            if (!ShouldDraw())
                 return;
 
             // DrawBarrel() already includes flash drawing, so just call it
@@ -395,8 +408,14 @@ namespace AbsolutelyMoreCannons
             if (currentProgress < recoilPhaseProgress)
             {
                 // Still in recoil phase (moving backward toward maxDistance)
-                // Just reset to full duration - the barrel will continue naturally toward maxDistance
-                barrelRecoilTicksRemaining[barrelIndex] = Extension.recoilAnimation.TotalDuration;
+                // For rapid fire, don't reset - let it continue to maxDistance, then extend the return phase
+                // This prevents recoil from getting stuck during bursts
+                // Calculate how many ticks remain to reach maxDistance
+                float remainingRecoilProgress = recoilPhaseProgress - currentProgress;
+                int ticksToMaxDistance = Mathf.CeilToInt(remainingRecoilProgress * totalDuration);
+                
+                // Set remaining ticks to complete recoil phase + full return phase
+                barrelRecoilTicksRemaining[barrelIndex] = ticksToMaxDistance + Extension.recoilAnimation.returnDuration;
             }
             else
             {
@@ -534,6 +553,16 @@ namespace AbsolutelyMoreCannons
                             for (int i = 0; i < barrelCount; i++)
                             {
                                 SpawnMuzzleFlashEffectForBarrel(i);
+                            }
+                        }
+                        
+                        // Trigger recoil per shot for simultaneous firing (for rapid fire support)
+                        // This ensures recoil happens during bursts, not just after completion
+                        if (Extension.recoilAnimation != null)
+                        {
+                            for (int i = 0; i < barrelCount; i++)
+                            {
+                                TriggerRecoilForBarrel(i);
                             }
                         }
                     }
@@ -1138,6 +1167,9 @@ namespace AbsolutelyMoreCannons
 
         private void DrawBarrel()
         {
+            // Draw under-barrel graphic first (above base, below barrel)
+            DrawUnderBarrel();
+
             int barrelCount = Mathf.Max(1, Extension.barrelAmount);
             float barrelRotation = GetCurrentBarrelRotation();
             float angleRad = barrelRotation * Mathf.Deg2Rad;
@@ -1149,76 +1181,217 @@ namespace AbsolutelyMoreCannons
                 -Mathf.Sin(angleRad)  // Perpendicular to forward
             );
             
-            // Base position (center)
+            // Base position (center) - use the same calculation as barrel
             Vector3 baseDrawPos = parent.DrawPos + GetCurrentBarrelOffset();
             
-            // Adjust Y offset based on drawOnTop setting
+            // Debug: Log turret base altitude
+            string altitudeDebugKey = $"ALTITUDE_{parent.def.defName}";
+            bool shouldLogAltitude = !loggedTypes.Contains(altitudeDebugKey);
+            if (shouldLogAltitude)
+            {
+                loggedTypes.Add(altitudeDebugKey);
+                Log.Message($"[Altitude Debug] Turret Base Y position: {parent.DrawPos.y:F3}, " +
+                    $"Building layer altitude: {AltitudeLayer.Building.AltitudeFor():F3}, " +
+                    $"ItemImportant layer altitude: {AltitudeLayer.ItemImportant.AltitudeFor():F3}");
+            }
+            
+            // Set Y altitude based on drawOnTop setting
+            // When drawOnTop is false, draw between under-barrel and turret top
+            // When drawOnTop is true, draw above everything
             if (Extension.drawOnTop)
             {
-                baseDrawPos.y += 0.1f; // Higher offset when drawing on top
+                baseDrawPos.y = AltitudeLayer.ItemImportant.AltitudeFor() + 0.1f;
             }
             else
             {
-                baseDrawPos.y -= Extension.drawLayerOffset; // Negative offset when drawing below turret top
-            }
-
-            // Get the appropriate graphic for current spin frame
-            Graphic graphicToUse = barrelGraphic;
-            Material materialToUse = barrelMaterial;
-
-            if (graphicToUse is Graphic_Collection collection)
-            {
-                // Use reflection to access the protected subGraphics array
-                var subGraphicsField = typeof(Graphic_Collection).GetField("subGraphics", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                int frameIndex = GetCurrentSpinFrame();
-                if (subGraphicsField?.GetValue(collection) is Graphic[] subGraphics && frameIndex >= 0 && frameIndex < subGraphics.Length)
-                {
-                    graphicToUse = subGraphics[frameIndex];
-                    materialToUse = graphicToUse.MatSingle;
-                }
-            }
-
-            // Draw each barrel
-            for (int i = 0; i < barrelCount; i++)
-            {
-                // Calculate position offset for this barrel (spacing)
-                float barrelPositionOffset = GetBarrelPositionOffset(i, barrelCount);
-                Vector3 barrelDrawPos = baseDrawPos + perpendicularDirection * barrelPositionOffset;
-                
-                // Add per-barrel recoil offset (moves backward)
-                barrelDrawPos += GetBarrelRecoilOffset(i, barrelRotation);
-                
-                // Add per-barrel firing animation offset (moves forward)
-                barrelDrawPos += GetBarrelFiringOffset(i, barrelRotation);
-
-                // Get per-barrel scale (for firing animation)
-                float barrelScale = GetBarrelScale(i);
-
-                Matrix4x4 matrix = Matrix4x4.TRS(
-                    barrelDrawPos,
-                    Quaternion.Euler(0f, barrelRotation, 0f),
-                    new Vector3(barrelScale, 1f, barrelScale)
-                );
-
-                // Use the same drawing layer as buildings to ensure proper order
-            Graphics.DrawMesh(MeshPool.plane10, matrix, materialToUse, 0);
-
-                // Draw firing flash for this barrel if enabled
-                bool barrelIsFiring = barrelFiringTicksRemaining != null && 
-                                     i < barrelFiringTicksRemaining.Length && 
-                                     barrelFiringTicksRemaining[i] > 0;
-                
-                if (barrelIsFiring && Extension.firingAnimation != null && Extension.firingAnimation.drawFlash)
-                {
-                    DrawFiringFlashForBarrel(i);
-                }
+                // Draw above under-barrel but below turret top
+                // Use parent.DrawPos.y + offset that's higher than under-barrel but lower than turret top
+                // Under-barrel is at parent.DrawPos.y + 0.01, so barrel should be slightly higher
+                baseDrawPos.y = parent.DrawPos.y + 0.02f;
             }
             
-            // Legacy support: draw flash for old firingTicksRemaining if no per-barrel tracking
-            if (barrelCount == 1 && firingTicksRemaining > 0 && Extension.firingAnimation != null && Extension.firingAnimation.drawFlash)
+            if (shouldLogAltitude)
             {
-                DrawFiringFlashForBarrel(0);
+                Log.Message($"[Altitude Debug] Barrel final Y position: {baseDrawPos.y:F3} " +
+                    $"(drawOnTop: {Extension.drawOnTop}, using {(Extension.drawOnTop ? "ItemImportant+0.1" : "parent.DrawPos.y+0.02")})");
             }
+
+            // Only draw barrels if barrel graphic is available
+            if (barrelGraphic != null)
+            {
+                // Get the appropriate graphic for current spin frame
+                Graphic graphicToUse = barrelGraphic;
+                Material materialToUse = barrelMaterial;
+
+                if (graphicToUse is Graphic_Collection collection)
+                {
+                    // Use reflection to access the protected subGraphics array
+                    var subGraphicsField = typeof(Graphic_Collection).GetField("subGraphics", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    int frameIndex = GetCurrentSpinFrame();
+                    if (subGraphicsField?.GetValue(collection) is Graphic[] subGraphics && frameIndex >= 0 && frameIndex < subGraphics.Length)
+                    {
+                        graphicToUse = subGraphics[frameIndex];
+                        materialToUse = graphicToUse.MatSingle;
+                    }
+                }
+
+                // Draw each barrel
+                for (int i = 0; i < barrelCount; i++)
+                {
+                    // Calculate position offset for this barrel (spacing)
+                    float barrelPositionOffset = GetBarrelPositionOffset(i, barrelCount);
+                    Vector3 barrelDrawPos = baseDrawPos + perpendicularDirection * barrelPositionOffset;
+                    
+                    // Add per-barrel recoil offset (moves backward)
+                    barrelDrawPos += GetBarrelRecoilOffset(i, barrelRotation);
+                    
+                    // Add per-barrel firing animation offset (moves forward)
+                    barrelDrawPos += GetBarrelFiringOffset(i, barrelRotation);
+
+                    // Get per-barrel scale (for firing animation)
+                    float barrelScale = GetBarrelScale(i);
+
+                    // Adjust rotation: textures face right/east (90°) by default, so subtract 90° to align
+                    float adjustedRotation = barrelRotation - 90f;
+
+                    Matrix4x4 matrix = Matrix4x4.TRS(
+                        barrelDrawPos,
+                        Quaternion.Euler(0f, adjustedRotation, 0f),
+                        new Vector3(barrelScale, 1f, barrelScale)
+                    );
+
+                    // Control draw order: 
+                    // - If drawOnTop is true: use layer 1 to draw above base and turret top
+                    // - If drawOnTop is false: use layer 0 to draw above base but below turret top
+                    int drawLayer = Extension.drawOnTop ? 1 : 0;
+                    Graphics.DrawMesh(MeshPool.plane10, matrix, materialToUse, drawLayer);
+
+                    // Draw firing flash for this barrel if enabled
+                    bool barrelIsFiring = barrelFiringTicksRemaining != null && 
+                                         i < barrelFiringTicksRemaining.Length && 
+                                         barrelFiringTicksRemaining[i] > 0;
+                    
+                    if (barrelIsFiring && Extension.firingAnimation != null && Extension.firingAnimation.drawFlash)
+                    {
+                        DrawFiringFlashForBarrel(i);
+                    }
+                }
+                
+                // Legacy support: draw flash for old firingTicksRemaining if no per-barrel tracking
+                if (barrelCount == 1 && firingTicksRemaining > 0 && Extension.firingAnimation != null && Extension.firingAnimation.drawFlash)
+                {
+                    DrawFiringFlashForBarrel(0);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws the under-barrel graphic. This graphic is drawn above the turret base
+        /// but below the barrel, and rotates with the turret top. No movement mechanics.
+        /// </summary>
+        private void DrawUnderBarrel()
+        {
+            // Debug: Log entry
+            string debugKey = $"UNDERBARREL_DRAW_{parent.def.defName}";
+            bool shouldLog = !loggedTypes.Contains(debugKey);
+            if (shouldLog)
+            {
+                loggedTypes.Add(debugKey);
+                Log.Message($"[Under-Barrel Debug] DrawUnderBarrel() called for {parent.def.defName}. " +
+                    $"underBarrelGraphic null: {underBarrelGraphic == null}, " +
+                    $"Extension.underBarrelGraphic null: {Extension.underBarrelGraphic == null}, " +
+                    $"ShouldDraw: {ShouldDraw()}");
+            }
+
+            if (underBarrelGraphic == null || !ShouldDraw())
+            {
+                if (shouldLog && underBarrelGraphic == null)
+                {
+                    Log.Message($"[Under-Barrel Debug] Returning early - underBarrelGraphic is null for {parent.def.defName}");
+                }
+                return;
+            }
+
+            // Ensure graphics are initialized
+            if (underBarrelMaterial == null)
+            {
+                if (shouldLog)
+                {
+                    Log.Message($"[Under-Barrel Debug] Under-barrel material is null, calling InitializeGraphics()");
+                }
+                InitializeGraphics();
+                if (underBarrelGraphic == null)
+                {
+                    if (shouldLog)
+                    {
+                        Log.Message($"[Under-Barrel Debug] Still null after InitializeGraphics()");
+                    }
+                    return;
+                }
+            }
+
+            // Get turret rotation (no recoil or movement)
+            float rotation = GetCurrentBarrelRotation();
+            
+            // Calculate position similar to barrel but without recoil
+            // Start with parent position (which has the base altitude)
+            Vector3 baseDrawPos = parent.DrawPos;
+            
+            // Add the barrel offset (rotated based on turret rotation)
+            float turretTopRotationAngle = GetCurrentBarrelRotation();
+            float baseAngleRad = turretTopRotationAngle * Mathf.Deg2Rad;
+            float cosAngle = Mathf.Cos(baseAngleRad);
+            float sinAngle = Mathf.Sin(baseAngleRad);
+            Vector3 rotatedOffset = new Vector3(
+                Extension.barrelOffset.x * cosAngle + Extension.barrelOffset.z * sinAngle,
+                Extension.barrelOffset.y,
+                -Extension.barrelOffset.x * sinAngle + Extension.barrelOffset.z * cosAngle
+            );
+            baseDrawPos += rotatedOffset;
+            
+            // Debug: Log under-barrel altitude
+            string underBarrelAltitudeKey = $"UNDERBARREL_ALTITUDE_{parent.def.defName}";
+            bool shouldLogUnderBarrelAltitude = !loggedTypes.Contains(underBarrelAltitudeKey);
+            if (shouldLogUnderBarrelAltitude)
+            {
+                loggedTypes.Add(underBarrelAltitudeKey);
+                Log.Message($"[Altitude Debug] Under-Barrel before altitude set - Y: {baseDrawPos.y:F3}, " +
+                    $"Parent DrawPos.y: {parent.DrawPos.y:F3}, Building layer: {AltitudeLayer.Building.AltitudeFor():F3}");
+            }
+            
+            // Set altitude to be above the base but below turret top and barrel
+            // Use parent.DrawPos.y (turret base position) + small offset to ensure it's above the base texture
+            // The turret base is drawn at its DrawPos.y, not at Building layer altitude
+            baseDrawPos.y = parent.DrawPos.y + 0.01f;
+            
+            if (shouldLogUnderBarrelAltitude)
+            {
+                Log.Message($"[Altitude Debug] Under-Barrel final Y position: {baseDrawPos.y:F3} (parent.DrawPos.y + 0.01)");
+            }
+
+            // Get draw size - use barrelDrawSize for consistent scaling with barrel
+            // This is the actual size parameter that controls the mesh scale
+            float drawSize = Extension.barrelDrawSize;
+
+            // Adjust rotation: textures face right/east (90°) by default, so subtract 90° to align
+            float adjustedRotation = rotation - 90f;
+
+            if (shouldLog)
+            {
+                Log.Message($"[Under-Barrel Debug] Drawing under-barrel for {parent.def.defName}. " +
+                    $"Position: ({baseDrawPos.x:F2}, {baseDrawPos.y:F2}, {baseDrawPos.z:F2}), " +
+                    $"Rotation: {rotation:F1}° (adjusted: {adjustedRotation:F1}°), " +
+                    $"DrawSize: {drawSize:F2}");
+            }
+
+            Matrix4x4 matrix = Matrix4x4.TRS(
+                baseDrawPos,
+                Quaternion.Euler(0f, adjustedRotation, 0f),
+                new Vector3(drawSize, 1f, drawSize)
+            );
+
+            // Draw at layer 0 (above base, below barrel which uses layer 0 or 1)
+            Graphics.DrawMesh(MeshPool.plane10, matrix, underBarrelMaterial, 0);
         }
 
         /// <summary>
