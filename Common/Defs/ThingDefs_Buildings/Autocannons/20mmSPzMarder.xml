@@ -77,12 +77,12 @@
         </recoilAnimation>
         <firingAnimation>
           <enabled>true</enabled>
-          <durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+          <durationTicks>4</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 		  <drawFlash>true</drawFlash>
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 		  <flashSize>10</flashSize>
-		  <flashBrightness>1.5</flashBrightness>
-		  <flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
+		  <flashBrightness>1</flashBrightness>
+		  <flashOffset>-4.2</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>
 			<points>

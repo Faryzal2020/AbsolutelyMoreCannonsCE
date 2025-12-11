@@ -29,7 +29,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_20mmFlak38_Weapon</turretGunDef>
-      <turretTopDrawSize>10</turretTopDrawSize>
+      <turretTopDrawSize>9</turretTopDrawSize>
 			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
 		</building>
 		<comps>
@@ -44,7 +44,7 @@
 		<researchPrerequisites>
 			<li>Research_20mmFlak38</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(-1,0,-2)</interactionCellOffset>
+    <interactionCellOffset>(1,0,-1)</interactionCellOffset>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
         <barrelGraphic>
@@ -53,25 +53,25 @@
           <drawSize>(3,3)</drawSize>
         </barrelGraphic>
         <barrelOffset>(0,0,0.0)</barrelOffset>
-        <barrelDrawSize>10.0</barrelDrawSize>
+        <barrelDrawSize>9.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <barrelAmount>1</barrelAmount>
         <recoilAnimation>
-          <maxDistance>0.3</maxDistance>
-          <recoilDuration>4</recoilDuration>
-          <returnDuration>4</returnDuration>
+          <maxDistance>0.4</maxDistance>
+          <recoilDuration>6</recoilDuration>
+          <returnDuration>8</returnDuration>
           <useRecoilCurve>true</useRecoilCurve>
           <useReturnCurve>false</useReturnCurve>
           <affectsRotation>false</affectsRotation>
         </recoilAnimation>
         <firingAnimation>
           <enabled>true</enabled>
-          <durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+          <durationTicks>8</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 		  <drawFlash>true</drawFlash>
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-		  <flashSize>10</flashSize>
-		  <flashBrightness>1.5</flashBrightness>
-		  <flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
+		  <flashSize>8</flashSize>
+		  <flashBrightness>0.8</flashBrightness>
+		  <flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>
 			<points>
@@ -104,22 +104,23 @@
 		<soundInteract>AMC_Small_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.1</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x138mm_AP</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>2</minRange>
+        		<minRange>2</minRange>
 				<range>50</range>
 				<soundCast>Sound_Flak38</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>20</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
 				<burstShotCount>8</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>
@@ -137,15 +138,15 @@
 				</chargeSpeeds>
 			</li> -->
 			<li Class="CombatExtended.CompProperties_AmmoUser">
-				<magazineSize>8</magazineSize>
-				<reloadTime>1</reloadTime>
+				<magazineSize>32</magazineSize>
+				<reloadTime>2</reloadTime>
 				<ammoSet>AmmoSet_20x138mm_Shells</ammoSet>
 			</li>
-      <li Class="CombatExtended.CompProperties_FireModes">
-        <aiUseBurstMode>TRUE</aiUseBurstMode>
-        <aiAimMode>AimedShot</aiAimMode>
-        <aimedBurstShotCount>3</aimedBurstShotCount>
-      </li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>TRUE</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+				<aimedBurstShotCount>2</aimedBurstShotCount>
+			</li>
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
