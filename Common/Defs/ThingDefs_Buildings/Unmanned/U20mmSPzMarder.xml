@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U20mmSPzMarder_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       <turretTopDrawSize>13</turretTopDrawSize>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>

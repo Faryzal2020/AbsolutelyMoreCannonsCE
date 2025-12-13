@@ -10,7 +10,7 @@
 
 	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_U20mmFlak38_Base</defName>
-		<label>Auto Flak 38 (Auto)</label>
+		<label>Auto Flak 38 (Unmanned)</label>
     <description>The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8x20 rounds) and requires 200 power to operate. Power: 200, HP: 390, Cooldown: 0.4s, Range: 70, Rate of Fire: 450 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U20mmFlak38_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       		<turretTopDrawSize>9</turretTopDrawSize>
 			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
@@ -84,7 +85,7 @@
 				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 				<flashSize>8</flashSize>
 				<flashBrightness>0.8</flashBrightness>
-				<flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
+				<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 				<flashIntensityCurve>
 					<points>
@@ -128,8 +129,8 @@
 				<soundCast>Sound_Flak38</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>20</muzzleFlashScale>
-				<ticksBetweenBurstShots>8</ticksBetweenBurstShots>
-				<burstShotCount>5</burstShotCount>
+				<ticksBetweenBurstShots>10</ticksBetweenBurstShots>
+				<burstShotCount>3</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>

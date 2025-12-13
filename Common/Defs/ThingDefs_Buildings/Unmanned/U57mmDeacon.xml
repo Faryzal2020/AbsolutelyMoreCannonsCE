@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U57mmDeacon_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       <turretTopDrawSize>11</turretTopDrawSize>
 			<turretBurstCooldownTime>4</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>

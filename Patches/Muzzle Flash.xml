@@ -21,6 +21,18 @@
 						</li>
 					</value>
 				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_U20mmFlak38_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.5,1.5)</drawSize>
+							<offsets>
+								<li>(2.4,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
 			
 				<li Class="PatchOperationAddModExtension">
 					<xpath>Defs/ThingDef[defName="Turret_20mmSPzMarder_Weapon"]</xpath>

@@ -221,14 +221,14 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_152mm2A65_indirect_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>25</minRange>
+        		<minRange>25</minRange>
 				<range>24700</range>
 				<soundCast>Sound_152mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>22</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>

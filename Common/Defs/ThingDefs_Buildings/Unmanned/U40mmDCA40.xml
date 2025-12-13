@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U40mmDCA40_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       <turretTopDrawSize>6</turretTopDrawSize>
 			<turretBurstCooldownTime>0.8</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
