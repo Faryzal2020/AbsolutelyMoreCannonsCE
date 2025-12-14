@@ -638,7 +638,18 @@ namespace AbsolutelyMoreCannons
                 // Calculate barrel position offset (for multi-barrel)
                 int barrelCount = Mathf.Max(1, Extension.barrelAmount);
                 float barrelPositionOffset = GetBarrelPositionOffset(barrelIndex, barrelCount);
-                
+
+                // Debug: Log muzzle flash effect positioning
+                string muzzleFlashDebugKey = $"MUZZLE_FLASH_POS_{parent.def.defName}_BARREL_{barrelIndex}";
+                if (!loggedTypes.Contains(muzzleFlashDebugKey))
+                {
+                    loggedTypes.Add(muzzleFlashDebugKey);
+                    Log.Message($"[Barrel Muzzle Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
+                        $"barrelCount={barrelCount}, barrelSpacing={Extension.barrelSpacing}, " +
+                        $"barrelPositionOffset={barrelPositionOffset:F3}, " +
+                        $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})");
+                }
+
                 // Position effect at barrel tip (barrel offset + forward offset + spacing offset)
                 float flashDistance = Extension.barrelDrawSize * 0.5f + Extension.firingAnimation.flashOffset;
                 Vector3 effectPos = parent.DrawPos + barrelOffset + forwardDirection * flashDistance + perpendicularDirection * barrelPositionOffset;
@@ -866,7 +877,7 @@ namespace AbsolutelyMoreCannons
             {
                 if (Mathf.Abs(rotation - lastLoggedRotation) > 0.1f)
                 {
-                    Log.Message($"[Barrel Debug] {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
+                    //Log.Message($"[Barrel Debug] {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
                     lastLoggedRotation = rotation;
                 }
                 ticksSinceLastRotationLog = 0;
@@ -1466,6 +1477,17 @@ namespace AbsolutelyMoreCannons
             // Calculate barrel position offset (for multi-barrel)
             int barrelCount = Mathf.Max(1, Extension.barrelAmount);
             float barrelPositionOffset = GetBarrelPositionOffset(barrelIndex, barrelCount);
+
+            // Debug: Log flash positioning
+            string flashPosDebugKey = $"FLASH_POS_{parent.def.defName}_BARREL_{barrelIndex}";
+            if (!loggedTypes.Contains(flashPosDebugKey))
+            {
+                loggedTypes.Add(flashPosDebugKey);
+                Log.Message($"[Barrel Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
+                    $"barrelCount={barrelCount}, barrelSpacing={Extension.barrelSpacing}, " +
+                    $"barrelPositionOffset={barrelPositionOffset:F3}, " +
+                    $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})");
+            }
 
             // Position flash at barrel tip (barrel offset + forward offset + spacing offset)
             float flashDistance = Extension.barrelDrawSize * 0.5f + Extension.firingAnimation.flashOffset;

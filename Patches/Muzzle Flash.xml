@@ -16,7 +16,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(1.5,1.5)</drawSize>
 							<offsets>
-								<li>(2.4,0)</li>
+								<li>(2.8,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -28,7 +28,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(1.5,1.5)</drawSize>
 							<offsets>
-								<li>(2.4,0)</li>
+								<li>(2.8,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -41,7 +41,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(1.5,1.5)</drawSize>
 							<offsets>
-								<li>(1.6,0)</li>
+								<li>(1.65,0)</li>
 							</offsets>
 						</li>
 					</value>

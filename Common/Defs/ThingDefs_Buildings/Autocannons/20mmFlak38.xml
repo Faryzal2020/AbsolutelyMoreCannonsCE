@@ -71,7 +71,7 @@
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 		  <flashSize>8</flashSize>
 		  <flashBrightness>0.8</flashBrightness>
-		  <flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
+		  <flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>
 			<points>
