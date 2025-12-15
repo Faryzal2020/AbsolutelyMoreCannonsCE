@@ -9,8 +9,8 @@
     <prerequisites>
       <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>2</researchViewX>
-    <researchViewY>0</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>1</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -21,10 +21,10 @@
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_57mmDeacon</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>3</researchViewX>
-    <researchViewY>0</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>1.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -35,10 +35,10 @@
     <baseCost>700</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_75mmPak40</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>4</researchViewX>
-    <researchViewY>0</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>2</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -49,10 +49,10 @@
     <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_88mmFlak41</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>5</researchViewX>
-    <researchViewY>0</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>2.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -63,10 +63,10 @@
     <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_100mmBS3</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>6</researchViewX>
-    <researchViewY>0</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>3</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -77,10 +77,10 @@
     <baseCost>500</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_57mmDeacon</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>3</researchViewX>
-    <researchViewY>0.5</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>3.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
@@ -90,10 +90,10 @@
     <baseCost>800</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_90mmM26</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>4</researchViewX>
-    <researchViewY>0.5</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>4</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
@@ -103,10 +103,10 @@
     <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_100mmT54</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>5</researchViewX>
-    <researchViewY>0.5</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>4.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
   <ResearchProjectDef>
@@ -116,10 +116,10 @@
     <baseCost>1200</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
-      <li>Research_106mmM40</li>
+      <li>HeavyCannons</li>
     </prerequisites>
-    <researchViewX>6</researchViewX>
-    <researchViewY>0.5</researchViewY>
+    <researchViewX>1</researchViewX>
+    <researchViewY>5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -130,6 +130,7 @@
     <baseCost>3000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
+      <li>HeavyCannons</li>
       <li>Automated_FCS</li>
     </prerequisites>
     <researchViewX>9</researchViewX>

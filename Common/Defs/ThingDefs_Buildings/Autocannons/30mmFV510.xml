@@ -63,8 +63,8 @@
 			<barrelAmount>1</barrelAmount>
 			<recoilAnimation>
 				<maxDistance>0.6</maxDistance>
-				<recoilDuration>20</recoilDuration>
-				<returnDuration>15</returnDuration>
+				<recoilDuration>9</recoilDuration>
+				<returnDuration>10</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
@@ -74,8 +74,8 @@
 				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>15</flashSize>
-				<flashBrightness>2.5</flashBrightness>
+				<flashSize>12</flashSize>
+				<flashBrightness>1.5</flashBrightness>
 				<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 				<flashIntensityCurve>
@@ -154,8 +154,8 @@
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
-				<CasingOffset>0,-0.5</CasingOffset>
-				<CasingAngleOffset>0</CasingAngleOffset>
+				<CasingOffset>0,1.5</CasingOffset>
+				<CasingAngleOffset>180</CasingAngleOffset>
 			</li>
 		</modExtensions>
 	</ThingDef>

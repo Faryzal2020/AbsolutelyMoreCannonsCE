@@ -90,6 +90,17 @@ namespace AbsolutelyMoreCannons
         /// If false, all barrels animate together on each trigger.
         /// </summary>
         public bool sequentialFiring = false;
+
+        /// <summary>
+        /// List of selectable RPM values for the turret gizmo.
+        /// If populated, overrides the single maxRPM value.
+        /// </summary>
+        public List<float> maxRPMs = new List<float>();
+
+        /// <summary>
+        /// List of selectable burst counts for the turret gizmo.
+        /// </summary>
+        public List<int> selectableBurstCounts = new List<int>();
     }
 
     /// <summary>
@@ -97,6 +108,11 @@ namespace AbsolutelyMoreCannons
     /// </summary>
     public class RecoilAnimation
     {
+        /// <summary>
+        /// Whether recoil animation is enabled.
+        /// </summary>
+        public bool enabled = false;
+
         /// <summary>
         /// Maximum recoil distance.
         /// </summary>
@@ -252,6 +268,7 @@ namespace AbsolutelyMoreCannons
     /// <summary>
     /// Spinning animation configuration for barrel spinning effects using texture frames.
     /// Requires Graphic_Collection with multiple frames showing different spin states.
+    /// Supports two modes: RPMBased (with spin-up/spin-down) and Cycling (simple rotation).
     /// </summary>
     public class SpinningAnimation
     {
@@ -261,39 +278,40 @@ namespace AbsolutelyMoreCannons
         public bool enabled = false;
 
         /// <summary>
-        /// Base spinning speed in frames per tick.
+        /// Animation mode type: "RPMBased" for gatling-style with spin-up/spin-down, "Cycling" for simple rotation.
         /// </summary>
-        public float baseSpeed = 0.1f;
+        public string animationMode = "RPMBased";
 
         /// <summary>
-        /// Speed multiplier when firing.
+        /// Maximum rotations per minute (used by both modes).
         /// </summary>
-        public float firingMultiplier = 2f;
+        public float maxRPM = 3000f;
 
         /// <summary>
-        /// Acceleration rate.
+        /// Seconds to decelerate from max RPM to zero (RPMBased mode only).
         /// </summary>
-        public float acceleration = 0.05f;
+        public float spindownTime = 2.0f;
 
         /// <summary>
-        /// Deceleration rate (0-1, lower = faster deceleration).
+        /// Number of animation frames to cycle through.
         /// </summary>
-        public float deceleration = 0.98f;
+        public int frameCount = 4;
 
         /// <summary>
-        /// Maximum spinning speed in frames per tick.
+        /// Number of (imaginary) barrels drawn in the texture for animation calculation.
+        /// Used for calculating maxFramesPerTick. Default is 6 for typical rotary cannons.
         /// </summary>
-        public float maxSpeed = 1f;
+        public int barrelCount = 6;
 
         /// <summary>
-        /// Minimum spinning speed to maintain animation (set to 0 to allow full stop).
+        /// SoundDef name for spin-up sound (RPMBased mode only, optional).
         /// </summary>
-        public float minSpeed = 0f;
+        public string spinUpSound = null;
 
         /// <summary>
-        /// Whether to spin continuously even when not firing.
+        /// SoundDef name for spin-down sound (RPMBased mode only, optional).
         /// </summary>
-        public bool spinWhenIdle = false;
+        public string spinDownSound = null;
     }
 
     /// <summary>
@@ -368,6 +386,14 @@ namespace AbsolutelyMoreCannons
         /// Leave empty/null to disable.
         /// </summary>
         public string muzzleFlashEffect = null;
+
+        /// <summary>
+        /// Optional SoundDef name for sustained burst firing sound.
+        /// This creates a looping sound that plays for the entire burst duration.
+        /// Separate from the per-shot soundCast in the weapon verb.
+        /// Leave empty/null to use only the per-shot sound.
+        /// </summary>
+        public string burstSound = null;
 
         public FiringAnimation()
         {

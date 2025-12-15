@@ -41,7 +41,7 @@
       <li>Research_40mmDCA40</li>
     </prerequisites>
     <researchViewX>10</researchViewX>
-    <researchViewY>1.7</researchViewY>
+    <researchViewY>1.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -71,7 +71,7 @@
       <li>Research_152mmMsta</li>
     </prerequisites>
     <researchViewX>10</researchViewX>
-    <researchViewY>6.5</researchViewY>
+    <researchViewY>2</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 
@@ -86,7 +86,7 @@
       <li>Research_127mmMark16</li>
     </prerequisites>
     <researchViewX>10</researchViewX>
-    <researchViewY>2.5</researchViewY>
+    <researchViewY>5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 </Defs>

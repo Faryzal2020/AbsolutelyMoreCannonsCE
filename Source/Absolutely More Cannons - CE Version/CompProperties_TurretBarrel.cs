@@ -77,6 +77,16 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
+        /// List of selectable RPM values for the turret gizmo.
+        /// </summary>
+        public List<float> maxRPMs = new List<float>();
+
+        /// <summary>
+        /// List of selectable burst counts for the turret gizmo.
+        /// </summary>
+        public List<int> selectableBurstCounts = new List<int>();
+
+        /// <summary>
         /// Gets the effective turret barrel extension from either this component or the building def.
         /// </summary>
         public TurretBarrelExtension GetEffectiveExtension(ThingDef buildingDef)
@@ -109,6 +119,11 @@ namespace AbsolutelyMoreCannons
                 extension.drawWhenDestroyed = drawWhenDestroyed;
             if (inheritTurretRotation != true)
                 extension.inheritTurretRotation = inheritTurretRotation;
+
+            if (maxRPMs != null && maxRPMs.Count > 0)
+                extension.maxRPMs = maxRPMs;
+            if (selectableBurstCounts != null && selectableBurstCounts.Count > 0)
+                extension.selectableBurstCounts = selectableBurstCounts;
 
             return extension;
         }

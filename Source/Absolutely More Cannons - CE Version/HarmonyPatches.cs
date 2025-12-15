@@ -23,6 +23,12 @@ namespace AbsolutelyMoreCannons
 
             // Patch GenDraw.DrawRadiusRing to handle large turret ranges (>70 tiles)
             TryPatchLargeRadiusRing(harmony);
+            
+            // Patch Verb.TryCastNextBurstShot for RPM override
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Verb), "TryCastNextBurstShot"),
+                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_TryCastNextBurstShot))
+            );
 
             // Try to patch CE turret methods at runtime
             TryPatchCETurrets(harmony);
@@ -165,6 +171,21 @@ namespace AbsolutelyMoreCannons
                 // This is more reliable than BeginBurst which can be called even when the verb can't fire
                 TryPatchCEVerbFiring(harmony);
 
+                // Patch Verb_ShootCE.ShotsPerBurstFor for burst count override
+                var shootCEType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE");
+                if (shootCEType != null)
+                {
+                    var shotsPerBurstForMethod = AccessTools.Method(shootCEType, "ShotsPerBurstFor");
+                    if (shotsPerBurstForMethod != null)
+                    {
+                        harmony.Patch(
+                            original: shotsPerBurstForMethod,
+                            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShotsPerBurstFor))
+                        );
+                        Log.Message("Turret Barrel Animation: Patched Verb_ShootCE.ShotsPerBurstFor");
+                    }
+                }
+
                 // Patch burst completion to trigger recoil
                 var burstCompleteMethod = AccessTools.Method(ceTurretType, "BurstComplete");
                 if (burstCompleteMethod != null)
@@ -242,16 +263,18 @@ namespace AbsolutelyMoreCannons
 
         /// <summary>
         /// Patches CE verb firing using Harmony's TargetMethod approach for runtime method discovery.
+        /// Also patches warmup-related methods to provide warmup event notifications.
         /// </summary>
         private static void TryPatchCEVerbFiring(Harmony harmony)
         {
             var verbType = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
             if (verbType == null)
             {
-                Log.Warning("[Barrel Flash Debug] Verb_LaunchProjectileCE type not found");
+                //Log.Warning("[Barrel Flash Debug] Verb_LaunchProjectileCE type not found");
                 return;
             }
 
+            // Patch TryCastShot for firing events
             var tryCastShotMethod = AccessTools.Method(verbType, "TryCastShot");
             if (tryCastShotMethod != null)
             {
@@ -259,11 +282,67 @@ namespace AbsolutelyMoreCannons
                     original: tryCastShotMethod,
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_TryCastShot))
                 );
-                Log.Message("[Barrel Flash Debug] Successfully patched Verb_LaunchProjectileCE.TryCastShot");
+                //Log.Message("[Barrel Flash Debug] Successfully patched Verb_LaunchProjectileCE.TryCastShot");
             }
             else
             {
-                Log.Warning("[Barrel Flash Debug] Could not find Verb_LaunchProjectileCE.TryCastShot method");
+                //Log.Warning("[Barrel Flash Debug] Could not find Verb_LaunchProjectileCE.TryCastShot method");
+            }
+
+            // Patch warmup-related methods
+            TryPatchCEVerbWarmup(harmony, verbType);
+        }
+
+        /// <summary>
+        /// Patches CE verb warmup methods to provide warmup event notifications.
+        /// </summary>
+        private static void TryPatchCEVerbWarmup(Harmony harmony, System.Type verbType)
+        {
+            // Patch WarmupComplete for successful warmup finish
+            var warmupCompleteMethod = AccessTools.Method(verbType, "WarmupComplete");
+            if (warmupCompleteMethod != null)
+            {
+                harmony.Patch(
+                    original: warmupCompleteMethod,
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_WarmupComplete))
+                );
+                //Log.Message("[Warmup Debug] Successfully patched Verb.WarmupComplete");
+            }
+
+            // Patch Reset method for warmup interruption
+            var resetMethod = AccessTools.Method(verbType, "Reset");
+            if (resetMethod != null)
+            {
+                harmony.Patch(
+                    original: resetMethod,
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_Reset))
+                );
+                //Log.Message("[Warmup Debug] Successfully patched Verb.Reset");
+            }
+
+            // Try to patch TryStartCastOn for warmup start
+            // This method initiates the warmup process
+            // Note: TryStartCastOn has multiple overloads, so we need to be more specific
+            var tryStartCastOnMethods = AccessTools.GetDeclaredMethods(verbType)
+                .Where(m => m.Name == "TryStartCastOn")
+                .ToArray();
+
+            if (tryStartCastOnMethods.Length > 0)
+            {
+                // Try to find a method that returns bool (the main TryStartCastOn method)
+                var tryStartCastOnMethod = tryStartCastOnMethods.FirstOrDefault(m => m.ReturnType == typeof(bool));
+                if (tryStartCastOnMethod != null)
+                {
+                    harmony.Patch(
+                        original: tryStartCastOnMethod,
+                        postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_TryStartCastOn))
+                    );
+                    //Log.Message("[Warmup Debug] Successfully patched Verb.TryStartCastOn");
+                }
+                else
+                {
+                    //Log.Warning("[Warmup Debug] Could not find suitable TryStartCastOn method to patch");
+                }
             }
         }
 
@@ -283,14 +362,14 @@ namespace AbsolutelyMoreCannons
 
                 // Get the caster (turret) from the verb
                 Thing caster = null;
-                
+
                 // Try property first
                 var casterProperty = AccessTools.Property(__instance.GetType(), "Caster");
                 if (casterProperty != null)
                 {
                     caster = casterProperty.GetValue(__instance) as Thing;
                 }
-                
+
                 // Try field if property didn't work
                 if (caster == null)
                 {
@@ -338,8 +417,168 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
+        /// Called after a verb successfully completes warmup.
+        /// Triggers warmup complete events for turrets.
+        /// </summary>
+        public static void Postfix_Verb_WarmupComplete(object __instance)
+        {
+            try
+            {
+                // Get the caster from the verb
+                Thing caster = GetCasterFromVerb(__instance);
+                if (caster == null)
+                {
+                    return;
+                }
+
+                // Check if it's a turret
+                if (!IsTurret(caster))
+                {
+                    return; // Not a turret, ignore
+                }
+
+                // Notify the mod that warmup completed for this turret
+                var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                if (barrelComp != null)
+                {
+                    // Call a method to handle warmup completion
+                    barrelComp.OnWarmupComplete();
+                }
+
+                //Log.Message($"[Warmup Debug] Warmup completed for turret {caster.def.defName}");
+            }
+            catch (Exception ex)
+            {
+                Verse.Log.Error($"[Barrel Animation] Error in Postfix_Verb_WarmupComplete: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Called after a verb is reset (warmup interrupted).
+        /// Triggers warmup interrupt events for turrets.
+        /// </summary>
+        public static void Postfix_Verb_Reset(object __instance)
+        {
+            try
+            {
+                // Get the caster from the verb
+                Thing caster = GetCasterFromVerb(__instance);
+                if (caster == null)
+                {
+                    return;
+                }
+
+                // Check if it's a turret
+                if (!IsTurret(caster))
+                {
+                    return; // Not a turret, ignore
+                }
+
+                // Notify the mod that warmup was interrupted for this turret
+                var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                if (barrelComp != null)
+                {
+                    // Call a method to handle warmup interruption
+                    barrelComp.OnWarmupInterrupted();
+                }
+
+                //Log.Message($"[Warmup Debug] Warmup interrupted for turret {caster.def.defName}");
+            }
+            catch (Exception ex)
+            {
+                Verse.Log.Error($"[Barrel Animation] Error in Postfix_Verb_Reset: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Called after TryStartCastOn (warmup initiation attempt).
+        /// Triggers warmup start events for turrets when warmup actually begins.
+        /// </summary>
+        public static void Postfix_Verb_TryStartCastOn(bool __result, object __instance)
+        {
+            try
+            {
+                // Only trigger if TryStartCastOn returned true (warmup successfully started)
+                if (!__result)
+                {
+                    return;
+                }
+
+                // Get the caster from the verb
+                Thing caster = GetCasterFromVerb(__instance);
+                if (caster == null)
+                {
+                    return;
+                }
+
+                // Check if it's a turret
+                if (!IsTurret(caster))
+                {
+                    return; // Not a turret, ignore
+                }
+
+                // Notify the mod that warmup started for this turret
+                var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                if (barrelComp != null)
+                {
+                    // Call a method to handle warmup start
+                    barrelComp.OnWarmupStarted();
+                }
+
+                //Log.Message($"[Warmup Debug] Warmup started for turret {caster.def.defName}");
+            }
+            catch (Exception ex)
+            {
+                Verse.Log.Error($"[Barrel Animation] Error in Postfix_Verb_TryStartCastOn: {ex}");
+            }
+        }
+
+        /// <summary>
+        /// Helper method to get the caster from a verb instance.
+        /// </summary>
+        private static Thing GetCasterFromVerb(object verbInstance)
+        {
+            // Try property first
+            var casterProperty = AccessTools.Property(verbInstance.GetType(), "Caster");
+            if (casterProperty != null)
+            {
+                return casterProperty.GetValue(verbInstance) as Thing;
+            }
+
+            // Try field if property didn't work
+            var casterField = AccessTools.Field(verbInstance.GetType(), "caster");
+            if (casterField != null)
+            {
+                return casterField.GetValue(verbInstance) as Thing;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Helper method to check if a thing is a turret.
+        /// </summary>
+        private static bool IsTurret(Thing thing)
+        {
+            if (thing is Building_Turret)
+            {
+                return true;
+            }
+
+            // Check for CE turret types
+            var ceTurretType = AccessTools.TypeByName("CombatExtended.Building_TurretGunCE");
+            if (ceTurretType != null && ceTurretType.IsAssignableFrom(thing.GetType()))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Called after a turret completes a burst.
-        /// Triggers recoil animation on barrel components.
+        /// Triggers burst complete events for spinning animation.
         /// </summary>
         public static void Postfix_BurstComplete(object __instance)
         {
@@ -348,12 +587,8 @@ namespace AbsolutelyMoreCannons
                 var barrelComp = turret.GetComp<CompTurretBarrel>();
                 if (barrelComp != null)
                 {
-                    // For sequential firing, recoil is triggered per shot in TriggerFiring()
-                    // Only trigger recoil on BurstComplete for simultaneous firing
-                    if (!barrelComp.Extension.sequentialFiring || barrelComp.Extension.barrelAmount <= 1)
-                    {
-                        barrelComp.TriggerRecoil();
-                    }
+                    // Trigger burst complete for spinning animation
+                    barrelComp.OnBurstComplete();
                 }
             }
         }
@@ -467,6 +702,71 @@ namespace AbsolutelyMoreCannons
                 // Log the error for debugging
                 Log.Warning($"Turret Barrel Animation: Error drawing barrel after turret top: {ex.Message}\n{ex.StackTrace}");
             }
+        }
+        
+        /// <summary>
+        /// Postfix for Verb.TryCastNextBurstShot to override tick delay based on RPM.
+        /// </summary>
+        public static void Postfix_Verb_TryCastNextBurstShot(Verb __instance)
+        {
+             try
+             {
+                 Thing caster = __instance.Caster;
+                 if (caster == null) return;
+
+                 // Check for our component
+                 var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                 if (barrelComp != null)
+                 {
+                     float ticksFloat = barrelComp.GetCurrentTicksBetweenBurstShots();
+                     if (ticksFloat > 0f)
+                     {
+                         int ticks = Mathf.RoundToInt(ticksFloat);
+                         // Use traverse or reflection to set the field since it might be protected/private or we just want to be safe
+                         // ticksToNextBurstShot is protected in Verb
+                         AccessTools.Field(typeof(Verb), "ticksToNextBurstShot").SetValue(__instance, ticks);
+                     }
+                 }
+             }
+             catch (Exception ex)
+             {
+                // Only log once per session to avoid spam
+                if (!CompTurretBarrel.loggedTypes.Contains("TryCastNextBurstShot_Error"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("TryCastNextBurstShot_Error");
+                    Log.Warning($"Turret Barrel Animation: Error in Postfix_Verb_TryCastNextBurstShot: {ex.Message}");
+                }
+             }
+        }
+
+        /// <summary>
+        /// Postfix for Verb_ShootCE.ShotsPerBurstFor to override burst count.
+        /// </summary>
+        public static void Postfix_Verb_ShotsPerBurstFor(ref int __result, object __instance)
+        {
+             try
+             {
+                 Thing caster = GetCasterFromVerb(__instance);
+                 if (caster == null) return;
+
+                 var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                 if (barrelComp != null)
+                 {
+                     int burstOverride = barrelComp.GetCurrentBurstCount();
+                     if (burstOverride > 0)
+                     {
+                         __result = burstOverride;
+                     }
+                 }
+             }
+             catch (Exception ex)
+             {
+                  if (!CompTurretBarrel.loggedTypes.Contains("ShotsPerBurstFor_Error"))
+                  {
+                      CompTurretBarrel.loggedTypes.Add("ShotsPerBurstFor_Error");
+                      Log.Warning($"Turret Barrel Animation: Error in Postfix_Verb_ShotsPerBurstFor: {ex.Message}");
+                  }
+             }
         }
     }
 }

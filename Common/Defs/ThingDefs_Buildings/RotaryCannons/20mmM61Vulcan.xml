@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Defs>
+									
+	<!--=============== M61 Vulcan ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_20mmM61Vulcan_Base</defName>
+		<label>M61 Vulcan</label>
+    	<description>Use ammo set:20x102mm US \nThe 2cm Flak 38 was developed by Nazi Germany as a versatile anti-aircraft autocannon during WWII. It requires reloading after each 8-shot burst and is incapable of settlement bombardment. Power: N/A, HP: 340, Cooldown: 0.4s, Range: 2-50, Rate of Fire: 150 rounds per minute, Aimed Burst: 4, Reload Time: 1s.</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M20mmM61Vulcan</texPath>
+			<drawSize>(10,10)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M20mmM61Vulcan_MenuIcon</uiIconPath>
+		<thingClass>CombatExtended.Building_CIWS_CE</thingClass> <!-- enableCIWS -->
+		<statBases>
+			<MaxHitPoints>340</MaxHitPoints>
+			<WorkToBuild>4500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>150</Steel>
+        	<ComponentIndustrial>1</ComponentIndustrial>
+		</costList>
+		<building>
+			<turretGunDef>Turret_20mmM61Vulcan_Weapon</turretGunDef>
+        	<turretTopDrawSize>10</turretTopDrawSize>
+			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
+			<!-- Fire Arc Control -->
+			<li Class="CombatExtended.CompProperties_FireArc">
+				<!-- Minimum and maximum arc span in degrees -->
+				<spanRange>
+					<min>30</min>  <!-- Minimum firing arc width -->
+					<max>360</max> <!-- Maximum firing arc width (full circle) -->
+				</spanRange>
+				
+				<!-- Maximum rotation from turret's facing direction -->
+				<!-- 360 = can rotate to any direction -->
+				<!-- 90 = can only rotate 90° left/right from facing -->
+				<maxSpanDeviation>180</maxSpanDeviation>
+				
+				<!-- Visual indicator line length when adjusting -->
+				<lineLength>10</lineLength>
+			</li>
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    	<size>3,3</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_20mmM61Vulcan</li>
+		</researchPrerequisites>
+    <interactionCellOffset>(0,0,0)</interactionCellOffset>
+    <modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelGraphic>
+				<texPath>Things/Building/M20mmM61Vulcan_Barrel</texPath>
+				<graphicClass>Graphic_Random</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>10.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>1</barrelAmount>
+			<maxRPMs>
+				<li>1500</li>
+				<li>3000</li>
+			</maxRPMs>
+			<selectableBurstCounts>
+				<li>20</li>
+				<li>50</li>
+				<li>100</li>
+			</selectableBurstCounts>
+			<spinningAnimation>
+				<enabled>true</enabled>
+				<animationMode>RPMBased</animationMode>
+				<spindownTime>1.5</spindownTime>
+				<frameCount>4</frameCount>
+				<spinUpSound>AMC_Vulcan_SpinUp</spinUpSound>
+				<spinDownSound>AMC_Vulcan_SpinDown</spinDownSound>
+			</spinningAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<burstSound>AMC_Vulcan_BurstLoop</burstSound>
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>10</flashSize>
+				<flashBrightness>0.8</flashBrightness>
+				<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>      <!-- Full brightness at start -->
+					<li>(0.3, 0.9)</li>  <!-- Still bright -->
+					<li>(0.6, 0.6)</li>  <!-- Fading -->
+					<li>(1, 0)</li>      <!-- Faded out -->
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
+    </modExtensions>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_20mmM61Vulcan_Weapon</defName>
+		<label>M61 Vulcan Gun</label>
+		<graphicData>
+			<texPath>Things/Building/M20mmM61Vulcan_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:20x102mm US \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>1</SightsEfficiency>
+			<ShotSpread>0.5</ShotSpread>
+			<SwayFactor>1</SwayFactor>
+			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>0.1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+        		<minRange>2</minRange>
+				<range>50</range>
+				<!--<soundCast>AMC_Vulcan_Shot</soundCast> Replaced with AMC_Vulcan_BurstLoop -->
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>1</muzzleFlashScale>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
+				<!-- <ticksBetweenBurstShots>24</ticksBetweenBurstShots> Disabled for rotary gun-->
+				<!--<burstShotCount>8</burstShotCount> Disabled for rotary gun-->
+				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>10</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos> -->
+			</li>
+        
+			<!-- CIWS Projectile Interception -->
+			<li Class="CombatExtended.VerbProperties_CIWSProjectile">
+				<verbClass>CombatExtended.VerbCIWSProjectile</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+				<range>75</range>  <!-- Detection range for incoming projectiles -->
+				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
+				<burstShotCount>16</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				
+				<!-- CIWS-specific properties -->
+				<holdFireLabel>HoldProjectilesFire</holdFireLabel>
+				<holdFireDesc>Toggle automatic interception of incoming projectiles</holdFireDesc>
+				<holdFireIcon>UI/Commands/HoldFire</holdFireIcon>
+			</li>
+			
+			<!-- Drop Pod/Skyfaller Interception -->
+			<li Class="CombatExtended.VerbProperties_CIWSSkyfaller">
+				<verbClass>CombatExtended.VerbCIWSSkyfaller</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+				<range>75</range>
+				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
+				<burstShotCount>16</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				
+				<holdFireLabel>HoldSkyfallersFire</holdFireLabel>
+				<holdFireDesc>Toggle automatic interception of drop pods and shuttles</holdFireDesc>
+			</li>
+		</verbs>
+		<comps> <!--
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+				</chargeSpeeds>
+			</li> -->
+			<!-- Enable CIWS verb toggling -->
+			<li>
+				<compClass>CombatExtended.CompVerbDisabler</compClass>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1500</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_20x102mmNATO</ammoSet>
+			</li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<!-- Aimed burst shot count: if specified and >1, enables BurstFire mode -->
+				<aimedBurstShotCount>4</aimedBurstShotCount>
+				
+				<!-- Prevent single shot mode -->
+				<noSingleShot>true</noSingleShot>
+				
+				<!-- Allow snapshot and suppress fire modes -->
+				<noSnapshot>false</noSnapshot>
+				
+				<!-- AI settings -->
+				<aiUseBurstMode>true</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingAngleOffset>200</CasingAngleOffset>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

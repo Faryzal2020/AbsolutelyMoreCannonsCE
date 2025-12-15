@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace AbsolutelyMoreCannons
 {
@@ -46,9 +47,27 @@ namespace AbsolutelyMoreCannons
         private float currentRecoilAngle = 0f;
 
         private float currentSpinFrame = 0f;
-        private float currentSpinSpeed = 0f;
+
+        // RPM-based spinning animation state
+        private float currentRPM = 0f;
+        private SpinningState spinningState = SpinningState.Idle;
+        private float warmupTime = 0f;
+        private SoundDef spinUpSoundDef = null;
+        private SoundDef spinDownSoundDef = null;
+        private bool isCyclingMode = false;
 
         private int firingTicksRemaining = 0;
+
+        /// <summary>
+        /// Spinning animation state for RPMBased mode.
+        /// </summary>
+        private enum SpinningState
+        {
+            Idle,
+            SpinningUp,
+            AtSpeed,
+            SpinningDown
+        }
 
         // Multi-barrel support: per-barrel firing animation state
         private int[] barrelFiringTicksRemaining = new int[0]; // Tracks firing animation for each barrel
@@ -63,6 +82,14 @@ namespace AbsolutelyMoreCannons
         private Graphic underBarrelGraphic;
         private Material underBarrelMaterial;
 
+        // Interactive settings
+        private int selectedRPMIndex = 0;
+        private int selectedBurstCountIndex = 0;
+
+        // Burst sound sustainer
+        private Sustainer burstSoundSustainer = null;
+        private SoundDef burstSoundDef = null;
+
         /// <summary>
         /// Gets the turret this component is attached to.
         /// Works with both vanilla and CE turrets.
@@ -75,6 +102,86 @@ namespace AbsolutelyMoreCannons
                 return turret;
             }
         }
+
+
+
+        public float GetMaxRPM()
+        {
+            if (Extension.maxRPMs != null && Extension.maxRPMs.Count > 0)
+            {
+                if (selectedRPMIndex < 0 || selectedRPMIndex >= Extension.maxRPMs.Count)
+                    selectedRPMIndex = 0;
+                return Extension.maxRPMs[selectedRPMIndex];
+            }
+            if (Extension.spinningAnimation != null)
+                return Extension.spinningAnimation.maxRPM;
+            return 0f;
+        }
+
+        public int GetCurrentBurstCount()
+        {
+            if (Extension.selectableBurstCounts != null && Extension.selectableBurstCounts.Count > 0)
+            {
+               if (selectedBurstCountIndex < 0 || selectedBurstCountIndex >= Extension.selectableBurstCounts.Count)
+                    selectedBurstCountIndex = 0;
+                return Extension.selectableBurstCounts[selectedBurstCountIndex];
+            }
+            return -1; // Indicates no override
+        }
+
+        public float GetCurrentTicksBetweenBurstShots()
+        {
+            float rpm = GetMaxRPM();
+            if (rpm > 0f)
+            {
+                // 3600 ticks per minute (60 * 60)
+                // Result must be at least 1 tick
+                return Mathf.Max(1f, 3600f / rpm);
+            }
+            return -1f; // Indicates no override
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (var gizmo in base.CompGetGizmosExtra())
+                yield return gizmo;
+
+            // RPM Gizmo
+            if (Extension.maxRPMs != null && Extension.maxRPMs.Count > 1)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = $"RPM: {GetMaxRPM()}",
+                    defaultDesc = "Toggle fire rate (RPM). Higher RPM means faster firing but checks ammunition faster.",
+                    icon = ContentFinder<Texture2D>.Get($"UI/Buttons/AMC_maxRPM_{GetMaxRPM()}", true) ?? ContentFinder<Texture2D>.Get("UI/Buttons/Reload", true),
+                    action = () =>
+                    {
+                        selectedRPMIndex = (selectedRPMIndex + 1) % Extension.maxRPMs.Count;
+                        // Update current RPM if already spinning
+                        if (isCyclingMode || spinningState == SpinningState.AtSpeed)
+                        {
+                            currentRPM = GetMaxRPM();
+                        }
+                    }
+                };
+            }
+
+            // Burst Count Gizmo
+            if (Extension.selectableBurstCounts != null && Extension.selectableBurstCounts.Count > 1)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = $"Burst: {GetCurrentBurstCount()}",
+                    defaultDesc = "Select burst shot count.",
+                    icon = ContentFinder<Texture2D>.Get($"UI/Buttons/AMC_burstCount_{GetCurrentBurstCount()}", true) ?? ContentFinder<Texture2D>.Get("UI/Buttons/Reload", true),
+                    action = () =>
+                    {
+                        selectedBurstCountIndex = (selectedBurstCountIndex + 1) % Extension.selectableBurstCounts.Count;
+                    }
+                };
+            }
+        }
+
 
         /// <summary>
         /// Checks if CombatExtended is loaded and this is a CE turret.
@@ -277,6 +384,58 @@ namespace AbsolutelyMoreCannons
                 barrelRecoilTicksRemaining = new int[barrelCount];
                 barrelRecoilDistance = new float[barrelCount];
             }
+
+            // Initialize spinning animation state
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                isCyclingMode = Extension.spinningAnimation.animationMode == "Cycling";
+                
+                if (!isCyclingMode)
+                {
+                    // RPMBased mode: initialize state and load sounds
+                    spinningState = SpinningState.Idle;
+                    currentRPM = 0f;
+                    warmupTime = GetWarmupTimeFromVerb();
+                    
+                    // Load sound definitions
+                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinUpSound))
+                    {
+                        spinUpSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinUpSound);
+                    }
+                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinDownSound))
+                    {
+                        spinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinDownSound);
+                    }
+                }
+                else
+                {
+                    // Cycling mode: simple initialization
+                    currentRPM = 0f;
+                }
+            }
+
+            // Load burst sound for firing animation
+            if (Extension.firingAnimation != null && !string.IsNullOrEmpty(Extension.firingAnimation.burstSound))
+            {
+                burstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.burstSound);
+                if (burstSoundDef != null)
+                {
+                    Log.Message($"[Burst Sound DEBUG] Loaded burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                }
+                else
+                {
+                    Log.Warning($"[Burst Sound DEBUG] Failed to load burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when component is despawned. Clean up sound sustainers.
+        /// </summary>
+        public override void PostDeSpawn(Map map)
+        {
+            base.PostDeSpawn(map);
+            StopBurstSound();
         }
 
         /// <summary>
@@ -396,56 +555,25 @@ namespace AbsolutelyMoreCannons
             }
 
             // Recoil is already active - handle rapid-fire scenario
+            // Simplified approach: Always ensure the barrel completes a full recoil cycle to maxDistance and back
             float totalDuration = Extension.recoilAnimation.TotalDuration;
             float currentProgress = 1f - (float)barrelRecoilTicksRemaining[barrelIndex] / totalDuration;
             float recoilPhaseProgress = (float)Extension.recoilAnimation.recoilDuration / totalDuration;
-            
-            // Get current distance from curve
-            float currentDistanceMultiplier = Extension.recoilAnimation.recoilCurve.Evaluate(currentProgress);
-            float currentDistance = Extension.recoilAnimation.maxDistance * currentDistanceMultiplier;
-            
-            // Check if we're in recoil phase (moving backward) or return phase (moving forward)
-            if (currentProgress < recoilPhaseProgress)
+
+            // Debug: Log rapid fire scenario
+            string rapidFireKey = $"RAPID_FIRE_{parent.def.defName}_BARREL_{barrelIndex}";
+            if (!loggedTypes.Contains(rapidFireKey))
             {
-                // Still in recoil phase (moving backward toward maxDistance)
-                // For rapid fire, don't reset - let it continue to maxDistance, then extend the return phase
-                // This prevents recoil from getting stuck during bursts
-                // Calculate how many ticks remain to reach maxDistance
-                float remainingRecoilProgress = recoilPhaseProgress - currentProgress;
-                int ticksToMaxDistance = Mathf.CeilToInt(remainingRecoilProgress * totalDuration);
-                
-                // Set remaining ticks to complete recoil phase + full return phase
-                barrelRecoilTicksRemaining[barrelIndex] = ticksToMaxDistance + Extension.recoilAnimation.returnDuration;
+                loggedTypes.Add(rapidFireKey);
+                Log.Message($"[Rapid Fire Debug] {parent.def.defName} barrel {barrelIndex}: currentProgress={currentProgress:F3}, recoilPhaseProgress={recoilPhaseProgress:F3}");
             }
-            else
-            {
-                // In return phase (moving forward back to start)
-                // Need to reverse direction and go back to maxDistance
-                float targetProgress = recoilPhaseProgress;
-                float closestDistance = float.MaxValue;
-                
-                // Search for the progress value that matches our current distance
-                for (float testProgress = 0f; testProgress <= recoilPhaseProgress; testProgress += 0.005f)
-                {
-                    float testMultiplier = Extension.recoilAnimation.recoilCurve.Evaluate(testProgress);
-                    float testDistance = Extension.recoilAnimation.maxDistance * testMultiplier;
-                    float distanceDiff = Mathf.Abs(testDistance - currentDistance);
-                    
-                    if (distanceDiff < closestDistance)
-                    {
-                        closestDistance = distanceDiff;
-                        targetProgress = testProgress;
-                    }
-                }
-                
-                float remainingRecoilProgress = recoilPhaseProgress - targetProgress;
-                int ticksToMaxDistance = Mathf.CeilToInt(remainingRecoilProgress * totalDuration);
-                
-                if (ticksToMaxDistance < 1)
-                    ticksToMaxDistance = 1;
-                
-                barrelRecoilTicksRemaining[barrelIndex] = ticksToMaxDistance + Extension.recoilAnimation.returnDuration;
-            }
+
+            // Always restart the full recoil cycle
+            // This ensures each shot triggers the complete motion to maxDistance and back
+            barrelRecoilTicksRemaining[barrelIndex] = Extension.recoilAnimation.TotalDuration;
+
+            // Note: This simplified approach means rapid firing will restart the animation
+            // The barrel will move toward maxDistance following the curve, regardless of current position
         }
 
         /// <summary>
@@ -502,6 +630,95 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
+        /// Called when turret warmup starts.
+        /// Handles spinning animation state transitions.
+        /// </summary>
+        public virtual void OnWarmupStarted()
+        {
+            //Log.Message($"[Barrel Animation DEBUG] OnWarmupStarted called for {parent.def.defName}");
+            
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                if (isCyclingMode)
+                {
+                    // Cycling mode: start rotation immediately
+                    currentRPM = GetMaxRPM();
+                }
+                else
+                {
+                    // RPMBased mode: transition to SpinningUp state
+                    if (spinningState == SpinningState.Idle || spinningState == SpinningState.SpinningDown)
+                    {
+                        spinningState = SpinningState.SpinningUp;
+                        PlaySpinUpSound();
+                        //Log.Message($"[Barrel Animation DEBUG] Started spin-up for {parent.def.defName}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when turret warmup completes successfully.
+        /// Handles spinning animation state transitions.
+        /// </summary>
+        public virtual void OnWarmupComplete()
+        {
+            //Log.Message($"[Barrel Animation DEBUG] OnWarmupComplete called for {parent.def.defName}");
+            
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                if (!isCyclingMode)
+                {
+                    // RPMBased mode: transition to AtSpeed state
+                    // Always transition to AtSpeed if not cycling mode and spinning animation is enabled
+                    spinningState = SpinningState.AtSpeed;
+                    currentRPM = GetMaxRPM();
+                    //Log.Message($"[Barrel Animation DEBUG] Reached full speed for {parent.def.defName}");
+                }
+                // Cycling mode: rotation already at maxRPM, no action needed
+            }
+        }
+
+        /// <summary>
+        /// Called when turret warmup is interrupted.
+        /// Handles spinning animation state transitions.
+        /// </summary>
+        public virtual void OnWarmupInterrupted()
+        {
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                if (isCyclingMode)
+                {
+                    // Cycling mode: stop rotation immediately
+                    currentRPM = 0f;
+                }
+                else
+                {
+                    // RPMBased mode: transition to SpinningDown state
+                    if (spinningState == SpinningState.SpinningUp || spinningState == SpinningState.AtSpeed)
+                    {
+                        spinningState = SpinningState.SpinningDown;
+                        PlaySpinDownSound();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Test method to verify recoil behavior with rapid firing.
+        /// Call this to test if recoil reaches maxDistance even with fast firing rates.
+        /// </summary>
+        public void TestRapidRecoil()
+        {
+            Log.Message($"[Recoil Test] Testing rapid recoil for {parent.def.defName}");
+            Log.Message($"[Recoil Test] maxDistance: {Extension.recoilAnimation?.maxDistance ?? 0f}");
+            Log.Message($"[Recoil Test] recoilDuration: {Extension.recoilAnimation?.recoilDuration ?? 0}");
+            Log.Message($"[Recoil Test] returnDuration: {Extension.recoilAnimation?.returnDuration ?? 0}");
+            Log.Message($"[Recoil Test] TotalDuration: {Extension.recoilAnimation?.TotalDuration ?? 0}");
+            Log.Message($"[Recoil Test] useRecoilCurve: {Extension.recoilAnimation?.useRecoilCurve ?? false}");
+        }
+
+        /// <summary>
         /// Trigger firing animation.
         /// Handles both sequential (one barrel at a time) and simultaneous (all barrels) firing.
         /// </summary>
@@ -518,24 +735,44 @@ namespace AbsolutelyMoreCannons
                     {
                         barrelFiringTicksRemaining = new int[barrelCount];
                     }
-                    
+
+                    // Start burst sound sustainer if not already playing
+                    if (burstSoundDef != null && burstSoundSustainer == null)
+                    {
+                        Log.Message($"[Burst Sound DEBUG] Attempting to start burst sound for {parent.def.defName}");
+                        burstSoundSustainer = burstSoundDef.TrySpawnSustainer(SoundInfo.InMap(parent));
+                        if (burstSoundSustainer != null)
+                        {
+                            Log.Message($"[Burst Sound DEBUG] Successfully started burst sound sustainer for {parent.def.defName}");
+                        }
+                        else
+                        {
+                            Log.Warning($"[Burst Sound DEBUG] Failed to start burst sound sustainer for {parent.def.defName}");
+                        }
+                    }
+                    else if (burstSoundDef == null)
+                    {
+                        Log.Warning($"[Burst Sound DEBUG] burstSoundDef is null, cannot start sound for {parent.def.defName}");
+                    }
+
+                    // Trigger firing animation and recoil for each barrel that fires
                     if (Extension.sequentialFiring && barrelCount > 1)
                     {
                         // Sequential firing: only the current barrel fires
                         barrelFiringTicksRemaining[currentSequentialBarrel] = Extension.firingAnimation.durationTicks;
-                        
+
                         // Spawn muzzle flash effect for this barrel only
                         if (!string.IsNullOrEmpty(Extension.firingAnimation.muzzleFlashEffect))
                         {
                             SpawnMuzzleFlashEffectForBarrel(currentSequentialBarrel);
                         }
-                        
-                        // Trigger recoil for this barrel (per shot, not per burst)
+
+                        // Trigger recoil for this barrel
                         if (Extension.recoilAnimation != null)
                         {
                             TriggerRecoilForBarrel(currentSequentialBarrel);
                         }
-                        
+
                         // Move to next barrel for next trigger
                         currentSequentialBarrel = (currentSequentialBarrel + 1) % barrelCount;
                     }
@@ -546,7 +783,7 @@ namespace AbsolutelyMoreCannons
                         {
                             barrelFiringTicksRemaining[i] = Extension.firingAnimation.durationTicks;
                         }
-                        
+
                         // Spawn muzzle flash effect for all barrels
                         if (!string.IsNullOrEmpty(Extension.firingAnimation.muzzleFlashEffect))
                         {
@@ -555,9 +792,8 @@ namespace AbsolutelyMoreCannons
                                 SpawnMuzzleFlashEffectForBarrel(i);
                             }
                         }
-                        
-                        // Trigger recoil per shot for simultaneous firing (for rapid fire support)
-                        // This ensures recoil happens during bursts, not just after completion
+
+                        // Trigger recoil for all barrels
                         if (Extension.recoilAnimation != null)
                         {
                             for (int i = 0; i < barrelCount; i++)
@@ -575,17 +811,50 @@ namespace AbsolutelyMoreCannons
                     if (!loggedTypes.Contains(triggerDebugKey))
                     {
                         loggedTypes.Add(triggerDebugKey);
-                        Log.Message($"[Barrel Flash Debug] TriggerFiring() called for {parent.def.defName}. " +
-                            $"barrelAmount: {barrelCount}, sequentialFiring: {Extension.sequentialFiring}, " +
-                            $"drawFlash: {Extension.firingAnimation.drawFlash}, " +
-                            $"muzzleFlashEffect: {Extension.firingAnimation.muzzleFlashEffect ?? "null"}");
+                        //Log.Message($"[Barrel Flash Debug] TriggerFiring() called for {parent.def.defName}. " +
+                            //  $"barrelAmount: {barrelCount}, sequentialFiring: {Extension.sequentialFiring}, " +
+                            //  $"drawFlash: {Extension.firingAnimation.drawFlash}, " +
+                            //  $"muzzleFlashEffect: {Extension.firingAnimation.muzzleFlashEffect ?? "null"}");
                     }
+                }
+
+                // Handle Cycling mode: start rotation when firing begins
+                if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled && isCyclingMode)
+                {
+                    currentRPM = GetMaxRPM();
                 }
             }
             catch (Exception ex)
             {
                 Log.Error($"[Barrel Animation] Error in TriggerFiring for {parent?.def?.defName ?? "unknown"}: {ex}");
             }
+        }
+
+        /// <summary>
+        /// Called when turret burst completes.
+        /// Handles spinning animation state transitions for RPMBased mode.
+        /// </summary>
+        public virtual void OnBurstComplete()
+        {
+            //Log.Message($"[Barrel Animation DEBUG] OnBurstComplete called for {parent.def.defName}, current state: {spinningState}");
+            
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                if (!isCyclingMode)
+                {
+                    // RPMBased mode: ALWAYS spin down after burst completes
+                    if (spinningState == SpinningState.AtSpeed || spinningState == SpinningState.SpinningUp)
+                    {
+                        spinningState = SpinningState.SpinningDown;
+                        PlaySpinDownSound();
+                        //Log.Message($"[Barrel Animation DEBUG] Started spin-down for {parent.def.defName}");
+                    }
+                }
+                // Cycling mode: rotation stops automatically when firing stops (handled in UpdateCyclingMode)
+            }
+
+            // Stop burst sound sustainer
+            StopBurstSound();
         }
 
         /// <summary>
@@ -943,27 +1212,8 @@ namespace AbsolutelyMoreCannons
 
             Vector3 offset = rotatedOffset;
 
-            // Add recoil offset (backward from the direction the barrel is currently facing)
-            // For multi-barrel setups, recoil is applied per-barrel in DrawBarrel()
-            // Only apply global recoil for single-barrel setups
-            int barrelCount = Mathf.Max(1, Extension.barrelAmount);
-            if (barrelCount == 1 && recoilTicksRemaining > 0 && Extension.recoilAnimation != null)
-            {
-                float totalDuration = Extension.recoilAnimation.TotalDuration;
-                if (totalDuration > 0)
-            {
-                    float recoilProgress = 1f - (float)recoilTicksRemaining / totalDuration;
-                float recoilMultiplier = Extension.recoilAnimation.recoilCurve.Evaluate(recoilProgress);
-                    float barrelRotation = GetCurrentBarrelRotation();
-                    float recoilAngleRad = barrelRotation * Mathf.Deg2Rad;
-                Vector3 recoilDirection = new(
-                        -Mathf.Sin(recoilAngleRad),  // Negative because recoil goes backward
-                    0f,
-                        -Mathf.Cos(recoilAngleRad)   // Negative because recoil goes backward
-                );
-                offset += recoilDirection * Extension.recoilAnimation.maxDistance * recoilMultiplier;
-                }
-            }
+            // Recoil offset is now handled per-barrel in DrawBarrel() for all barrel configurations
+            // This ensures consistent behavior between single-barrel and multi-barrel turrets
 
             // Firing animation position offset removed - only muzzle flash is used
             // No position offset or scale transformations from firing animation
@@ -991,33 +1241,12 @@ namespace AbsolutelyMoreCannons
 
         private void UpdateRecoil()
         {
-            // Update legacy recoil for backwards compatibility
-            if (recoilTicksRemaining > 0)
-            {
-                recoilTicksRemaining--;
+            // Check if recoil animation is enabled
+            if (Extension.recoilAnimation == null || !Extension.recoilAnimation.enabled)
+                return;
 
-                if (Extension.recoilAnimation != null)
-                {
-                    float totalDuration = Extension.recoilAnimation.TotalDuration;
-                    if (totalDuration > 0)
-                    {
-                        float progress = 1f - (float)recoilTicksRemaining / totalDuration;
-                    float recoilMultiplier = Extension.recoilAnimation.recoilCurve.Evaluate(progress);
-
-                    currentRecoilDistance = Extension.recoilAnimation.maxDistance * recoilMultiplier;
-                    }
-
-                    currentRecoilAngle = 0f;
-                }
-            }
-            else
-            {
-                currentRecoilDistance = 0f;
-                currentRecoilAngle = 0f;
-            }
-            
-            // Update per-barrel recoil
-            if (barrelRecoilTicksRemaining != null && Extension.recoilAnimation != null)
+            // Update per-barrel recoil (now used for all barrel configurations)
+            if (barrelRecoilTicksRemaining != null)
             {
                 float totalDuration = Extension.recoilAnimation.TotalDuration;
                 for (int i = 0; i < barrelRecoilTicksRemaining.Length; i++)
@@ -1025,10 +1254,25 @@ namespace AbsolutelyMoreCannons
                     if (barrelRecoilTicksRemaining[i] > 0)
                     {
                         barrelRecoilTicksRemaining[i]--;
-                        
+
                         if (totalDuration > 0)
                         {
-                            float progress = 1f - (float)barrelRecoilTicksRemaining[i] / totalDuration;
+                            // Calculate progress, but clamp to valid range for curve evaluation
+                            float rawProgress = 1f - (float)barrelRecoilTicksRemaining[i] / totalDuration;
+                            float progress = Mathf.Clamp01(rawProgress); // Ensure 0-1 range for curve
+
+                            // Debug: Log progress calculation for rapid fire testing
+                            if (rawProgress < 0f || rawProgress > 1f)
+                            {
+                                string debugKey = $"RAPID_RECOIL_DEBUG_{parent.def.defName}_BARREL_{i}";
+                                if (!loggedTypes.Contains(debugKey))
+                                {
+                                    loggedTypes.Add(debugKey);
+                                    Log.Warning($"[Recoil Debug] Progress out of range for {parent.def.defName} barrel {i}: {rawProgress:F3} (clamped to {progress:F3})");
+                                    Log.Warning($"[Recoil Debug] Remaining ticks: {barrelRecoilTicksRemaining[i]}, Total duration: {totalDuration}");
+                                }
+                            }
+
                             float recoilMultiplier = Extension.recoilAnimation.recoilCurve.Evaluate(progress);
                             barrelRecoilDistance[i] = Extension.recoilAnimation.maxDistance * recoilMultiplier;
                         }
@@ -1038,6 +1282,138 @@ namespace AbsolutelyMoreCannons
                         barrelRecoilDistance[i] = 0f;
                     }
                 }
+            }
+            else
+            {
+                // Initialize arrays if needed
+                int barrelCount = Mathf.Max(1, Extension.barrelAmount);
+                if (barrelRecoilTicksRemaining == null || barrelRecoilTicksRemaining.Length != barrelCount)
+                {
+                    barrelRecoilTicksRemaining = new int[barrelCount];
+                    barrelRecoilDistance = new float[barrelCount];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates spinning animation state and frame progression.
+        /// </summary>
+        private void UpdateSpinning()
+        {
+            if (Extension.spinningAnimation == null || !Extension.spinningAnimation.enabled)
+                return;
+
+            // Calculate frames per tick based on current RPM
+            float maxFramesPerTick = (GetMaxRPM() * Extension.spinningAnimation.frameCount) / (60f * Extension.spinningAnimation.barrelCount);
+            float currentFramesPerTick = (currentRPM * Extension.spinningAnimation.frameCount) / (60f * Extension.spinningAnimation.barrelCount);
+
+            // Handle different animation modes
+            if (isCyclingMode)
+            {
+                // Cycling mode: simple rotation during firing
+                UpdateCyclingMode(currentFramesPerTick);
+            }
+            else
+            {
+                // RPMBased mode: handle spin-up, at-speed, and spin-down states
+                UpdateRPMBasedMode(currentFramesPerTick, maxFramesPerTick);
+            }
+        }
+
+        /// <summary>
+        /// Updates cycling mode animation (simple rotation when firing).
+        /// </summary>
+        private void UpdateCyclingMode(float currentFramesPerTick)
+        {
+            if (currentRPM > 0f)
+            {
+                // Advance frame based on current RPM
+                currentSpinFrame += currentFramesPerTick;
+                
+                // Keep frame in valid range
+                if (currentSpinFrame >= Extension.spinningAnimation.frameCount)
+                {
+                    currentSpinFrame -= Extension.spinningAnimation.frameCount;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates RPMBased mode animation (spin-up, at-speed, spin-down).
+        /// </summary>
+        private void UpdateRPMBasedMode(float currentFramesPerTick, float maxFramesPerTick)
+        {
+            switch (spinningState)
+            {
+                case SpinningState.SpinningUp:
+                    // Accelerate toward max RPM
+                    float acceleration = GetAccelerationPerTick();
+                    currentRPM += acceleration;
+                    
+                    if (currentRPM >= GetMaxRPM())
+                    {
+                        currentRPM = GetMaxRPM();
+                        spinningState = SpinningState.AtSpeed;
+                    }
+                    
+                    // Advance frame during spin-up (uses full frames)
+                    currentSpinFrame += currentFramesPerTick;
+                    if (currentSpinFrame >= Extension.spinningAnimation.frameCount)
+                    {
+                        currentSpinFrame -= Extension.spinningAnimation.frameCount;
+                    }
+                    break;
+
+                case SpinningState.AtSpeed:
+                    // Maintain max RPM and use 2-frame animation
+                    // At max speed, only cycle between frame 0 and frame (frameCount/2)
+                    int halfFrame = Extension.spinningAnimation.frameCount / 2;
+                    
+                    // Advance using max frames per tick
+                    currentSpinFrame += maxFramesPerTick;
+                    
+                    // Map to just 2 frames (0 and halfFrame)
+                    // We cycle through 0 -> halfFrame -> 0 -> halfFrame...
+                    float normalizedFrame = currentSpinFrame % 2f;
+                    if (normalizedFrame < 1f)
+                    {
+                        // Show frame 0
+                        currentSpinFrame = normalizedFrame; // Keep fractional part for smooth transitions
+                    }
+                    else
+                    {
+                        // Show halfFrame
+                        currentSpinFrame = halfFrame + (normalizedFrame - 1f);
+                    }
+                    break;
+
+                case SpinningState.SpinningDown:
+                    // Decelerate toward zero RPM
+                    float deceleration = GetDecelerationPerTick();
+                    currentRPM -= deceleration;
+                    
+                    if (currentRPM <= 0f)
+                    {
+                        currentRPM = 0f;
+                        currentSpinFrame = 0f;
+                        spinningState = SpinningState.Idle;
+                    }
+                    else
+                    {
+                        // Advance frame during spin-down (uses full frames)
+                        currentSpinFrame += currentFramesPerTick;
+                        if (currentSpinFrame >= Extension.spinningAnimation.frameCount)
+                        {
+                            currentSpinFrame -= Extension.spinningAnimation.frameCount;
+                        }
+                    }
+                    break;
+
+                case SpinningState.Idle:
+                    // No animation, frame stays at 0
+                    currentRPM = 0f;
+                    currentSpinFrame = 0f;
+                    break;
             }
         }
 
@@ -1090,42 +1466,222 @@ namespace AbsolutelyMoreCannons
             return Vector3.zero;
         }
 
-        private void UpdateSpinning()
+        /// <summary>
+        /// Get warmupTime from verb using reflection (RPMBased mode only).
+        /// </summary>
+        private float GetWarmupTimeFromVerb()
         {
-            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            try
             {
-                float targetSpeed = Extension.spinningAnimation.spinWhenIdle
-                    ? Extension.spinningAnimation.baseSpeed
-                    : 0f;
+                if (Turret == null)
+                    return 0.5f; // Default fallback
 
-                // Increase speed when firing
-                if (firingTicksRemaining > 0)
+                // Try to get verb from turret
+                var verbProperty = Turret.GetType().GetProperty("CurrentEffectiveVerb");
+                if (verbProperty == null)
                 {
-                    targetSpeed = Extension.spinningAnimation.baseSpeed * Extension.spinningAnimation.firingMultiplier;
+                    verbProperty = Turret.GetType().GetProperty("CurrentVerb");
+                }
+                
+                if (verbProperty != null)
+                {
+                    var verb = verbProperty.GetValue(Turret);
+                    if (verb != null)
+                    {
+                        // Try to get verb properties
+                        var verbPropsProperty = verb.GetType().GetProperty("verbProps");
+                        if (verbPropsProperty == null)
+                        {
+                            verbPropsProperty = verb.GetType().GetProperty("VerbProps");
+                        }
+                        
+                        if (verbPropsProperty != null)
+                        {
+                            var verbProps = verbPropsProperty.GetValue(verb);
+                            if (verbProps != null)
+                            {
+                                // Try to get warmupTime
+                                var warmupTimeProperty = verbProps.GetType().GetProperty("warmupTime");
+                                if (warmupTimeProperty != null)
+                                {
+                                    var warmupTimeValue = warmupTimeProperty.GetValue(verbProps);
+                                    if (warmupTimeValue != null)
+                                    {
+                                        return Convert.ToSingle(warmupTimeValue);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Barrel Animation] Error getting warmupTime from verb: {ex.Message}");
+            }
+            
+            return 0.5f; // Default fallback
+        }
+
+        /// <summary>
+        /// Calculate acceleration per tick from warmupTime (RPMBased mode only).
+        /// </summary>
+        private float GetAccelerationPerTick()
+        {
+            if (warmupTime <= 0f)
+                warmupTime = GetWarmupTimeFromVerb();
+            
+            if (warmupTime <= 0f)
+                return GetMaxRPM() / 30f; // Default 0.5 seconds
+            
+            float warmupTicks = warmupTime * 60f;
+            return GetMaxRPM() / warmupTicks;
+        }
+
+        /// <summary>
+        /// Calculate deceleration per tick from spindownTime (RPMBased mode only).
+        /// </summary>
+        private float GetDecelerationPerTick()
+        {
+            float spindownTicks = Extension.spinningAnimation.spindownTime * 60f;
+            if (spindownTicks <= 0f)
+                return GetMaxRPM() / 120f; // Default 2 seconds
+            
+            return GetMaxRPM() / spindownTicks;
+        }
+
+        /// <summary>
+        /// Check if turret has active target (RPMBased mode only).
+        /// </summary>
+        private bool CheckTurretHasTarget()
+        {
+            try
+            {
+                if (Turret == null)
+                    return false;
+
+                // Try to get CurrentTarget property
+                var targetProperty = Turret.GetType().GetProperty("CurrentTarget");
+                if (targetProperty != null)
+                {
+                    var target = targetProperty.GetValue(Turret);
+                    return target != null && !target.Equals(null);
                 }
 
-                // Smooth speed changes
-                if (currentSpinSpeed < targetSpeed)
+                // Try alternative property names
+                var altTargetProperty = Turret.GetType().GetProperty("currentTarget");
+                if (altTargetProperty != null)
                 {
-                    currentSpinSpeed += Extension.spinningAnimation.acceleration;
-                    if (currentSpinSpeed > targetSpeed)
-                        currentSpinSpeed = targetSpeed;
+                    var target = altTargetProperty.GetValue(Turret);
+                    return target != null && !target.Equals(null);
                 }
-                else if (currentSpinSpeed > targetSpeed)
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Barrel Animation] Error checking turret target: {ex.Message}");
+            }
+            
+            return false;
+        }
+
+        /// <summary>
+        /// Check if turret is actively ready to fire (has target AND operator for manned turrets).
+        /// </summary>
+        private bool CheckTurretIsActive()
+        {
+            if (!CheckTurretHasTarget())
+                return false;
+
+            // For manned turrets, also check if there's an operator
+            try
+            {                if (Turret == null)
+                    return false;
+
+                // Check for mannableComp (indicates it's a manned turret)
+                var mannableComp = parent.TryGetComp<CompMannable>();
+                if (mannableComp != null)
                 {
-                    currentSpinSpeed *= Extension.spinningAnimation.deceleration;
-                    if (currentSpinSpeed < targetSpeed)
-                        currentSpinSpeed = targetSpeed;
+                    // It's a manned turret, check if there's an operator
+                    return mannableComp.MannedNow;
                 }
 
-                // Clamp to speed limits
-                currentSpinSpeed = Mathf.Max(Extension.spinningAnimation.minSpeed,
-                    Mathf.Min(currentSpinSpeed, Extension.spinningAnimation.maxSpeed));
-
-                // Update spin frame
-                currentSpinFrame += currentSpinSpeed;
+                // Not a manned turret (auto turret), just having a target is enough
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Barrel Animation] Error checking turret active state: {ex.Message}");
+                return false;
             }
         }
+
+        /// <summary>
+        /// Play spin-up sound effect (RPMBased mode only).
+        /// </summary>
+        private void PlaySpinUpSound()
+        {
+            if (spinUpSoundDef != null && parent?.Map != null)
+            {
+                try
+                {
+                    spinUpSoundDef.PlayOneShot(new TargetInfo(parent.Position, parent.Map, false));
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[Barrel Animation] Error playing spin-up sound: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Play spin-down sound effect (RPMBased mode only).
+        /// </summary>
+        private void PlaySpinDownSound()
+        {
+            if (spinDownSoundDef != null && parent?.Map != null)
+            {
+                try
+                {
+                    spinDownSoundDef.PlayOneShot(new TargetInfo(parent.Position, parent.Map, false));
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[Barrel Animation] Error playing spin-down sound: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop burst sound sustainer if playing.
+        /// </summary>
+        private void StopBurstSound()
+        {
+            if (burstSoundSustainer != null)
+            {
+                try
+                {
+                    Log.Message($"[Burst Sound DEBUG] Stopping burst sound for {parent.def.defName}");
+                    burstSoundSustainer.End();
+                    Log.Message($"[Burst Sound DEBUG] Successfully stopped burst sound for {parent.def.defName}");
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[Burst Sound DEBUG] Error stopping burst sound: {ex.Message}");
+                }
+                finally
+                {
+                    burstSoundSustainer = null;
+                }
+            }
+            else
+            {
+                Log.Message($"[Burst Sound DEBUG] StopBurstSound called but sustainer is null for {parent.def.defName}");
+            }
+        }
+
+        /// <summary>
+        /// Update cycling mode animation (simple rotation at maxRPM when firing).
+        /// </summary>
 
         private void UpdateFiringAnimation()
         {
@@ -1447,10 +2003,10 @@ namespace AbsolutelyMoreCannons
                 int ticksRemainingForFlash = barrelFiringTicksRemaining != null && barrelIndex < barrelFiringTicksRemaining.Length
                     ? barrelFiringTicksRemaining[barrelIndex]
                     : firingTicksRemaining;
-                Log.Message($"[Barrel Flash Debug] Drawing flash for barrel {barrelIndex} of {parent.def.defName}. " +
-                    $"firingTicksRemaining: {ticksRemainingForFlash}, " +
-                    $"drawFlash: {Extension.firingAnimation.drawFlash}, " +
-                    $"flashBrightness: {Extension.firingAnimation.flashBrightness}");
+                //Log.Message($"[Barrel Flash Debug] Drawing flash for barrel {barrelIndex} of {parent.def.defName}. " +
+                    //  $"firingTicksRemaining: {ticksRemainingForFlash}, " +
+                    //  $"drawFlash: {Extension.firingAnimation.drawFlash}, " +
+                    //  $"flashBrightness: {Extension.firingAnimation.flashBrightness}");
             }
 
             // Calculate flash position at barrel tip
@@ -1505,9 +2061,9 @@ namespace AbsolutelyMoreCannons
 
             if (shouldLogFlash)
             {
-                Log.Message($"[Barrel Flash Debug] Flash progress: {flashProgress:F2}, intensity: {intensity:F2}, " +
-                    $"flashPos: ({flashPos.x:F2}, {flashPos.y:F2}, {flashPos.z:F2}), " +
-                    $"barrelRotation: {barrelRotation:F1}°");
+                //Log.Message($"[Barrel Flash Debug] Flash progress: {flashProgress:F2}, intensity: {intensity:F2}, " +
+                    //  $"flashPos: ({flashPos.x:F2}, {flashPos.y:F2}, {flashPos.z:F2}), " +
+                    //  $"barrelRotation: {barrelRotation:F1}°");
             }
 
             // Calculate flash scale (size) - use flashSize parameter, modified by intensity
@@ -1535,8 +2091,8 @@ namespace AbsolutelyMoreCannons
 
             if (shouldLogFlash)
             {
-                Log.Message($"[Barrel Flash Debug] Flash scale: {flashScale:F2} (size: {Extension.firingAnimation.flashSize}, intensity: {intensity:F2})");
-                Log.Message($"[Barrel Flash Debug] Flash color: R={flashColor.r:F2}, G={flashColor.g:F2}, B={flashColor.b:F2}, A={flashColor.a:F2} (brightness: {Extension.firingAnimation.flashBrightness})");
+                //Log.Message($"[Barrel Flash Debug] Flash scale: {flashScale:F2} (size: {Extension.firingAnimation.flashSize}, intensity: {intensity:F2})");
+                //Log.Message($"[Barrel Flash Debug] Flash color: R={flashColor.r:F2}, G={flashColor.g:F2}, B={flashColor.b:F2}, A={flashColor.a:F2} (brightness: {Extension.firingAnimation.flashBrightness})");
             }
 
             // Draw flash using Graphics.DrawMesh with glow shader
@@ -1612,17 +2168,17 @@ namespace AbsolutelyMoreCannons
 
                     if (shouldLogFlash)
                     {
-                        Log.Message($"[Barrel Flash Debug] Drew multi-layer flash at ({flashPos.x:F2}, {flashPos.y:F2}, {flashPos.z:F2}) with scale {flashScale:F2}");
+                        //Log.Message($"[Barrel Flash Debug] Drew multi-layer flash at ({flashPos.x:F2}, {flashPos.y:F2}, {flashPos.z:F2}) with scale {flashScale:F2}");
                     }
                 }
                 else if (shouldLogFlash)
                 {
-                    Log.Message($"[Barrel Flash Debug] Skipping flash drawing - scale too small: {flashScale:F2} or material null: {flashMaterial == null}");
+                    //Log.Message($"[Barrel Flash Debug] Skipping flash drawing - scale too small: {flashScale:F2} or material null: {flashMaterial == null}");
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[Barrel Flash Debug] Error drawing flash mesh: {ex.Message}");
+                //Log.Warning($"[Barrel Flash Debug] Error drawing flash mesh: {ex.Message}");
             }
         }
 
@@ -1633,11 +2189,16 @@ namespace AbsolutelyMoreCannons
         {
             base.PostExposeData();
 
+            Scribe_Values.Look(ref selectedRPMIndex, "selectedRPMIndex", 0);
+            Scribe_Values.Look(ref selectedBurstCountIndex, "selectedBurstCountIndex", 0);
+
             Scribe_Values.Look(ref recoilTicksRemaining, "recoilTicksRemaining", 0);
             Scribe_Values.Look(ref currentRecoilDistance, "currentRecoilDistance", 0f);
             Scribe_Values.Look(ref currentRecoilAngle, "currentRecoilAngle", 0f);
             Scribe_Values.Look(ref currentSpinFrame, "currentSpinFrame", 0f);
-            Scribe_Values.Look(ref currentSpinSpeed, "currentSpinSpeed", 0f);
+            Scribe_Values.Look(ref currentRPM, "currentRPM", 0f);
+            Scribe_Values.Look(ref spinningState, "spinningState", SpinningState.Idle);
+            Scribe_Values.Look(ref warmupTime, "warmupTime", 0f);
             Scribe_Values.Look(ref firingTicksRemaining, "firingTicksRemaining", 0);
             Scribe_Values.Look(ref currentSequentialBarrel, "currentSequentialBarrel", 0);
 
@@ -1680,6 +2241,25 @@ namespace AbsolutelyMoreCannons
                     barrelRecoilDistance = barrelRecoilDistanceList.ToArray();
                 else
                     barrelRecoilDistance = new float[0];
+            }
+
+            // Reinitialize spinning animation mode after loading
+            if (Scribe.mode == LoadSaveMode.LoadingVars && Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            {
+                isCyclingMode = Extension.spinningAnimation.animationMode == "Cycling";
+                
+                if (!isCyclingMode && (spinUpSoundDef == null || spinDownSoundDef == null))
+                {
+                    // Reload sound definitions after loading
+                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinUpSound))
+                    {
+                        spinUpSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinUpSound);
+                    }
+                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinDownSound))
+                    {
+                        spinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinDownSound);
+                    }
+                }
             }
         }
     }

@@ -78,7 +78,7 @@
 		  <drawFlash>true</drawFlash>
 		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 		  <flashSize>15</flashSize>
-		  <flashBrightness>2.5</flashBrightness>
+		  <flashBrightness>2</flashBrightness>
 		  <flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
 		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 		  <flashIntensityCurve>
@@ -117,7 +117,7 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_40x365mm_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>4</minRange>
+        		<minRange>5</minRange>
 				<range>80</range>
 				<soundCast>Sound_M247</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
@@ -157,7 +157,7 @@
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
-				<CasingOffset>0,-0.5</CasingOffset>
+				<CasingOffset>2,2</CasingOffset>
 				<CasingAngleOffset>0</CasingAngleOffset>
 			</li>
 		</modExtensions>

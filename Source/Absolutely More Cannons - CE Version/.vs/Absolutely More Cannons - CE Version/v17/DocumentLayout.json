@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "CompTurretBarrel.cs",
               "ToolTip": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\CompTurretBarrel.cs",
               "RelativeToolTip": "CompTurretBarrel.cs",
-              "ViewState": "AgIAAIACAAAAAAAAAAAswJUCAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAIgIAAAAAAAAAAAswJwIAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-24T16:23:58.825Z",
               "EditorCaption": ""
@@ -45,9 +45,10 @@
               "RelativeDocumentMoniker": "HarmonyPatches.cs",
               "ToolTip": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\HarmonyPatches.cs",
               "RelativeToolTip": "HarmonyPatches.cs",
-              "ViewState": "AgIAAPEAAAAAAAAAAAAjwDQBAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAADoCAAAAAAAAAAAkwFEBAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T16:20:57.536Z"
+              "WhenOpened": "2025-11-24T16:20:57.536Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -58,7 +59,8 @@
               "ToolTip": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
               "RelativeToolTip": "Absolutely More Cannons - CE Version.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-24T16:13:58.55Z"
+              "WhenOpened": "2025-11-24T16:13:58.55Z",
+              "EditorCaption": ""
             }
           ]
         }

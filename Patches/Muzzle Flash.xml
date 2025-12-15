@@ -277,6 +277,22 @@
 						</li>
 					</value>
 				</li>
+
+			    <!-- //////////////////////////////////// -->
+			    <!-- ////////////Rotary Guns///////////// -->
+			    <!-- //////////////////////////////////// -->
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_20mmM61Vulcan_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1.8,1.8)</drawSize>
+							<offsets>
+								<li>(3.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
 			
 			    <!-- //////////////////////////////////// -->
 			    <!-- //////////////Howitzers/////////////// -->
