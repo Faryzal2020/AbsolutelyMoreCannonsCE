@@ -67,6 +67,11 @@
         <barrelDrawSize>14.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <barrelAmount>1</barrelAmount>
+		<selectableBurstCounts>
+			<li>6</li>
+			<li>10</li>
+			<li>15</li>
+		</selectableBurstCounts>
         <recoilAnimation>
           <maxDistance>0.2</maxDistance>
           <recoilDuration>1</recoilDuration>
@@ -120,17 +125,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x139mm_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>3</minRange>
+        		<minRange>3</minRange>
 				<range>70</range>
 				<soundCast>Sound_RH202</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>25</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>5</ticksBetweenBurstShots>
 				<burstShotCount>15</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>
@@ -154,6 +160,7 @@
 			</li>
       <li Class="CombatExtended.CompProperties_FireModes">
         <aiUseBurstMode>TRUE</aiUseBurstMode>
+		<noSingleShot>true</noSingleShot>
         <aiAimMode>AimedShot</aiAimMode>
         <aimedBurstShotCount>4</aimedBurstShotCount>
       </li>

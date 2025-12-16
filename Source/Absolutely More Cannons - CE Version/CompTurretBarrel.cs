@@ -131,6 +131,10 @@ namespace AbsolutelyMoreCannons
 
         public float GetCurrentTicksBetweenBurstShots()
         {
+            // Only override if spinning animation is enabled
+            if (Extension.spinningAnimation == null || !Extension.spinningAnimation.enabled)
+                return -1f; // Use default CE behavior
+                
             float rpm = GetMaxRPM();
             if (rpm > 0f)
             {
@@ -420,11 +424,11 @@ namespace AbsolutelyMoreCannons
                 burstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.burstSound);
                 if (burstSoundDef != null)
                 {
-                    Log.Message($"[Burst Sound DEBUG] Loaded burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                    //Log.Message($"[Burst Sound DEBUG] Loaded burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
                 }
                 else
                 {
-                    Log.Warning($"[Burst Sound DEBUG] Failed to load burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                    //Log.Warning($"[Burst Sound DEBUG] Failed to load burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
                 }
             }
         }
@@ -444,6 +448,22 @@ namespace AbsolutelyMoreCannons
         public override void CompTick()
         {
             base.CompTick();
+
+            // Safety check: stop burst sound if turret is no longer active but sound is still playing
+            if (burstSoundSustainer != null && !CheckTurretIsActive())
+            {
+                StopBurstSound();
+                
+                // Also force spin-down if still spinning
+                if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled && !isCyclingMode)
+                {
+                    if (spinningState == SpinningState.AtSpeed || spinningState == SpinningState.SpinningUp)
+                    {
+                        spinningState = SpinningState.SpinningDown;
+                        PlaySpinDownSound();
+                    }
+                }
+            }
 
             UpdateRecoil();
             UpdateSpinning();
@@ -565,7 +585,7 @@ namespace AbsolutelyMoreCannons
             if (!loggedTypes.Contains(rapidFireKey))
             {
                 loggedTypes.Add(rapidFireKey);
-                Log.Message($"[Rapid Fire Debug] {parent.def.defName} barrel {barrelIndex}: currentProgress={currentProgress:F3}, recoilPhaseProgress={recoilPhaseProgress:F3}");
+                //Log.Message($"[Rapid Fire Debug] {parent.def.defName} barrel {barrelIndex}: currentProgress={currentProgress:F3}, recoilPhaseProgress={recoilPhaseProgress:F3}");
             }
 
             // Always restart the full recoil cycle
@@ -702,6 +722,9 @@ namespace AbsolutelyMoreCannons
                     }
                 }
             }
+            
+            // Stop burst sound if playing (when operator leaves or dies mid-burst)
+            StopBurstSound();
         }
 
         /// <summary>
@@ -739,20 +762,20 @@ namespace AbsolutelyMoreCannons
                     // Start burst sound sustainer if not already playing
                     if (burstSoundDef != null && burstSoundSustainer == null)
                     {
-                        Log.Message($"[Burst Sound DEBUG] Attempting to start burst sound for {parent.def.defName}");
+                        //Log.Message($"[Burst Sound DEBUG] Attempting to start burst sound for {parent.def.defName}");
                         burstSoundSustainer = burstSoundDef.TrySpawnSustainer(SoundInfo.InMap(parent));
                         if (burstSoundSustainer != null)
                         {
-                            Log.Message($"[Burst Sound DEBUG] Successfully started burst sound sustainer for {parent.def.defName}");
+                            //Log.Message($"[Burst Sound DEBUG] Successfully started burst sound sustainer for {parent.def.defName}");
                         }
                         else
                         {
-                            Log.Warning($"[Burst Sound DEBUG] Failed to start burst sound sustainer for {parent.def.defName}");
+                            //Log.Warning($"[Burst Sound DEBUG] Failed to start burst sound sustainer for {parent.def.defName}");
                         }
                     }
                     else if (burstSoundDef == null)
                     {
-                        Log.Warning($"[Burst Sound DEBUG] burstSoundDef is null, cannot start sound for {parent.def.defName}");
+                        //Log.Warning($"[Burst Sound DEBUG] burstSoundDef is null, cannot start sound for {parent.def.defName}");
                     }
 
                     // Trigger firing animation and recoil for each barrel that fires
@@ -913,10 +936,10 @@ namespace AbsolutelyMoreCannons
                 if (!loggedTypes.Contains(muzzleFlashDebugKey))
                 {
                     loggedTypes.Add(muzzleFlashDebugKey);
-                    Log.Message($"[Barrel Muzzle Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
+                    /*Log.Message($"[Barrel Muzzle Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
                         $"barrelCount={barrelCount}, barrelSpacing={Extension.barrelSpacing}, " +
                         $"barrelPositionOffset={barrelPositionOffset:F3}, " +
-                        $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})");
+                        $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})"); */
                 }
 
                 // Position effect at barrel tip (barrel offset + forward offset + spacing offset)
@@ -1660,13 +1683,13 @@ namespace AbsolutelyMoreCannons
             {
                 try
                 {
-                    Log.Message($"[Burst Sound DEBUG] Stopping burst sound for {parent.def.defName}");
+                    //Log.Message($"[Burst Sound DEBUG] Stopping burst sound for {parent.def.defName}");
                     burstSoundSustainer.End();
-                    Log.Message($"[Burst Sound DEBUG] Successfully stopped burst sound for {parent.def.defName}");
+                    //Log.Message($"[Burst Sound DEBUG] Successfully stopped burst sound for {parent.def.defName}");
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[Burst Sound DEBUG] Error stopping burst sound: {ex.Message}");
+                    //Log.Warning($"[Burst Sound DEBUG] Error stopping burst sound: {ex.Message}");
                 }
                 finally
                 {
@@ -1675,7 +1698,7 @@ namespace AbsolutelyMoreCannons
             }
             else
             {
-                Log.Message($"[Burst Sound DEBUG] StopBurstSound called but sustainer is null for {parent.def.defName}");
+                //Log.Message($"[Burst Sound DEBUG] StopBurstSound called but sustainer is null for {parent.def.defName}");
             }
         }
 
@@ -1757,9 +1780,9 @@ namespace AbsolutelyMoreCannons
             if (shouldLogAltitude)
             {
                 loggedTypes.Add(altitudeDebugKey);
-                Log.Message($"[Altitude Debug] Turret Base Y position: {parent.DrawPos.y:F3}, " +
+                /* Log.Message($"[Altitude Debug] Turret Base Y position: {parent.DrawPos.y:F3}, " +
                     $"Building layer altitude: {AltitudeLayer.Building.AltitudeFor():F3}, " +
-                    $"ItemImportant layer altitude: {AltitudeLayer.ItemImportant.AltitudeFor():F3}");
+                    $"ItemImportant layer altitude: {AltitudeLayer.ItemImportant.AltitudeFor():F3}"); */
             }
             
             // Set Y altitude based on drawOnTop setting
@@ -1779,8 +1802,8 @@ namespace AbsolutelyMoreCannons
             
             if (shouldLogAltitude)
             {
-                Log.Message($"[Altitude Debug] Barrel final Y position: {baseDrawPos.y:F3} " +
-                    $"(drawOnTop: {Extension.drawOnTop}, using {(Extension.drawOnTop ? "ItemImportant+0.1" : "parent.DrawPos.y+0.02")})");
+                /* Log.Message($"[Altitude Debug] Barrel final Y position: {baseDrawPos.y:F3} " +
+                    $"(drawOnTop: {Extension.drawOnTop}, using {(Extension.drawOnTop ? "ItemImportant+0.1" : "parent.DrawPos.y+0.02")})"); */
             }
 
             // Only draw barrels if barrel graphic is available
@@ -1922,8 +1945,8 @@ namespace AbsolutelyMoreCannons
             if (shouldLogUnderBarrelAltitude)
             {
                 loggedTypes.Add(underBarrelAltitudeKey);
-                Log.Message($"[Altitude Debug] Under-Barrel before altitude set - Y: {baseDrawPos.y:F3}, " +
-                    $"Parent DrawPos.y: {parent.DrawPos.y:F3}, Building layer: {AltitudeLayer.Building.AltitudeFor():F3}");
+                /* Log.Message($"[Altitude Debug] Under-Barrel before altitude set - Y: {baseDrawPos.y:F3}, " +
+                    $"Parent DrawPos.y: {parent.DrawPos.y:F3}, Building layer: {AltitudeLayer.Building.AltitudeFor():F3}"); */
             }
             
             // Set altitude to be above the base but below turret top and barrel
@@ -1933,7 +1956,7 @@ namespace AbsolutelyMoreCannons
             
             if (shouldLogUnderBarrelAltitude)
             {
-                Log.Message($"[Altitude Debug] Under-Barrel final Y position: {baseDrawPos.y:F3} (parent.DrawPos.y + 0.01)");
+                //Log.Message($"[Altitude Debug] Under-Barrel final Y position: {baseDrawPos.y:F3} (parent.DrawPos.y + 0.01)");
             }
 
             // Get draw size - use barrelDrawSize for consistent scaling with barrel
@@ -2039,10 +2062,10 @@ namespace AbsolutelyMoreCannons
             if (!loggedTypes.Contains(flashPosDebugKey))
             {
                 loggedTypes.Add(flashPosDebugKey);
-                Log.Message($"[Barrel Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
+                /*Log.Message($"[Barrel Flash Position] {parent.def.defName} barrel {barrelIndex}: " +
                     $"barrelCount={barrelCount}, barrelSpacing={Extension.barrelSpacing}, " +
                     $"barrelPositionOffset={barrelPositionOffset:F3}, " +
-                    $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})");
+                    $"perpendicularDirection=({perpendicularDirection.x:F3}, {perpendicularDirection.y:F3}, {perpendicularDirection.z:F3})"); */
             }
 
             // Position flash at barrel tip (barrel offset + forward offset + spacing offset)

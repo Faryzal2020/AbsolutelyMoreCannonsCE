@@ -69,6 +69,11 @@
 			<barrelAmount>2</barrelAmount>
 			<barrelSpacing>1.35</barrelSpacing>
 			<sequentialFiring>true</sequentialFiring>
+			<selectableBurstCounts>
+				<li>6</li>
+				<li>10</li>
+				<li>16</li>
+			</selectableBurstCounts>
 			<recoilAnimation>
 				<maxDistance>0.2</maxDistance>
 				<recoilDuration>2</recoilDuration>
@@ -122,17 +127,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_25x137mm_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>3</minRange>
+        		<minRange>3</minRange>
 				<range>80</range>
 				<soundCast>Sound_SIDAM</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>30</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>6</ticksBetweenBurstShots>
 				<burstShotCount>10</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>
@@ -154,16 +160,17 @@
 				<reloadTime>5</reloadTime>
 				<ammoSet>AmmoSet_25x137mm_Shells</ammoSet>
 			</li>
-      <li Class="CombatExtended.CompProperties_FireModes">
-        <aiUseBurstMode>TRUE</aiUseBurstMode>
-        <aiAimMode>AimedShot</aiAimMode>
-        <aimedBurstShotCount>4</aimedBurstShotCount>
-      </li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>TRUE</aiUseBurstMode>
+				<noSingleShot>true</noSingleShot>
+				<aiAimMode>AimedShot</aiAimMode>
+				<aimedBurstShotCount>4</aimedBurstShotCount>
+			</li>
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
-				<CasingOffset>0,-0.5</CasingOffset>
-				<CasingAngleOffset>0</CasingAngleOffset>
+				<CasingOffset>1,-1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
 			</li>
 		</modExtensions>
 	</ThingDef>

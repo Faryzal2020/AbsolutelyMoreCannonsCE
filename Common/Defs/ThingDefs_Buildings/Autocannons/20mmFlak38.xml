@@ -56,6 +56,11 @@
         <barrelDrawSize>9.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <barrelAmount>1</barrelAmount>
+		<selectableBurstCounts>
+			<li>3</li>
+			<li>5</li>
+			<li>10</li>
+		</selectableBurstCounts>
         <recoilAnimation>
           <maxDistance>0.4</maxDistance>
           <recoilDuration>6</recoilDuration>
@@ -104,7 +109,7 @@
 		<soundInteract>AMC_Small_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>0.1</recoilAmount>
+				<recoilAmount>1</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x138mm_AP</defaultProjectile>

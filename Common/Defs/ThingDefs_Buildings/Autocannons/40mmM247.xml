@@ -64,6 +64,11 @@
         <barrelAmount>2</barrelAmount>
         <barrelSpacing>0.5</barrelSpacing>
 		<sequentialFiring>true</sequentialFiring>
+		<selectableBurstCounts>
+			<li>4</li>
+			<li>8</li>
+			<li>12</li>
+		</selectableBurstCounts>
         <recoilAnimation>
           <maxDistance>0.6</maxDistance>
           <recoilDuration>20</recoilDuration>
@@ -122,12 +127,13 @@
 				<soundCast>Sound_M247</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>35</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>12</ticksBetweenBurstShots>
 				<burstShotCount>8</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>
@@ -157,7 +163,7 @@
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
-				<CasingOffset>2,2</CasingOffset>
+				<CasingOffset>1.5,1.5</CasingOffset>
 				<CasingAngleOffset>0</CasingAngleOffset>
 			</li>
 		</modExtensions>

@@ -86,6 +86,9 @@
 				<li>50</li>
 				<li>100</li>
 			</selectableBurstCounts>
+			<recoilAnimation>
+				<enabled>false</enabled>  <!-- Disable recoil for gatling -->
+			</recoilAnimation>
 			<spinningAnimation>
 				<enabled>true</enabled>
 				<animationMode>RPMBased</animationMode>
@@ -96,13 +99,14 @@
 			</spinningAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>4</projectileSpawnOffset>
 				<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<burstSound>AMC_Vulcan_BurstLoop</burstSound>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>10</flashSize>
+				<flashSize>13</flashSize>
 				<flashBrightness>0.8</flashBrightness>
-				<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 				<flashIntensityCurve>
 					<points>
@@ -128,7 +132,7 @@
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
 			<ShotSpread>0.5</ShotSpread>
-			<SwayFactor>1</SwayFactor>
+			<SwayFactor>0.4</SwayFactor>
 			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -226,8 +230,8 @@
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
-				<CasingOffset>0,-0.5</CasingOffset>
-				<CasingAngleOffset>200</CasingAngleOffset>
+				<CasingOffset>0.5,1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
 			</li>
 		</modExtensions>
 	</ThingDef>

@@ -54,8 +54,8 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(1.8,1.8)</drawSize>
 							<offsets>
-								<li>(1.6,0.7)</li>
 								<li>(1.6,-0.7)</li>
+								<li>(1.6,0.7)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -136,8 +136,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(3.6,0.3)</li>
 								<li>(3.6,-0.3)</li>
+								<li>(3.6,0.3)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -257,8 +257,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(2.8,0.2)</li>
 								<li>(2.8,-0.2)</li>
+								<li>(2.8,0.2)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -451,8 +451,8 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(5.8,0.4)</li>
 								<li>(5.8,-0.4)</li>
+								<li>(5.8,0.4)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -492,8 +492,8 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(6,0.6)</li>
 								<li>(6,-0.6)</li>
+								<li>(6,0.6)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -507,8 +507,8 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(10.8,1.2)</li>
 								<li>(10.8,-1.2)</li>
+								<li>(10.8,1.2)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>

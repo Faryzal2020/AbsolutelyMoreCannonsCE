@@ -111,7 +111,7 @@ namespace AbsolutelyMoreCannons
         /// <summary>
         /// Whether recoil animation is enabled.
         /// </summary>
-        public bool enabled = false;
+        public bool enabled = true;
 
         /// <summary>
         /// Maximum recoil distance.
@@ -394,6 +394,14 @@ namespace AbsolutelyMoreCannons
         /// Leave empty/null to use only the per-shot sound.
         /// </summary>
         public string burstSound = null;
+
+        /// <summary>
+        /// Optional offset (in tiles) to move the projectile spawn location forward along the aiming direction.
+        /// Positive values move forward, negative moves backward.
+        /// Useful for spawning bullets from the visual barrel tip rather than turret center.
+        /// Default is 0 (spawn at turret center).
+        /// </summary>
+        public float projectileSpawnOffset = 0f;
 
         public FiringAnimation()
         {

@@ -61,6 +61,11 @@
 			<barrelDrawSize>14.0</barrelDrawSize>
 			<drawOnTop>false</drawOnTop>
 			<barrelAmount>1</barrelAmount>
+			<selectableBurstCounts>
+				<li>3</li>
+				<li>6</li>
+				<li>9</li>
+			</selectableBurstCounts>
 			<recoilAnimation>
 				<maxDistance>0.6</maxDistance>
 				<recoilDuration>9</recoilDuration>
@@ -114,17 +119,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_30x170mm_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>4</minRange>
+        		<minRange>4</minRange>
 				<range>70</range>
 				<soundCast>Sound_RARDEN</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>25</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>39</ticksBetweenBurstShots>
 				<burstShotCount>6</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>

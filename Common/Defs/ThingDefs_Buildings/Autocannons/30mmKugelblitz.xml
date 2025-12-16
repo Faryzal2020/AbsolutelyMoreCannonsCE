@@ -64,6 +64,11 @@
 			<barrelAmount>2</barrelAmount>
 			<barrelSpacing>0.45</barrelSpacing>
 			<sequentialFiring>true</sequentialFiring>
+			<selectableBurstCounts>
+				<li>6</li>
+				<li>10</li>
+				<li>16</li>
+			</selectableBurstCounts>
 			<recoilAnimation>
 				<maxDistance>0.4</maxDistance>
 				<recoilDuration>3</recoilDuration>
@@ -117,17 +122,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_30x184mm_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>3</minRange>
+        		<minRange>3</minRange>
 				<range>70</range>
 				<soundCast>Sound_Kugelblitz</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>25</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>8</ticksBetweenBurstShots>
 				<burstShotCount>10</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern> <!--
+				<recoilPattern>Mounted</recoilPattern>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>10</circularError>
 				<indirectFirePenalty>0.125</indirectFirePenalty>
@@ -158,7 +164,7 @@
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0.2,1.5</CasingOffset>
-				<CasingAngleOffset>0</CasingAngleOffset>
+				<CasingAngleOffset>180</CasingAngleOffset>
 			</li>
 		</modExtensions>
 	</ThingDef>

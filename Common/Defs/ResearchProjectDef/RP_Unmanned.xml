@@ -86,7 +86,7 @@
       <li>Research_127mmMark16</li>
     </prerequisites>
     <researchViewX>10</researchViewX>
-    <researchViewY>5</researchViewY>
+    <researchViewY>3</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
 </Defs>

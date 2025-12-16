@@ -289,6 +289,21 @@ namespace AbsolutelyMoreCannons
                 //Log.Warning("[Barrel Flash Debug] Could not find Verb_LaunchProjectileCE.TryCastShot method");
             }
 
+            // Patch IncrementBarrelCount to add our custom lateral offset
+            var incrementBarrelMethod = AccessTools.Method(verbType, "IncrementBarrelCount");
+            if (incrementBarrelMethod != null)
+            {
+                harmony.Patch(
+                    original: incrementBarrelMethod,
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_IncrementBarrelCount))
+                );
+                Log.Message("[Projectile Offset] Successfully patched Verb_LaunchProjectileCE.IncrementBarrelCount");
+            }
+            else
+            {
+                Log.Warning("[Projectile Offset] Could not find Verb_LaunchProjectileCE.IncrementBarrelCount method");
+            }
+
             // Patch warmup-related methods
             TryPatchCEVerbWarmup(harmony, verbType);
         }
@@ -767,6 +782,72 @@ namespace AbsolutelyMoreCannons
                       Log.Warning($"Turret Barrel Animation: Error in Postfix_Verb_ShotsPerBurstFor: {ex.Message}");
                   }
              }
+        }
+
+        /// <summary>
+        /// Postfix patch for Verb_LaunchProjectileCE.IncrementBarrelCount to add custom barrel offset.
+        /// Modifies the return value to include our lateral spacing for multi-barrel turrets.
+        /// </summary>
+        public static void Postfix_Verb_LaunchProjectileCE_IncrementBarrelCount(object __instance, ref Vector2 __result)
+        {
+            try
+            {
+                // Get the caster
+                var casterField = AccessTools.Field(__instance.GetType().BaseType, "caster");
+                if (casterField == null) return;
+                
+                var caster = casterField.GetValue(__instance) as Thing;
+                if (caster == null) return;
+
+                // Try to get CompTurretBarrel
+                var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                if (barrelComp == null || barrelComp.Extension == null) return;
+
+                // Get offset parameters
+                int barrelAmount = barrelComp.Extension.barrelAmount;
+                float barrelSpacing = barrelComp.Extension.barrelSpacing;
+                bool sequentialFiring = barrelComp.Extension.sequentialFiring;
+
+                // Only apply lateral offset for multi-barrel turrets
+                if (barrelAmount <= 1 || barrelSpacing == 0f || !sequentialFiring)
+                    return;
+
+                // Get the shotRotation field (float in degrees)
+                var shotRotationField = AccessTools.Field(__instance.GetType(), "shotRotation");
+                if (shotRotationField == null) return;
+
+                float shotRotation = (float)shotRotationField.GetValue(__instance);
+
+                // Get multiBarrelIndex (already incremented by the original method)
+                var multiBarrelIndexField = AccessTools.Field(__instance.GetType(), "multiBarrelIndex");
+                if (multiBarrelIndexField == null) return;
+
+                int rawIndex = (int)multiBarrelIndexField.GetValue(__instance);
+                int currentBarrelIndex = rawIndex % barrelAmount;
+
+                // Calculate perpendicular direction (90 degrees clockwise from forward)
+                float rotationRad = shotRotation * Mathf.Deg2Rad;
+                Vector2 rightDir = new Vector2(Mathf.Cos(rotationRad), -Mathf.Sin(rotationRad));
+
+                // Calculate lateral offset based on barrel index
+                // Formula: (barrelIndex - (N-1)/2) * spacing
+                float lateralOffset = (currentBarrelIndex - (barrelAmount - 1) / 2f) * barrelSpacing;
+                
+                // Add our lateral offset to CE's result
+                Vector2 ourOffset = rightDir * lateralOffset;
+                __result += ourOffset;
+                
+                Log.Message($"[Projectile Offset DEBUG] IncrementBarrelCount - " +
+                    $"barrelIndex: {currentBarrelIndex}/{barrelAmount}, " +
+                    $"lateralOffset: {lateralOffset:F2}, " +
+                    $"CE_result: ({__result.x - ourOffset.x:F2}, {__result.y - ourOffset.y:F2}), " +
+                    $"ourOffset: ({ourOffset.x:F2}, {ourOffset.y:F2}), " +
+                    $"final: ({__result.x:F2}, {__result.y:F2})");
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Barrel Animation] Error in IncrementBarrelCount offset patch: {ex.Message}");
+            }
         }
     }
 }
