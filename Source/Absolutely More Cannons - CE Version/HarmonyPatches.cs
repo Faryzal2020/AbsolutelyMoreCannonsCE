@@ -32,6 +32,9 @@ namespace AbsolutelyMoreCannons
 
             // Try to patch CE turret methods at runtime
             TryPatchCETurrets(harmony);
+            
+            // Try to patch dual fire mode system
+            TryPatchDualFireMode(harmony);
         }
 
         /// <summary>
@@ -847,6 +850,505 @@ namespace AbsolutelyMoreCannons
             catch (Exception ex)
             {
                 Log.Warning($"[Barrel Animation] Error in IncrementBarrelCount offset patch: {ex.Message}");
+            }
+        }
+
+        // ============================================================================
+        // DUAL FIRE MODE PATCHES
+        // ============================================================================
+
+        /// <summary>
+        /// Attempts to patch dual fire mode system for Combat Extended turrets.
+        /// </summary>
+        private static void TryPatchDualFireMode(Harmony harmony)
+        {
+            try
+            {
+                var ceTurretType = AccessTools.TypeByName("CombatExtended.Building_TurretGunCE");
+                if (ceTurretType == null)
+                {
+                    Log.Message("[DualFireMode] CombatExtended not found, skipping dual fire mode patches.");
+                    return;
+                }
+
+                Log.Message("[DualFireMode] Found CombatExtended, applying dual fire mode patches...");
+
+                // 1. Patch AttackVerb getter to return mode-specific verb
+                var attackVerbProperty = AccessTools.Property(ceTurretType, "AttackVerb");
+                if (attackVerbProperty != null)
+                {
+                    var getterMethod = attackVerbProperty.GetGetMethod();
+                    if (getterMethod != null)
+                    {
+                        harmony.Patch(
+                            original: getterMethod,
+                            prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Prefix_TurretGunCE_AttackVerb))
+                        );
+                        Log.Message("[DualFireMode] Successfully patched Building_TurretGunCE.AttackVerb getter");
+                    }
+                }
+
+                // 2. Patch turret gun SpawnSetup to initialize dual verbs
+                var spawnSetupMethod = AccessTools.Method(ceTurretType, "SpawnSetup");
+                if (spawnSetupMethod != null)
+                {
+                    harmony.Patch(
+                        original: spawnSetupMethod,
+                        postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGunCE_SpawnSetup))
+                    );
+                    Log.Message("[DualFireMode] Successfully patched Building_TurretGunCE.SpawnSetup");
+                }
+
+                // 3. Patch CompEquippable.PrimaryVerb to return mode-specific verb
+                var primaryVerbProp = AccessTools.Property(typeof(CompEquippable), "PrimaryVerb");
+                if (primaryVerbProp != null)
+                {
+                    var getterMethod = primaryVerbProp.GetGetMethod();
+                    if (getterMethod != null)
+                    {
+                        harmony.Patch(
+                            original: getterMethod,
+                            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_CompEquippable_PrimaryVerb))
+                        );
+                        Log.Message("[DualFireMode] Successfully patched CompEquippable.PrimaryVerb getter");
+                    }
+                }
+
+                // 4. Patch CompAmmoUser.CurrentAmmoSet to return mode-specific ammo
+                var ammoUserType = AccessTools.TypeByName("CombatExtended.CompAmmoUser");
+                if (ammoUserType != null)
+                {
+                    var currentAmmoSetProperty = AccessTools.Property(ammoUserType, "CurrentAmmoSet");
+                    if (currentAmmoSetProperty != null)
+                    {
+                        var getterMethod = currentAmmoSetProperty.GetGetMethod();
+                        if (getterMethod != null)
+                        {
+                            harmony.Patch(
+                                original: getterMethod,
+                                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_CompAmmoUser_CurrentAmmoSet))
+                            );
+                            Log.Message("[DualFireMode] Successfully patched CompAmmoUser.CurrentAmmoSet getter");
+                        }
+                    }
+                }
+
+                Log.Message("[DualFireMode] Dual fire mode patch initialization complete");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[DualFireMode] Error patching dual fire mode system: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+        // DUAL FIRE MODE PATCHES
+        // ============================================================================
+
+        /// <summary>
+        /// Prefix for Building_TurretGunCE.AttackVerb getter.
+        /// Returns the active mode's verb instead of the gun's default verb.
+        /// </summary>
+        public static bool Prefix_TurretGunCE_AttackVerb(Building_TurretGun __instance, ref Verb __result)
+        {
+            var dualModeComp = __instance.TryGetComp<CompDualFireMode>();
+            if (dualModeComp == null)
+                return true; // Not a dual-mode turret, use original logic
+
+            // Return the active mode's verb
+            var activeVerb = dualModeComp.ActiveVerb;
+            if (activeVerb != null)
+            {
+                __result = activeVerb;
+                
+                // Log detailed info for debugging
+                var mode = dualModeComp.CurrentMode;
+                var verbType = activeVerb.GetType().Name;
+                var minRange = activeVerb.verbProps?.minRange ?? -1;
+                var requireLOS = activeVerb.verbProps?.requireLineOfSight ?? true;
+                
+                Log.Message($"[DualFireMode] AttackVerb called for {__instance.def.defName}: returning {verbType} (mode={mode}, minRange={minRange}, requireLOS={requireLOS})");
+                
+                return false; // Skip original method
+            }
+
+            return true; // Fallback to original if something went wrong
+        }
+
+        /// <summary>
+        /// Postfix for Building_TurretGunCE.SpawnSetup.
+        /// Initializes dual-mode verbs after turret spawns.
+        /// </summary>
+        public static void Postfix_TurretGunCE_SpawnSetup(Building_TurretGun __instance, bool respawningAfterLoad)
+        {
+            if (respawningAfterLoad)
+                return;
+
+            var dualModeComp = __instance.TryGetComp<CompDualFireMode>();
+            if (dualModeComp == null)
+                return;
+
+            // Initialize verbs (will be called from comp's PostSpawnSetup, but retry here for safety)
+            dualModeComp.InitializeVerbs();
+        }
+
+        /// <summary>
+        /// Postfix for CompEquippable.PrimaryVerb getter.
+        /// Returns the active mode's verb for dual-mode turret guns.
+        /// This ensures UI and targeting use the correct verb.
+        /// </summary>
+        public static void Postfix_CompEquippable_PrimaryVerb(CompEquippable __instance, ref Verb __result)
+        {
+            // Get the gun
+            var gun = __instance.parent;
+            if (gun == null) return;
+            
+            // Get the turret that owns this gun
+            var turret = gun.ParentHolder as Building_TurretGun;
+            if (turret == null) return;
+            
+            var dualModeComp = turret.TryGetComp<CompDualFireMode>();
+            if (dualModeComp == null) return;
+            
+            // Return the active mode's verb
+            var activeVerb = dualModeComp.ActiveVerb;
+            if (activeVerb != null)
+            {
+                __result = activeVerb;
+            }
+        }
+
+        /// <summary>
+        /// Postfix for CompAmmoUser.CurrentAmmoSet getter.
+        /// Returns mode-specific ammo set for dual-mode turrets.
+        /// </summary>
+       public static void Postfix_CompAmmoUser_CurrentAmmoSet(object __instance, ref object __result)
+        {
+            // Get the weapon's parent (should be turret gun)
+            var compType = __instance.GetType();
+            var parentField = compType.GetProperty("parent");
+            if (parentField == null)
+                return;
+                
+            var weapon = parentField.GetValue(__instance) as ThingWithComps;
+            if (weapon == null)
+                return;
+
+            // Find the turret building that owns this gun
+            var turret = weapon.ParentHolder as Building_TurretGun;
+            if (turret == null)
+                return;
+
+            var dualModeComp = turret.TryGetComp<CompDualFireMode>();
+            if (dualModeComp == null)
+                return; // Not a dual-mode turret
+
+            // Get mode-specific ammo set name
+            var ammoSetName = dualModeComp.GetCurrentAmmoSet();
+            if (string.IsNullOrEmpty(ammoSetName))
+                return;
+
+            // Look up the AmmoSetDef via reflection
+            var ammoSetDefType = AccessTools.TypeByName("CombatExtended.AmmoSetDef");
+            if (ammoSetDefType != null)
+            {
+                var defDatabase = typeof(DefDatabase<>).MakeGenericType(ammoSetDefType);
+                var getNamedMethod = defDatabase.GetMethod("GetNamedSilentFail");
+                if (getNamedMethod != null)
+                {
+                    var ammoSetDef = getNamedMethod.Invoke(null, new object[] { ammoSetName });
+                    if (ammoSetDef != null)
+                    {
+                        __result = ammoSetDef;
+                    }
+                }
+            }
+        }
+
+        // DUAL FIRE MODE PATCHES
+        // ============================================================================
+
+        /// <summary>
+        /// Postfix for Verb_LaunchProjectileCE.RecoilAmount property getter.
+        /// Catches null reference errors and returns 0 instead.
+        /// </summary>
+        public static Exception Finalizer_Verb_LaunchProjectileCE_RecoilAmount(Exception __exception, ref float __result)
+        {
+            if (__exception != null)
+            {
+                // An exception occurred (likely null EquipmentSource)
+                __result = 0f;
+                
+                // Log once
+                if (!CompTurretBarrel.loggedTypes.Contains("DualMode_RecoilAmountError"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("DualMode_RecoilAmountError");
+                    Log.Message($"[DualFireMode] Caught exception in RecoilAmount getter, returning 0: {__exception.GetType().Name}");
+                }
+                
+                // Suppress the exception
+                return null;
+            }
+            
+            return null;
+        }
+
+        /// <summary>
+        /// Finalizer for Verb_LaunchProjectileCE.CanHitTarget.
+        /// Catches null reference errors in tooltip calculations.
+        /// </summary>
+        public static Exception Finalizer_Verb_CanHitTarget(Exception __exception, ref bool __result)
+        {
+            if (__exception != null)
+            {
+                // An exception occurred - return false (can't hit target)
+                __result = false;
+                
+                // Log once
+                if (!CompTurretBarrel.loggedTypes.Contains("DualMode_CanHitTargetError"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("DualMode_CanHitTargetError");
+                    Log.Message($"[DualFireMode] Caught exception in CanHitTarget, returning false: {__exception.GetType().Name}");
+                }
+                
+                // Suppress the exception
+                return null;
+            }
+            
+            return null;
+        }
+
+        /// <summary>
+        /// Finalizer for Verb.Available.
+        /// Catches null reference errors when checking if verb is available.
+        /// </summary>
+        public static Exception Finalizer_Verb_Available(Exception __exception, ref bool __result)
+        {
+            if (__exception != null)
+            {
+                // An exception occurred - return false (verb not available)
+                __result = false;
+                
+                // Log once
+                if (!CompTurretBarrel.loggedTypes.Contains("DualMode_VerbAvailableError"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("DualMode_VerbAvailableError");
+                    Log.Message($"[DualFireMode] Caught exception in Verb.Available, returning false: {__exception.GetType().Name}");
+                }
+                
+                // Suppress the exception
+                return null;
+            }
+            
+            return null;
+        }
+
+        /// <summary>
+        /// Finalizer for Verb_LaunchProjectileCE.WarmupTime property getter.
+        /// Catches null reference errors and returns default warmup time.
+        /// </summary>
+        public static Exception Finalizer_Verb_WarmupTime(Exception __exception, ref float __result)
+        {
+            if (__exception != null)
+            {
+                // An exception occurred - return default warmup time (1 second)
+                __result = 1f;
+                
+                // Log once
+                if (!CompTurretBarrel.loggedTypes.Contains("DualMode_WarmupTimeError"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("DualMode_WarmupTimeError");
+                    Log.Message($"[DualFireMode] Caught exception in WarmupTime getter, returning 1.0f: {__exception.GetType().Name}");
+                }
+                
+                // Suppress the exception
+                return null;
+            }
+            
+            return null;
+        }
+
+        /// <summary>
+        /// Prefix for CE_Utility.Recoil to handle our custom dual-mode verbs.
+        /// Prevents null reference errors when our verbs don't have complete initialization.
+        /// </summary>
+        public static bool Prefix_CE_Utility_Recoil(Verb shootVerb, ref Vector3 drawOffset, ref float angleOffset)
+        {
+            try
+            {
+                // Simple check: if the verb's EquipmentSource is null, skip recoil
+                // This handles our custom verbs and any other improperly initialized verbs
+                if (shootVerb != null)
+                {
+                    var equipmentSourceField = typeof(Verb).GetField("equipmentSource", BindingFlags.Instance | BindingFlags.NonPublic);
+                    if (equipmentSourceField != null)
+                    {
+                        var equipSource = equipmentSourceField.GetValue(shootVerb);
+                        if (equipSource == null)
+                        {
+                            // EquipmentSource is null - skip recoil calculation to prevent crash
+                            drawOffset = Vector3.zero;
+                            angleOffset = 0f;
+                            
+                            // Log once per session
+                            if (!CompTurretBarrel.loggedTypes.Contains("DualMode_NullEquipSourceRecoil"))
+                            {
+                                CompTurretBarrel.loggedTypes.Add("DualMode_NullEquipSourceRecoil");
+                                Log.Message($"[DualFireMode] Skipping recoil for verb with null EquipmentSource: {shootVerb.GetType().Name}");
+                            }
+                            
+                            return false; // Skip original method
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[DualFireMode] Error in Prefix_CE_Utility_Recoil: {ex.Message}");
+                // On error, skip recoil to be safe
+                drawOffset = Vector3.zero;
+                angleOffset = 0f;
+                return false;
+            }
+
+            return true; // Run original method
+        }
+
+        /// <summary>
+        /// Postfix for Building_TurretGunCE.AttackVerb getter.
+        /// Swaps the verb based on current fire mode.
+        /// </summary>
+        public static void Postfix_TurretGunCE_AttackVerb(ref Verb __result, ThingWithComps __instance)
+        {
+            try
+            {
+                var dualModeComp = __instance.TryGetComp<CompDualFireMode>();
+                if (dualModeComp == null)
+                    return; // Not a dual-mode turret
+
+                // Get the appropriate verb for current mode
+                Verb targetVerb = dualModeComp.CurrentMode == FireMode.Direct
+                    ? dualModeComp.DirectVerb
+                    : dualModeComp.IndirectVerb;
+
+                // Only replace if we have a valid verb
+                // If verbs aren't initialized yet, let the original verb be used (prevents drawing errors)
+                if (targetVerb != null)
+                {
+                    __result = targetVerb;
+                }
+                else
+                {
+                    // Verbs not ready yet - log once and use default
+                    if (!CompTurretBarrel.loggedTypes.Contains("DualMode_VerbNotReady"))
+                    {
+                        CompTurretBarrel.loggedTypes.Add("DualMode_VerbNotReady");
+                        Log.Warning($"[DualFireMode] Verbs not initialized yet for {__instance.def.defName}, using default verb temporarily");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"[DualFireMode] Error in Postfix_TurretGunCE_AttackVerb: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Postfix for CompAmmoUser.CurrentAmmoSet getter.
+        /// Returns mode-specific ammo set for dual-mode turrets.
+        /// </summary>
+        public static void Postfix_CompAmmoUser_CurrentAmmoSet(ref object __result, ThingComp __instance)
+        {
+            try
+            {
+                // Get the parent thing (gun)
+                var gun = __instance.parent;
+                if (gun == null)
+                    return;
+
+                // Try to find the turret building that owns this gun
+                ThingWithComps turret = null;
+                
+                // Method 1: Check if parent has a holder (equipment/inventory)
+                var equipmentSourceField = gun.GetType().GetField("equipmentSource", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (equipmentSourceField != null)
+                {
+                    var equipmentSource = equipmentSourceField.GetValue(gun);
+                    if (equipmentSource != null)
+                    {
+                        var parentHolderField = equipmentSource.GetType().GetField("pawn", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                        if (parentHolderField != null)
+                        {
+                            turret = parentHolderField.GetValue(equipmentSource) as ThingWithComps;
+                        }
+                    }
+                }
+
+                // Method 2: If gun is on map, try to find nearby turret
+                if (turret == null && gun.Spawned)
+                {
+                    var ceTurretType = AccessTools.TypeByName("CombatExtended.Building_TurretGunCE");
+                    if (ceTurretType != null)
+                    {
+                        // Search for turret at same position
+                        var thingsAtPos = gun.Map.thingGrid.ThingsListAtFast(gun.Position);
+                        foreach (var thing in thingsAtPos)
+                        {
+                            if (ceTurretType.IsAssignableFrom(thing.GetType()))
+                            {
+                                turret = thing as ThingWithComps;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (turret == null)
+                    return; // Couldn't find turret
+
+                var dualModeComp = turret.TryGetComp<CompDualFireMode>();
+                if (dualModeComp == null)
+                    return; // Not a dual-mode turret
+
+                // Get the ammo set name for current mode
+                var ammoSetName = dualModeComp.GetCurrentAmmoSet();
+                if (string.IsNullOrEmpty(ammoSetName))
+                    return;
+
+                // Try to get AmmoSetDef from database
+                var ammoSetDefType = AccessTools.TypeByName("CombatExtended.AmmoSetDef");
+                if (ammoSetDefType != null)
+                {
+                    // Access DefDatabase<AmmoSetDef>
+                    var defDatabaseType = typeof(DefDatabase<>).MakeGenericType(ammoSetDefType);
+                    var getNamedMethod = defDatabaseType.GetMethod("GetNamed", new[] { typeof(string), typeof(bool) });
+                    
+                    if (getNamedMethod != null)
+                    {
+                        try
+                        {
+                            // Invoke GetNamed(string defName, bool errorOnFail)
+                            var ammoSetDef = getNamedMethod.Invoke(null, new object[] { ammoSetName, false });
+                            if (ammoSetDef != null)
+                            {
+                                // Set the result via reflection
+                                __result = ammoSetDef;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning($"[DualFireMode] Failed to get AmmoSetDef for {ammoSetName}: {ex.Message}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Silently fail to avoid spam - ammo system will use default
+                if (!CompTurretBarrel.loggedTypes.Contains("AmmoSet_Error"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("AmmoSet_Error");
+                    Log.Warning($"[DualFireMode] Error in Postfix_CompAmmoUser_CurrentAmmoSet: {ex.Message}");
+                }
             }
         }
     }

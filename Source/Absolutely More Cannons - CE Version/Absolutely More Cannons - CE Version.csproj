@@ -52,5 +52,9 @@
       <HintPath>..\CombatExtended\Assemblies\CombatExtended.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CombatExtendedLoader">
+      <HintPath>..\..\..\CombatExtended\Assemblies\CombatExtendedLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -287,11 +287,23 @@ namespace AbsolutelyMoreCannons
 
         /// <summary>
         /// Gets the barrel extension configuration.
+        /// For dual-mode turrets, returns the barrel extension for the current fire mode.
         /// </summary>
         public TurretBarrelExtension Extension
         {
             get
             {
+                // Check if parent has dual fire mode component
+                var dualModeComp = parent.TryGetComp<CompDualFireMode>();
+                if (dualModeComp != null)
+                {
+                    // Use mode-specific barrel extension if available
+                    var modeBarrelExtension = dualModeComp.GetCurrentBarrelExtension();
+                    if (modeBarrelExtension != null)
+                        return modeBarrelExtension;
+                }
+
+                // Fallback to standard extension
                 extension ??= Props.GetEffectiveExtension(parent.def);
                 return extension;
             }
