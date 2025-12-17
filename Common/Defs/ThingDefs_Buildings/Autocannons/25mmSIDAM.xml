@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_25mmSIDAM_Base</defName>
 		<label>SIDAM 25</label>
-    	<description>Use ammo set:25x137mm M792 \nThe Italian SIDAM 25 mounts quad 25mm Oerlikon KBA cannons for mobile anti-air defense. It holds a 600-round magazine and is incapable of settlement bombardment. Power: 200, HP: 585, Cooldown: 0.1s, Range: 3-80, Rate of Fire: 600 rounds per minute, Aimed Burst: 12, Reload Time: 5s.</description>
+    	<description>Use ammo set:25x137mm M792 \nThe Italian SIDAM 25 mounts quad 25mm Oerlikon KBA cannons for mobile anti-air defense. It holds a 600-round magazine and is incapable of settlement bombardment. Power: 200, HP: 585, Cooldown: 0.1s, Range: 3-80, Rate of Fire: 600 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M25mmSIDAM</texPath>

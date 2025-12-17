@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_30mmKugelblitz_Base</defName>
 		<label>FlakPz IV Kugelblitz</label>
-    <description>Use ammo set:30x184mm M.Gr. \nThe Flakpanzer IV Kugelblitz mounted twin 30mm autocannons as a German WWII anti-aircraft platform. It has a 200-round magazine and is incapable of settlement bombardment. Power: 100, HP: 765, Cooldown: 0.2s, Range: 3-70, Rate of Fire: 450 rounds per minute, Aimed Burst: 8, Reload Time: 5s.</description>
+    <description>Use ammo set:30x184mm M.Gr. \nThe Flakpanzer IV Kugelblitz mounted twin 30mm autocannons as a German WWII anti-aircraft platform. It has a 200-round magazine and is incapable of settlement bombardment. Power: 100, HP: 765, Cooldown: 0.2s, Range: 3-70, Rate of Fire: 450 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M30mmKugelblitz</texPath>

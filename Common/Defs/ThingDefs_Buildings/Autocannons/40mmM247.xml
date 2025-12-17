@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_40mmM247_Base</defName>
 		<label>M247</label>
-    <description>Use ammo set:40x365mm M811 \nThe American M247 Sergeant York was designed for armored anti-aircraft support with twin 40mm Bofors cannons. It carries a 580-round magazine and is incapable of settlement bombardment. Power: 200, HP: 765, Cooldown: 0.2s, Range: 4-80, Rate of Fire: 300 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
+    <description>Use ammo set:40x365mm M811 \nThe American M247 Sergeant York was designed for armored anti-aircraft support with twin 40mm Bofors cannons. It carries a 580-round magazine and is incapable of settlement bombardment. Power: 200, HP: 765, Cooldown: 0.5s, Range: 5-80, Rate of Fire: 300 rounds per minute, Aimed Burst: 2, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M40mmM247</texPath>

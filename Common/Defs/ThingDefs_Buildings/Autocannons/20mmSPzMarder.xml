@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_20mmSPzMarder_Base</defName>
 		<label>SPz Marder</label>
-    <description>Use ammo set:20x139mm HE-T \nThe German SPz Marder IFV mounts a rapid-firing 20mm Rheinmetall autocannon for infantry support. It has a large 1250-round magazine and is incapable of settlement bombardment. Power: 100, HP: 475, Cooldown: 1.5s, Range: 3-70, Rate of Fire: 720 rounds per minute, Aimed Burst: 6, Reload Time: 5s.</description>
+    <description>Use ammo set:20x139mm HE-T \nThe German SPz Marder IFV mounts a rapid-firing 20mm Rheinmetall autocannon for infantry support. It has a large 1250-round magazine and is incapable of settlement bombardment. Power: 100, HP: 475, Cooldown: 1.5s, Range: 3-70, Rate of Fire: 720 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M20mmSPzMarder</texPath>

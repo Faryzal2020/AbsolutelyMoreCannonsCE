@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_20mmM61Vulcan_Base</defName>
 		<label>M61 Vulcan</label>
-    	<description>Use ammo set:20x102mm US \nThe 2cm Flak 38 was developed by Nazi Germany as a versatile anti-aircraft autocannon during WWII. It requires reloading after each 8-shot burst and is incapable of settlement bombardment. Power: N/A, HP: 340, Cooldown: 0.4s, Range: 2-50, Rate of Fire: 150 rounds per minute, Aimed Burst: 4, Reload Time: 1s.</description>
+    	<description>Use ammo set:20x102mm US \nThe M61 Vulcan is a 6-barreled rotary cannon designed for air defense with exceptional rate of fire. It holds a massive 1500-round magazine and is incapable of settlement bombardment. Power: 500, HP: 340, Cooldown: 0.4s, Range: 2-50, Rate of Fire: 3000 rounds per minute (max), Aimed Burst: 4, Reload Time: 1s.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M20mmM61Vulcan</texPath>
