@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  
+  <!-- Example: 152mm Msta with Mode Swapping -->
+  <!-- This shows how to add the swap component to both turret defs -->
+  
+  <!-- DIRECT FIRE turret - can swap to INDIRECT -->
+  <ThingDef ParentName="Turret_152mmMsta_Base">
+    <defName>Turret_152mmMsta_Direct</defName>
+    <label>152mm Msta (direct fire)</label>
+    <description>A self-propelled 152mm howitzer configured for direct fire. High velocity, flat trajectory, requires line of sight.\n\nClick the mode button to rebuild as indirect fire variant.</description>
+    
+    <building>
+      <turretGunDef>Gun_152mmMsta</turretGunDef>
+    </building>
+    
+    <comps>
+      <!-- Add mode swap component -->
+      <li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+        <alternateDef>Turret_152mmMsta_Indirect</alternateDef>
+        <gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+        <gizmoDesc>Rebuild this turret for indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+        <gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+      </li>
+    </comps>
+  </ThingDef>
+  
+  <!-- INDIRECT FIRE turret - can swap to DIRECT -->
+  <ThingDef ParentName="Turret_152mmMsta_Base">
+    <defName>Turret_152mmMsta_Indirect</defName>
+    <label>152mm Msta (indirect fire)</label>
+    <description>A self-propelled 152mm howitzer configured for indirect fire. Arcing trajectory, can fire over obstacles.\n\nClick the mode button to rebuild as direct fire variant.</description>
+    
+    <building>
+      <turretGunDef>Gun_152mmMsta_Mortar</turretGunDef>
+    </building>
+    
+    <comps>
+      <!-- Add mode swap component -->
+      <li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+        <alternateDef>Turret_152mmMsta_Direct</alternateDef>
+        <gizmoLabel>Switch to Direct Fire</gizmoLabel>
+        <gizmoDesc>Rebuild this turret for direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+        <gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

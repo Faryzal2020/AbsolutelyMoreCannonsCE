@@ -47,6 +47,12 @@
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_152mmMsta_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Rebuild this turret for indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -184,6 +190,14 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<!-- Add mode swap component -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_152mmMsta_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Rebuild this turret for direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
+			</li>
 		</comps>
     <size>(5,5)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -191,6 +205,44 @@
 			<li>Research_152mmMsta</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelGraphic>
+			<texPath>Things/Building/M152mmMsta_Barrel</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>22.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<recoilAnimation>
+			<maxDistance>1</maxDistance>
+			<recoilDuration>30</recoilDuration>
+			<returnDuration>120</returnDuration>
+			<useRecoilCurve>true</useRecoilCurve>
+			<useReturnCurve>false</useReturnCurve>
+			<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+			<enabled>true</enabled>
+			<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+			<drawFlash>true</drawFlash>
+			<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+			<flashSize>30</flashSize>
+			<flashBrightness>3.0</flashBrightness>
+			<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+			<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+			<flashIntensityCurve>
+				<points>
+				<li>(0, 1)</li>      <!-- Full brightness at start -->
+				<li>(0.3, 0.9)</li>  <!-- Still bright -->
+				<li>(0.6, 0.6)</li>  <!-- Fading -->
+				<li>(1, 0)</li>      <!-- Faded out -->
+				</points>
+			</flashIntensityCurve>
+			</firingAnimation>
+		</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

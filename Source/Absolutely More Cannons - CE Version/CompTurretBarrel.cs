@@ -1169,7 +1169,7 @@ namespace AbsolutelyMoreCannons
             {
                 if (Mathf.Abs(rotation - lastLoggedRotation) > 0.1f)
                 {
-                    //Log.Message($"[Barrel Debug] {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
+                    Log.Message($"[Barrel Debug] {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
                     lastLoggedRotation = rotation;
                 }
                 ticksSinceLastRotationLog = 0;
