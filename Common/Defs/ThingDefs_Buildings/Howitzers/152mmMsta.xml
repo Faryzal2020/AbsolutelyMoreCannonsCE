@@ -76,9 +76,9 @@
         <barrelDrawSize>22.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <recoilAnimation>
-          <maxDistance>1</maxDistance>
+          <maxDistance>2</maxDistance>
           <recoilDuration>30</recoilDuration>
-          <returnDuration>120</returnDuration>
+          <returnDuration>100</returnDuration>
           <useRecoilCurve>true</useRecoilCurve>
           <useReturnCurve>false</useReturnCurve>
           <affectsRotation>false</affectsRotation>
@@ -208,7 +208,7 @@
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 			<barrelGraphic>
-			<texPath>Things/Building/M152mmMsta_Barrel</texPath>
+			<texPath>Things/Building/M152mmMsta_Barrel_Indirect</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 			<drawSize>(3,3)</drawSize>
 			</barrelGraphic>
@@ -216,30 +216,30 @@
 			<barrelDrawSize>22.0</barrelDrawSize>
 			<drawOnTop>false</drawOnTop>
 			<recoilAnimation>
-			<maxDistance>1</maxDistance>
-			<recoilDuration>30</recoilDuration>
-			<returnDuration>120</returnDuration>
-			<useRecoilCurve>true</useRecoilCurve>
-			<useReturnCurve>false</useReturnCurve>
-			<affectsRotation>false</affectsRotation>
+				<maxDistance>1</maxDistance>
+				<recoilDuration>30</recoilDuration>
+				<returnDuration>100</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
 			</recoilAnimation>
 			<firingAnimation>
-			<enabled>true</enabled>
-			<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-			<drawFlash>true</drawFlash>
-			<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-			<flashSize>30</flashSize>
-			<flashBrightness>3.0</flashBrightness>
-			<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
-			<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-			<flashIntensityCurve>
-				<points>
-				<li>(0, 1)</li>      <!-- Full brightness at start -->
-				<li>(0.3, 0.9)</li>  <!-- Still bright -->
-				<li>(0.6, 0.6)</li>  <!-- Fading -->
-				<li>(1, 0)</li>      <!-- Faded out -->
-				</points>
-			</flashIntensityCurve>
+				<enabled>true</enabled>
+				<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>35</flashSize>
+				<flashBrightness>3.0</flashBrightness>
+				<flashOffset>-4</flashOffset>  <!-- Offset from barrel tip -->
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>      <!-- Full brightness at start -->
+					<li>(0.3, 0.9)</li>  <!-- Still bright -->
+					<li>(0.6, 0.6)</li>  <!-- Fading -->
+					<li>(1, 0)</li>      <!-- Faded out -->
+					</points>
+				</flashIntensityCurve>
 			</firingAnimation>
 		</li>
     </modExtensions>

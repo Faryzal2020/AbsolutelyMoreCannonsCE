@@ -361,6 +361,18 @@
 						</li>
 					</value>
 				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_152mmMsta_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalshThree</def>
+							<drawSize>(3.8,2)</drawSize>
+							<offsets>
+								<li>(4.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
 			
 				<li Class="PatchOperationAddModExtension">
 					<xpath>Defs/ThingDef[defName="Turret_155mmGCT_Weapon"]</xpath>
