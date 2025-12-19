@@ -1,0 +1,123 @@
+using System;
+using System.Text;
+using Verse;
+using RimWorld;
+using UnityEngine;
+using System.Reflection;
+
+namespace AbsolutelyMoreCannons
+{
+    /// <summary>
+    /// Centralized logging utility for Absolutely More Cannons mod.
+    /// Provides formatted logging with category-based toggles.
+    /// </summary>
+    public static class AMCLogger
+    {
+        private const string PREFIX = "[AMC]";
+
+        /// <summary>
+        /// Get current settings instance
+        /// </summary>
+        private static AMCSettings Settings => TurretBarrelAnimationMod.settings;
+
+        // === PROJECTILE LAUNCH LOGGING ===
+
+        /// <summary>
+        /// Logs the vertical and horizontal angles of the shell launched from turrets
+        /// </summary>
+        public static void LogProjectileLaunch(
+            object verbInstance,
+            Thing launcher,
+            Vector2 origin,
+            float shotHeight,
+            float shotSpeed,
+            float shotAngle,
+            float shotRotation,
+            float turretBaseRotation,
+            float rotationDegrees,
+            float lastShotRotation,
+            Vector2 newTargetLoc,
+            LocalTargetInfo target,
+            Thing equipment,
+            object projectileInstance = null)
+        {
+            if (Settings == null)
+                return;
+
+            // Only log turrets
+            if (launcher == null || !(launcher is Building_Turret))
+                return;
+
+            string turretLabel = launcher.LabelCap ?? "Unknown Turret";
+            string position = $"({launcher.Position.x}, {launcher.Position.z})";
+            
+            // Log elevation if enabled
+            if (Settings.logElevationLaunch)
+            {
+                float verticalAngleDegrees = shotAngle * Mathf.Rad2Deg;
+                Log.Message($"{PREFIX} {turretLabel} at {position} | Vertical: {verticalAngleDegrees:F3}°");
+            }
+            
+            // Log rotation if enabled
+            if (Settings.logRotationLaunch)
+            {
+                Log.Message($"{PREFIX} {turretLabel} at {position} | Horizontal (shotRotation): {shotRotation:F3}° | Turret Base: {turretBaseRotation:F3}°");
+            }
+        }
+
+        // === TURRET COMPONENT LOGGING ===
+
+        public static void LogTurretBarrel(string message)
+        {
+            if (Settings == null || !Settings.logTurretBarrel)
+                return;
+            Log.Message($"{PREFIX} [BARREL] {message}");
+        }
+
+        public static void LogTurretModeSwap(string message)
+        {
+            if (Settings == null || !Settings.logTurretModeSwap)
+                return;
+            Log.Message($"{PREFIX} [MODE_SWAP] {message}");
+        }
+
+        public static void LogTurretAmmo(string message)
+        {
+            if (Settings == null || !Settings.logTurretAmmo)
+                return;
+            Log.Message($"{PREFIX} [AMMO] {message}");
+        }
+
+        public static void LogTurretTarget(string message)
+        {
+            if (Settings == null || !Settings.logTurretTarget)
+                return;
+            Log.Message($"{PREFIX} [TARGET] {message}");
+        }
+
+        // === GENERAL COMPONENT LOGGING ===
+
+        public static void LogRotation(string message)
+        {
+            if (Settings == null || !Settings.logRotation)
+                return;
+            Log.Message($"{PREFIX} [ROTATION] {message}");
+        }
+
+        public static void LogAnimation(string message)
+        {
+            if (Settings == null || !Settings.logAnimation)
+                return;
+            Log.Message($"{PREFIX} [ANIMATION] {message}");
+        }
+
+        // === TEMPORARY DEBUG LOGGING ===
+
+        public static void LogTemporaryDebug(string message)
+        {
+            if (Settings == null || !Settings.logTemporaryDebug)
+                return;
+            Log.Message($"{PREFIX} [TEMP_DEBUG] {message}");
+        }
+    }
+}

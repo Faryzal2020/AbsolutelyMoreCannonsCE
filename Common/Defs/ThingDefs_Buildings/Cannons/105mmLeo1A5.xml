@@ -39,6 +39,7 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -50,6 +51,45 @@
 			<li>Research_105mmLeo1A5</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+		<modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelGraphic>
+				<texPath>Things/Building/M105mmLeo1A5_Barrel</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>16.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>1</barrelAmount>
+			<recoilAnimation>
+				<maxDistance>2</maxDistance>
+				<recoilDuration>10</recoilDuration>
+				<returnDuration>30</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>15</flashSize>
+				<flashBrightness>2</flashBrightness>
+				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>      <!-- Full brightness at start -->
+					<li>(0.3, 0.9)</li>  <!-- Still bright -->
+					<li>(0.6, 0.6)</li>  <!-- Fading -->
+					<li>(1, 0)</li>      <!-- Faded out -->
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">

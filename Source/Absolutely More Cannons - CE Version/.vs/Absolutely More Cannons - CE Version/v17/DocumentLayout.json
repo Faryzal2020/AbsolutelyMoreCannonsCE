@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:compturretmodeswap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|g:\\steamlibrary\\steamapps\\common\\rimworld\\mods\\(dev) absolutely more cannons - ce version 1.6\\source\\absolutely more cannons - ce version\\absolutely more cannons - ce version.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:absolutely more cannons - ce version.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|g:\\steamlibrary\\steamapps\\common\\rimworld\\mods\\(dev) absolutely more cannons - ce version 1.6\\source\\absolutely more cannons - ce version\\compturretbarrel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:compturretbarrel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|g:\\steamlibrary\\steamapps\\common\\rimworld\\mods\\(dev) absolutely more cannons - ce version 1.6\\source\\absolutely more cannons - ce version\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|g:\\steamlibrary\\steamapps\\common\\rimworld\\mods\\(dev) absolutely more cannons - ce version 1.6\\source\\absolutely more cannons - ce version\\compturretbarrel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:compturretbarrel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|g:\\steamlibrary\\steamapps\\common\\rimworld\\mods\\(dev) absolutely more cannons - ce version 1.6\\source\\absolutely more cannons - ce version\\absolutely more cannons - ce version.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{37694C3E-C4D1-F94F-300C-ADD6DEC24FB0}|Absolutely More Cannons - CE Version.csproj|solutionrelative:absolutely more cannons - ce version.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,7 +43,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "CompTurretBarrel.cs",
               "DocumentMoniker": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\CompTurretBarrel.cs",
               "RelativeDocumentMoniker": "CompTurretBarrel.cs",
@@ -62,14 +62,14 @@
               "RelativeDocumentMoniker": "HarmonyPatches.cs",
               "ToolTip": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\HarmonyPatches.cs",
               "RelativeToolTip": "HarmonyPatches.cs",
-              "ViewState": "AgIAAEkCAAAAAAAAAAAkwGABAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAJsCAAAAAAAAAAAkwGMBAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-24T16:20:57.536Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Absolutely More Cannons - CE Version",
               "DocumentMoniker": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
               "RelativeDocumentMoniker": "Absolutely More Cannons - CE Version.csproj",

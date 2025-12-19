@@ -15,7 +15,7 @@ namespace AbsolutelyMoreCannons
     /// Harmony patches to integrate turret barrel animations with CombatExtended.
     /// </summary>
     [StaticConstructorOnStartup]
-    public static class HarmonyPatches
+    public static partial class HarmonyPatches
     {
         static HarmonyPatches()
         {
@@ -29,6 +29,9 @@ namespace AbsolutelyMoreCannons
                 original: AccessTools.Method(typeof(Verb), "TryCastNextBurstShot"),
                 postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_TryCastNextBurstShot))
             );
+
+            // Patch CE projectile launch for parameter logging
+            TryPatchCEProjectileLaunch(harmony);
 
             // Try to patch CE turret methods at runtime
             TryPatchCETurrets(harmony);
@@ -297,11 +300,72 @@ namespace AbsolutelyMoreCannons
                     original: incrementBarrelMethod,
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_IncrementBarrelCount))
                 );
-                Log.Message("[Projectile Offset] Successfully patched Verb_LaunchProjectileCE.IncrementBarrelCount");
             }
             else
             {
                 Log.Warning("[Projectile Offset] Could not find Verb_LaunchProjectileCE.IncrementBarrelCount method");
+            }
+
+            // Patch ShiftTarget for rotation clamping
+            // ShiftTarget is called after spread/sway calculations but before projectile launch
+            // It modifies the shotRotation field which controls horizontal deviation
+            
+            var settings = TurretBarrelAnimationMod.settings;
+            
+            if (incrementBarrelMethod != null && settings != null && settings.logStartup)
+            {
+                Log.Message("[Projectile Offset] Successfully patched Verb_LaunchProjectileCE.IncrementBarrelCount");
+            }
+            
+            // Find ALL ShiftTarget methods
+            var allMethods = verbType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            var shiftTargetMethods = allMethods.Where(m => m.Name == "ShiftTarget").ToList();
+
+            if (settings != null && settings.logStartup)
+            {
+                Log.Message($"[AMC] Found {shiftTargetMethods.Count} ShiftTarget method(s) in {verbType.Name}");
+            }
+            
+            int patchedCount = 0;
+            foreach (var method in shiftTargetMethods)
+            {
+                var parameters = method.GetParameters();
+                string paramString = string.Join(", ", parameters.Select(p => $"{p.ParameterType.Name} {p.Name}"));
+                if (settings != null && settings.logStartup)
+                {
+                    Log.Message($"[AMC]   - ShiftTarget({paramString})");
+                }
+                
+                try
+                {
+                    var harmonyMethod = new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation));
+                    harmonyMethod.priority = Priority.Last; // Ensure our patch runs last
+                    
+                    harmony.Patch(
+                        original: method,
+                        postfix: harmonyMethod
+                    );
+                    if (settings != null && settings.logStartup)
+                    {
+                        Log.Message($"[AMC]     ✓ Successfully patched this overload (as Postfix with Priority.Last)");
+                    }
+                    patchedCount++;
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[AMC]     ✗ Failed to patch: {ex.Message}");
+                }
+            }
+            if (settings != null && settings.logStartup)
+            {
+                if (patchedCount > 0)
+                {
+                    Log.Message($"[AMC] Patched {patchedCount} ShiftTarget overload(s) for rotation clamping");
+                }
+                else
+                {
+                    Log.Warning("[AMC] Could not patch any ShiftTarget method for rotation clamping");
+                }
             }
 
             // Patch warmup-related methods
@@ -364,6 +428,7 @@ namespace AbsolutelyMoreCannons
         /// <summary>
         /// Called after a CE verb tries to cast a shot.
         /// Only triggers firing animation if the shot was successful and the caster is a turret.
+        /// Also logs projectile parameters if logging is enabled.
         /// </summary>
         public static void Postfix_Verb_LaunchProjectileCE_TryCastShot(bool __result, object __instance)
         {
@@ -417,6 +482,146 @@ namespace AbsolutelyMoreCannons
                     return; // Not a turret, ignore
                 }
 
+                // === LOG PROJECTILE LAUNCH PARAMETERS ===
+                try
+                {
+                    Type verbType = __instance.GetType();
+                    
+                    // Get equipment
+                    FieldInfo equipmentSourceField = verbType.GetField("EquipmentSource", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    Thing equipment = equipmentSourceField?.GetValue(__instance) as Thing;
+
+                    // Get target
+                    PropertyInfo currentTargetProp = verbType.GetProperty("CurrentTarget", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    FieldInfo currentTargetField = verbType.GetField("currentTarget", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    LocalTargetInfo target = default(LocalTargetInfo);
+                    
+                    if (currentTargetProp != null)
+                    {
+                        target = (LocalTargetInfo)currentTargetProp.GetValue(__instance);
+                    }
+                    else if (currentTargetField != null)
+                    {
+                        target = (LocalTargetInfo)currentTargetField.GetValue(__instance);
+                    }
+
+                    // Get origin (2D position)
+                    Vector2 origin = new Vector2(caster.Position.x, caster.Position.z);
+
+                    // Get shot height
+                    float shotHeight = 0.85f; // Default turret height
+                    FieldInfo shotHeightField = verbType.GetField("shotHeight", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotHeightField != null)
+                    {
+                        shotHeight = (float)shotHeightField.GetValue(__instance);
+                    }
+
+                    // Get shot speed
+                    float shotSpeed = 100f; // Fallback default
+                    FieldInfo shotSpeedField = verbType.GetField("shotSpeed", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotSpeedField != null)
+                    {
+                        shotSpeed = (float)shotSpeedField.GetValue(__instance);
+                    }
+
+                    // Get shot angle
+                    float shotAngle = 0f;
+                    FieldInfo shotAngleField = verbType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotAngleField != null)
+                    {
+                        shotAngle = (float)shotAngleField.GetValue(__instance);
+                    }
+
+                    // Get shot rotation
+                    float shotRotation = 0f;
+                    FieldInfo shotRotationField = verbType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotRotationField != null)
+                    {
+                        shotRotation = (float)shotRotationField.GetValue(__instance);
+                    }
+
+                    // Get turret base rotation (actual turret facing)
+                    float turretBaseRotation = float.NaN;
+                    if (caster is Building_Turret building_turret)
+                    {
+                        try
+                        {
+                            // Try to get the turret top
+                            var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                            if (topField != null)
+                            {
+                                var top = topField.GetValue(building_turret);
+                                if (top != null)
+                                {
+                                    // Get CurRotation property
+                                    var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                                    if (curRotationProp != null)
+                                    {
+                                        turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                    }
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore errors - we'll just not have turret rotation
+                        }
+                    }
+
+                    // Extract CE's internal deviation breakdown
+                    float rotationDegrees = 0f; // Sway + Recoil
+                    float lastShotRotation = 0f; // Base rotation to shifted target
+                    Vector2 newTargetLoc = Vector2.zero; // Shifted target position
+                    
+                    try
+                    {
+                        FieldInfo rotationDegreesField = verbType.GetField("rotationDegrees", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (rotationDegreesField != null)
+                        {
+                            rotationDegrees = (float)rotationDegreesField.GetValue(__instance);
+                        }
+                        
+                        FieldInfo lastShotRotationField = verbType.GetField("lastShotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (lastShotRotationField != null)
+                        {
+                            lastShotRotation = (float)lastShotRotationField.GetValue(__instance);
+                        }
+                        
+                        FieldInfo newTargetLocField = verbType.GetField("newTargetLoc", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (newTargetLocField != null)
+                        {
+                            newTargetLoc = (Vector2)newTargetLocField.GetValue(__instance);
+                        }
+                    }
+                    catch
+                    {
+                        // Silently fail - these are optional debugging values
+                    }
+
+                    // Call the logger
+                    AMCLogger.LogProjectileLaunch(
+                        verbInstance: __instance,
+                        launcher: caster,
+                        origin: origin,
+                        shotHeight: shotHeight,
+                        shotSpeed: shotSpeed,
+                        shotAngle: shotAngle,
+                        shotRotation: shotRotation,
+                        turretBaseRotation: turretBaseRotation,
+                        rotationDegrees: rotationDegrees,
+                        lastShotRotation: lastShotRotation,
+                        newTargetLoc: newTargetLoc,
+                        target: target,
+                        equipment: equipment,
+                        projectileInstance: null
+                    );
+                }
+                catch (Exception logEx)
+                {
+                    // Silently fail logging - don't break the game
+                    Log.Warning($"[AMC] Failed to log projectile parameters: {logEx.Message}");
+                }
+
                 // Found a turret that successfully fired - trigger the animation
                 var barrelComp = caster.TryGetComp<CompTurretBarrel>();
                 if (barrelComp != null)
@@ -430,6 +635,9 @@ namespace AbsolutelyMoreCannons
                 Verse.Log.Error($"[Barrel Animation] Error in Postfix_Verb_LaunchProjectileCE_TryCastShot: {ex}");
             }
         }
+
+
+
 
         /// <summary>
         /// Called after a verb successfully completes warmup.
@@ -848,6 +1056,99 @@ namespace AbsolutelyMoreCannons
             {
                 Log.Warning($"[Barrel Animation] Error in IncrementBarrelCount offset patch: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Patches CE projectile launch to log final parameters before launch.
+        /// Uses the existing TryCastShot postfix to extract parameters after they're calculated.
+        /// </summary>
+        private static void TryPatchCEProjectileLaunch(Harmony harmony)
+        {
+            try
+            {
+                var verbType = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
+                if (verbType == null)
+                {
+                    Log.Message("[AMC] CE Verb_LaunchProjectileCE not found - projectile launch logging disabled.");
+                    return;
+                }
+
+                // We'll enhance the existing TryCastShot postfix to include logging
+                // The patch is already applied in TryPatchCEVerbFiring, so we just need to make sure
+                // our Postfix_Verb_LaunchProjectileCE_TryCastShot does the logging
+                var settings = TurretBarrelAnimationMod.settings;
+                if (settings != null && settings.logStartup)
+                {
+                    Log.Message("[AMC] Projectile launch logging will use TryCastShot postfix (already patched).");
+                }
+                
+                // NOTE: ShiftTarget patch for perfect elevation is now in TryPatchCEVerbFiring()
+                
+                // Also patch ProjectileCE.Launch to log actual spawned projectile parameters
+                var projectileCEType = AccessTools.TypeByName("CombatExtended.ProjectileCE");
+                if (projectileCEType != null)
+                {
+                    // Specify exact parameter types to avoid ambiguous match
+                    var launchMethod = AccessTools.Method(projectileCEType, "Launch", new Type[] {
+                        typeof(Thing),      // launcher
+                        typeof(Vector2),    // origin
+                        typeof(float),      // shotAngle
+                        typeof(float),      // shotRotation
+                        typeof(float),      // shotHeight
+                        typeof(float),      // shotSpeed
+                        typeof(Thing),      // equipment
+                        typeof(float)       // dist
+                    });
+                    
+                    if (launchMethod != null)
+                    {
+                        harmony.Patch(
+                            launchMethod,
+                            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_ProjectileCE_Launch_V2))
+                        );
+                        Log.Message("[AMC] Successfully patched ProjectileCE.Launch for projectile spawn logging.");
+                    }
+                    else
+                    {
+                        Log.Warning("[AMC] Could not find ProjectileCE.Launch method with specified signature.");
+                    }
+                }
+                else
+                {
+                    Log.Warning("[AMC] Could not find ProjectileCE type.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[AMC] Error setting up CE projectile launch logging: {ex.Message}");
+            }
+        }
+        public static void Postfix_ProjectileCE_Launch_V2(Thing launcher, Vector2 origin, float shotAngle, float shotRotation, float shotHeight, float shotSpeed, Thing equipment, float distance)
+        {
+             try
+             {
+                 // Pass data to the logger with default values for missing context
+                 AMCLogger.LogProjectileLaunch(
+                     verbInstance: null,
+                     launcher: launcher,
+                     origin: origin,
+                     shotHeight: shotHeight,
+                     shotSpeed: shotSpeed,
+                     shotAngle: shotAngle,
+                     shotRotation: shotRotation,
+                     turretBaseRotation: float.NaN,
+                     rotationDegrees: 0f,
+                     lastShotRotation: 0f,
+                     newTargetLoc: Vector2.zero,
+                     target: LocalTargetInfo.Invalid,
+                     equipment: equipment,
+                     projectileInstance: null
+                 );
+             }
+             catch (Exception ex)
+             {
+                 Log.Warning($"[AMC] Error in projectile launch logger: {ex.Message}");
+             }
         }
     }
 }

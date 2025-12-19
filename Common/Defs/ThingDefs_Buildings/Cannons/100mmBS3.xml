@@ -32,16 +32,63 @@
       <turretTopDrawSize>14</turretTopDrawSize>
 			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 		</building>
+		<comps>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>4,4</size>
+    	<size>4,4</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_100mmBS3</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
+		<modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelGraphic>
+				<texPath>Things/Building/M100mmBS3_Barrel</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<underBarrelGraphic>
+				<texPath>Things/Building/M100mmBS3_UnderBarrel</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</underBarrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>14.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>1</barrelAmount>
+			<recoilAnimation>
+				<maxDistance>2</maxDistance>
+				<recoilDuration>10</recoilDuration>
+				<returnDuration>30</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>15</flashSize>
+				<flashBrightness>2</flashBrightness>
+				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>      <!-- Full brightness at start -->
+					<li>(0.3, 0.9)</li>  <!-- Still bright -->
+					<li>(0.6, 0.6)</li>  <!-- Fading -->
+					<li>(1, 0)</li>      <!-- Faded out -->
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
