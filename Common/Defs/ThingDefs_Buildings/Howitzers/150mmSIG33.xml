@@ -62,8 +62,8 @@
 		<description>The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 800, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

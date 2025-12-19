@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_20mmM61Vulcan_Base</defName>
 		<label>M61 Vulcan</label>
-    	<description>Use ammo set:20x102mm US \nThe M61 Vulcan is a 6-barreled rotary cannon designed for air defense with exceptional rate of fire. It holds a massive 1500-round magazine and is incapable of settlement bombardment. Power: 500, HP: 340, Cooldown: 0.4s, Range: 2-50, Rate of Fire: 3000 rounds per minute (max), Aimed Burst: 4, Reload Time: 1s.</description>
+    	<description>Use ammo set:20x102mm US \nThe M61 Vulcan is a 6-barreled rotary cannon designed for air defense with exceptional rate of fire. It holds a massive 1500-round magazine and is incapable of settlement bombardment. Power: 500, HP: 340, Cooldown: 0.4s, Range: 2-75, Rate of Fire: 3000 rounds per minute (max), Aimed Burst: 4, Reload Time: 1s.</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M20mmM61Vulcan</texPath>
@@ -19,14 +19,16 @@
 		<uiIconPath>Things/Icons/M20mmM61Vulcan_MenuIcon</uiIconPath>
 		<thingClass>CombatExtended.Building_CIWS_CE</thingClass> <!-- enableCIWS -->
 		<statBases>
-			<MaxHitPoints>340</MaxHitPoints>
-			<WorkToBuild>4500</WorkToBuild>
+			<MaxHitPoints>925</MaxHitPoints>
+			<WorkToBuild>25500</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
 		</statBases>
 		<costList>
-			<Steel>150</Steel>
-        	<ComponentIndustrial>1</ComponentIndustrial>
+			<Steel>550</Steel>
+			<ComponentIndustrial>6</ComponentIndustrial>
+			<Plasteel>20</Plasteel>
+			<ComponentSpacer>2</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_20mmM61Vulcan_Weapon</turretGunDef>
@@ -132,7 +134,7 @@
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
 			<ShotSpread>0.5</ShotSpread>
-			<SwayFactor>0.4</SwayFactor>
+			<SwayFactor>0.5</SwayFactor>
 			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -144,8 +146,8 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x102mmNATO_AP</defaultProjectile>
 				<warmupTime>0.3</warmupTime>
-        		<minRange>2</minRange>
-				<range>50</range>
+        		<minRange>3</minRange>
+				<range>75</range>
 				<!--<soundCast>AMC_Vulcan_Shot</soundCast> Replaced with AMC_Vulcan_BurstLoop -->
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>1</muzzleFlashScale>

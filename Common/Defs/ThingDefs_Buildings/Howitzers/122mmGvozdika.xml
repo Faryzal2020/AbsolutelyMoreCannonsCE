@@ -68,8 +68,8 @@
 		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

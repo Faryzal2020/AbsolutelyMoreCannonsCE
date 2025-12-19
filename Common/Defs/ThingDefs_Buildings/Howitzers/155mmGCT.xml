@@ -163,8 +163,8 @@
 		<description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

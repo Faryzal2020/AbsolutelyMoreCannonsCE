@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Example XML showing how to use per-turret accuracy overrides
+  
+  Per-Turret Accuracy Override System:
+  - Add CompProperties_AccuracyOverride to any turret ThingDef
+  - Values are multipliers: 0.0 = no reduction, 1.0 = 100% reduction
+  - Combines with global sliders using: Global + (PerTurret × (1 - Global/100))
+  
+  Examples:
+    Global=0%, Turret=0.8 → Final=80% reduction
+    Global=50%, Turret=0.8 → Final=90% reduction
+    Global=100%, Turret=0.8 → Final=100% reduction (global overrides)
+-->
+
+<Defs>
+
+  <!-- Example 1: High-precision artillery (eliminate sway) -->
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_152mmMsta</defName>
+    <!-- ... other properties ... -->
+    
+    <comps>
+      <li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+        <!-- Artillery should be very steady - eliminate sway, reduce recoil -->
+        <swayReduction>1.0</swayReduction>      <!-- 100% sway reduction -->
+        <recoilReduction>0.8</recoilReduction>  <!-- 80% recoil reduction -->
+        <spreadReduction>0.3</spreadReduction>  <!-- 30% spread reduction (keep some randomness) -->
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Example 2: Autocannon (balanced accuracy buff) -->
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_40mmDCA40</defName>
+    <!-- ... other properties ... -->
+    
+    <comps>
+      <li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+        <!-- Autocannons need consistent bursts -->
+        <swayReduction>0.5</swayReduction>      <!-- 50% sway reduction -->
+        <recoilReduction>0.6</recoilReduction>  <!-- 60% recoil reduction -->
+        <spreadReduction>0.4</spreadReduction>  <!-- 40% spread reduction -->
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Example 3: Anti-Tank gun (precision shots) -->
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_128mmPak44</defName>
+    <!-- ... other properties ... -->
+    
+    <comps>
+      <li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+        <!-- AT guns need steady aim and no recoil climb -->
+        <swayReduction>0.75</swayReduction>     <!-- 75% sway reduction -->
+        <recoilReduction>1.0</recoilReduction>  <!-- 100% recoil reduction -->
+        <spreadReduction>0.5</spreadReduction>  <!-- 50% spread reduction -->
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Example 4: Underpowered turret getting a buff -->
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_OldWeakCannon</defName>
+    <!-- ... other properties ... -->
+    
+    <comps>
+      <li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+        <!-- Make it viable by buffing accuracy significantly -->
+        <swayReduction>0.9</swayReduction>      <!-- 90% sway reduction -->
+        <recoilReduction>0.9</recoilReduction>  <!-- 90% recoil reduction -->
+        <spreadReduction>0.8</spreadReduction>  <!-- 80% spread reduction -->
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Example 5: No override (uses global settings only) -->
+  <ThingDef ParentName="BaseTurretGun">
+    <defName>Turret_StandardCannon</defName>
+    <!-- ... other properties ... -->
+    
+    <comps>
+      <!-- No CompProperties_AccuracyOverride = uses global sliders only -->
+    </comps>
+  </ThingDef>
+
+</Defs>

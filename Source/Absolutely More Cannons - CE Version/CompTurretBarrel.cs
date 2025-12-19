@@ -228,7 +228,7 @@ namespace AbsolutelyMoreCannons
                                 if (!loggedTypes.Contains(debugKey))
                                 {
                                     loggedTypes.Add(debugKey);
-                                    Log.Message($"[Barrel Debug] Found turret top via field '{fieldName}': {value.GetType().Name}");
+                                    AMCLogger.LogTurretBarrel($" Found turret top via field '{fieldName}': {value.GetType().Name}");
                                 }
                                 return value;
                             }
@@ -239,7 +239,7 @@ namespace AbsolutelyMoreCannons
                             if (!loggedTypes.Contains(errorKey))
                             {
                                 loggedTypes.Add(errorKey);
-                                Log.Warning($"[Barrel Debug] Error reading field '{fieldName}': {ex.Message}");
+                                AMCLogger.LogTurretBarrel($" Error reading field '{fieldName}': {ex.Message}");
                             }
                         }
                     }
@@ -261,7 +261,7 @@ namespace AbsolutelyMoreCannons
                                 if (!loggedTypes.Contains(debugKey))
                                 {
                                     loggedTypes.Add(debugKey);
-                                    Log.Message($"[Barrel Debug] Found turret top via property '{propName}': {value.GetType().Name}");
+                                    AMCLogger.LogTurretBarrel($" Found turret top via property '{propName}': {value.GetType().Name}");
                                 }
                                 return value;
                             }
@@ -277,7 +277,7 @@ namespace AbsolutelyMoreCannons
                     loggedTypes.Add(debugKey2);
                     var allFields = turret.GetType().GetFields(bindingFlags)
                         .Select(f => $"{f.Name} ({f.FieldType.Name})").ToList();
-                    Log.Warning($"[Barrel Debug] Could not find turret top field for {turret.GetType().Name}.\n" +
+                    AMCLogger.LogTurretBarrel($" Could not find turret top field for {turret.GetType().Name}.\n" +
                         $"Available fields ({allFields.Count}): {string.Join(", ", allFields.Take(30))}");
                 }
                 
@@ -335,7 +335,7 @@ namespace AbsolutelyMoreCannons
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[Barrel Debug] Error initializing graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
+                    AMCLogger.LogTurretBarrel($" Error initializing graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
                 }
             }
 
@@ -344,21 +344,21 @@ namespace AbsolutelyMoreCannons
             {
                 try
                 {
-                    Log.Message($"[Under-Barrel Debug] Attempting to initialize under-barrel graphic for {parent?.def?.defName ?? "unknown"}. TexPath: {Extension.underBarrelGraphic.texPath}");
+                    AMCLogger.LogTurretBarrel($" Attempting to initialize under-barrel graphic for {parent?.def?.defName ?? "unknown"}. TexPath: {Extension.underBarrelGraphic.texPath}");
                     underBarrelGraphic = Extension.underBarrelGraphic.Graphic;
                     if (underBarrelGraphic != null)
                     {
                         underBarrelMaterial = underBarrelGraphic.MatSingle;
-                        Log.Message($"[Under-Barrel Debug] Successfully initialized under-barrel graphic for {parent?.def?.defName ?? "unknown"}");
+                        AMCLogger.LogTurretBarrel($" Successfully initialized under-barrel graphic for {parent?.def?.defName ?? "unknown"}");
                     }
                     else
                     {
-                        Log.Warning($"[Under-Barrel Debug] Under-barrel graphic is null after loading for {parent?.def?.defName ?? "unknown"}");
+                        AMCLogger.LogTurretBarrel($" Under-barrel graphic is null after loading for {parent?.def?.defName ?? "unknown"}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[Barrel Debug] Error initializing under-barrel graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
+                    AMCLogger.LogTurretBarrel($" Error initializing under-barrel graphics for {parent?.def?.defName ?? "unknown"}: {ex.Message}");
                 }
             }
         }
@@ -973,11 +973,11 @@ namespace AbsolutelyMoreCannons
                 if (!loggedTypes.Contains(debugKey))
                 {
                     loggedTypes.Add(debugKey);
-                    Log.Message($"[Barrel Debug] Turret: {parent.def.defName}, Turret Type: {Turret.GetType().Name}, " +
+                    AMCLogger.LogTurretBarrel($" Turret: {parent.def.defName}, Turret Type: {Turret.GetType().Name}, " +
                         $"CETurretTop is null: {CETurretTop == null}");
                 if (CETurretTop != null)
                 {
-                        Log.Message($"[Barrel Debug] TurretTop Type: {CETurretTop.GetType().FullName}");
+                        AMCLogger.LogTurretBarrel($" TurretTop Type: {CETurretTop.GetType().FullName}");
                     }
                 }
                 
@@ -1001,7 +1001,7 @@ namespace AbsolutelyMoreCannons
                                 if (!loggedTypes.Contains(successKey))
                                 {
                                     loggedTypes.Add(successKey);
-                                    Log.Message($"[Barrel Debug] Successfully reading CurRotation property! Current value: {rotation}°");
+                                    AMCLogger.LogTurretBarrel($" Successfully reading CurRotation property! Current value: {rotation}°");
                                 }
                             }
                         }
@@ -1011,7 +1011,7 @@ namespace AbsolutelyMoreCannons
                             if (!loggedTypes.Contains(errorKey))
                             {
                                 loggedTypes.Add(errorKey);
-                                Log.Warning($"[Barrel Debug] Error reading CurRotation: {ex.Message}");
+                                AMCLogger.LogTurretBarrel($" Error reading CurRotation: {ex.Message}");
                             }
                         }
                     }
@@ -1111,7 +1111,7 @@ namespace AbsolutelyMoreCannons
                             var fields = turretTopType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
                                 .Select(f => $"{f.Name} ({f.FieldType.Name})").ToList();
                             
-                            Log.Warning($"[Barrel Debug] Could not get turret top rotation for type {turretTopType.Name}.\n" +
+                            AMCLogger.LogTurretBarrel($" Could not get turret top rotation for type {turretTopType.Name}.\n" +
                                 $"Properties ({props.Count}): {string.Join(", ", props)}\n" +
                                 $"Fields ({fields.Count}): {string.Join(", ", fields.Take(20))}");
                         }
@@ -1137,7 +1137,7 @@ namespace AbsolutelyMoreCannons
                                 if (!loggedTypes.Contains(successKey))
                                 {
                                     loggedTypes.Add(successKey);
-                                    Log.Message($"[Barrel Debug] Got rotation from Turret.CurRotation: {rotation}°");
+                                    AMCLogger.LogTurretBarrel($" Got rotation from Turret.CurRotation: {rotation}°");
                                 }
                             }
                         }
@@ -1155,7 +1155,7 @@ namespace AbsolutelyMoreCannons
                     if (!loggedTypes.Contains(fallbackKey))
                     {
                         loggedTypes.Add(fallbackKey);
-                        Log.Warning($"[Barrel Debug] Using fallback base rotation for {parent.def.defName}: {rotation}° (This won't track aiming!)");
+                        AMCLogger.LogTurretBarrel($" Using fallback base rotation for {parent.def.defName}: {rotation}° (This won't track aiming!)");
                     }
                 }
             }
@@ -1169,7 +1169,7 @@ namespace AbsolutelyMoreCannons
             {
                 if (Mathf.Abs(rotation - lastLoggedRotation) > 0.1f)
                 {
-                    Log.Message($"[Barrel Debug] {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
+                    AMCLogger.LogTurretBarrel($" {parent.def.defName} rotation changed: {lastLoggedRotation:F1}° → {rotation:F1}°");
                     lastLoggedRotation = rotation;
                 }
                 ticksSinceLastRotationLog = 0;
@@ -1227,7 +1227,7 @@ namespace AbsolutelyMoreCannons
             if (!loggedTypes.Contains(offsetDebugKey))
             {
                 loggedTypes.Add(offsetDebugKey);
-                Log.Message($"[Barrel Debug] Offset rotation for {parent.def.defName}: " +
+                AMCLogger.LogTurretBarrel($" Offset rotation for {parent.def.defName}: " +
                     $"Original offset: ({Extension.barrelOffset.x:F2}, {Extension.barrelOffset.y:F2}, {Extension.barrelOffset.z:F2}), " +
                     $"Rotation: {turretTopRotationAngle:F1}°, " +
                     $"Rotated offset: ({rotatedOffset.x:F2}, {rotatedOffset.y:F2}, {rotatedOffset.z:F2})");
@@ -1887,7 +1887,7 @@ namespace AbsolutelyMoreCannons
             if (shouldLog)
             {
                 loggedTypes.Add(debugKey);
-                Log.Message($"[Under-Barrel Debug] DrawUnderBarrel() called for {parent.def.defName}. " +
+                AMCLogger.LogTurretBarrel($" DrawUnderBarrel() called for {parent.def.defName}. " +
                     $"underBarrelGraphic null: {underBarrelGraphic == null}, " +
                     $"Extension.underBarrelGraphic null: {Extension.underBarrelGraphic == null}, " +
                     $"ShouldDraw: {ShouldDraw()}");
@@ -1897,7 +1897,7 @@ namespace AbsolutelyMoreCannons
             {
                 if (shouldLog && underBarrelGraphic == null)
                 {
-                    Log.Message($"[Under-Barrel Debug] Returning early - underBarrelGraphic is null for {parent.def.defName}");
+                    AMCLogger.LogTurretBarrel($" Returning early - underBarrelGraphic is null for {parent.def.defName}");
                 }
                 return;
             }
@@ -1907,14 +1907,14 @@ namespace AbsolutelyMoreCannons
             {
                 if (shouldLog)
                 {
-                    Log.Message($"[Under-Barrel Debug] Under-barrel material is null, calling InitializeGraphics()");
+                    AMCLogger.LogTurretBarrel($" Under-barrel material is null, calling InitializeGraphics()");
                 }
                 InitializeGraphics();
                 if (underBarrelGraphic == null)
                 {
                     if (shouldLog)
                     {
-                        Log.Message($"[Under-Barrel Debug] Still null after InitializeGraphics()");
+                        AMCLogger.LogTurretBarrel($" Still null after InitializeGraphics()");
                     }
                     return;
                 }
@@ -1968,7 +1968,7 @@ namespace AbsolutelyMoreCannons
 
             if (shouldLog)
             {
-                Log.Message($"[Under-Barrel Debug] Drawing under-barrel for {parent.def.defName}. " +
+                AMCLogger.LogTurretBarrel($" Drawing under-barrel for {parent.def.defName}. " +
                     $"Position: ({baseDrawPos.x:F2}, {baseDrawPos.y:F2}, {baseDrawPos.z:F2}), " +
                     $"Rotation: {rotation:F1}° (adjusted: {adjustedRotation:F1}°), " +
                     $"DrawSize: {drawSize:F2}");

@@ -26,6 +26,14 @@ namespace AbsolutelyMoreCannons
         public bool logRotationDiagnostics = false; // AMC DIAGNOSTIC and AMC OBSERVE logs
         public bool logStartup = true; // Mod initialization and patch success messages
         public bool logTemporaryDebug = false; // Temporary debugging logs (e.g., projectile tick tracking)
+        public bool logVerticalAngleDetailed = false; // Detailed vertical angle breakdown logging
+        
+        // === Individual Accuracy Tuning (0-100%) ===
+        public float swayReductionPercent = 0f;    // 0% = full sway, 100% = no sway
+        public float recoilReductionPercent = 0f;  // 0% = full recoil, 100% = no recoil
+        public float spreadReductionPercent = 0f;  // 0% = full spread, 100% = no spread
+        public bool showAccuracyOverrideInspect = true; // Show per-turret accuracy overrides in inspect panel
+
 
         // === Turret Component Logging ===
         public bool logTurretBarrel = false;
@@ -60,6 +68,11 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logRotationDiagnostics, "logRotationDiagnostics", false);
             Scribe_Values.Look(ref logStartup, "logStartup", true);
             Scribe_Values.Look(ref logTemporaryDebug, "logTemporaryDebug", false);
+            Scribe_Values.Look(ref logVerticalAngleDetailed, "logVerticalAngleDetailed", false);
+            Scribe_Values.Look(ref swayReductionPercent, "swayReductionPercent", 0f);
+            Scribe_Values.Look(ref recoilReductionPercent, "recoilReductionPercent", 0f);
+            Scribe_Values.Look(ref spreadReductionPercent, "spreadReductionPercent", 0f);
+            Scribe_Values.Look(ref showAccuracyOverrideInspect, "showAccuracyOverrideInspect", true);
 
             // Turret Component Logging
             Scribe_Values.Look(ref logTurretBarrel, "logTurretBarrel", false);
@@ -97,7 +110,11 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Diagnostics Logging: {logRotationDiagnostics}");
             Log.Message($"[AMC] Startup Logging: {logStartup}");
-            Log.Message($"[AMC] Temporary Debug Logging: {logTemporaryDebug}");
+            Log.Message("[AMC] Temporary Debug Logging: " + logTemporaryDebug);
+            Log.Message("[AMC] Vertical Angle Detailed Logging: " + logVerticalAngleDetailed);
+            Log.Message("[AMC] Sway Reduction: " + swayReductionPercent + "%");
+            Log.Message("[AMC] Recoil Reduction: " + recoilReductionPercent + "%");
+            Log.Message("[AMC] Spread Reduction: " + spreadReductionPercent + "%");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Turret Barrel Logging: {logTurretBarrel}");
             Log.Message($"[AMC] Turret Mode Swap Logging: {logTurretModeSwap}");
@@ -109,13 +126,21 @@ namespace AbsolutelyMoreCannons
             Log.Message("[AMC] ═══════════════════════════════════════");
         }
 
+        // Scroll position for settings window
+        private Vector2 scrollPosition = Vector2.zero;
+        private const float ContentHeight = 2000f; // Tall enough for all settings
+        
         /// <summary>
         /// Draw the settings UI
         /// </summary>
         public void DoSettingsWindowContents(Rect inRect)
         {
+            // Create scrollable view
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, ContentHeight);
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            
             Listing_Standard listing = new Listing_Standard();
-            listing.Begin(inRect);
+            listing.Begin(viewRect);
 
             // === HEADER ===
             Text.Font = GameFont.Medium;
@@ -253,6 +278,7 @@ namespace AbsolutelyMoreCannons
             
             listing.Gap(8);
             
+            
             listing.CheckboxLabeled(
                 "Enable Temporary Debug Logs",
                 ref logTemporaryDebug
@@ -263,6 +289,69 @@ namespace AbsolutelyMoreCannons
             Rect tempDebugHelpRect = listing.GetRect(Text.LineHeight);
             Widgets.Label(tempDebugHelpRect, "  (Temporary debugging logs - e.g., projectile tick tracking)");
             Text.Font = GameFont.Small;
+
+            listing.Gap(8);
+            
+            listing.CheckboxLabeled(
+                "Enable Detailed Vertical Angle Logging",
+                ref logVerticalAngleDetailed
+            );
+            
+            listing.Gap(4);
+            Text.Font = GameFont.Tiny;
+            Rect vertAngleHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(vertAngleHelpRect, "  (Shows breakdown: ballistic + sway + recoil + spread for each shot)");
+            Text.Font = GameFont.Small;
+
+            listing.Gap();
+            
+            // === ACCURACY TUNING ===
+            Widgets.Label(listing.GetRect(30f), "═══ Vertical Accuracy Tuning ═══");
+            listing.Gap(4);
+            
+            // Sway Reduction Slider
+            Rect swayLabelRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(swayLabelRect, $"Sway Reduction: {swayReductionPercent:F0}%");
+            Rect swaySliderRect = listing.GetRect(22f);
+            swayReductionPercent = Widgets.HorizontalSlider(swaySliderRect, swayReductionPercent, 0f, 100f, true);
+            listing.Gap(4);
+            Text.Font = GameFont.Tiny;
+            Rect swayHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(swayHelpRect, "  (Reduces weapon wobble - sin wave pattern)");
+            Text.Font = GameFont.Small;
+            listing.Gap(8);
+            
+            // Recoil Reduction Slider
+            Rect recoilLabelRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(recoilLabelRect, $"Recoil Reduction: {recoilReductionPercent:F0}%");
+            Rect recoilSliderRect = listing.GetRect(22f);
+            recoilReductionPercent = Widgets.HorizontalSlider(recoilSliderRect, recoilReductionPercent, 0f, 100f, true);
+            listing.Gap(4);
+            Text.Font = GameFont.Tiny;
+            Rect recoilHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(recoilHelpRect, "  (Reduces shot-to-shot kick in bursts)");
+            Text.Font = GameFont.Small;
+            listing.Gap(8);
+            
+            // Spread Reduction Slider
+            Rect spreadLabelRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(spreadLabelRect, $"Spread Reduction: {spreadReductionPercent:F0}%");
+            Rect spreadSliderRect = listing.GetRect(22f);
+            spreadReductionPercent = Widgets.HorizontalSlider(spreadSliderRect, spreadReductionPercent, 0f, 100f, true);
+            listing.Gap(4);
+            Text.Font = GameFont.Tiny;
+            Rect spreadHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(spreadHelpRect, "  (Reduces random mechanical variation)");
+            Text.Font = GameFont.Small;
+
+            listing.Gap(8);
+            
+            // Show Accuracy Override Info
+            listing.CheckboxLabeled(
+                "Show Accuracy Override Info (inspect panel)",
+                ref showAccuracyOverrideInspect,
+                "Display per-turret accuracy override values when selecting turrets"
+            );
 
             listing.Gap();
 
@@ -324,6 +413,7 @@ namespace AbsolutelyMoreCannons
             }
 
             listing.End();
+            Widgets.EndScrollView();
         }
 
         private void EnableAllLogs()

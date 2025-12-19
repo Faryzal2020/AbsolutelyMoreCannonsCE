@@ -61,8 +61,8 @@
 		<description>The 7.5 cm le.IG 18 was a German infantry support howitzer introduced in the 1930s. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 600, Cooldown: 6.0s, Range: 3550, Shelling Range: 6. Ammunition: 75mm Jgr. 18 (HE, Damage: 328, Explosion Radius: 4.0).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -74,14 +74,14 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_75mmLEIG18_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>5</minRange>
+        		<minRange>5</minRange>
 				<range>3550</range>
 				<soundCast>Sound_75mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>50</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>

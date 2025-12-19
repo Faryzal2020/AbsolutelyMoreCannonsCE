@@ -34,6 +34,11 @@
 		</building>
 		<comps>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.5</swayReduction>
+				<recoilReduction>0.5</recoilReduction>
+				<spreadReduction>0.5</spreadReduction>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>

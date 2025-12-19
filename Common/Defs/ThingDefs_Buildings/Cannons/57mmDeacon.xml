@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_57mmDeacon_Base</defName>
 		<label>AEC Deacon</label>
-    <description>The AEC Deacon was a British self-propelled gun developed during WWII for mobile anti-tank operations in North Africa. It has an internal magazine of 24 rounds and no indirect fire capability. Power: None, HP: 450, Cooldown: 4.0s, Range: 90, Rate of Fire: 15 rounds per minute. Ammunition types: 57mm Shot Mk.8 (AP, Penetration: 116).</description>
+    	<description>The AEC Deacon was a British self-propelled gun developed during WWII for mobile anti-tank operations in North Africa. It has an internal magazine of 24 rounds and no indirect fire capability. Power: None, HP: 450, Cooldown: 4.0s, Range: 90, Rate of Fire: 15 rounds per minute. Ammunition types: 57mm Shot Mk.8 (AP, Penetration: 116).</description>
 		<constructionSkillPrerequisite>2</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M57mmDeacon</texPath>
@@ -25,23 +25,31 @@
 		</statBases>
 		<costList>
 			<Steel>300</Steel>
-      <ComponentIndustrial>2</ComponentIndustrial>
+      		<ComponentIndustrial>2</ComponentIndustrial>
 		</costList>
 		<building>
 			<turretGunDef>Turret_57mmDeacon_Weapon</turretGunDef>
-      <turretTopDrawSize>11</turretTopDrawSize>
+      		<turretTopDrawSize>11</turretTopDrawSize>
 			<turretBurstCooldownTime>4</turretBurstCooldownTime>
 		</building>
+		<comps>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.5</swayReduction>
+				<recoilReduction>0.5</recoilReduction>
+				<spreadReduction>0.5</spreadReduction>
+			</li>
+		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>3,3</size>
+    	<size>3,3</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_57mmDeacon</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 			<barrelGraphic>

@@ -68,8 +68,8 @@
 		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 2000, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<ShotSpread>0.02</ShotSpread>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

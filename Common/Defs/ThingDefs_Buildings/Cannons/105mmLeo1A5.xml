@@ -25,13 +25,13 @@
 		</statBases>
 		<costList>
 			<Steel>550</Steel>
-      <ComponentIndustrial>6</ComponentIndustrial>
+			<ComponentIndustrial>6</ComponentIndustrial>
 			<Plasteel>20</Plasteel>
-      <ComponentSpacer>2</ComponentSpacer>
+			<ComponentSpacer>2</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_105mmLeo1A5_Weapon</turretGunDef>
-      <turretTopDrawSize>16</turretTopDrawSize>
+			<turretTopDrawSize>16</turretTopDrawSize>
 			<turretBurstCooldownTime>6.5</turretBurstCooldownTime>
 		</building>
 		<comps>
@@ -40,6 +40,11 @@
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.5</swayReduction>
+				<recoilReduction>0.5</recoilReduction>
+				<spreadReduction>0.5</spreadReduction>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>

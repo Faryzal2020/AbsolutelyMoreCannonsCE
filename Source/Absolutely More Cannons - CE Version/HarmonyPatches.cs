@@ -338,6 +338,7 @@ namespace AbsolutelyMoreCannons
                 
                 try
                 {
+                    // Patch for rotation clamping
                     var harmonyMethod = new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation));
                     harmonyMethod.priority = Priority.Last; // Ensure our patch runs last
                     
@@ -345,9 +346,19 @@ namespace AbsolutelyMoreCannons
                         original: method,
                         postfix: harmonyMethod
                     );
+                    
+                    // Also add detailed vertical angle logging patch
+                    var loggingHarmonyMethod = new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_ShiftTarget_DetailedLogging));
+                    loggingHarmonyMethod.priority = Priority.Last; // Run after CE's calculations
+                    
+                    harmony.Patch(
+                        original: method,
+                        postfix: loggingHarmonyMethod
+                    );
+                    
                     if (settings != null && settings.logStartup)
                     {
-                        Log.Message($"[AMC]     ✓ Successfully patched this overload (as Postfix with Priority.Last)");
+                        Log.Message($"[AMC]     ✓ Successfully patched this overload (clamping + detailed logging)");
                     }
                     patchedCount++;
                 }

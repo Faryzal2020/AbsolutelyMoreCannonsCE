@@ -259,5 +259,72 @@ namespace AbsolutelyMoreCannons
                 Log.Warning($"[AMC] Error in Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation: {ex.Message}");
             }
         }
+        
+        /// <summary>
+        /// Postfix for Verb_LaunchProjectile CE.ShiftTarget - logs detailed vertical angle breakdown
+        /// Shows: ballistic angle + sway + recoil + spread = final shotAngle
+        /// </summary>
+        public static void Postfix_Verb_LaunchProjectileCE_ShiftTarget_DetailedLogging(object __instance)
+        {
+            try
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                if (settings == null || !settings.logVerticalAngleDetailed)
+                {
+                    return;
+                }
+                
+                Type verbType = __instance.GetType();
+                
+                // Get final shotAngle (after all adjustments)
+                FieldInfo shotAngleField = verbType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (shotAngleField == null) return;
+                float finalShotAngle = (float)shotAngleField.GetValue(__instance);
+                
+                // Get angleRadians (ballistic + sway + recoil, before spread)
+                FieldInfo angleRadiansField = verbType.GetField("angleRadians", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                float angleRadians = 0f;
+                if (angleRadiansField != null)
+                {
+                    angleRadians = (float)angleRadiansField.GetValue(__instance);
+                }
+                
+                // Get lastShotAngle (pure ballistic angle)
+                FieldInfo lastShotAngleField = verbType.GetField("lastShotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                float ballisticAngle = 0f;
+                if (lastShotAngleField != null)
+                {
+                    ballisticAngle = (float)lastShotAngleField.GetValue(__instance);
+                }
+                
+                // Calculate sway + recoil contribution (angleRadians - ballistic)
+                float swayRecoilCombined = angleRadians - ballisticAngle;
+                
+                // Calculate spread contribution (finalShotAngle - angleRadians)
+                float spreadContribution = finalShotAngle - angleRadians;
+                
+                // Convert to degrees for readability
+                float ballisticDeg = ballisticAngle * Mathf.Rad2Deg;
+                float swayRecoilDeg = swayRecoilCombined * Mathf.Rad2Deg;
+                float spreadDeg = spreadContribution * Mathf.Rad2Deg;
+                float finalDeg = finalShotAngle * Mathf.Rad2Deg;
+                
+                // Log the breakdown
+                AMCLogger.LogVerticalAngleDetailed(
+                    $"═══ VERTICAL ANGLE BREAKDOWN ═══\n" +
+                    $"  Ballistic (physics): {ballisticDeg:F3}°\n" +
+                    $"  Sway + Recoil:       {swayRecoilDeg:F3}°\n" +
+                    $"  Random Spread:       {spreadDeg:F3}°\n" +
+                    $"  ────────────────────────────\n" +
+                    $"  Final shotAngle:     {finalDeg:F3}°\n" +
+                    $"  Formula: {ballisticDeg:F2}° + {swayRecoilDeg:F2}° + {spreadDeg:F2}° = {finalDeg:F2}°\n" +
+                    $"═════════════════════════════"
+                );
+            }
+            catch (Exception ex)
+            {
+                // Silent fail to avoid log spam
+            }
+        }
     }
 }

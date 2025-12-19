@@ -119,5 +119,12 @@ namespace AbsolutelyMoreCannons
                 return;
             Log.Message($"{PREFIX} [TEMP_DEBUG] {message}");
         }
+        
+        public static void LogVerticalAngleDetailed(string message)
+        {
+            if (Settings == null || !Settings.logVerticalAngleDetailed)
+                return;
+            Log.Message($"{PREFIX} [VERTICAL_ANGLE] {message}");
+        }
     }
 }

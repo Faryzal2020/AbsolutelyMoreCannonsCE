@@ -63,7 +63,7 @@
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<SwayFactor>0.1</SwayFactor>
 			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

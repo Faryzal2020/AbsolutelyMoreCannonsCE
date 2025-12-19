@@ -10,7 +10,7 @@
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M88mmFlak41</texPath>
-			<drawSize>(6,6)</drawSize>
+			<drawSize>(13,13)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -34,6 +34,11 @@
 		</building>
 		<comps>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.5</swayReduction>
+				<recoilReduction>0.5</recoilReduction>
+				<spreadReduction>0.5</spreadReduction>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
