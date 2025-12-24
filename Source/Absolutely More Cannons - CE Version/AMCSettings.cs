@@ -40,10 +40,14 @@ namespace AbsolutelyMoreCannons
         public bool logTurretModeSwap = false;
         public bool logTurretAmmo = false;
         public bool logTurretTarget = false;
+        public bool logTurretFireTimestamp = false;  // Timestamp when turret fires
 
         // === General Component Logging ===
         public bool logRotation = false;
         public bool logAnimation = false;
+        public bool logTurretSmoke = false;
+        public bool logTurretSmokeParticleTelemetry = false;  // Detailed particle spawn/lifecycle logging
+        public bool logTurretSmokeParticleTick = false;       // Per-tick particle position/velocity logging
 
         /// <summary>
         /// Save and load settings from XML
@@ -79,10 +83,14 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretModeSwap, "logTurretModeSwap", false);
             Scribe_Values.Look(ref logTurretAmmo, "logTurretAmmo", false);
             Scribe_Values.Look(ref logTurretTarget, "logTurretTarget", false);
+            Scribe_Values.Look(ref logTurretFireTimestamp, "logTurretFireTimestamp", false);
 
             // General Component Logging
             Scribe_Values.Look(ref logRotation, "logRotation", false);
             Scribe_Values.Look(ref logAnimation, "logAnimation", false);
+            Scribe_Values.Look(ref logTurretSmoke, "logTurretSmoke", false);
+            Scribe_Values.Look(ref logTurretSmokeParticleTelemetry, "logTurretSmokeParticleTelemetry", false);
+            Scribe_Values.Look(ref logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
             
             // Log settings after they're loaded/saved
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.Saving)
@@ -120,9 +128,13 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Turret Mode Swap Logging: {logTurretModeSwap}");
             Log.Message($"[AMC] Turret Ammo Logging: {logTurretAmmo}");
             Log.Message($"[AMC] Turret Target Logging: {logTurretTarget}");
+            Log.Message($"[AMC] Turret Fire Timestamp Logging: {logTurretFireTimestamp}");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Logging: {logRotation}");
             Log.Message($"[AMC] Animation Logging: {logAnimation}");
+            Log.Message($"[AMC] Turret Smoke Logging: {logTurretSmoke}");
+            Log.Message($"[AMC] Turret Smoke Particle Telemetry: {logTurretSmokeParticleTelemetry}");
+            Log.Message($"[AMC] Turret Smoke Particle Tick Logging: {logTurretSmokeParticleTick}");
             Log.Message("[AMC] ═══════════════════════════════════════");
         }
 
@@ -375,6 +387,10 @@ namespace AbsolutelyMoreCannons
                 "Log Turret Target",
                 ref logTurretTarget
             );
+            listing.CheckboxLabeled(
+                "Log Turret Fire Timestamp",
+                ref logTurretFireTimestamp
+            );
 
             listing.Gap();
 
@@ -390,6 +406,30 @@ namespace AbsolutelyMoreCannons
                 "Log Animation Events",
                 ref logAnimation
             );
+            listing.CheckboxLabeled(
+                "Log Turret Smoke (General)",
+                ref logTurretSmoke
+            );
+            
+            listing.Gap(4);
+            listing.CheckboxLabeled(
+                "  └─ Smoke Particle Telemetry (Detailed)",
+                ref logTurretSmokeParticleTelemetry
+            );
+            Text.Font = GameFont.Tiny;
+            Rect telemetryHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(telemetryHelpRect, "     (Logs particle spawn with full configuration and lifecycle events)");
+            Text.Font = GameFont.Small;
+            
+            listing.Gap(4);
+            listing.CheckboxLabeled(
+                "  └─ Smoke Particle Tick Tracking (Compact)",
+                ref logTurretSmokeParticleTick
+            );
+            Text.Font = GameFont.Tiny;
+            Rect tickHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(tickHelpRect, "     (Logs position/velocity each tick - very verbose!)");
+            Text.Font = GameFont.Small;
 
             listing.Gap(12);
 
@@ -424,8 +464,12 @@ namespace AbsolutelyMoreCannons
             logTurretModeSwap = true;
             logTurretAmmo = true;
             logTurretTarget = true;
+            logTurretFireTimestamp = true;
             logRotation = true;
             logAnimation = true;
+            logTurretSmoke = true;
+            logTurretSmokeParticleTelemetry = true;
+            logTurretSmokeParticleTick = true;
         }
 
         private void DisableAllLogs()
@@ -436,8 +480,12 @@ namespace AbsolutelyMoreCannons
             logTurretModeSwap = false;
             logTurretAmmo = false;
             logTurretTarget = false;
+            logTurretFireTimestamp = false;
             logRotation = false;
             logAnimation = false;
+            logTurretSmoke = false;
+            logTurretSmokeParticleTelemetry = false;
+            logTurretSmokeParticleTick = false;
         }
     }
 }

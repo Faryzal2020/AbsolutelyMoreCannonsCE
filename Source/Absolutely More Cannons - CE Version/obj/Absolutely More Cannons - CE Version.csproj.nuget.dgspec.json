@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj": {}
+    "g:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj": {}
   },
   "projects": {
-    "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj": {
+    "g:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
+        "projectUniqueName": "g:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
         "projectName": "AbsolutelyMoreCannons",
-        "projectPath": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
+        "projectPath": "g:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
         "packagesPath": "C:\\Users\\fary2\\.nuget\\packages\\",
-        "outputPath": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\obj\\",
+        "outputPath": "g:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

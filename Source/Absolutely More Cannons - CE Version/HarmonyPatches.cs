@@ -493,6 +493,39 @@ namespace AbsolutelyMoreCannons
                     return; // Not a turret, ignore
                 }
 
+                // === LOG FIRING TIMESTAMP (FIRST - when gun actually fires) ===
+                int fireTime = Find.TickManager.TicksGame;
+                AMCLogger.LogTurretFireTimestamp(
+                    $"T={fireTime} | Turret: {caster.LabelCap} at {caster.Position} FIRED");
+
+                // Get turret base rotation (actual turret facing) - declare early for both logging and smoke
+                float turretBaseRotation = float.NaN;
+                if (caster is Building_Turret building_turret)
+                {
+                    try
+                    {
+                        // Try toget the turret top
+                        var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (topField != null)
+                        {
+                            var top = topField.GetValue(building_turret);
+                            if (top != null)
+                            {
+                                // Get CurRotation property
+                                var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                                if (curRotationProp != null)
+                                {
+                                    turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore errors - we'll just not have turret rotation
+                    }
+                }
+
                 // === LOG PROJECTILE LAUNCH PARAMETERS ===
                 try
                 {
@@ -551,33 +584,7 @@ namespace AbsolutelyMoreCannons
                         shotRotation = (float)shotRotationField.GetValue(__instance);
                     }
 
-                    // Get turret base rotation (actual turret facing)
-                    float turretBaseRotation = float.NaN;
-                    if (caster is Building_Turret building_turret)
-                    {
-                        try
-                        {
-                            // Try to get the turret top
-                            var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                            if (topField != null)
-                            {
-                                var top = topField.GetValue(building_turret);
-                                if (top != null)
-                                {
-                                    // Get CurRotation property
-                                    var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                                    if (curRotationProp != null)
-                                    {
-                                        turretBaseRotation = (float)curRotationProp.GetValue(top);
-                                    }
-                                }
-                            }
-                        }
-                        catch
-                        {
-                            // Ignore errors - we'll just not have turret rotation
-                        }
-                    }
+                    // turretBaseRotation already extracted above (line ~496)
 
                     // Extract CE's internal deviation breakdown
                     float rotationDegrees = 0f; // Sway + Recoil
@@ -638,6 +645,13 @@ namespace AbsolutelyMoreCannons
                 if (barrelComp != null)
                 {
                     barrelComp.TriggerFiring();
+                }
+
+                // Trigger smoke effects (use rotation extracted above)
+                var smokeComp = caster.TryGetComp<CompTurretSmoker>();
+                if (smokeComp != null)
+                {
+                    smokeComp.OnFired(turretBaseRotation);
                 }
             }
             catch (Exception ex)

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <!-- Base mote definition for AMC smoke effects -->
+    <ThingDef Name="AMC_MoteBase" Abstract="True">
+        <thingClass>Verse.Mote</thingClass>
+        <category>Ethereal</category>
+        <tickerType>Normal</tickerType>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+        <useHitPoints>false</useHitPoints>
+        <isSaveable>false</isSaveable>
+        <rotatable>false</rotatable>
+        <drawOffscreen>false</drawOffscreen>
+    </ThingDef>
+
+    <!-- Muzzle Smoke with custom cubic deceleration physics -->
+    <ThingDef ParentName="AMC_MoteBase">
+        <defName>Mote_AMC_MuzzleSmoke</defName>
+        <thingClass>AbsolutelyMoreCannons.MoteSmokeMuzzle</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/Smoke</texPath>
+            <shaderType>MoteGlow</shaderType>
+            <graphicClass>Graphic_Mote</graphicClass>
+        </graphicData>
+        <mote>
+            <fadeInTime>0.1</fadeInTime>
+            <solidTime>0.5</solidTime>
+            <fadeOutTime>1.0</fadeOutTime>
+            <growthRate>0.015</growthRate>
+        </mote>
+    </ThingDef>
+
+    <!-- Heavy variant for large caliber cannons -->
+    <ThingDef ParentName="AMC_MoteBase">
+        <defName>Mote_AMC_MuzzleSmokeHeavy</defName>
+        <thingClass>AbsolutelyMoreCannons.MoteSmokeMuzzle</thingClass>
+        <graphicData>
+            <texPath>Things/Mote/Smoke</texPath>
+            <shaderType>MoteGlow</shaderType>
+            <graphicClass>Graphic_Mote</graphicClass>
+        </graphicData>
+        <mote>
+            <fadeInTime>0.15</fadeInTime>
+            <solidTime>1.0</solidTime>
+            <fadeOutTime>2.0</fadeOutTime>
+            <growthRate>0.018</growthRate>
+        </mote>
+    </ThingDef>
+</Defs>

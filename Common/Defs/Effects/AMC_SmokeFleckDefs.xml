@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <!-- Base fleck definition for all AMC smoke effects -->
+    <FleckDef Name="AMC_SmokeBase" ParentName="FleckBase_Thrown" Abstract="True">
+        <graphicData>
+            <texPath>Things/Mote/Smoke</texPath>
+            <renderInstanced>true</renderInstanced>
+        </graphicData>
+        <fadeInTime>0.1</fadeInTime>
+        <growthRate>0.015</growthRate>
+        <altitudeLayer>MoteOverhead</altitudeLayer>
+    </FleckDef>
+
+    <!-- Muzzle Smoke: Quick puff from barrel when firing -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_MuzzleSmoke</defName>
+        <solidTime>0.5</solidTime>
+        <fadeOutTime>1.0</fadeOutTime>
+    </FleckDef>
+
+    <!-- Heat Smoke: Continuous smoke from hot barrel -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_HeatSmoke</defName>
+        <solidTime>1.0</solidTime>
+        <fadeOutTime>2.5</fadeOutTime>
+        <growthRate>0.2</growthRate>
+    </FleckDef>
+
+    <!-- Shockwave Smoke: Ground burst from firing shockwave -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_ShockwaveSmoke</defName>
+        <solidTime>0.3</solidTime>
+        <fadeOutTime>2</fadeOutTime>
+        <growthRate>0.01</growthRate>
+    </FleckDef>
+
+    <!-- Heavy variants for large caliber cannons -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_MuzzleSmokeHeavy</defName>
+        <solidTime>1.0</solidTime>
+        <fadeOutTime>2.0</fadeOutTime>
+    </FleckDef>
+
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_HeatSmokeHeavy</defName>
+        <solidTime>4.0</solidTime>
+        <fadeOutTime>4.5</fadeOutTime>
+        <growthRate>0.012</growthRate>
+    </FleckDef>
+</Defs>

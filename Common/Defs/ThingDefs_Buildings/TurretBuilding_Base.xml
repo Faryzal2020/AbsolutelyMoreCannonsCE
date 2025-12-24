@@ -28,17 +28,49 @@
     <techLevel>Industrial</techLevel>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <Flammability>0.1</Flammability>
+      <Flammability>0.7</Flammability>
       <WorkToMake>10000</WorkToMake>
       <Beauty>-10</Beauty>
     </statBases>
+    <damageMultipliers>
+      <li>
+        <damageDef>Bullet</damageDef>
+        <multiplier>0.5</multiplier>  <!-- 50% damage from bullets -->
+      </li>
+      <li>
+        <damageDef>Bomb</damageDef>
+        <multiplier>0.7</multiplier>  <!-- 70% damage from explosives -->
+      </li>
+      <li>
+        <damageDef>Flame</damageDef>
+        <multiplier>1</multiplier>  <!-- 100% damage from flames -->
+      </li>
+      <li>
+        <damageDef>Blunt</damageDef>
+        <multiplier>0.1</multiplier>  <!-- 10% damage from melee/blunt -->
+      </li>
+      <li>
+        <damageDef>Cut</damageDef>
+        <multiplier>0.1</multiplier>  <!-- 10% damage from cutting -->
+      </li>
+      <li>
+        <damageDef>Stab</damageDef>
+        <multiplier>0.1</multiplier>  <!-- 10% damage from stabbing -->
+      </li>
+      <li>
+        <damageDef>Frag</damageDef>
+        <multiplier>0.2</multiplier>  <!-- 20% damage from shrapnel -->
+      </li>
+    </damageMultipliers>
     <comps>
       <li Class="CompProperties_Forbiddable"/>
     </comps>
     <tickerType>Normal</tickerType>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
-    <fillPercent>0.85</fillPercent>
+    <fillPercent>1</fillPercent>
+    <Fillage>Full</Fillage>
+    <blockLight>false</blockLight> 
     <castEdgeShadows>false</castEdgeShadows>
     <hasTooltip>true</hasTooltip>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -115,7 +147,9 @@
     <size>(2,2)</size>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
-    <fillPercent>0.85</fillPercent>
+    <fillPercent>1</fillPercent>
+    <Fillage>Full</Fillage>
+    <blockLight>false</blockLight> 
     <tickerType>Normal</tickerType>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <designationCategory>AMC</designationCategory>

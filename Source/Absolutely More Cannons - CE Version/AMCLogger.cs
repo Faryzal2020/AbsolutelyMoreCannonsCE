@@ -95,6 +95,13 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [TARGET] {message}");
         }
 
+        public static void LogTurretFireTimestamp(string message)
+        {
+            if (Settings == null || !Settings.logTurretFireTimestamp)
+                return;
+            Log.Message($"{PREFIX} [FIRE_TIMESTAMP] {message}");
+        }
+
         // === GENERAL COMPONENT LOGGING ===
 
         public static void LogRotation(string message)
@@ -120,11 +127,43 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [TEMP_DEBUG] {message}");
         }
         
+        
         public static void LogVerticalAngleDetailed(string message)
         {
             if (Settings == null || !Settings.logVerticalAngleDetailed)
                 return;
             Log.Message($"{PREFIX} [VERTICAL_ANGLE] {message}");
+        }
+
+        // === TURRET SMOKE LOGGING ===
+
+        public static void LogTurretSmoke(string message)
+        {
+            if (Settings == null || !Settings.logTurretSmoke)
+                return;
+            int ticks = Find.TickManager.TicksGame;
+            Log.Message($"{PREFIX} [SMOKE] T={ticks} | {message}");
+        }
+
+        /// <summary>
+        /// Logs detailed smoke particle telemetry (spawn configuration, lifecycle events)
+        /// </summary>
+        public static void LogTurretSmokeParticleTelemetry(string message)
+        {
+            if (Settings == null || !Settings.logTurretSmokeParticleTelemetry)
+                return;
+            int ticks = Find.TickManager.TicksGame;
+            Log.Message($"{PREFIX} [SMOKE_TELEMETRY] T={ticks} | {message}");
+        }
+
+        /// <summary>
+        /// Logs compact per-tick particle tracking (position, velocity, direction)
+        /// </summary>
+        public static void LogTurretSmokeParticleTick(string message)
+        {
+            if (Settings == null || !Settings.logTurretSmokeParticleTick)
+                return;
+            Log.Message($"{PREFIX} [SMOKE_TICK] {message}");
         }
     }
 }

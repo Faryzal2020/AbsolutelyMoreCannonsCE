@@ -10,7 +10,7 @@
 		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M75mmPak40</texPath>
-			<drawSize>(14,14)</drawSize>
+			<drawSize>(11,11)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -29,7 +29,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_75mmPak40_Weapon</turretGunDef>
-       		<turretTopDrawSize>14</turretTopDrawSize>
+       		<turretTopDrawSize>12</turretTopDrawSize>
 			<turretBurstCooldownTime>5</turretBurstCooldownTime>
 		</building>
 		<comps>
@@ -38,6 +38,43 @@
 				<swayReduction>0.5</swayReduction>
 				<recoilReduction>0.5</recoilReduction>
 				<spreadReduction>0.5</spreadReduction>
+			</li>
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 3)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<muzzleParticleSize>1.5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>4</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.015</heatDecayRate> <!-- heat loss per tick -->
+				<decayIncrease>0.12</decayIncrease> <!-- flat decay rate increase per point of heat above threshold -->
+
+				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>2</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.4</emissionIncrease> <!-- flat emission rate increase per point of heat above threshold -->
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 		</comps>
 		<placeWorkers>
@@ -63,13 +100,13 @@
 				<drawSize>(3,3)</drawSize>
 			</underBarrelGraphic>
 			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>14.0</barrelDrawSize>
+			<barrelDrawSize>12.0</barrelDrawSize>
 			<drawOnTop>false</drawOnTop>
 			<barrelAmount>1</barrelAmount>
 			<recoilAnimation>
-				<maxDistance>1.5</maxDistance>
-				<recoilDuration>8</recoilDuration>
-				<returnDuration>21</returnDuration>
+				<maxDistance>0.6</maxDistance>
+				<recoilDuration>12</recoilDuration>
+				<returnDuration>12</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
@@ -114,7 +151,7 @@
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>1</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_75mmPAK40_APHE</defaultProjectile>
@@ -130,6 +167,7 @@
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>
