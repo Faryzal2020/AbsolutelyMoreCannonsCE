@@ -567,3 +567,38 @@ public override void Tick()
   - Cannon: `<muzzleParticleSize>1.5</muzzleParticleSize>` → consistent 1.5x
   - Vulcan: `<muzzleParticleSize>1.8~2.2</muzzleParticleSize>` + `<directionCone>4</directionCone>` → varied size, 8° spread
 - **Result:** ✅ Build succeeded - More natural, varied smoke effects with size and directional variety
+
+**2025-12-24 22:45** - Added barrel spacing lateral offset
+- **Goal:** Ensure muzzle smoke spawns from the correct barrel in multi-barrel turrets
+- **Issue:** Previously, all smoke spawned from the center of the turret (adjusted by `muzzleOffset`), which looked wrong for multi-barrel systems like SPAAGs or dual-cannons.
+- **Solution:** Apply lateral offset based on `barrelSpacing` and the barrel index that just fired.
+- **Changes in `CompTurretBarrel.cs`:**
+  - Exposed `GetBarrelPositionOffset(int barrelIndex, int barrelCount)` as public.
+  - Added `LastFiredBarrelIndex` property to track which barrel caused the recoil/fire event.
+    - Logic: `(currentSequentialBarrel - 1 + barrelCount) % barrelCount` (since `currentSequentialBarrel` points to *next* barrel).
+- **Changes in `CompTurretSmoker.cs`:**
+  - In `QueueMuzzleSmoke()`:
+    1. Retrieve `CompTurretBarrel` from parent.
+    2. Get `firedBarrelIndex` and calculate `lateralOffset`.
+    3. Calculate perpendicular offset vector (Right vector relative to turret direction).
+    4. Add this offset to the spawn position.
+- **Result:**
+  - Smoke now correctly alternates between barrels matching the muzzle flash!
+  - Works for odd (center-aligned) and even (spaced) barrel counts.
+  - Logs show: `[Multi-Barrel Smoke] Barrel 0/2 fired. Lateral offset: -0.5 -> ...`
+- **Build Status:** ✅ Succeeded
+
+**2025-12-25 08:18** - Added heat smoke lateral offset support
+- **Goal:** Duplicate heat smoke emission points for each barrel in multi-barrel turrets, retaining correct lateral spacing.
+- **Problem:** Heat smoke was only emitting from the center line of the turret. Multi-barrel turrets (e.g. quad 20mm) should smoke from each barrel individually.
+- **Solution:** 
+  - Modified `CompTurretSmoker.GetHeatSmokePositions()` to:
+    1. Detect `barrelCount` from `CompTurretBarrel`.
+    2. Create a larger array of points (`heatEmissionPoints` * `barrelCount`).
+    3. Loop through each barrel, calculate its lateral offset using `GetBarrelPositionOffset`.
+    4. Generate the full set of longitudinal emission points for that barrel, shifted by the lateral offset.
+- **Result:**
+  - A dual-barrel turret with 3 emission points per barrel now generates 6 total points (3 left, 3 right).
+  - A quad-barrel turret generates 4 sets of points.
+  - Correctly rotates with the turret.
+- **Build Status:** ✅ Succeeded

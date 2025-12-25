@@ -1728,12 +1728,27 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
+        /// Gets the index of the barrel that fired last.
+        /// Useful for syncing effects (smoke, shells) with the specific barrel.
+        /// </summary>
+        public int LastFiredBarrelIndex
+        {
+            get
+            {
+                int barrelCount = Mathf.Max(1, Extension.barrelAmount);
+                // currentSequentialBarrel points to the NEXT barrel to fire.
+                // The one that just fired is the previous one.
+                return (currentSequentialBarrel - 1 + barrelCount) % barrelCount;
+            }
+        }
+
+        /// <summary>
         /// Calculates the horizontal offset for a barrel at the given index.
         /// Returns the offset in tiles, centered around 0.
         /// For odd number of barrels: center barrel is at 0.
         /// For even number of barrels: center is between middle two barrels.
         /// </summary>
-        private float GetBarrelPositionOffset(int barrelIndex, int barrelCount)
+        public float GetBarrelPositionOffset(int barrelIndex, int barrelCount)
         {
             if (barrelCount <= 1)
                 return 0f;

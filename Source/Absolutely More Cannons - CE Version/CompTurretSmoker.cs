@@ -121,18 +121,49 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
-                // Calculate barrel tip position and direction
+                // Calculate barrel tip position and direction (center of turret/barrels)
                 Vector3 barrelTipPosition = GetBarrelTipPosition();
                 Vector3 direction = GetDirectionFromRotation(turretRotation);
 
-                // Rotate muzzle offset by turret direction
+                // Rotate muzzle offset by turret direction (base offset)
                 Vector3 rotatedOffset = RotateVector(Props.muzzleOffset, turretRotation);
+
+                // Apply barrel spacing offset if available
+                Vector3 barrelSpacingOffset = Vector3.zero;
+                var compBarrel = parent.GetComp<CompTurretBarrel>();
+                if (compBarrel != null)
+                {
+                    int barrelCount = Mathf.Max(1, compBarrel.Extension.barrelAmount);
+                    if (barrelCount > 1)
+                    {
+                        // Get the barrel that fired this shot
+                        int firedBarrelIndex = compBarrel.LastFiredBarrelIndex;
+                        
+                        // Get the lateral offset distance
+                        float lateralOffset = compBarrel.GetBarrelPositionOffset(firedBarrelIndex, barrelCount);
+                        
+                        // Calculate perpendicular direction (90 deg clockwise from forward)
+                        // This matches the direction used in CompTurretBarrel for flashes
+                        float angleRad = turretRotation * Mathf.Deg2Rad;
+                        Vector3 perpendicularDirection = new Vector3(
+                            Mathf.Cos(angleRad),
+                            0f,
+                            -Mathf.Sin(angleRad)
+                        );
+                        
+                        barrelSpacingOffset = perpendicularDirection * lateralOffset;
+                        
+                        AMCLogger.LogTurretSmoke(
+                            $"[Multi-Barrel Smoke] Barrel {firedBarrelIndex}/{barrelCount} fired. " +
+                            $"Lateral offset: {lateralOffset} -> {barrelSpacingOffset}");
+                    }
+                }
                 
                 // Queue the spawn with delay
                 muzzleSmokeQueue.Enqueue(new MuzzleSmokeQueuedSpawn
                 {
                     ticksUntilSpawn = Props.muzzleSpawnDelay,
-                    barrelTipPosition = barrelTipPosition + rotatedOffset,
+                    barrelTipPosition = barrelTipPosition + rotatedOffset + barrelSpacingOffset,
                     direction = direction
                 });
 
@@ -411,28 +442,58 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
-        /// Gets spawn positions for heat smoke (multiple points along barrel)
+        /// Gets spawn positions for heat smoke (multiple points along barrel, duplicated for each barrel)
         /// </summary>
         public Vector3[] GetHeatSmokePositions()
         {
             // Get current turret rotation
             float turretRotation = 0f;
+            int barrelCount = 1;
+            
             if (barrelComp != null)
             {
                 turretRotation = barrelComp.GetCurrentBarrelRotation();
+                barrelCount = Mathf.Max(1, barrelComp.Extension.barrelAmount);
             }
             
             Vector3 direction = GetDirectionFromRotation(turretRotation);
-            Vector3[] positions = new Vector3[Props.heatEmissionPoints];
+            
+            // Calculate total points: points per barrel * number of barrels
+            int pointsPerBarrel = Props.heatEmissionPoints;
+            Vector3[] positions = new Vector3[pointsPerBarrel * barrelCount];
             
             // Rotate base offset once
             Vector3 rotatedBase = RotateVector(Props.heatOffset, turretRotation);
             
-            for (int i = 0; i < Props.heatEmissionPoints; i++)
+            // Calculate perpendicular direction (90 deg clockwise from forward) for lateral offset
+            float angleRad = turretRotation * Mathf.Deg2Rad;
+            Vector3 perpendicularDirection = new Vector3(
+                Mathf.Cos(angleRad),
+                0f,
+                -Mathf.Sin(angleRad)
+            );
+            
+            // Generate points for each barrel
+            int currentIndex = 0;
+            for (int b = 0; b < barrelCount; b++)
             {
-                // Base (rotated) + forward spacing (direction already rotated)
-                // Don't rotate the spacing - direction is already in world space!
-                positions[i] = parent.DrawPos + rotatedBase + (direction * Props.heatEmissionSpacing * i);
+                float lateralOffset = 0f;
+                // Get lateral offset for this barrel if we have the component
+                if (barrelComp != null)
+                {
+                    lateralOffset = barrelComp.GetBarrelPositionOffset(b, barrelCount);
+                }
+                
+                Vector3 barrelSpacingOffset = perpendicularDirection * lateralOffset;
+                
+                for (int p = 0; p < pointsPerBarrel; p++)
+                {
+                    // Base (rotated) + forward spacing + barrel lateral spacing
+                    positions[currentIndex] = parent.DrawPos + rotatedBase + 
+                                            (direction * Props.heatEmissionSpacing * p) + 
+                                            barrelSpacingOffset;
+                    currentIndex++;
+                }
             }
             
             return positions;

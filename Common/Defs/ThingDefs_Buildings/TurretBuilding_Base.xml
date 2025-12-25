@@ -58,8 +58,8 @@
         <multiplier>0.1</multiplier>  <!-- 10% damage from stabbing -->
       </li>
       <li>
-        <damageDef>Frag</damageDef>
-        <multiplier>0.2</multiplier>  <!-- 20% damage from shrapnel -->
+        <damageDef>Fragment</damageDef>
+        <multiplier>0.2</multiplier>  <!-- 20% damage from fragmentation -->
       </li>
     </damageMultipliers>
     <comps>
@@ -69,7 +69,6 @@
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
     <fillPercent>1</fillPercent>
-    <Fillage>Full</Fillage>
     <blockLight>false</blockLight> 
     <castEdgeShadows>false</castEdgeShadows>
     <hasTooltip>true</hasTooltip>
@@ -148,7 +147,6 @@
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
     <fillPercent>1</fillPercent>
-    <Fillage>Full</Fillage>
     <blockLight>false</blockLight> 
     <tickerType>Normal</tickerType>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>

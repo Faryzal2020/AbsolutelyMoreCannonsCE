@@ -74,14 +74,14 @@
 				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>100</heatThreshold> <!-- shots required to start emitting heat smoke -->
-				<heatDecayRate>0.05</heatDecayRate> <!-- heat loss per tick -->
-				<decayIncrease>0.5</decayIncrease>
+				<heatThreshold>200</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>3.0</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.6</decayIncrease>
 
 				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>2</heatEmissionRate> <!-- particles per second while above threshold -->
-				<emissionIncrease>2</emissionIncrease>
+				<emissionIncrease>4</emissionIncrease>
 
 				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
 				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->

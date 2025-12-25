@@ -56,7 +56,7 @@
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
 				<heatThreshold>3</heatThreshold> <!-- shots required to start emitting heat smoke -->
-				<heatDecayRate>0.012</heatDecayRate> <!-- heat loss per tick -->
+				<heatDecayRate>0.72</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.15</decayIncrease>
 
 				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
