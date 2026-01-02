@@ -97,9 +97,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
-			<dropsCasings>true</dropsCasings>
-			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
-			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<dropsCasings>false</dropsCasings>
 			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
 		</projectile>
 	</ThingDef>
@@ -109,7 +107,7 @@
 		<label>120mm slsgr m/95 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -135,7 +133,7 @@
 		<defName>Bullet_120mmTAK120_APHE</defName>
 		<label>120mm Pansargranat m/94 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -165,9 +163,7 @@
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<speed>0</speed>
 			<flyOverhead>true</flyOverhead>
-			<dropsCasings>true</dropsCasings>
-			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
-			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<dropsCasings>false</dropsCasings>
 			<soundAmbient>MortarRound_Ambient</soundAmbient>
 			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
 			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
@@ -184,7 +180,7 @@
 		<label>120mm slsgr m/95 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -212,7 +208,7 @@
 		<defName>Bullet_120mmTAK120_indirect_APHE</defName>
 		<label>120mm Pansargranat m/94 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

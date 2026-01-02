@@ -18,6 +18,7 @@
 			<Ammo_30x165mm_APDS>Bullet_30x165mm_APDS</Ammo_30x165mm_APDS>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
+		<similarTo>AmmoSet_30x165mm</similarTo>
 	</CombatExtended.AmmoSetDef>
 
 	<!-- ==================== Ammo ========================== -->

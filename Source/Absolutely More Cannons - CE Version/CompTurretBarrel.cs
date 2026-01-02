@@ -468,6 +468,41 @@ namespace AbsolutelyMoreCannons
             UpdateRecoil();
             UpdateSpinning();
             UpdateFiringAnimation();
+            
+            // Log rotation changes if enabled
+            LogRotationChanges();
+        }
+        
+        /// <summary>
+        /// Logs turret rotation changes when logRotation setting is enabled.
+        /// Only logs when rotation changes by at least 0.5° to avoid spam.
+        /// </summary>
+        private void LogRotationChanges()
+        {
+            var settings = TurretBarrelAnimationMod.settings;
+            if (settings == null || !settings.logRotation)
+                return;
+            
+            ticksSinceLastRotationLog++;
+            
+            // Only check rotation every 30 ticks (0.5 seconds) to reduce overhead
+            if (ticksSinceLastRotationLog < 30)
+                return;
+                
+            ticksSinceLastRotationLog = 0;
+            
+            float currentRotation = GetCurrentBarrelRotation();
+            float rotationDelta = Mathf.Abs(currentRotation - lastLoggedRotation);
+            
+            // Only log if rotation changed by at least 0.5 degrees
+            if (rotationDelta >= 0.5f)
+            {
+                AMCLogger.LogRotation(
+                    $"{parent.LabelCap} at ({parent.Position.x}, {parent.Position.z}) | " +
+                    $"Rotation: {currentRotation:F1}° (Δ{rotationDelta:F1}°)"
+                );
+                lastLoggedRotation = currentRotation;
+            }
         }
 
         /// <summary>

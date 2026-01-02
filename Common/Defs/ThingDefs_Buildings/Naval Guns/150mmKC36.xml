@@ -93,6 +93,7 @@
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>

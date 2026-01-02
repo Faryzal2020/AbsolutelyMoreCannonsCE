@@ -83,6 +83,24 @@ namespace AbsolutelyMoreCannons
                 }
             }
             
+            // Get heat value from smoke comp
+            float currentHeat = 0f;
+            var oldSmokeComp = parent.TryGetComp<CompTurretSmoker>();
+            if (oldSmokeComp != null)
+            {
+                currentHeat = oldSmokeComp.CurrentBurstHeat;
+                Log.Message($"[TurretModeSwap] Saved heat value: {currentHeat:F1}");
+                
+                // Manually unregister from smoke manager BEFORE destroying
+                // (DestroyMode.Vanish might not call PostDeSpawn)
+                var smokeManager = map.GetComponent<MapComponent_TurretSmokeManager>();
+                if (smokeManager != null)
+                {
+                    smokeManager.UnregisterSmoker(oldSmokeComp);
+                    Log.Message($"[TurretModeSwap] Unregistered old turret from smoke manager");
+                }
+            }
+            
             // Destroy current turret (no resources)
             Log.Message($"[TurretModeSwap] Destroying old turret...");
             parent.Destroy(DestroyMode.Vanish);
@@ -125,6 +143,21 @@ namespace AbsolutelyMoreCannons
             {
                 SetBurstCooldown(newTurret, burstCooldown);
                 Log.Message($"[TurretModeSwap] Restored burst cooldown: {burstCooldown} ticks");
+            }
+            
+            // Restore heat value to new smoke comp
+            if (currentHeat > 0f)
+            {
+                var newSmokeComp = newTurret.TryGetComp<CompTurretSmoker>();
+                if (newSmokeComp != null)
+                {
+                    newSmokeComp.CurrentBurstHeat = currentHeat;
+                    Log.Message($"[TurretModeSwap] Restored heat value: {currentHeat:F1} - smoke will continue with new turret's settings");
+                }
+                else
+                {
+                    Log.Warning($"[TurretModeSwap] New turret does not have CompTurretSmoker - heat value lost");
+                }
             }
             
             // Restore forced target (can do immediately)

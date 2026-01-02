@@ -134,7 +134,7 @@
 			</spinningAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
-				<projectileSpawnOffset>4</projectileSpawnOffset>
+				<projectileSpawnOffset>5.5</projectileSpawnOffset>
 				<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<burstSound>AMC_Vulcan_BurstLoop</burstSound>
 				<drawFlash>true</drawFlash>
@@ -246,7 +246,7 @@
 			<li Class="CombatExtended.CompProperties_AmmoUser">
 				<magazineSize>1500</magazineSize>
 				<reloadTime>1</reloadTime>
-				<ammoSet>AmmoSet_20x102mmNATO</ammoSet>
+				<ammoSet>AmmoSet_20x102mmVulcan</ammoSet>
 			</li>
 			<li Class="CombatExtended.CompProperties_FireModes">
 				<!-- Aimed burst shot count: if specified and >1, enables BurstFire mode -->

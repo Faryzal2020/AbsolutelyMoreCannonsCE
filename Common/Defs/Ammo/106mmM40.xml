@@ -77,7 +77,7 @@
 		<label>106mm M344 shell (HEAT)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/FinShell</texPath>
+			<texPath>Things/Projectile/Recoilless/HEAT</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

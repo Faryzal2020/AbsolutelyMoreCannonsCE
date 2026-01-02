@@ -48,6 +48,7 @@ namespace AbsolutelyMoreCannons
         public bool logTurretSmoke = false;
         public bool logTurretSmokeParticleTelemetry = false;  // Detailed particle spawn/lifecycle logging
         public bool logTurretSmokeParticleTick = false;       // Per-tick particle position/velocity logging
+        public bool logProjectileOffsets = false;             // Forward and lateral projectile spawn offsets
 
         /// <summary>
         /// Save and load settings from XML
@@ -91,6 +92,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretSmoke, "logTurretSmoke", false);
             Scribe_Values.Look(ref logTurretSmokeParticleTelemetry, "logTurretSmokeParticleTelemetry", false);
             Scribe_Values.Look(ref logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
+            Scribe_Values.Look(ref logProjectileOffsets, "logProjectileOffsets", false);
             
             // Log settings after they're loaded/saved
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.Saving)
@@ -431,6 +433,17 @@ namespace AbsolutelyMoreCannons
             Widgets.Label(tickHelpRect, "     (Logs position/velocity each tick - very verbose!)");
             Text.Font = GameFont.Small;
 
+            listing.Gap(8);
+            
+            listing.CheckboxLabeled(
+                "Log Projectile Spawn Offsets",
+                ref logProjectileOffsets
+            );
+            Text.Font = GameFont.Tiny;
+            Rect offsetHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(offsetHelpRect, "  (Logs forward and lateral projectile spawn position offsets)");
+            Text.Font = GameFont.Small;
+
             listing.Gap(12);
 
             // === QUICK ACTIONS ===
@@ -470,6 +483,7 @@ namespace AbsolutelyMoreCannons
             logTurretSmoke = true;
             logTurretSmokeParticleTelemetry = true;
             logTurretSmokeParticleTick = true;
+            logProjectileOffsets = true;
         }
 
         private void DisableAllLogs()
@@ -486,6 +500,7 @@ namespace AbsolutelyMoreCannons
             logTurretSmoke = false;
             logTurretSmokeParticleTelemetry = false;
             logTurretSmokeParticleTick = false;
+            logProjectileOffsets = false;
         }
     }
 }

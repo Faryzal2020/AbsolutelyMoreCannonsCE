@@ -23,6 +23,15 @@ namespace AbsolutelyMoreCannons
         private int ticksSinceLastShot = 0;
         private int lastMuzzleSmokeSpawn = -999999; // For throttling (negative muzzleSpawnDuration)
 
+        /// <summary>
+        /// Public accessor for current burst heat - used for mode swap heat transfer
+        /// </summary>
+        public float CurrentBurstHeat
+        {
+            get => currentBurstHeat;
+            set => currentBurstHeat = value;
+        }
+
         // Muzzle smoke queue - particles waiting to spawn
         private Queue<MuzzleSmokeQueuedSpawn> muzzleSmokeQueue = new Queue<MuzzleSmokeQueuedSpawn>();
 

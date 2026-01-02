@@ -84,9 +84,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
-			<dropsCasings>true</dropsCasings>
-			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
-			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<dropsCasings>false</dropsCasings>
 			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
 		</projectile>
 	</ThingDef>

@@ -15,7 +15,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M127mmOtobredaC</texPath>
-			<drawSize>(14,14)</drawSize>
+			<drawSize>(25,25)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -30,13 +30,13 @@
 		</statBases>
 		<costList>
 			<Steel>1000</Steel>
-      <ComponentIndustrial>25</ComponentIndustrial>
+      		<ComponentIndustrial>25</ComponentIndustrial>
 			<Plasteel>40</Plasteel>
-      <ComponentSpacer>5</ComponentSpacer>
+      		<ComponentSpacer>5</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_127mmOtobredaC_Weapon</turretGunDef>
-      <turretTopDrawSize>11</turretTopDrawSize>
+      		<turretTopDrawSize>14</turretTopDrawSize>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
@@ -46,17 +46,107 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>700</basePowerConsumption>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<!-- Add mode swap component -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_127mmOtobredaC_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Rebuild this turret for indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.1</swayReduction>
+				<recoilReduction>0.1</recoilReduction>
+				<spreadReduction>0.1</spreadReduction>
+			</li>
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>20</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.48</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 3)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>4,4</size>
+    	<size>5,5</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_127mmOtobredaC</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(2,0,-3)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M127mmOtobredaC_Barrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<recoilAnimation>
+					<maxDistance>0.3</maxDistance>
+					<recoilDuration>15</recoilDuration>
+					<returnDuration>30</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>5.5</projectileSpawnOffset>
+					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>30</flashSize>
+					<flashBrightness>2.0</flashBrightness>
+					<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -77,22 +167,23 @@
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.2</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmMark16_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>7</minRange>
+        		<minRange>7</minRange>
 				<range>30000</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>
@@ -112,7 +203,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M127mmOtobredaC</texPath>
-			<drawSize>(14,14)</drawSize>
+			<drawSize>(25,25)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -127,16 +218,16 @@
 		</statBases>
 		<costList>
 			<Steel>1000</Steel>
-      <ComponentIndustrial>25</ComponentIndustrial>
+      		<ComponentIndustrial>25</ComponentIndustrial>
 			<Plasteel>40</Plasteel>
-      <ComponentSpacer>5</ComponentSpacer>
+      		<ComponentSpacer>5</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_127mmOtobredaC_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>11</turretTopDrawSize>
+      		<turretTopDrawSize>14</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_127mmOtobredaC</designatorDropdown>
 		<comps>
@@ -144,13 +235,102 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>700</basePowerConsumption>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<!-- Add mode swap component -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_127mmOtobredaC_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Rebuild this turret for direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
+			</li>
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 1.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>20</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<muzzleParticleSize>1.5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>20</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.48</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 1)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.3</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 1.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+			</li>
 		</comps>
-    <size>(4,4)</size>
+    	<size>(5,5)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_127mmOtobredaC</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(2,0,-3)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M127mmOtobredaC_Barrel_Indirect</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<underBarrelGraphic>
+					<texPath>Things/Building/M127mmOtobredaC_UnderBarrel_Indirect</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</underBarrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<recoilAnimation>
+					<maxDistance>0.2</maxDistance>
+					<recoilDuration>15</recoilDuration>
+					<returnDuration>30</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>2.5</projectileSpawnOffset>
+					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>25</flashSize>
+					<flashBrightness>2.0</flashBrightness>
+					<flashOffset>-5</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">
@@ -177,18 +357,18 @@
 			<li Class="CombatExtended.VerbPropertiesCE">
 				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
 				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0</recoilAmount>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmMark16_indirect_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>25</minRange>
+        		<minRange>25</minRange>
 				<range>30000</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>

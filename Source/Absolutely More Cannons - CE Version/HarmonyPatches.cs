@@ -1036,46 +1036,76 @@ namespace AbsolutelyMoreCannons
                 var barrelComp = caster.TryGetComp<CompTurretBarrel>();
                 if (barrelComp == null || barrelComp.Extension == null) return;
 
-                // Get offset parameters
+                // Get turret's actual rotation (NOT shotRotation which includes spread/sway)
+                float turretRotation = barrelComp.GetCurrentBarrelRotation();
+                
+                // Calculate rotation in radians for vector math
+                float rotationRad = turretRotation * Mathf.Deg2Rad;
+                
+                // Forward direction (along barrel aim) - matches CompTurretSmoker.GetDirectionFromRotation
+                // CE uses Vector2(x, z) so we convert from 3D forward vector
+                Vector2 forwardDir = new Vector2(Mathf.Sin(rotationRad), Mathf.Cos(rotationRad));
+                
+                // Apply forward offset if configured
+                Vector2 totalOffset = Vector2.zero;
+                if (barrelComp.Extension.firingAnimation != null && 
+                    barrelComp.Extension.firingAnimation.projectileSpawnOffset != 0f)
+                {
+                    float forwardOffset = barrelComp.Extension.firingAnimation.projectileSpawnOffset;
+                    totalOffset += forwardDir * forwardOffset;
+                }
+
+                // Apply lateral offset for multi-barrel turrets
                 int barrelAmount = barrelComp.Extension.barrelAmount;
                 float barrelSpacing = barrelComp.Extension.barrelSpacing;
                 bool sequentialFiring = barrelComp.Extension.sequentialFiring;
 
-                // Only apply lateral offset for multi-barrel turrets
-                if (barrelAmount <= 1 || barrelSpacing == 0f || !sequentialFiring)
-                    return;
+                if (barrelAmount > 1 && barrelSpacing != 0f && sequentialFiring)
+                {
+                    // Get multiBarrelIndex (already incremented by the original method)
+                    var multiBarrelIndexField = AccessTools.Field(__instance.GetType(), "multiBarrelIndex");
+                    if (multiBarrelIndexField != null)
+                    {
+                        int rawIndex = (int)multiBarrelIndexField.GetValue(__instance);
+                        int currentBarrelIndex = rawIndex % barrelAmount;
 
-                // Get the shotRotation field (float in degrees)
-                var shotRotationField = AccessTools.Field(__instance.GetType(), "shotRotation");
-                if (shotRotationField == null) return;
+                        // Calculate perpendicular direction (90 degrees clockwise from forward)
+                        // Perpendicular in 2D: rotate forward 90° clockwise = (z, -x) → (Cos, -Sin)
+                        Vector2 rightDir = new Vector2(Mathf.Cos(rotationRad), -Mathf.Sin(rotationRad));
 
-                float shotRotation = (float)shotRotationField.GetValue(__instance);
-
-                // Get multiBarrelIndex (already incremented by the original method)
-                var multiBarrelIndexField = AccessTools.Field(__instance.GetType(), "multiBarrelIndex");
-                if (multiBarrelIndexField == null) return;
-
-                int rawIndex = (int)multiBarrelIndexField.GetValue(__instance);
-                int currentBarrelIndex = rawIndex % barrelAmount;
-
-                // Calculate perpendicular direction (90 degrees clockwise from forward)
-                float rotationRad = shotRotation * Mathf.Deg2Rad;
-                Vector2 rightDir = new Vector2(Mathf.Cos(rotationRad), -Mathf.Sin(rotationRad));
-
-                // Calculate lateral offset based on barrel index
-                // Formula: (barrelIndex - (N-1)/2) * spacing
-                float lateralOffset = (currentBarrelIndex - (barrelAmount - 1) / 2f) * barrelSpacing;
+                        // Calculate lateral offset based on barrel index
+                        // Formula: (barrelIndex - (N-1)/2) * spacing
+                        float lateralOffset = (currentBarrelIndex - (barrelAmount - 1) / 2f) * barrelSpacing;
+                        
+                        totalOffset += rightDir * lateralOffset;
+                        
+                        var settings = TurretBarrelAnimationMod.settings;
+                        if (settings != null && settings.logProjectileOffsets)
+                        {
+                            Log.Message($"[Projectile Offset] {caster.def.defName} - " +
+                                $"Barrel {currentBarrelIndex}/{barrelAmount}, " +
+                                $"Rotation: {turretRotation:F1}°, " +
+                                $"Forward: {barrelComp.Extension.firingAnimation?.projectileSpawnOffset:F2}, " +
+                                $"Lateral: {lateralOffset:F2}, " +
+                                $"Total: ({totalOffset.x:F2}, {totalOffset.y:F2})");
+                        }
+                    }
+                }
+                else if (totalOffset != Vector2.zero)
+                {
+                    // Log forward offset even for single-barrel turrets (if logging enabled)
+                    var settings = TurretBarrelAnimationMod.settings;
+                    if (settings != null && settings.logProjectileOffsets)
+                    {
+                        Log.Message($"[Projectile Offset] {caster.def.defName} - " +
+                            $"Rotation: {turretRotation:F1}°, " +
+                            $"Forward: {barrelComp.Extension.firingAnimation?.projectileSpawnOffset:F2}, " +
+                            $"Total: ({totalOffset.x:F2}, {totalOffset.y:F2})");
+                    }
+                }
                 
-                // Add our lateral offset to CE's result
-                Vector2 ourOffset = rightDir * lateralOffset;
-                __result += ourOffset;
-                
-                Log.Message($"[Projectile Offset DEBUG] IncrementBarrelCount - " +
-                    $"barrelIndex: {currentBarrelIndex}/{barrelAmount}, " +
-                    $"lateralOffset: {lateralOffset:F2}, " +
-                    $"CE_result: ({__result.x - ourOffset.x:F2}, {__result.y - ourOffset.y:F2}), " +
-                    $"ourOffset: ({ourOffset.x:F2}, {ourOffset.y:F2}), " +
-                    $"final: ({__result.x:F2}, {__result.y:F2})");
+                // Apply the total offset
+                __result += totalOffset;
             }
             catch (Exception ex)
             {

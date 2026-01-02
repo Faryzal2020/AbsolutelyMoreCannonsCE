@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <Defs>
 									
-	<!--=============== Flak 41 ===============-->
+	
 
-	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+	<ThingDef ParentName="AMCTurretMannedBase"> 
 		<defName>Turret_88mmFlak41_Base</defName>
 		<label>Flak 41</label>
-    <description>The Flak 41 was Germany's improved 8.8cm anti-aircraft and anti-tank gun introduced during WWII. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 400, Cooldown: 8.0s, Range: 100, Rate of Fire: 7 rounds per minute. Ammunition types: 88mm Pzgr 39 (AP, Penetration: 230), 88mm Sprgr (HE, Explosion Radius: 3).</description>
+    <description>Manned: Yes, Power: None, HP: 400, Cooldown: 8.0s, Range: 6-100, Rate of Fire: 8 rounds per minute, Burst Count: 1, Magazine: 1, Reload: 1.0s. Germany's improved dual-purpose anti-aircraft and anti-tank gun.</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M88mmFlak41</texPath>
@@ -39,42 +39,42 @@
 				<recoilReduction>0.5</recoilReduction>
 				<spreadReduction>0.5</spreadReduction>
 			</li>
-			<!-- Smoke Effects -->
+			
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
-				<!-- Muzzle Smoke -->
+				
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 4)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
-				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
-				<muzzleParticleSize>1.5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
-				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> 
+				<muzzleOffset>(0, 0, 4)</muzzleOffset> 
+				<muzzleVelocity>15</muzzleVelocity> 
+				<muzzleVelDuration>30</muzzleVelDuration> 
+				<muzzleParticleSize>1.5</muzzleParticleSize> 
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> 
 				
-				<!-- Heat Smoke -->
+				
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>3</heatThreshold> <!-- shots required to start emitting heat smoke -->
-				<heatDecayRate>0.72</heatDecayRate> <!-- heat loss per second -->
+				<heatThreshold>3</heatThreshold> 
+				<heatDecayRate>0.72</heatDecayRate> 
 				<decayIncrease>0.15</decayIncrease>
 
-				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 1.5)</heatOffset> 
 
-				<heatEmissionRate>2.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<heatEmissionRate>2.5</heatEmissionRate> 
 				<emissionIncrease>0.6</emissionIncrease>
 
-				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
-				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
-				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				<heatParticleSize>0.6</heatParticleSize> 
+				<heatEmissionPoints>3</heatEmissionPoints> 
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> 
 				
-				<!-- Shockwave Smoke -->
+				
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveRadius>4</shockwaveRadius> 
+				<shockwaveDensity>40</shockwaveDensity> 
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> 
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> 
 			</li>
 		</comps>
 		<placeWorkers>
@@ -113,19 +113,19 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
-				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<durationTicks>9</durationTicks>  
 				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashColor>(1,0.7,0.3,1)</flashColor>  
 				<flashSize>15</flashSize>
 				<flashBrightness>2</flashBrightness>
-				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashOffset>0</flashOffset>  
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 				<flashIntensityCurve>
 					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
+					<li>(0, 1)</li>      
+					<li>(0.3, 0.9)</li>  
+					<li>(0.6, 0.6)</li>  
+					<li>(1, 0)</li>      
 					</points>
 				</flashIntensityCurve>
 			</firingAnimation>

@@ -15,7 +15,8 @@
     <FleckDef ParentName="AMC_SmokeBase">
         <defName>AMC_MuzzleSmoke</defName>
         <solidTime>0.5</solidTime>
-        <fadeOutTime>1.0</fadeOutTime>
+        <fadeOutTime>1.5</fadeOutTime>
+        <growthRate>0.5</growthRate>
     </FleckDef>
 
     <!-- Heat Smoke: Continuous smoke from hot barrel -->
@@ -29,8 +30,8 @@
     <!-- Shockwave Smoke: Ground burst from firing shockwave -->
     <FleckDef ParentName="AMC_SmokeBase">
         <defName>AMC_ShockwaveSmoke</defName>
-        <solidTime>0.3</solidTime>
-        <fadeOutTime>2</fadeOutTime>
+        <solidTime>0.1</solidTime>
+        <fadeOutTime>1</fadeOutTime>
         <growthRate>0.01</growthRate>
     </FleckDef>
 

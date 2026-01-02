@@ -18,6 +18,7 @@
 			<Ammo_40x365mm_AP>Bullet_40x365mm_AP</Ammo_40x365mm_AP>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
+		<similarTo>AmmoSet_40x365mmBofors</similarTo>
 	</CombatExtended.AmmoSetDef>
 
 

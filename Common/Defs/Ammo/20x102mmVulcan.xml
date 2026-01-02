@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!-- ==================== Vulcan-Specific AmmoSet ========================== -->
+	<!-- Uses the same ammo items as 20x102mm NATO but with custom projectile graphics -->
+	
+	<CombatExtended.AmmoSetDef>
+		<defName>AmmoSet_20x102mmVulcan</defName>
+		<label>20x102mm NATO (Vulcan)</label>
+		<ammoTypes>
+			<Ammo_20x102mmNATO_AP>Bullet_20x102mmVulcan_AP</Ammo_20x102mmNATO_AP>
+			<Ammo_20x102mmNATO_Incendiary>Bullet_20x102mmVulcan_Incendiary</Ammo_20x102mmNATO_Incendiary>
+			<Ammo_20x102mmNATO_HE>Bullet_20x102mmVulcan_HE</Ammo_20x102mmNATO_HE>
+			<Ammo_20x102mmNATO_Sabot>Bullet_20x102mmVulcan_Sabot</Ammo_20x102mmNATO_Sabot>
+		</ammoTypes>
+		<similarTo>AmmoSet_20x102mmNATO</similarTo>
+	</CombatExtended.AmmoSetDef>
+
+	<!-- ================== Vulcan Projectiles (Custom Graphics) ================== -->
+	<!-- These inherit all stats from CE's 20x102mm projectiles but use custom textures -->
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>Bullet_20x102mmVulcan_AP</defName>
+		<label>20x102mm Vulcan tracer (AP)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Tracer_Red</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.2</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>44</damageAmountBase>
+			<armorPenetrationSharp>30</armorPenetrationSharp>
+			<armorPenetrationBlunt>1029.080</armorPenetrationBlunt>
+			<speed>109</speed>
+			<castShadow>false</castShadow> <!-- Disable shadow -->
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>Bullet_20x102mmVulcan_Incendiary</defName>
+		<label>20x102mm Vulcan tracer (AP-I)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Tracer_Red</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.2</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>44</damageAmountBase>
+			<armorPenetrationSharp>30</armorPenetrationSharp>
+			<armorPenetrationBlunt>1029.080</armorPenetrationBlunt>
+			<speed>109</speed>
+			<castShadow>false</castShadow>
+			<secondaryDamage>
+				<li>
+					<def>Flame_Secondary</def>
+					<amount>22</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>Bullet_20x102mmVulcan_HE</defName>
+		<label>20x102mm Vulcan tracer (AP-HE)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Tracer_Red</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.2</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>70</damageAmountBase>
+			<armorPenetrationSharp>15</armorPenetrationSharp>
+			<armorPenetrationBlunt>1029.080</armorPenetrationBlunt>
+			<speed>109</speed>
+			<castShadow>false</castShadow>
+			<secondaryDamage>
+				<li>
+					<def>Bomb_Secondary</def>
+					<amount>31</amount>
+				</li>
+			</secondaryDamage>
+		</projectile>
+	</ThingDef>
+
+	<ThingDef ParentName="Base20x102mmNATOBullet">
+		<defName>Bullet_20x102mmVulcan_Sabot</defName>
+		<label>20x102mm Vulcan tracer (Sabot)</label>
+		<graphicData>
+			<texPath>Things/Projectile/Tracer_Red</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+            <drawSize>1.2</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageAmountBase>37</damageAmountBase>
+			<armorPenetrationSharp>53</armorPenetrationSharp>
+			<armorPenetrationBlunt>1320.02</armorPenetrationBlunt>
+			<speed>148</speed>
+			<castShadow>false</castShadow>
+		</projectile>
+	</ThingDef>
+
+</Defs>

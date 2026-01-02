@@ -366,7 +366,7 @@
 					<value>
 						<li Class="MuzzleFlash.MuzzleFlashProps">
 							<def>MF_StandardMuzzleFalshThree</def>
-							<drawSize>(3.8,2)</drawSize>
+							<drawSize>(1.9,4)</drawSize>
 							<offsets>
 								<li>(4.5,0)</li>
 							</offsets>
@@ -435,9 +435,22 @@
 					<value>
 						<li Class="MuzzleFlash.MuzzleFlashProps">
 							<def>MF_StandardMuzzleFalsh</def>
-							<drawSize>(5,5)</drawSize>
+							<drawSize>(6,6)</drawSize>
 							<offsets>
-								<li>(6.1,0)</li>
+								<li>(6.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmMark16_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(3,6)</drawSize>
+							<offsets>
+								<li>(3.0,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -450,7 +463,20 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(5.6,0)</li>
+								<li>(7.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_120mmTAK120_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.5,5)</drawSize>
+							<offsets>
+								<li>(3.4,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -478,7 +504,20 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(5,0)</li>
+								<li>(5.2,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_127mmOtobredaC_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.5,5)</drawSize>
+							<offsets>
+								<li>(2,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -535,6 +574,19 @@
 							<drawSize>(5,5)</drawSize>
 							<offsets>
 								<li>(5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_100mmModel1953_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.5,5)</drawSize>
+							<offsets>
+								<li>(1.8,0)</li>
 							</offsets>
 						</li>
 					</value>

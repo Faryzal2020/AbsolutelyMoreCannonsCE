@@ -107,7 +107,7 @@
 		<label>5" HC Mark 41 Mod 0 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/Howitzer/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -132,7 +132,7 @@
 		<defName>Bullet_127mmMark16_APHE</defName>
 		<label>5" AP Mark 46 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -181,7 +181,7 @@
 		<label>5" HC Mark 41 Mod 0 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/Howitzer/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -209,7 +209,7 @@
 		<defName>Bullet_127mmMark16_indirect_APHE</defName>
 		<label>5" AP Mark 46 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/LargeShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

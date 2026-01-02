@@ -1,0 +1,26 @@
+{
+  "Turret_30mmKugelblitz_Base": {
+    "description": "Manned: Yes, Power: 100W, HP: 765, Work: 13500, Cooldown: 0.2s, Min Range: 3, Max Range: 70, Rate of Fire: 300 rounds per minute, Burst Count: 6-10-16, Magazine: 200, Reload: 5.0s, Ammunition: HE shell (0.5m explosion, base dmg: 15), AP shell (95 penetration, base dmg: 74). German anti-aircraft autocannon with twin barrels."
+  },
+  "Turret_57mmDeacon_Base": {
+    "description": "Manned: Yes, Power: None, HP: 450, Work: 9000, Cooldown: 4.0s, Min Range: 4, Max Range: 90, Rate of Fire: 15 rounds per minute, Burst Count: 1, Magazine: 24, Reload: 1.0s, Ammunition: AP shell (116 penetration, base dmg: 183), AP shell (177 penetration, base dmg: 157). Versatile anti-tank gun effective against armored targets."
+  },
+  "Turret_88mmFlak41_Base": {
+    "description": "Manned: Yes, Power: None, HP: 400, Work: 16000, Cooldown: 8.0s, Min Range: 6, Max Range: 100, Rate of Fire: 8 rounds per minute, Burst Count: 1, Breech loaded, Reload: 1.0s, Ammunition: AP shell (230 penetration, base dmg: 570), HE shell (2.5m explosion, base dmg: 132). Germany's improved dual-purpose anti-aircraft and anti-tank gun."
+  },
+  "Turret_152mmMsta_Base": {
+    "description": "Direct Fire Mode, Manned: Yes, Power: 500W, HP: 2625, Work: 45000, Cooldown: 9.0s, Min Range: 7, Max Range: 24700, Rate of Fire: 7 rounds per minute, Burst Count: 1, Magazine: 50, Reload: 2.0s, Ammunition: HE shell (4.5m explosion, base dmg: 386).\n\nIndirect Fire Mode, Min Range: 25, Ammunition: HE shell (4.5m explosion, base dmg: 386), Settlement bombardment range: 24 world tiles (HE: 0.32 dmg). Soviet self-propelled howitzer designed for long-range bombardment."
+  },
+  "Turret_152mmMsta_indirect_Base": {
+    "description": "Direct Fire Mode, Manned: Yes, Power: 500W, HP: 2625, Work: 45000, Cooldown: 9.0s, Min Range: 7, Max Range: 24700, Rate of Fire: 7 rounds per minute, Burst Count: 1, Magazine: 50, Reload: 2.0s, Ammunition: HE shell (4.5m explosion, base dmg: 386).\n\nIndirect Fire Mode, Min Range: 25, Ammunition: HE shell (4.5m explosion, base dmg: 386), Settlement bombardment range: 24 world tiles (HE: 0.32 dmg). Soviet self-propelled howitzer designed for long-range bombardment."
+  },
+  "Turret_120mmTAK120_Base": {
+    "description": "Direct Fire Mode, Manned: Yes, Power: 800W, HP: 1680, Work: 35000, Cooldown: 2.0s, Min Range: 8, Max Range: 18000, Rate of Fire: 30 rounds per minute, Burst Count: 6, Magazine: 52, Reload: 1.0s, Ammunition: HE shell (3.5m explosion, base dmg: 262), AP shell (190 penetration, base dmg: 721).\n\nIndirect Fire Mode, Min Range: 25, Ammunition: HE shell (3.5m explosion, base dmg: 262), shell (base dmg: 721), Settlement bombardment range: 18 world tiles (HE: 0.21 dmg). A formidable Swedish coastal defense piece."
+  },
+  "Turret_120mmTAK120_indirect_Base": {
+    "description": "Direct Fire Mode, Manned: Yes, Power: 800W, HP: 1680, Work: 35000, Cooldown: 2.0s, Min Range: 8, Max Range: 18000, Rate of Fire: 30 rounds per minute, Burst Count: 6, Magazine: 52, Reload: 1.0s, Ammunition: HE shell (3.5m explosion, base dmg: 262), AP shell (190 penetration, base dmg: 721).\n\nIndirect Fire Mode, Min Range: 25, Ammunition: HE shell (3.5m explosion, base dmg: 262), shell (base dmg: 721), Settlement bombardment range: 18 world tiles (HE: 0.21 dmg). A formidable Swedish coastal defense piece."
+  },
+  "Turret_20mmM61Vulcan_Base": {
+    "description": "Manned: Yes, Projectile and Drop Pod Interception: Available, Power: 500W, HP: 925, Work: 25500, Cooldown: 0.4s, Min Range: 3, Max Range: 75, Rate of Fire: 1500-3000 RPM, Burst Count: 20-50-100, Magazine: 1500, Reload: 1.0s, Ammunition: AP shell (30 penetration, base dmg: 44), AP shell (30 penetration, base dmg: 44), AP shell (15 penetration, base dmg: 70), AP shell (53 penetration, base dmg: 37). Six-barreled rotary cannon with devastating rate of fire."
+  }
+}
