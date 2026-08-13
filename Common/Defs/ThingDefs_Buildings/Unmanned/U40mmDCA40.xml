@@ -61,7 +61,7 @@
 		</researchPrerequisites>
 	</ThingDef>
 	
-	<ThingDef>
+	<ThingDef ParentName="BaseWeaponTurret">
 		<defName>Turret_U40mmDCA40_Weapon</defName>
 		<label>Auto DCA 40 Gun</label>
 		<graphicData>

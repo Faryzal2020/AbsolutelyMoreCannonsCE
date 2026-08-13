@@ -101,7 +101,7 @@
 		</modExtensions>
 	</ThingDef>
 	
-	<ThingDef>
+	<ThingDef ParentName="BaseWeaponTurret">
 		<defName>Turret_U20mmFlak38_Weapon</defName>
 		<label>Auto Flak 38 Gun</label>
 		<graphicData>
