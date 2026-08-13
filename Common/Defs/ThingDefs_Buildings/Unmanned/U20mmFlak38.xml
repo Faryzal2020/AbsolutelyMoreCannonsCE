@@ -49,6 +49,7 @@
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>

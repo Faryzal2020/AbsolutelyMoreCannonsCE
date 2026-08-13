@@ -31,14 +31,14 @@
 		</statBases>
 		<costList>
 			<Steel>300</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
+      		<ComponentIndustrial>8</ComponentIndustrial>
 			<Plasteel>7</Plasteel>
-      <ComponentSpacer>3</ComponentSpacer>
+      		<ComponentSpacer>3</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_U20mmSPzMarder_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
-      <turretTopDrawSize>13</turretTopDrawSize>
+      		<turretTopDrawSize>13</turretTopDrawSize>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
@@ -48,12 +48,13 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>2,2</size>
+    	<size>2,2</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_U20mmSPzMarder</li>
@@ -73,7 +74,7 @@
 			<ShotSpread>0.02</ShotSpread>
 			<SwayFactor>0.2</SwayFactor>
 			<RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
-      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+      		<NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Small_Interact</soundInteract>
@@ -83,8 +84,8 @@
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x139mm_HE</defaultProjectile>
-				<warmupTime>3.0500000000000003</warmupTime>
-        <minRange>3</minRange>
+				<warmupTime>3</warmupTime>
+        		<minRange>3</minRange>
 				<range>80</range>
 				<soundCast>Sound_RH202</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
@@ -101,11 +102,11 @@
 				<reloadTime>0.5</reloadTime>
 				<ammoSet>AmmoSet_20x139mm_Shells</ammoSet>
 			</li>
-      <li Class="CombatExtended.CompProperties_FireModes">
-        <aiUseBurstMode>TRUE</aiUseBurstMode>
-        <aiAimMode>AimedShot</aiAimMode>
-        <aimedBurstShotCount>4</aimedBurstShotCount>
-      </li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>TRUE</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+				<aimedBurstShotCount>4</aimedBurstShotCount>
+			</li>
 		</comps>
 		<modExtensions>
 			<li Class="CombatExtended.GunDrawExtension">

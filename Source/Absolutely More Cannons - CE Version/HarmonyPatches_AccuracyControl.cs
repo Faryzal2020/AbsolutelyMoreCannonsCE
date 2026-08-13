@@ -213,18 +213,35 @@ namespace AbsolutelyMoreCannons
         private static float GetSwayReductionForVerb(object verbInstance)
         {
             Thing caster = GetCasterFromVerb(verbInstance);
+            float baseReduction = 0f;
+            float fcsMultiplier = 1.0f;
+
             if (caster != null)
             {
+                var fcsComp = GetFCSCompFromCaster(caster);
+                if (fcsComp != null && fcsComp.ActiveStats != null)
+                {
+                    fcsMultiplier = fcsComp.ActiveStats.swayMultiplier;
+                }
+
                 var comp = caster.TryGetComp<Comp_AccuracyOverride>();
                 if (comp != null)
                 {
-                    return comp.GetSwayReduction();
+                    baseReduction = comp.GetSwayReduction();
+                }
+                else
+                {
+                    var settings = TurretBarrelAnimationMod.settings;
+                    baseReduction = (settings != null) ? settings.swayReductionPercent : 0f;
                 }
             }
-            
-            // Fall back to global setting
-            var settings = TurretBarrelAnimationMod.settings;
-            return (settings != null) ? settings.swayReductionPercent : 0f;
+            else
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                baseReduction = (settings != null) ? settings.swayReductionPercent : 0f;
+            }
+
+            return 100f - ((100f - baseReduction) * fcsMultiplier);
         }
         
         /// <summary>
@@ -233,18 +250,48 @@ namespace AbsolutelyMoreCannons
         private static float GetRecoilReductionForVerb(object verbInstance)
         {
             Thing caster = GetCasterFromVerb(verbInstance);
+            float baseReduction = 0f;
+            float fcsMultiplier = 1.0f;
+
             if (caster != null)
             {
+                var fcsComp = GetFCSCompFromCaster(caster);
+                if (fcsComp != null && fcsComp.ActiveStats != null)
+                {
+                    fcsMultiplier = fcsComp.ActiveStats.recoilMultiplier;
+                }
+
                 var comp = caster.TryGetComp<Comp_AccuracyOverride>();
                 if (comp != null)
                 {
-                    return comp.GetRecoilReduction();
+                    baseReduction = comp.GetRecoilReduction();
+                }
+                else
+                {
+                    var settings = TurretBarrelAnimationMod.settings;
+                    baseReduction = (settings != null) ? settings.recoilReductionPercent : 0f;
                 }
             }
-            
-            // Fall back to global setting
-            var settings = TurretBarrelAnimationMod.settings;
-            return (settings != null) ? settings.recoilReductionPercent : 0f;
+            else
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                baseReduction = (settings != null) ? settings.recoilReductionPercent : 0f;
+            }
+
+            return 100f - ((100f - baseReduction) * fcsMultiplier);
+        }
+        
+        private static CompTurretFCS GetFCSCompFromCaster(Thing caster)
+        {
+            if (caster == null) return null;
+            var comp = caster.TryGetComp<CompTurretFCS>();
+            if (comp != null) return comp;
+
+            if (caster.ParentHolder is Thing parentThing)
+            {
+                return parentThing.TryGetComp<CompTurretFCS>();
+            }
+            return null;
         }
         
         /// <summary>
@@ -253,9 +300,6 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         private static float GetSpreadReductionForReport(object reportInstance)
         {
-            // ShiftVecReport doesn't store caster reference
-            // We'd need to track this in ShiftTarget prefix if we want per-turret spread
-            // For now, use global setting only
             var settings = TurretBarrelAnimationMod.settings;
             return (settings != null) ? settings.spreadReductionPercent : 0f;
         }

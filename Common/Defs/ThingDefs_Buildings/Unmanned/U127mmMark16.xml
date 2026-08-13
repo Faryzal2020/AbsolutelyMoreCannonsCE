@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U127mmMark16_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       <turretTopDrawSize>16</turretTopDrawSize>
 			<turretBurstCooldownTime>3.3</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
@@ -47,6 +48,7 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -84,7 +86,7 @@
 				<defaultProjectile>Bullet_127mmMark16_HE</defaultProjectile>
 				<warmupTime>3.0500000000000003</warmupTime>
         <minRange>8</minRange>
-				<range>23700</range>
+				<range>120</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -151,13 +153,13 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
-    <size>(4,4)</size>
+    <size>4,4</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_U127mmMark16</li>
 		</researchPrerequisites>
-    <interactionCellOffset>()</interactionCellOffset>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

@@ -37,6 +37,7 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_U152mmMsta_Weapon</turretGunDef>
+			<ai_combatDangerous>true</ai_combatDangerous>
       <turretTopDrawSize>21</turretTopDrawSize>
 			<turretBurstCooldownTime>9</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
@@ -47,6 +48,7 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -84,7 +86,7 @@
 				<defaultProjectile>Bullet_152mm2A65_HE</defaultProjectile>
 				<warmupTime>3.0500000000000003</warmupTime>
         <minRange>7</minRange>
-				<range>24700</range>
+				<range>120</range>
 				<soundCast>Sound_152mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>120</muzzleFlashScale>
@@ -151,13 +153,13 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
-    <size>(5,5)</size>
+    <size>5,5</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_U152mmMsta</li>
 		</researchPrerequisites>
-    <interactionCellOffset>()</interactionCellOffset>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

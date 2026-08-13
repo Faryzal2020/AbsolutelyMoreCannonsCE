@@ -185,6 +185,7 @@
   <ThingDef Name="AMCArtilleryAutoBase" ParentName="AMCTurretAutoBase" Abstract="True">
     <placeWorkers>
       <li>PlaceWorker_NotUnderRoof</li>
+      <li>PlaceWorker_TurretTop</li>
     </placeWorkers>
     <tradeability Inherit="False">Buyable</tradeability>
   </ThingDef>

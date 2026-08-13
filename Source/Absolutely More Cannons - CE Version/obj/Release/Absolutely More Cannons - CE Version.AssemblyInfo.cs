@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AbsolutelyMoreCannons")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+abb4ad67299b8d56d212cce6a98754b140ff8bb3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f35c15cc6871c573988c8bb9d3029d6029acf4f")]
 [assembly: System.Reflection.AssemblyProductAttribute("AbsolutelyMoreCannons")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AbsolutelyMoreCannons")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

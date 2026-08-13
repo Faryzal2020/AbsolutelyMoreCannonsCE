@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- ==================== BASE FCS ITEM ==================== -->
+  <ThingDef Name="AMC_FCSTerminalBase" ParentName="ResourceBase" Abstract="True">
+    <techLevel>Industrial</techLevel>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>10</stackLimit>
+
+    <!-- Placeholder value & weight so it stands out to trader & player -->
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1</MarketValue>
+      <Mass>1.5</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+    </statBases>
+    <tradeTags>
+      <li>ExoticMisc</li>
+      <li>ComponentIndustrial</li>
+    </tradeTags>
+    <thingCategories>
+      <li>Items</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ==================== BASIC FCS ==================== -->
+  <ThingDef ParentName="AMC_FCSTerminalBase">
+    <defName>AMC_FCS_Basic</defName>
+    <label>Basic Fire Control System</label>
+    <description>A basic automated computer module that provides core targeting calculations for unmanned turrets. Required for automatic turret operation.</description>
+    <graphicData>
+      <texPath>Things/Item/FCS/FCS_Basic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <modExtensions>
+      <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
+        <swayMultiplier>0.85</swayMultiplier>
+        <recoilMultiplier>0.90</recoilMultiplier>
+        <spreadMultiplier>0.85</spreadMultiplier>
+        <aimTimeMultiplier>0.95</aimTimeMultiplier>
+        <rangeMultiplier>1.00</rangeMultiplier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>AMC_Make_FCS_Basic</defName>
+    <label>make basic FCS module</label>
+    <description>Craft a basic Fire Control System module for unmanned turrets.</description>
+    <jobString>Crafting basic FCS module.</jobString>
+    <workAmount>500</workAmount>
+    <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AMC_FCS_Basic>1</AMC_FCS_Basic>
+    </products>
+    <recipeUsers>
+      <li>FabricationBench</li>
+      <li>TableMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+
+
+  <!-- ==================== ADVANCED FCS ==================== -->
+  <ThingDef ParentName="AMC_FCSTerminalBase">
+    <defName>AMC_FCS_Advanced</defName>
+    <label>Advanced Fire Control System</label>
+    <description>An advanced fire control module equipped with high-resolution digital optics and real-time ballistic compensation algorithms for unmanned turrets.</description>
+    <graphicData>
+      <texPath>Things/Item/FCS/FCS_Advanced</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <modExtensions>
+      <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
+        <swayMultiplier>0.50</swayMultiplier>
+        <recoilMultiplier>0.60</recoilMultiplier>
+        <spreadMultiplier>0.50</spreadMultiplier>
+        <aimTimeMultiplier>0.75</aimTimeMultiplier>
+        <rangeMultiplier>1.10</rangeMultiplier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>AMC_Make_FCS_Advanced</defName>
+    <label>make advanced FCS module</label>
+    <description>Craft an advanced Fire Control System module for unmanned turrets.</description>
+    <jobString>Crafting advanced FCS module.</jobString>
+    <workAmount>800</workAmount>
+    <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AMC_FCS_Advanced>1</AMC_FCS_Advanced>
+    </products>
+    <recipeUsers>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+
+  <!-- ==================== SPACER FCS ==================== -->
+  <ThingDef ParentName="AMC_FCSTerminalBase">
+    <defName>AMC_FCS_Spacer</defName>
+    <label>Spacer Fire Control System</label>
+    <description>An ultra-high-tech AI targeting computer. Predicts target motion and atmospheric drift in real-time, drastically reducing sway, spread, and aim delays.</description>
+    <graphicData>
+      <texPath>Things/Item/FCS/FCS_Spacer</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Spacer</techLevel>
+    <modExtensions>
+      <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
+        <swayMultiplier>0.15</swayMultiplier>
+        <recoilMultiplier>0.25</recoilMultiplier>
+        <spreadMultiplier>0.15</spreadMultiplier>
+        <aimTimeMultiplier>0.50</aimTimeMultiplier>
+        <rangeMultiplier>1.25</rangeMultiplier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>AMC_Make_FCS_Spacer</defName>
+    <label>make spacer FCS module</label>
+    <description>Craft a spacer Fire Control System module for unmanned turrets.</description>
+    <jobString>Crafting spacer FCS module.</jobString>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AMC_FCS_Spacer>1</AMC_FCS_Spacer>
+    </products>
+    <recipeUsers>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>
