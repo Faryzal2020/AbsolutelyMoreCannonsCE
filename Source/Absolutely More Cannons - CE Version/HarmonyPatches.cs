@@ -335,7 +335,13 @@ namespace AbsolutelyMoreCannons
 
         private static void PatchTurretFCSOperability(Harmony harmony, Type ceTurretType)
         {
-            Log.Message($"[AMC Startup] PatchTurretFCSOperability executing. ceTurretType: {ceTurretType?.FullName ?? "null"}");
+            var startupSettings = TurretBarrelAnimationMod.settings;
+            bool logStartup = startupSettings != null && startupSettings.logStartup;
+
+            if (logStartup)
+            {
+                Log.Message($"[AMC Startup] PatchTurretFCSOperability executing. ceTurretType: {ceTurretType?.FullName ?? "null"}");
+            }
             List<Type> turretTypes = new List<Type> { typeof(Building_TurretGun) };
             if (ceTurretType != null && ceTurretType != typeof(Building_TurretGun))
             {
@@ -368,10 +374,13 @@ namespace AbsolutelyMoreCannons
                 var tryFindNewTargetMethod = GetImplementedMethod(t, "TryFindNewTarget");
                 if (tryFindNewTargetMethod != null)
                 {
-                    Log.Message($"[AMC Startup] Found TryFindNewTarget on {t.Name}: ReturnType={tryFindNewTargetMethod.ReturnType.Name}, Params=[{string.Join(", ", tryFindNewTargetMethod.GetParameters().Select(p => p.ParameterType.Name))}]");
+                    if (logStartup)
+                    {
+                        Log.Message($"[AMC Startup] Found TryFindNewTarget on {t.Name}: ReturnType={tryFindNewTargetMethod.ReturnType.Name}, Params=[{string.Join(", ", tryFindNewTargetMethod.GetParameters().Select(p => p.ParameterType.Name))}]");
+                    }
                     SafePatchPostfix(harmony, tryFindNewTargetMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_TryFindNewTarget)));
                 }
-                else
+                else if (logStartup)
                 {
                     Log.Message($"[AMC Startup] TryFindNewTarget NOT found on {t.Name}");
                 }
@@ -380,15 +389,20 @@ namespace AbsolutelyMoreCannons
                 SafePatchPostfix(harmony, tickMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_Tick)));
             }
 
-            // Also attempt to patch CanHitTarget for diagnostic telemetry
-            var shootCEType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE") ?? typeof(Verb);
-            var canHitMethod = GetImplementedMethod(shootCEType, "CanHitTarget");
+            // Also attempt to patch CanHitTarget for diagnostic telemetry.
+            // Only patch CE's own verb type - never fall back to patching vanilla Verb.CanHitTarget,
+            // which would affect every weapon (pawns included) in the entire game.
+            var shootCEType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE");
+            var canHitMethod = shootCEType != null ? GetImplementedMethod(shootCEType, "CanHitTarget") : null;
             if (canHitMethod != null)
             {
-                Log.Message($"[AMC Startup] Found CanHitTarget on {canHitMethod.DeclaringType.Name}. Patching...");
+                if (logStartup)
+                {
+                    Log.Message($"[AMC Startup] Found CanHitTarget on {canHitMethod.DeclaringType.Name}. Patching...");
+                }
                 SafePatchPostfix(harmony, canHitMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShootCE_CanHitTarget)));
             }
-            else
+            else if (logStartup)
             {
                 Log.Message("[AMC Startup] CanHitTarget NOT found!");
             }
@@ -466,11 +480,15 @@ namespace AbsolutelyMoreCannons
                     TryCIWSGroundTargetFallback(turretGun, ref __result);
                 }
 
-                AMCLogger.LogTurretTarget($"[FCS Target Scan] {__instance.LabelCap} @ {__instance.Position} | Target: {(__result.IsValid ? __result.ToString() : "None")} | HasFCS: {(comp != null ? comp.HasFCS.ToString() : "N/A (Manned)")}");
-
-                if (!__result.IsValid && turretGun.Spawned && turretGun.Map != null)
+                var diagSettings = TurretBarrelAnimationMod.settings;
+                if (diagSettings != null && diagSettings.logTurretTarget)
                 {
-                    DiagnoseTargetingFailure(turretGun);
+                    AMCLogger.LogTurretTarget($"[FCS Target Scan] {__instance.LabelCap} @ {__instance.Position} | Target: {(__result.IsValid ? __result.ToString() : "None")} | HasFCS: {(comp != null ? comp.HasFCS.ToString() : "N/A (Manned)")}");
+
+                    if (!__result.IsValid && turretGun.Spawned && turretGun.Map != null)
+                    {
+                        DiagnoseTargetingFailure(turretGun);
+                    }
                 }
             }
         }
@@ -538,13 +556,16 @@ namespace AbsolutelyMoreCannons
 
         public static void Postfix_Verb_ShootCE_CanHitTarget(Verb __instance, LocalTargetInfo targ, ref bool __result)
         {
+            var settings = TurretBarrelAnimationMod.settings;
+            if (settings == null || !settings.logTurretTarget) return;
+
             Thing caster = __instance?.caster;
             if (caster is Building_TurretGun turret && turret.Spawned)
             {
                 var fcsComp = turret.TryGetComp<CompTurretFCS>();
                 if (fcsComp != null && targ.IsValid)
                 {
-                    Log.Message($"[CE CanHitTarget Check] {turret.LabelCap} vs {(targ.HasThing ? targ.Thing.LabelCap : targ.ToString())} @ {targ.Cell} | CanHit: {__result} | HasFCS: {fcsComp.HasFCS}");
+                    AMCLogger.LogTurretTarget($"[CE CanHitTarget Check] {turret.LabelCap} vs {(targ.HasThing ? targ.Thing.LabelCap : targ.ToString())} @ {targ.Cell} | CanHit: {__result} | HasFCS: {fcsComp.HasFCS}");
                 }
             }
         }
