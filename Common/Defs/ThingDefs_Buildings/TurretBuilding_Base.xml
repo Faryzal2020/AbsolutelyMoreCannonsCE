@@ -13,6 +13,8 @@
     <statBases>
       <SellPriceFactor>0.70</SellPriceFactor>
     </statBases>
+		<fillPercent>0.7</fillPercent>
+		<disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
   </ThingDef>
 
   <ThingDef Name="AMCTurretBase" ParentName="AMCBuildingBase" Abstract="True">
@@ -68,7 +70,6 @@
     <tickerType>Normal</tickerType>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
-    <fillPercent>1</fillPercent>
     <blockLight>false</blockLight> 
     <castEdgeShadows>false</castEdgeShadows>
     <hasTooltip>true</hasTooltip>
@@ -146,7 +147,6 @@
     <size>(2,2)</size>
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
-    <fillPercent>1</fillPercent>
     <blockLight>false</blockLight> 
     <tickerType>Normal</tickerType>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>

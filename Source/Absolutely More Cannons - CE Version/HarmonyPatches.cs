@@ -325,8 +325,17 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        public static FieldInfo GetCurrentTargetField(Type type)
+        {
+            if (type == null) return null;
+            return AccessTools.Field(type, "currentTargetInt") 
+                ?? AccessTools.Field(type, "currentTarget") 
+                ?? AccessTools.Field(type, "targetInt");
+        }
+
         private static void PatchTurretFCSOperability(Harmony harmony, Type ceTurretType)
         {
+            Log.Message($"[AMC Startup] PatchTurretFCSOperability executing. ceTurretType: {ceTurretType?.FullName ?? "null"}");
             List<Type> turretTypes = new List<Type> { typeof(Building_TurretGun) };
             if (ceTurretType != null && ceTurretType != typeof(Building_TurretGun))
             {
@@ -357,10 +366,31 @@ namespace AbsolutelyMoreCannons
                 SafePatchPostfix(harmony, canSetTargetProp, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_CanSetTarget)));
 
                 var tryFindNewTargetMethod = GetImplementedMethod(t, "TryFindNewTarget");
-                SafePatchPostfix(harmony, tryFindNewTargetMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_TryFindNewTarget)));
+                if (tryFindNewTargetMethod != null)
+                {
+                    Log.Message($"[AMC Startup] Found TryFindNewTarget on {t.Name}: ReturnType={tryFindNewTargetMethod.ReturnType.Name}, Params=[{string.Join(", ", tryFindNewTargetMethod.GetParameters().Select(p => p.ParameterType.Name))}]");
+                    SafePatchPostfix(harmony, tryFindNewTargetMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_TryFindNewTarget)));
+                }
+                else
+                {
+                    Log.Message($"[AMC Startup] TryFindNewTarget NOT found on {t.Name}");
+                }
 
                 var tickMethod = GetImplementedMethod(t, "Tick");
                 SafePatchPostfix(harmony, tickMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_Tick)));
+            }
+
+            // Also attempt to patch CanHitTarget for diagnostic telemetry
+            var shootCEType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE") ?? typeof(Verb);
+            var canHitMethod = GetImplementedMethod(shootCEType, "CanHitTarget");
+            if (canHitMethod != null)
+            {
+                Log.Message($"[AMC Startup] Found CanHitTarget on {canHitMethod.DeclaringType.Name}. Patching...");
+                SafePatchPostfix(harmony, canHitMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShootCE_CanHitTarget)));
+            }
+            else
+            {
+                Log.Message("[AMC Startup] CanHitTarget NOT found!");
             }
         }
 
@@ -388,7 +418,8 @@ namespace AbsolutelyMoreCannons
                 var fcsComp = __instance.TryGetComp<CompTurretFCS>();
                 var barrelComp = __instance.TryGetComp<CompTurretBarrel>();
 
-                LocalTargetInfo curTarget = (LocalTargetInfo)(AccessTools.Field(typeof(Building_TurretGun), "currentTarget")?.GetValue(turretGun) ?? LocalTargetInfo.Invalid);
+                FieldInfo targetField = GetCurrentTargetField(typeof(Building_TurretGun));
+                LocalTargetInfo curTarget = (LocalTargetInfo)(targetField?.GetValue(turretGun) ?? LocalTargetInfo.Invalid);
                 int warmup = (int)(AccessTools.Field(typeof(Building_TurretGun), "burstWarmupTicksLeft")?.GetValue(turretGun) ?? 0);
                 int cooldown = (int)(AccessTools.Field(typeof(Building_TurretGun), "burstCooldownTicksLeft")?.GetValue(turretGun) ?? 0);
                 int resetTarget = (int)(AccessTools.Field(typeof(Building_TurretGun), "resetTargetTicks")?.GetValue(turretGun) ?? 0);
@@ -491,7 +522,7 @@ namespace AbsolutelyMoreCannons
                                 if (bestTarget != null)
                                 {
                                     result = new LocalTargetInfo(bestTarget);
-                                    var currentTargetField = AccessTools.Field(typeof(Building_TurretGun), "currentTarget");
+                                    var currentTargetField = GetCurrentTargetField(typeof(Building_TurretGun));
                                     if (currentTargetField != null)
                                     {
                                         currentTargetField.SetValue(__instance, result);
@@ -501,6 +532,19 @@ namespace AbsolutelyMoreCannons
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public static void Postfix_Verb_ShootCE_CanHitTarget(Verb __instance, LocalTargetInfo targ, ref bool __result)
+        {
+            Thing caster = __instance?.caster;
+            if (caster is Building_TurretGun turret && turret.Spawned)
+            {
+                var fcsComp = turret.TryGetComp<CompTurretFCS>();
+                if (fcsComp != null && targ.IsValid)
+                {
+                    Log.Message($"[CE CanHitTarget Check] {turret.LabelCap} vs {(targ.HasThing ? targ.Thing.LabelCap : targ.ToString())} @ {targ.Cell} | CanHit: {__result} | HasFCS: {fcsComp.HasFCS}");
                 }
             }
         }
