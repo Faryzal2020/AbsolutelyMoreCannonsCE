@@ -25,3 +25,7 @@ x86/
 *.cache
 *.log
 
+# Others
+.agent
+.gemini
+
