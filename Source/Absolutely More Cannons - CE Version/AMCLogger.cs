@@ -102,6 +102,13 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [FIRE_TIMESTAMP] {message}");
         }
 
+        public static void LogFCS(string message)
+        {
+            if (Settings == null || !Settings.logFCS)
+                return;
+            Log.Message($"{PREFIX} [FCS Log] {message}");
+        }
+
         // === GENERAL COMPONENT LOGGING ===
 
         public static void LogRotation(string message)

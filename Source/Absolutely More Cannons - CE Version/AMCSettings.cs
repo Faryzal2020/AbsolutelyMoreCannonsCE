@@ -41,6 +41,7 @@ namespace AbsolutelyMoreCannons
         public bool logTurretAmmo = false;
         public bool logTurretTarget = false;
         public bool logTurretFireTimestamp = false;  // Timestamp when turret fires
+        public bool logFCS = false; // FCS accuracy & telemetry logging (off by default)
 
         // === General Component Logging ===
         public bool logRotation = false;
@@ -85,6 +86,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretAmmo, "logTurretAmmo", false);
             Scribe_Values.Look(ref logTurretTarget, "logTurretTarget", false);
             Scribe_Values.Look(ref logTurretFireTimestamp, "logTurretFireTimestamp", false);
+            Scribe_Values.Look(ref logFCS, "logFCS", false);
 
             // General Component Logging
             Scribe_Values.Look(ref logRotation, "logRotation", false);
@@ -131,6 +133,7 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Turret Ammo Logging: {logTurretAmmo}");
             Log.Message($"[AMC] Turret Target Logging: {logTurretTarget}");
             Log.Message($"[AMC] Turret Fire Timestamp Logging: {logTurretFireTimestamp}");
+            Log.Message($"[AMC] FCS Telemetry Logging: {logFCS}");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Logging: {logRotation}");
             Log.Message($"[AMC] Animation Logging: {logAnimation}");
@@ -393,6 +396,11 @@ namespace AbsolutelyMoreCannons
                 "Log Turret Fire Timestamp",
                 ref logTurretFireTimestamp
             );
+            listing.CheckboxLabeled(
+                "Log FCS Performance & Accuracy Telemetry",
+                ref logFCS,
+                "Logs FCS warmup reductions, firing cone spread calculations, and extended range targeting (off by default)."
+            );
 
             listing.Gap();
 
@@ -478,6 +486,7 @@ namespace AbsolutelyMoreCannons
             logTurretAmmo = true;
             logTurretTarget = true;
             logTurretFireTimestamp = true;
+            logFCS = true;
             logRotation = true;
             logAnimation = true;
             logTurretSmoke = true;
@@ -495,6 +504,7 @@ namespace AbsolutelyMoreCannons
             logTurretAmmo = false;
             logTurretTarget = false;
             logTurretFireTimestamp = false;
+            logFCS = false;
             logRotation = false;
             logAnimation = false;
             logTurretSmoke = false;

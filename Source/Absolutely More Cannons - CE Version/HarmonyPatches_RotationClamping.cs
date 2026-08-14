@@ -321,7 +321,7 @@ namespace AbsolutelyMoreCannons
                     $"═════════════════════════════"
                 );
             }
-            catch (Exception ex)
+            catch
             {
                 // Silent fail to avoid log spam
             }

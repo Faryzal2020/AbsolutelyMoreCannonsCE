@@ -189,6 +189,14 @@ namespace AbsolutelyMoreCannons
                 result += $"\n  Sway: {(1f - stats.swayMultiplier) * 100f:F0}% reduction";
                 result += $"\n  Spread: {(1f - stats.spreadMultiplier) * 100f:F0}% reduction";
                 result += $"\n  Recoil: {(1f - stats.recoilMultiplier) * 100f:F0}% reduction";
+                if (stats.aimTimeMultiplier != 1.0f)
+                {
+                    result += $"\n  Aim Time: {(1f - stats.aimTimeMultiplier) * 100f:F0}% faster";
+                }
+                if (stats.rangeMultiplier != 1.0f)
+                {
+                    result += $"\n  Range: +{(stats.rangeMultiplier - 1f) * 100f:F0}% bonus";
+                }
             }
             return result;
         }

@@ -1722,7 +1722,7 @@ namespace AbsolutelyMoreCannons
                     burstSoundSustainer.End();
                     //Log.Message($"[Burst Sound DEBUG] Successfully stopped burst sound for {parent.def.defName}");
                 }
-                catch (Exception ex)
+                catch
                 {
                     //Log.Warning($"[Burst Sound DEBUG] Error stopping burst sound: {ex.Message}");
                 }
@@ -2249,7 +2249,7 @@ namespace AbsolutelyMoreCannons
                     //Log.Message($"[Barrel Flash Debug] Skipping flash drawing - scale too small: {flashScale:F2} or material null: {flashMaterial == null}");
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 //Log.Warning($"[Barrel Flash Debug] Error drawing flash mesh: {ex.Message}");
             }

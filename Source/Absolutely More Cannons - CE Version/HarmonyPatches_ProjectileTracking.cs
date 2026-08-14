@@ -346,7 +346,7 @@ namespace AbsolutelyMoreCannons
                     (float.IsNaN(currentShotRotation) ? "" : $"ShotRotation: {currentShotRotation:F2}° | ")
                 );
             }
-            catch (Exception ex)
+            catch
             {
                 // Silently fail to avoid spamming logs
                 // Log.Error($"[AMC] Error in Postfix_ProjectileCE_Tick: {ex}");
