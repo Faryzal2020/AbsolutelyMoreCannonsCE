@@ -51,7 +51,7 @@
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_127mmMark16_indirect_Base</alternateDef>
 				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
-				<gizmoDesc>Rebuild this turret for indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
@@ -240,7 +240,7 @@
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_127mmMark16_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
-				<gizmoDesc>Rebuild this turret for direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoDesc>Change this turret into for direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
 			<!-- Smoke Effects -->
