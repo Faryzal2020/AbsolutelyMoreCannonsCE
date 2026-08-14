@@ -32,6 +32,7 @@
     <RimWorldPath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld')">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
     <RimWorldPath Condition="Exists('C:\Steam\steamapps\common\RimWorld')">C:\Steam\steamapps\common\RimWorld</RimWorldPath>
     <RimWorldPath Condition="Exists('D:\Steam\steamapps\common\RimWorld')">D:\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <RimWorldPath Condition="Exists('E:\SteamLibrary\steamapps\common\RimWorld')">E:\SteamLibrary\steamapps\common\RimWorld</RimWorldPath>
     <RimWorldPath Condition="'$(RimWorldPath)' == '' AND Exists('$(HOME)\.steam\steam\steamapps\common\RimWorld')">$(HOME)/.steam/steam/steamapps/common/RimWorld</RimWorldPath>
   </PropertyGroup>
 

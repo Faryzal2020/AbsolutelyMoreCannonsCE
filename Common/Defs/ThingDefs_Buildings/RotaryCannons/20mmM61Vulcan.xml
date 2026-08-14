@@ -90,6 +90,7 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>false</shockwaveEnabled>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -102,6 +103,12 @@
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,0)</interactionCellOffset>
     <modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+			<preventOperatorSuppression>true</preventOperatorSuppression>
+		</li>
+		<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+			<enableMidBurstTracking>true</enableMidBurstTracking>
+		</li>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 			<barrelGraphic>
 				<texPath>Things/Building/M20mmM61Vulcan_Barrel</texPath>

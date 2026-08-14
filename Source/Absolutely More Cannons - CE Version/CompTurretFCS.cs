@@ -197,6 +197,10 @@ namespace AbsolutelyMoreCannons
                 {
                     result += $"\n  Range: +{(stats.rangeMultiplier - 1f) * 100f:F0}% bonus";
                 }
+                if (stats.trackingAbility)
+                {
+                    result += "\n  Tracking: Continuous Mid-Burst Active";
+                }
             }
             return result;
         }

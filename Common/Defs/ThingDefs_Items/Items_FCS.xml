@@ -101,6 +101,7 @@
         <spreadMultiplier>0.50</spreadMultiplier>
         <aimTimeMultiplier>0.75</aimTimeMultiplier>
         <rangeMultiplier>1.10</rangeMultiplier>
+        <trackingAbility>true</trackingAbility>
       </li>
     </modExtensions>
   </ThingDef>
@@ -155,6 +156,7 @@
         <spreadMultiplier>0.15</spreadMultiplier>
         <aimTimeMultiplier>0.50</aimTimeMultiplier>
         <rangeMultiplier>1.25</rangeMultiplier>
+        <trackingAbility>true</trackingAbility>
       </li>
     </modExtensions>
   </ThingDef>

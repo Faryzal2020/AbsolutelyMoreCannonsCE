@@ -32,5 +32,10 @@ namespace AbsolutelyMoreCannons
         /// Range multiplier (1.0 = normal, 1.1 = 10% extra range)
         /// </summary>
         public float rangeMultiplier = 1.0f;
+
+        /// <summary>
+        /// Whether this FCS module enables continuous mid-burst target tracking.
+        /// </summary>
+        public bool trackingAbility = false;
     }
 }
