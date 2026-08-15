@@ -26,6 +26,7 @@ namespace AbsolutelyMoreCannons
         public bool logRotationDiagnostics = false; // AMC DIAGNOSTIC and AMC OBSERVE logs
         public bool logStartup = true; // Mod initialization and patch success messages
         public bool logTemporaryDebug = false; // Temporary debugging logs (e.g., projectile tick tracking)
+        public bool logFragmentProjectiles = false; // Sub-toggle for fragment projectile tracking (launch, tick, destroyed)
         public bool logVerticalAngleDetailed = false; // Detailed vertical angle breakdown logging
         
         // === Individual Accuracy Tuning (0-100%) ===
@@ -41,6 +42,7 @@ namespace AbsolutelyMoreCannons
         public bool logTurretAmmo = false;
         public bool logTurretTarget = false;
         public bool logTurretFireTimestamp = false;  // Timestamp when turret fires
+        public bool logFCS = false; // FCS accuracy & telemetry logging (off by default)
 
         // === General Component Logging ===
         public bool logRotation = false;
@@ -49,6 +51,7 @@ namespace AbsolutelyMoreCannons
         public bool logTurretSmokeParticleTelemetry = false;  // Detailed particle spawn/lifecycle logging
         public bool logTurretSmokeParticleTick = false;       // Per-tick particle position/velocity logging
         public bool logProjectileOffsets = false;             // Forward and lateral projectile spawn offsets
+        public bool logAirburstDetonation = true;             // Log airburst shell explosion and fragment telemetry
 
         /// <summary>
         /// Save and load settings from XML
@@ -73,6 +76,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logRotationDiagnostics, "logRotationDiagnostics", false);
             Scribe_Values.Look(ref logStartup, "logStartup", true);
             Scribe_Values.Look(ref logTemporaryDebug, "logTemporaryDebug", false);
+            Scribe_Values.Look(ref logFragmentProjectiles, "logFragmentProjectiles", false);
             Scribe_Values.Look(ref logVerticalAngleDetailed, "logVerticalAngleDetailed", false);
             Scribe_Values.Look(ref swayReductionPercent, "swayReductionPercent", 0f);
             Scribe_Values.Look(ref recoilReductionPercent, "recoilReductionPercent", 0f);
@@ -85,6 +89,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretAmmo, "logTurretAmmo", false);
             Scribe_Values.Look(ref logTurretTarget, "logTurretTarget", false);
             Scribe_Values.Look(ref logTurretFireTimestamp, "logTurretFireTimestamp", false);
+            Scribe_Values.Look(ref logFCS, "logFCS", false);
 
             // General Component Logging
             Scribe_Values.Look(ref logRotation, "logRotation", false);
@@ -93,6 +98,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretSmokeParticleTelemetry, "logTurretSmokeParticleTelemetry", false);
             Scribe_Values.Look(ref logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
             Scribe_Values.Look(ref logProjectileOffsets, "logProjectileOffsets", false);
+            Scribe_Values.Look(ref logAirburstDetonation, "logAirburstDetonation", true);
             
             // Log settings after they're loaded/saved
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.Saving)
@@ -121,6 +127,7 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Rotation Diagnostics Logging: {logRotationDiagnostics}");
             Log.Message($"[AMC] Startup Logging: {logStartup}");
             Log.Message("[AMC] Temporary Debug Logging: " + logTemporaryDebug);
+            Log.Message("[AMC] Fragment Projectile Logging: " + logFragmentProjectiles);
             Log.Message("[AMC] Vertical Angle Detailed Logging: " + logVerticalAngleDetailed);
             Log.Message("[AMC] Sway Reduction: " + swayReductionPercent + "%");
             Log.Message("[AMC] Recoil Reduction: " + recoilReductionPercent + "%");
@@ -131,6 +138,7 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Turret Ammo Logging: {logTurretAmmo}");
             Log.Message($"[AMC] Turret Target Logging: {logTurretTarget}");
             Log.Message($"[AMC] Turret Fire Timestamp Logging: {logTurretFireTimestamp}");
+            Log.Message($"[AMC] FCS Telemetry Logging: {logFCS}");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Logging: {logRotation}");
             Log.Message($"[AMC] Animation Logging: {logAnimation}");
@@ -298,6 +306,19 @@ namespace AbsolutelyMoreCannons
                 ref logTemporaryDebug
             );
             
+            if (logTemporaryDebug)
+            {
+                listing.Gap(4);
+                listing.CheckboxLabeled(
+                    "  └─ Include Fragment Projectile Tracking (Launch/Tick/Destroyed)",
+                    ref logFragmentProjectiles
+                );
+                Text.Font = GameFont.Tiny;
+                Rect fragHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(fragHelpRect, "     (Off by default to suppress fragment projectile log flooding)");
+                Text.Font = GameFont.Small;
+            }
+            
             listing.Gap(4);
             Text.Font = GameFont.Tiny;
             Rect tempDebugHelpRect = listing.GetRect(Text.LineHeight);
@@ -393,6 +414,11 @@ namespace AbsolutelyMoreCannons
                 "Log Turret Fire Timestamp",
                 ref logTurretFireTimestamp
             );
+            listing.CheckboxLabeled(
+                "Log FCS Performance & Accuracy Telemetry",
+                ref logFCS,
+                "Logs FCS warmup reductions, firing cone spread calculations, and extended range targeting (off by default)."
+            );
 
             listing.Gap();
 
@@ -444,6 +470,16 @@ namespace AbsolutelyMoreCannons
             Widgets.Label(offsetHelpRect, "  (Logs forward and lateral projectile spawn position offsets)");
             Text.Font = GameFont.Small;
 
+            listing.Gap(4);
+            listing.CheckboxLabeled(
+                "Log Airburst Detonation & Fragment Telemetry",
+                ref logAirburstDetonation
+            );
+            Text.Font = GameFont.Tiny;
+            Rect airburstHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(airburstHelpRect, "  (Logs shell explosion location, fragment IDs, stats, and 3D launch angles)");
+            Text.Font = GameFont.Small;
+
             listing.Gap(12);
 
             // === QUICK ACTIONS ===
@@ -478,12 +514,16 @@ namespace AbsolutelyMoreCannons
             logTurretAmmo = true;
             logTurretTarget = true;
             logTurretFireTimestamp = true;
+            logFCS = true;
             logRotation = true;
             logAnimation = true;
             logTurretSmoke = true;
             logTurretSmokeParticleTelemetry = true;
             logTurretSmokeParticleTick = true;
             logProjectileOffsets = true;
+            logAirburstDetonation = true;
+            logTemporaryDebug = true;
+            logFragmentProjectiles = true;
         }
 
         private void DisableAllLogs()
@@ -495,12 +535,16 @@ namespace AbsolutelyMoreCannons
             logTurretAmmo = false;
             logTurretTarget = false;
             logTurretFireTimestamp = false;
+            logFCS = false;
             logRotation = false;
             logAnimation = false;
             logTurretSmoke = false;
             logTurretSmokeParticleTelemetry = false;
             logTurretSmokeParticleTick = false;
             logProjectileOffsets = false;
+            logAirburstDetonation = false;
+            logTemporaryDebug = false;
+            logFragmentProjectiles = false;
         }
     }
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Defs>
+	<ThingDef ParentName="BaseFragment">
+		<defName>Airburst_Fragment</defName>
+		<label>airburst fragments</label>
+		<graphicData>
+			<texPath>Things/Projectile/Fragments/Airburst_Fragment</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Fragment</damageDef>
+			<damageAmountBase>34</damageAmountBase>
+			<explosionRadius>1.5</explosionRadius>
+			<speed>200</speed>
+			<armorPenetrationSharp>10.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<tickToTruePos>0</tickToTruePos>
+			<ballisticCoefficient>0.95~1.42</ballisticCoefficient>
+			<gravityFactor>5</gravityFactor>
+			<mass>65~75</mass>
+			<diameter>10~12</diameter>
+		</projectile>
+		<modExtensions>
+			<li Class="ProjectileImpactFX.EffectProjectileExtension">
+				<explosionFleckDef>BlastFlame</explosionFleckDef>
+				<explosionFleckSize>0.8</explosionFleckSize>
+				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
+				<ImpactGlowFleckSize>2.0</ImpactGlowFleckSize>
+				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
+				<ImpactFleckSize>1.2</ImpactFleckSize>
+				<CreateTerrainEffects>true</CreateTerrainEffects>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	<ThingDef Class="CombatExtended.Lasers.LaserBeamDefCE" ParentName="BaseFragment">
+		<defName>Airburst_Fragment_Trail</defName>
+		<label>airburst fragments</label>
+        <thingClass>CombatExtended.Lasers.LaserBeamCE</thingClass>
+		<beamGraphic>BeamGraphic</beamGraphic>
+		<graphicData>
+			<texPath>Things/Projectile/Fragments/Airburst_Fragment</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>TransparentPostLight</shaderType> <!-- Makes it brightly glow -->
+			<drawSize>1.5</drawSize>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<damageDef>Fragment</damageDef>
+			<damageAmountBase>34</damageAmountBase>
+			<explosionRadius>1.5</explosionRadius>
+			<speed>200</speed>
+			<armorPenetrationSharp>10.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<tickToTruePos>0</tickToTruePos>
+			<ballisticCoefficient>0.95~1.42</ballisticCoefficient>
+			<gravityFactor>5</gravityFactor>
+			<mass>65~75</mass>
+			<diameter>10~12</diameter>
+		</projectile>
+		<modExtensions>
+			<li Class="ProjectileImpactFX.EffectProjectileExtension">
+				<explosionFleckDef>BlastFlame</explosionFleckDef>
+				<explosionFleckSize>0.8</explosionFleckSize>
+				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
+				<ImpactGlowFleckSize>2.0</ImpactGlowFleckSize>
+				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
+				<ImpactFleckSize>1.2</ImpactFleckSize>
+				<CreateTerrainEffects>true</CreateTerrainEffects>
+			</li>
+		</modExtensions>
+	</ThingDef>
+</Defs>

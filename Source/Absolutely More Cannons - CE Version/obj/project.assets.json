@@ -260,24 +260,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fary2\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\fary2\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
+      "projectUniqueName": "E:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
       "projectName": "AbsolutelyMoreCannons",
-      "projectPath": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
+      "projectPath": "E:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\Absolutely More Cannons - CE Version.csproj",
       "packagesPath": "C:\\Users\\fary2\\.nuget\\packages\\",
-      "outputPath": "G:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\obj\\",
+      "outputPath": "E:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\(Dev) Absolutely More Cannons - CE Version 1.6\\Source\\Absolutely More Cannons - CE Version\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
         "C:\\Users\\fary2\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -303,7 +298,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net472": {
@@ -320,7 +315,7 @@
             "version": "[2.3.3, )"
           }
         },
-        "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\9.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

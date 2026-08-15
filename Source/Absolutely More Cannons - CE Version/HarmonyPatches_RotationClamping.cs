@@ -146,6 +146,7 @@ namespace AbsolutelyMoreCannons
                     
                     // DISCOVERY: shotRotation + turretBase = DEVIATION (scatter angle)
                     // Must work in SIGNED (-180° to +180°) space!
+                    // Note: "deviation = shotRotation - turretBaseRotation" is false. beware of AI hallucination
                     
                     // 1. Calculate raw signed deviation
                     float deviation = shotRotation + turretBaseRotation;
@@ -321,7 +322,7 @@ namespace AbsolutelyMoreCannons
                     $"═════════════════════════════"
                 );
             }
-            catch (Exception ex)
+            catch
             {
                 // Silent fail to avoid log spam
             }

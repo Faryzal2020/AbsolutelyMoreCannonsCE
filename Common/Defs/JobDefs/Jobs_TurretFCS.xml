@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <JobDef>
+    <defName>AMC_Job_LoadTurretFCS</defName>
+    <driverClass>AbsolutelyMoreCannons.JobDriver_LoadTurretFCS</driverClass>
+    <reportString>Loading Fire Control System into TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>AMC_WorkGiver_LoadTurretFCS</defName>
+    <label>load turret FCS</label>
+    <giverClass>AbsolutelyMoreCannons.WorkGiver_LoadTurretFCS</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>80</priorityInType>
+    <verb>load FCS into</verb>
+    <gerund>loading FCS into</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

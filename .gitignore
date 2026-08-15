@@ -26,6 +26,8 @@ x86/
 *.log
 
 # Others
-.agent
-.gemini
+.agent/
+.agents/
+.gemini/
+scratch/
 

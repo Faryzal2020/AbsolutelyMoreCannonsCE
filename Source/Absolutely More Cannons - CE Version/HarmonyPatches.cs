@@ -21,8 +21,21 @@ namespace AbsolutelyMoreCannons
         {
             var harmony = new Harmony("AbsolutelyMoreCannons.TurretBarrelAnimation");
 
+            try
+            {
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+                Log.Message("Turret Barrel Animation: Executed harmony.PatchAll() successfully.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Turret Barrel Animation: Error executing harmony.PatchAll(): {ex}");
+            }
+
             // Patch GenDraw.DrawRadiusRing to handle large turret ranges (>70 tiles)
             TryPatchLargeRadiusRing(harmony);
+
+            // Patch PlaceWorker_ShowTurretRadius.AllowsPlacing to handle null map during designator preview
+            TryPatchPlaceWorkerShowTurretRadius(harmony);
             
             // Patch Verb.TryCastNextBurstShot for RPM override
             harmony.Patch(
@@ -32,6 +45,16 @@ namespace AbsolutelyMoreCannons
 
             // Patch CE projectile launch for parameter logging
             TryPatchCEProjectileLaunch(harmony);
+
+            // Patch Building_TurretGun.CanSetTarget for FCS operability check
+            var canSetTargetVanilla = AccessTools.PropertyGetter(typeof(Building_TurretGun), "CanSetTarget");
+            if (canSetTargetVanilla != null)
+            {
+                harmony.Patch(
+                    original: canSetTargetVanilla,
+                    postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_CanSetTarget))
+                );
+            }
 
             // Try to patch CE turret methods at runtime
             TryPatchCETurrets(harmony);
@@ -160,6 +183,50 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        private static void TryPatchPlaceWorkerShowTurretRadius(Harmony harmony)
+        {
+            try
+            {
+                var allowsPlacingMethod = AccessTools.Method(typeof(PlaceWorker_ShowTurretRadius), "AllowsPlacing");
+                if (allowsPlacingMethod != null)
+                {
+                    harmony.Patch(
+                        original: allowsPlacingMethod,
+                        prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Prefix_PlaceWorker_ShowTurretRadius_AllowsPlacing))
+                    );
+                    Log.Message("Turret Barrel Animation: Patched PlaceWorker_ShowTurretRadius.AllowsPlacing for null-map safety.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"Turret Barrel Animation: Error patching PlaceWorker_ShowTurretRadius.AllowsPlacing: {ex.Message}");
+            }
+        }
+
+        public static bool Prefix_PlaceWorker_ShowTurretRadius_AllowsPlacing(BuildableDef checkingDef, Map map, ref AcceptanceReport __result)
+        {
+            if (map == null)
+            {
+                __result = true;
+                return false;
+            }
+
+            if (checkingDef is ThingDef thingDef && thingDef.building?.turretGunDef != null)
+            {
+                var verbs = thingDef.building.turretGunDef.Verbs;
+                if (verbs != null && verbs.Count > 0)
+                {
+                    var verb = verbs[0];
+                    if (verb != null && (!verb.requireLineOfSight || (verb.verbClass != null && verb.verbClass.Name.Contains("Mortar")) || verb.range > 100f))
+                    {
+                        __result = true;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         private static void TryPatchCETurrets(Harmony harmony)
         {
             // Find CE turret class at runtime
@@ -211,10 +278,511 @@ namespace AbsolutelyMoreCannons
 
                 // Patch turret top drawing to ensure barrel draws after turret top
                 TryPatchCETurretTop(harmony);
+
+                // Patch CE & Vanilla turret Active, CanSetTarget, and IsOperational for FCS operability check
+                PatchTurretFCSOperability(harmony, ceTurretType);
             }
             else
             {
                 Log.Message("Turret Barrel Animation: CombatExtended not found. Barrel animations will only work with basic recoil.");
+                PatchTurretFCSOperability(harmony, null);
+            }
+        }
+
+        private static readonly HashSet<MethodBase> patchedMethods = new HashSet<MethodBase>();
+
+        private static MethodInfo GetImplementedMethod(Type type, string methodName)
+        {
+            Type current = type;
+            while (current != null && current != typeof(object))
+            {
+                var method = AccessTools.DeclaredMethod(current, methodName);
+                if (method != null && !method.IsAbstract)
+                {
+                    return method;
+                }
+                current = current.BaseType;
+            }
+            return null;
+        }
+
+        private static MethodInfo GetImplementedPropertyGetter(Type type, string propertyName)
+        {
+            Type current = type;
+            while (current != null && current != typeof(object))
+            {
+                var prop = AccessTools.DeclaredPropertyGetter(current, propertyName);
+                if (prop != null && !prop.IsAbstract)
+                {
+                    return prop;
+                }
+                current = current.BaseType;
+            }
+            return null;
+        }
+
+        private static void SafePatchPostfix(Harmony harmony, MethodBase original, HarmonyMethod postfix)
+        {
+            if (original == null || patchedMethods.Contains(original)) return;
+            try
+            {
+                harmony.Patch(original, postfix: postfix);
+                patchedMethods.Add(original);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[AMC] Harmony patch skipped for {original.DeclaringType?.Name}.{original.Name}: {ex.Message}");
+            }
+        }
+
+        public static FieldInfo GetCurrentTargetField(Type type)
+        {
+            if (type == null) return null;
+            return AccessTools.Field(type, "currentTargetInt") 
+                ?? AccessTools.Field(type, "currentTarget") 
+                ?? AccessTools.Field(type, "targetInt");
+        }
+
+        private static void PatchTurretFCSOperability(Harmony harmony, Type ceTurretType)
+        {
+            var startupSettings = TurretBarrelAnimationMod.settings;
+            bool logStartup = startupSettings != null && startupSettings.logStartup;
+
+            if (logStartup)
+            {
+                Log.Message($"[AMC Startup] PatchTurretFCSOperability executing. ceTurretType: {ceTurretType?.FullName ?? "null"}");
+            }
+            List<Type> turretTypes = new List<Type> { typeof(Building_TurretGun) };
+            if (ceTurretType != null && ceTurretType != typeof(Building_TurretGun))
+            {
+                turretTypes.Add(ceTurretType);
+            }
+
+            var ceMultiVerbsType = AccessTools.TypeByName("CombatExtended.Building_Turret_MultiVerbs");
+            if (ceMultiVerbsType != null && !turretTypes.Contains(ceMultiVerbsType))
+            {
+                turretTypes.Add(ceMultiVerbsType);
+            }
+
+            var ceCiwsType = AccessTools.TypeByName("CombatExtended.Building_CIWS_CE");
+            if (ceCiwsType != null && !turretTypes.Contains(ceCiwsType))
+            {
+                turretTypes.Add(ceCiwsType);
+            }
+
+            foreach (var t in turretTypes)
+            {
+                var activeProp = GetImplementedPropertyGetter(t, "Active");
+                SafePatchPostfix(harmony, activeProp, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_Active)));
+
+                var isOperationalProp = GetImplementedPropertyGetter(t, "IsOperational");
+                SafePatchPostfix(harmony, isOperationalProp, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_IsOperational)));
+
+                var canSetTargetProp = GetImplementedPropertyGetter(t, "CanSetTarget");
+                SafePatchPostfix(harmony, canSetTargetProp, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_CanSetTarget)));
+
+                var tryFindNewTargetMethod = GetImplementedMethod(t, "TryFindNewTarget");
+                if (tryFindNewTargetMethod != null)
+                {
+                    if (logStartup)
+                    {
+                        Log.Message($"[AMC Startup] Found TryFindNewTarget on {t.Name}: ReturnType={tryFindNewTargetMethod.ReturnType.Name}, Params=[{string.Join(", ", tryFindNewTargetMethod.GetParameters().Select(p => p.ParameterType.Name))}]");
+                    }
+                    SafePatchPostfix(harmony, tryFindNewTargetMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_TryFindNewTarget)));
+                }
+                else if (logStartup)
+                {
+                    Log.Message($"[AMC Startup] TryFindNewTarget NOT found on {t.Name}");
+                }
+
+                var tickMethod = GetImplementedMethod(t, "Tick");
+                SafePatchPostfix(harmony, tickMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretGun_Tick)));
+            }
+
+            // Also attempt to patch CanHitTarget for diagnostic telemetry.
+            // Only patch CE's own verb type - never fall back to patching vanilla Verb.CanHitTarget,
+            // which would affect every weapon (pawns included) in the entire game.
+            var shootCEType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE");
+            var canHitMethod = shootCEType != null ? GetImplementedMethod(shootCEType, "CanHitTarget") : null;
+            if (canHitMethod != null)
+            {
+                if (logStartup)
+                {
+                    Log.Message($"[AMC Startup] Found CanHitTarget on {canHitMethod.DeclaringType.Name}. Patching...");
+                }
+                SafePatchPostfix(harmony, canHitMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShootCE_CanHitTarget)));
+            }
+            else if (logStartup)
+            {
+                Log.Message("[AMC Startup] CanHitTarget NOT found!");
+            }
+        }
+
+        private static readonly Dictionary<int, int> turretTickCounter = new Dictionary<int, int>();
+
+        public static void Postfix_TurretGun_Tick(Thing __instance)
+        {
+            var settings = TurretBarrelAnimationMod.settings;
+            if (settings == null || !settings.logTurretTarget) return;
+
+            if (__instance == null || !__instance.Spawned) return;
+
+            int thingID = __instance.thingIDNumber;
+            if (!turretTickCounter.TryGetValue(thingID, out int count))
+            {
+                count = 0;
+            }
+            count++;
+            turretTickCounter[thingID] = count;
+
+            if (count % 60 != 0) return; // Every 60 ticks (1 second)
+
+            if (__instance is Building_TurretGun turretGun)
+            {
+                var fcsComp = __instance.TryGetComp<CompTurretFCS>();
+                var barrelComp = __instance.TryGetComp<CompTurretBarrel>();
+
+                FieldInfo targetField = GetCurrentTargetField(typeof(Building_TurretGun));
+                LocalTargetInfo curTarget = (LocalTargetInfo)(targetField?.GetValue(turretGun) ?? LocalTargetInfo.Invalid);
+                int warmup = (int)(AccessTools.Field(typeof(Building_TurretGun), "burstWarmupTicksLeft")?.GetValue(turretGun) ?? 0);
+                int cooldown = (int)(AccessTools.Field(typeof(Building_TurretGun), "burstCooldownTicksLeft")?.GetValue(turretGun) ?? 0);
+                int resetTarget = (int)(AccessTools.Field(typeof(Building_TurretGun), "resetTargetTicks")?.GetValue(turretGun) ?? 0);
+                bool holdFire = (bool)(AccessTools.Field(typeof(Building_TurretGun), "holdFire")?.GetValue(turretGun) ?? false);
+
+                var opProp = GetImplementedPropertyGetter(__instance.GetType(), "IsOperational");
+                bool isOperational = (bool)(opProp != null ? opProp.Invoke(__instance, null) : false);
+
+                var canSetProp = GetImplementedPropertyGetter(__instance.GetType(), "CanSetTarget");
+                bool canSetTarget = (bool)(canSetProp != null ? canSetProp.Invoke(__instance, null) : false);
+
+                string ammoInfo = "N/A";
+                if (turretGun.gun is ThingWithComps gunWithComps && gunWithComps.AllComps != null)
+                {
+                    var ammoComp = gunWithComps.AllComps.FirstOrDefault(c => c.GetType().FullName == "CombatExtended.CompAmmoUser");
+                    if (ammoComp != null)
+                    {
+                        int curMag = (int)(AccessTools.PropertyGetter(ammoComp.GetType(), "CurMagCount")?.Invoke(ammoComp, null) ?? 0);
+                        bool reloading = (bool)(AccessTools.PropertyGetter(ammoComp.GetType(), "IsReloading")?.Invoke(ammoComp, null) ?? false);
+                        bool hasAmmo = (bool)(AccessTools.PropertyGetter(ammoComp.GetType(), "HasAmmo")?.Invoke(ammoComp, null) ?? false);
+                        ammoInfo = $"Mag: {curMag}, Reloading: {reloading}, HasAmmo: {hasAmmo}";
+                    }
+                }
+
+                AMCLogger.LogTurretTarget(
+                    $"[Turret Tick State] {__instance.LabelCap} (ID:{thingID}) @ {__instance.Position} | " +
+                    $"Active: {turretGun.Active} | Operational: {isOperational} | CanSetTarget: {canSetTarget} | " +
+                    $"Target: {(curTarget.IsValid ? curTarget.ToString() : "Invalid")} | HoldFire: {holdFire} | " +
+                    $"WarmupTicks: {warmup} | CooldownTicks: {cooldown} | ResetTicks: {resetTarget} | " +
+                    $"HasFCS: {(fcsComp != null ? fcsComp.HasFCS.ToString() : "N/A")} | HasBarrelComp: {barrelComp != null} | {ammoInfo}"
+                );
+            }
+        }
+
+        public static void Postfix_TurretGun_TryFindNewTarget(Thing __instance, ref LocalTargetInfo __result)
+        {
+            if (__instance is Building_TurretGun turretGun)
+            {
+                var comp = __instance.TryGetComp<CompTurretFCS>();
+
+                // CIWS ground target fallback if current target is invalid
+                if (!__result.IsValid && __instance.GetType().Name.Contains("CIWS"))
+                {
+                    TryCIWSGroundTargetFallback(turretGun, ref __result);
+                }
+
+                var diagSettings = TurretBarrelAnimationMod.settings;
+                if (diagSettings != null && diagSettings.logTurretTarget)
+                {
+                    AMCLogger.LogTurretTarget($"[FCS Target Scan] {__instance.LabelCap} @ {__instance.Position} | Target: {(__result.IsValid ? __result.ToString() : "None")} | HasFCS: {(comp != null ? comp.HasFCS.ToString() : "N/A (Manned)")}");
+
+                    if (!__result.IsValid && turretGun.Spawned && turretGun.Map != null)
+                    {
+                        DiagnoseTargetingFailure(turretGun);
+                    }
+                }
+            }
+        }
+
+        public static void TryCIWSGroundTargetFallback(Building_TurretGun __instance, ref LocalTargetInfo result)
+        {
+            // If CIWS did not find an air target (result is invalid), check for ground targets using Verb 0 (Verb_ShootCE)
+            if (__instance != null && !result.IsValid && __instance.Spawned && __instance.Map != null)
+            {
+                var mannable = __instance.TryGetComp<CompMannable>();
+                if (mannable != null && !mannable.MannedNow) return;
+
+                // Try to find a ground target using the primary shooting verb (verb index 0)
+                var gun = __instance.gun;
+                if (gun != null)
+                {
+                    var eq = gun.TryGetComp<CompEquippable>();
+                    if (eq != null && eq.AllVerbs != null && eq.AllVerbs.Count > 0)
+                    {
+                        Verb groundVerb = eq.AllVerbs[0];
+                        if (groundVerb != null)
+                        {
+                            // Search for hostiles in range of groundVerb
+                            var mapPawns = __instance.Map.mapPawns.AllPawnsSpawned;
+                            if (mapPawns != null)
+                            {
+                                float bestDist = float.MaxValue;
+                                Pawn bestTarget = null;
+                                float minR = groundVerb.verbProps.minRange;
+                                float maxR = groundVerb.verbProps.range;
+
+                                foreach (var p in mapPawns)
+                                {
+                                    if (p == null || !p.Spawned || p.Dead || p.Downed) continue;
+                                    if (__instance.Faction != null && p.HostileTo(__instance.Faction))
+                                    {
+                                        float dist = (p.Position - __instance.Position).LengthHorizontal;
+                                        if (dist >= minR && dist <= maxR && dist < bestDist)
+                                        {
+                                            if (groundVerb.CanHitTarget(p))
+                                            {
+                                                bestDist = dist;
+                                                bestTarget = p;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (bestTarget != null)
+                                {
+                                    result = new LocalTargetInfo(bestTarget);
+                                    var currentTargetField = GetCurrentTargetField(typeof(Building_TurretGun));
+                                    if (currentTargetField != null)
+                                    {
+                                        currentTargetField.SetValue(__instance, result);
+                                    }
+                                    AMCLogger.LogTurretTarget($"[CIWS Fallback] {__instance.LabelCap} automatically acquired ground target: {bestTarget.LabelCap} @ {bestTarget.Position}");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void Postfix_Verb_ShootCE_CanHitTarget(Verb __instance, LocalTargetInfo targ, ref bool __result)
+        {
+            var settings = TurretBarrelAnimationMod.settings;
+            if (settings == null || !settings.logTurretTarget) return;
+
+            Thing caster = __instance?.caster;
+            if (caster is Building_TurretGun turret && turret.Spawned)
+            {
+                var fcsComp = turret.TryGetComp<CompTurretFCS>();
+                if (fcsComp != null && targ.IsValid)
+                {
+                    AMCLogger.LogTurretTarget($"[CE CanHitTarget Check] {turret.LabelCap} vs {(targ.HasThing ? targ.Thing.LabelCap : targ.ToString())} @ {targ.Cell} | CanHit: {__result} | HasFCS: {fcsComp.HasFCS}");
+                }
+            }
+        }
+
+        public static void DiagnoseTargetingFailure(Building_TurretGun turret)
+        {
+            if (turret == null || turret.Map == null || !turret.Spawned) return;
+
+            var gun = turret.gun;
+            if (gun == null)
+            {
+                AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} @ {turret.Position} | Turret gun is NULL!");
+                return;
+            }
+
+            // Check ammo
+            bool hasAmmo = true;
+            string ammoDetails = "No CompAmmoUser";
+            if (gun is ThingWithComps gunWithComps && gunWithComps.AllComps != null)
+            {
+                foreach (var c in gunWithComps.AllComps)
+                {
+                    if (c != null && c.GetType().Name == "CompAmmoUser")
+                    {
+                        var hasAmmoProp = c.GetType().GetProperty("HasAmmo", BindingFlags.Public | BindingFlags.Instance);
+                        if (hasAmmoProp != null)
+                        {
+                            hasAmmo = (bool)hasAmmoProp.GetValue(c);
+                        }
+                        var curMagProp = c.GetType().GetProperty("CurMagCount", BindingFlags.Public | BindingFlags.Instance);
+                        int cur = curMagProp != null ? (int)curMagProp.GetValue(c) : -1;
+                        ammoDetails = $"CurMag: {cur}, HasAmmo: {hasAmmo}";
+                        break;
+                    }
+                }
+            }
+
+            // Check AttackVerb
+            Verb verb = turret.AttackVerb;
+            string verbName = verb != null ? verb.GetType().Name : "NULL";
+            float minRange = verb != null ? verb.verbProps.minRange : 0f;
+            float maxRange = verb != null ? verb.verbProps.range : 0f;
+
+            // Check Mannable
+            var mannable = turret.TryGetComp<CompMannable>();
+            bool isManned = mannable == null || mannable.MannedNow;
+
+            AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} ({turret.GetType().Name}) @ {turret.Position} | Manned: {isManned} | Ammo: [{ammoDetails}] | Verb: {verbName} (MinRange: {minRange}, MaxRange: {maxRange})");
+
+            if (!hasAmmo)
+            {
+                AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} -> REJECTED: Out of ammo!");
+                return;
+            }
+
+            if (!isManned)
+            {
+                AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} -> REJECTED: Turret is un-manned!");
+                return;
+            }
+
+            if (turret.Faction == null)
+            {
+                AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} -> Faction is NULL!");
+                return;
+            }
+
+            var mapPawns = turret.Map.mapPawns.AllPawnsSpawned;
+            int count = 0;
+            if (mapPawns != null)
+            {
+                foreach (var p in mapPawns)
+                {
+                    if (p == null || !p.Spawned || p.Dead || p.Downed) continue;
+                    if (p.HostileTo(turret.Faction))
+                    {
+                        count++;
+                        if (count <= 5)
+                        {
+                            float dist = (p.Position - turret.Position).LengthHorizontal;
+                            bool inRange = dist >= minRange && dist <= maxRange;
+                            bool canHit = verb != null && verb.CanHitTarget(p);
+                            AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] Hostile Pawn #{count}: {p.LabelCap} @ {p.Position} | Dist: {dist:F1} | InRange: {inRange} | CanHitTarget: {canHit}");
+                        }
+                    }
+                }
+            }
+
+            if (count == 0)
+            {
+                AMCLogger.LogTurretTarget($"[TARGET DIAGNOSTIC] {turret.LabelCap} -> No hostile spawned pawns found on map for Faction {turret.Faction.def.defName}!");
+            }
+        }
+
+        public static string GetTurretInactiveReason(Thing turret)
+        {
+            List<string> reasons = new List<string>();
+
+            var power = turret.TryGetComp<CompPowerTrader>();
+            if (power != null && !power.PowerOn)
+                reasons.Add("No Power (PowerOn=False)");
+
+            var mannable = turret.TryGetComp<CompMannable>();
+            if (mannable != null && !mannable.MannedNow)
+                reasons.Add("Unmanned (MannedNow=False)");
+
+            var forbiddable = turret.TryGetComp<CompForbiddable>();
+            if (forbiddable != null && forbiddable.Forbidden)
+                reasons.Add("Forbidden");
+
+            var flickable = turret.TryGetComp<CompFlickable>();
+            if (flickable != null && !flickable.SwitchIsOn)
+                reasons.Add("Switched Off");
+
+            var stunnable = turret.TryGetComp<CompStunnable>();
+            if (stunnable != null)
+            {
+                var stunnedProp = stunnable.GetType().GetProperty("Stunned", BindingFlags.Public | BindingFlags.Instance);
+                if (stunnedProp != null && (bool)stunnedProp.GetValue(stunnable))
+                    reasons.Add("Stunned/EMP");
+            }
+
+            var compFCS = turret.TryGetComp<CompTurretFCS>();
+            if (compFCS != null && !compFCS.HasFCS)
+                reasons.Add("Missing FCS Module");
+
+            if (turret is ThingWithComps twc && twc.AllComps != null)
+            {
+                foreach (var c in twc.AllComps)
+                {
+                    if (c != null && c.GetType().Name == "CompAmmoUser")
+                    {
+                        var hasAmmoProp = c.GetType().GetProperty("HasAmmo", BindingFlags.Public | BindingFlags.Instance);
+                        if (hasAmmoProp != null)
+                        {
+                            bool hasAmmo = (bool)hasAmmoProp.GetValue(c);
+                            if (!hasAmmo) reasons.Add("No Ammo in Gun (HasAmmo=False)");
+                        }
+                        var useAmmoProp = c.GetType().GetProperty("UseAmmo", BindingFlags.Public | BindingFlags.Instance);
+                        if (useAmmoProp != null)
+                        {
+                            bool useAmmo = (bool)useAmmoProp.GetValue(c);
+                            var curMagProp = c.GetType().GetProperty("CurMagCount", BindingFlags.Public | BindingFlags.Instance);
+                            int curMag = curMagProp != null ? (int)curMagProp.GetValue(c) : 0;
+                            if (useAmmo && curMag <= 0) reasons.Add($"Magazine Empty (CurMagCount={curMag})");
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (reasons.Count == 0)
+                return "Unknown Base Native Rejection";
+
+            return string.Join(", ", reasons);
+        }
+
+        public static void Postfix_TurretGun_Active(Thing __instance, ref bool __result)
+        {
+            bool initialResult = __result;
+            var comp = __instance.TryGetComp<CompTurretFCS>();
+            if (comp != null && !comp.HasFCS)
+            {
+                __result = false;
+            }
+
+            if (comp != null || !__result)
+            {
+                if (!__result)
+                {
+                    string reason = GetTurretInactiveReason(__instance);
+                    AMCLogger.LogTurretTarget($"[FCS Active Check] {__instance.LabelCap} @ {__instance.Position} | Active: FALSE (initial: {initialResult}) | Reason: [{reason}]");
+                }
+                else
+                {
+                    AMCLogger.LogTurretTarget($"[FCS Active Check] {__instance.LabelCap} @ {__instance.Position} | Active: TRUE | HasFCS: True");
+                }
+            }
+        }
+
+        public static void Postfix_TurretGun_CanSetTarget(Thing __instance, ref bool __result)
+        {
+            bool initialResult = __result;
+            var comp = __instance.TryGetComp<CompTurretFCS>();
+            if (comp != null && !comp.HasFCS)
+            {
+                __result = false;
+            }
+
+            if (comp != null)
+            {
+                AMCLogger.LogTurretTarget($"[FCS CanSetTarget Check] {__instance.LabelCap} @ {__instance.Position} | CanSetTarget: {__result} (initial: {initialResult}) | HasFCS: {comp.HasFCS}");
+            }
+        }
+
+        public static void Postfix_TurretGun_IsOperational(Thing __instance, ref bool __result)
+        {
+            bool initialResult = __result;
+            var comp = __instance.TryGetComp<CompTurretFCS>();
+            if (comp != null && !comp.HasFCS)
+            {
+                __result = false;
+            }
+
+            if (comp != null)
+            {
+                AMCLogger.LogTurretTarget($"[FCS IsOperational Check] {__instance.LabelCap} @ {__instance.Position} | IsOperational: {__result} (initial: {initialResult}) | HasFCS: {comp.HasFCS}");
             }
         }
 
