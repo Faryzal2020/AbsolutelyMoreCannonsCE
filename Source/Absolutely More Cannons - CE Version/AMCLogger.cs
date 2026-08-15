@@ -142,6 +142,15 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [VERTICAL_ANGLE] {message}");
         }
 
+        // === AIRBURST DETONATION LOGGING ===
+
+        public static void LogAirburst(string message)
+        {
+            if (Settings == null || !Settings.logAirburstDetonation)
+                return;
+            Log.Message($"{PREFIX} [AIRBURST] {message}");
+        }
+
         // === TURRET SMOKE LOGGING ===
 
         public static void LogTurretSmoke(string message)

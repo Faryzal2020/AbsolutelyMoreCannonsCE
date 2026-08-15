@@ -21,6 +21,16 @@ namespace AbsolutelyMoreCannons
         {
             var harmony = new Harmony("AbsolutelyMoreCannons.TurretBarrelAnimation");
 
+            try
+            {
+                harmony.PatchAll(Assembly.GetExecutingAssembly());
+                Log.Message("Turret Barrel Animation: Executed harmony.PatchAll() successfully.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Turret Barrel Animation: Error executing harmony.PatchAll(): {ex}");
+            }
+
             // Patch GenDraw.DrawRadiusRing to handle large turret ranges (>70 tiles)
             TryPatchLargeRadiusRing(harmony);
 

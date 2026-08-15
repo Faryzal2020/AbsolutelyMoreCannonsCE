@@ -101,66 +101,66 @@
 		<researchPrerequisites>
 			<li>Research_20mmM61Vulcan</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,0)</interactionCellOffset>
-    <modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
-			<preventOperatorSuppression>true</preventOperatorSuppression>
-		</li>
-		<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
-			<enableMidBurstTracking>true</enableMidBurstTracking>
-		</li>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<barrelGraphic>
-				<texPath>Things/Building/M20mmM61Vulcan_Barrel</texPath>
-				<graphicClass>Graphic_Random</graphicClass>
-				<drawSize>(3,3)</drawSize>
-			</barrelGraphic>
-			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>10.0</barrelDrawSize>
-			<drawOnTop>false</drawOnTop>
-			<barrelAmount>1</barrelAmount>
-			<maxRPMs>
-				<li>1500</li>
-				<li>3000</li>
-			</maxRPMs>
-			<selectableBurstCounts>
-				<li>20</li>
-				<li>50</li>
-				<li>100</li>
-			</selectableBurstCounts>
-			<recoilAnimation>
-				<enabled>false</enabled>  <!-- Disable recoil for gatling -->
-			</recoilAnimation>
-			<spinningAnimation>
-				<enabled>true</enabled>
-				<animationMode>RPMBased</animationMode>
-				<spindownTime>1.5</spindownTime>
-				<frameCount>4</frameCount>
-				<spinUpSound>AMC_Vulcan_SpinUp</spinUpSound>
-				<spinDownSound>AMC_Vulcan_SpinDown</spinDownSound>
-			</spinningAnimation>
-			<firingAnimation>
-				<enabled>true</enabled>
-				<projectileSpawnOffset>5.5</projectileSpawnOffset>
-				<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-				<burstSound>AMC_Vulcan_BurstLoop</burstSound>
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>13</flashSize>
-				<flashBrightness>0.8</flashBrightness>
-				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
-					</points>
-				</flashIntensityCurve>
-			</firingAnimation>
-		</li>
-    </modExtensions>
+		<interactionCellOffset>(0,0,0)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M20mmM61Vulcan_Barrel</texPath>
+					<graphicClass>Graphic_Random</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>10.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<barrelAmount>1</barrelAmount>
+				<maxRPMs>
+					<li>1500</li>
+					<li>3000</li>
+				</maxRPMs>
+				<selectableBurstCounts>
+					<li>20</li>
+					<li>50</li>
+					<li>100</li>
+				</selectableBurstCounts>
+				<recoilAnimation>
+					<enabled>false</enabled>  <!-- Disable recoil for gatling -->
+				</recoilAnimation>
+				<spinningAnimation>
+					<enabled>true</enabled>
+					<animationMode>RPMBased</animationMode>
+					<spindownTime>1.5</spindownTime>
+					<frameCount>4</frameCount>
+					<spinUpSound>AMC_Vulcan_SpinUp</spinUpSound>
+					<spinDownSound>AMC_Vulcan_SpinDown</spinDownSound>
+				</spinningAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>5.5</projectileSpawnOffset>
+					<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<burstSound>AMC_Vulcan_BurstLoop</burstSound>
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>13</flashSize>
+					<flashBrightness>0.8</flashBrightness>
+					<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">

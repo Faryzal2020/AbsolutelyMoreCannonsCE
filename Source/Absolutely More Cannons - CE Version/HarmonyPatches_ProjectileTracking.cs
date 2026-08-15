@@ -164,22 +164,76 @@ namespace AbsolutelyMoreCannons
                 {
                     return;
                 }
-                
-                // Only track projectiles from turrets
-                if (launcher == null || !(launcher is Building_Turret))
+
+                if (!settings.logFragmentProjectiles && IsFragmentProjectile(__instance))
                 {
-                    // Also check for CE turrets
+                    return;
+                }
+                
+                // Identify turret or launcher
+                Building_Turret turret = null;
+                if (launcher is Building_Turret bt)
+                {
+                    turret = bt;
+                }
+                else if (launcher is Pawn pawn && pawn.MannedThing() is Building_Turret mannedTurret)
+                {
+                    turret = mannedTurret;
+                }
+                else if (equipment is Building_Turret eqTurret)
+                {
+                    turret = eqTurret;
+                }
+                else if (launcher != null)
+                {
                     var ceTurretType = AccessTools.TypeByName("CombatExtended.Building_TurretGunCE");
-                    if (ceTurretType == null || !ceTurretType.IsAssignableFrom(launcher?.GetType()))
+                    if (ceTurretType != null)
                     {
-                        return;
+                        if (ceTurretType.IsAssignableFrom(launcher.GetType()))
+                        {
+                            turret = launcher as Building_Turret;
+                        }
+                        else if (ceTurretType.IsAssignableFrom(equipment?.GetType()))
+                        {
+                            turret = equipment as Building_Turret;
+                        }
                     }
                 }
                 
                 int projectileId = __instance.GetHashCode();
-                string turretLabel = launcher?.LabelCap ?? "Unknown";
+                string turretLabel = turret?.LabelCap ?? launcher?.LabelCap ?? equipment?.LabelCap ?? "Unknown Launcher";
                 string projectileLabel = __instance.def?.label ?? "unknown projectile";
                 
+                Vector3 intendedTargetPos = Vector3.zero;
+                bool hasTarget = false;
+                if (turret != null && turret.CurrentTarget.IsValid)
+                {
+                    intendedTargetPos = turret.CurrentTarget.Cell.ToVector3Shifted();
+                    hasTarget = true;
+                }
+                else if (launcher is Pawn shooterPawn && shooterPawn.TargetCurrentlyAimingAt.IsValid)
+                {
+                    intendedTargetPos = shooterPawn.TargetCurrentlyAimingAt.Cell.ToVector3Shifted();
+                    hasTarget = true;
+                }
+                else if (launcher != null)
+                {
+                    try
+                    {
+                        var curTargetProp = launcher.GetType().GetProperty("CurrentTarget", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        if (curTargetProp != null)
+                        {
+                            var targetInfo = (LocalTargetInfo)curTargetProp.GetValue(launcher);
+                            if (targetInfo.IsValid)
+                            {
+                                intendedTargetPos = targetInfo.Cell.ToVector3Shifted();
+                                hasTarget = true;
+                            }
+                        }
+                    }
+                    catch { }
+                }
+
                 var trackingInfo = new ProjectileTrackingInfo
                 {
                     ProjectileId = projectileId,
@@ -190,20 +244,23 @@ namespace AbsolutelyMoreCannons
                     ShotRotation = shotRotation,
                     ShotHeight = shotHeight,
                     ShotSpeed = shotSpeed,
-                    LaunchTick = Find.TickManager.TicksGame
+                    LaunchTick = Find.TickManager.TicksGame,
+                    IntendedTargetPos = intendedTargetPos,
+                    HasTargetPos = hasTarget
                 };
                 
                 trackedProjectiles[projectileId] = trackingInfo;
                 
                 // Calculate initial yaw and pitch for clarity
-                // Yaw = shotRotation (horizontal angle, map-relative, North=0°)
-                // Pitch = shotAngle (vertical angle from horizontal)
                 float initialPitchDegrees = shotAngle * Mathf.Rad2Deg;
+                float distToTarget = hasTarget ? Vector2.Distance(origin, new Vector2(intendedTargetPos.x, intendedTargetPos.z)) : 0f;
+                string targetStr = hasTarget ? $"({intendedTargetPos.x:F1}, {intendedTargetPos.z:F1}) [Dist: {distToTarget:F1} tiles]" : "Unknown";
                 
                 AMCLogger.LogTemporaryDebug(
                     $"═══ PROJECTILE LAUNCHED ═══" +
                     $"\n  ID: #{projectileId} ({projectileLabel})" +
                     $"\n  Launcher: {turretLabel} at ({origin.x:F2}, {origin.y:F2})" +
+                    $"\n  Intended Target: {targetStr}" +
                     $"\n  Initial YAW: {shotRotation:F2}° (map-relative, North=0°)" +
                     $"\n  Initial PITCH: {initialPitchDegrees:F2}° (elevation angle)" +
                     $"\n  Shot Height: {shotHeight:F2}" +
@@ -226,6 +283,11 @@ namespace AbsolutelyMoreCannons
             {
                 var settings = TurretBarrelAnimationMod.settings;
                 if (settings == null || !settings.logTemporaryDebug)
+                {
+                    return;
+                }
+
+                if (!settings.logFragmentProjectiles && IsFragmentProjectile(__instance))
                 {
                     return;
                 }
@@ -340,8 +402,7 @@ namespace AbsolutelyMoreCannons
                     $"Pos: ({currentPosition.x:F2}, {currentPosition.y:F2}, {currentPosition.z:F2}) | " +
                     $"Dist: {distanceFromOrigin:F2} | " +
                     $"Vel: ({velocity.x:F2}, {velocity.y:F2}, {velocity.z:F2}) | Speed: {velocityMagnitude:F2} | " +
-                    $"YAW: {yawDegrees:F2}° (map-relative, signed) | " +
-                    $"PITCH: {pitchDegrees:F2}° (signed, +up/-down) | " +
+                    $"YAW: {yawDegrees:F2}° | PITCH: {pitchDegrees:F2}° | " +
                     (float.IsNaN(currentShotAngle) ? "" : $"ShotAngle: {currentShotAngle * Mathf.Rad2Deg:F2}° | ") +
                     (float.IsNaN(currentShotRotation) ? "" : $"ShotRotation: {currentShotRotation:F2}° | ")
                 );
@@ -373,6 +434,11 @@ namespace AbsolutelyMoreCannons
                 {
                     return;
                 }
+
+                if (!settings.logFragmentProjectiles && IsFragmentProjectile(__instance))
+                {
+                    return;
+                }
                 
                 int projectileId = __instance.GetHashCode();
                 
@@ -392,9 +458,7 @@ namespace AbsolutelyMoreCannons
                     
                     Vector2 finalPos2D = new Vector2(finalPosition.x, finalPosition.z);
                     float totalDistance = Vector2.Distance(info.LaunchOrigin, finalPos2D);
-                    
-                    // Calculate average speed
-                    float averageSpeed = totalTicks > 0 ? totalDistance / (totalTicks / 60f) : 0f; // tiles per second
+                    float averageSpeed = totalTicks > 0 ? totalDistance / (totalTicks / 60f) : 0f;
                     
                     // Calculate final trajectory angles if velocity is available
                     Vector3 finalVelocity = Vector3.zero;
@@ -418,6 +482,17 @@ namespace AbsolutelyMoreCannons
                             finalPitch = Mathf.Rad2Deg * Mathf.Atan2(finalVelocity.y, horizontalSpeed);
                         }
                     }
+
+                    string targetDevStr = "N/A";
+                    if (info.HasTargetPos)
+                    {
+                        float dev = Vector2.Distance(finalPos2D, new Vector2(info.IntendedTargetPos.x, info.IntendedTargetPos.z));
+                        targetDevStr = $"{dev:F2} tiles from target ({info.IntendedTargetPos.x:F1}, {info.IntendedTargetPos.z:F1})";
+                        if (dev >= 15f)
+                        {
+                            targetDevStr += " [⚠️ EXTREME DEVIATION DETECTED]";
+                        }
+                    }
                     
                     AMCLogger.LogTemporaryDebug(
                         $"═══ PROJECTILE DESTROYED ═══" +
@@ -426,7 +501,8 @@ namespace AbsolutelyMoreCannons
                         $"\n  Lifetime: {totalTicks} ticks ({totalTicks / 60f:F2} seconds)" +
                         $"\n  Total Distance: {totalDistance:F2} tiles" +
                         $"\n  Average Speed: {averageSpeed:F2} tiles/sec" +
-                        $"\n  Final Position: ({finalPosition.x:F2}, {finalPosition.y:F2}, {finalPosition.z:F2})" +
+                        $"\n  Impact Location: ({finalPosition.x:F2}, {finalPosition.y:F2}, {finalPosition.z:F2})" +
+                        $"\n  Target Deviation: {targetDevStr}" +
                         $"\n  Final YAW: {finalYaw:F2}° | Final PITCH: {finalPitch:F2}°" +
                         $"\n  Final Velocity: ({finalVelocity.x:F2}, {finalVelocity.y:F2}, {finalVelocity.z:F2})" +
                         $"\n  Destroy Mode: {mode}" +
@@ -443,9 +519,33 @@ namespace AbsolutelyMoreCannons
             }
         }
         
-        /// <summary>
-        /// Stores tracking information for a projectile
-        /// </summary>
+        private static bool IsFragmentProjectile(Thing projectile)
+        {
+            if (projectile == null) return false;
+            
+            // Check type name
+            string typeName = projectile.GetType().Name;
+            if (typeName.IndexOf("Fragment", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return true;
+            }
+            
+            // Check ThingDef defName and label
+            if (projectile.def != null)
+            {
+                if (!string.IsNullOrEmpty(projectile.def.defName) && projectile.def.defName.IndexOf("Fragment", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+                if (!string.IsNullOrEmpty(projectile.def.label) && projectile.def.label.IndexOf("fragment", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
         private class ProjectileTrackingInfo
         {
             public int ProjectileId;
@@ -457,6 +557,8 @@ namespace AbsolutelyMoreCannons
             public float ShotHeight;
             public float ShotSpeed;
             public int LaunchTick;
+            public Vector3 IntendedTargetPos;
+            public bool HasTargetPos;
         }
     }
 }

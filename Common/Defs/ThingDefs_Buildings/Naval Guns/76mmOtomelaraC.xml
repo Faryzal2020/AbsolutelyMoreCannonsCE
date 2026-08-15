@@ -11,7 +11,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_76mmOtomelaraC_Base</defName>
 		<label>OTO Melara 76/62C</label>
-    <description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+    	<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
 		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M76mmOtomelaraC</texPath>
@@ -30,13 +30,13 @@
 		</statBases>
 		<costList>
 			<Steel>1000</Steel>
-      <ComponentIndustrial>45</ComponentIndustrial>
+      		<ComponentIndustrial>45</ComponentIndustrial>
 			<Plasteel>100</Plasteel>
-      <ComponentSpacer>10</ComponentSpacer>
+      		<ComponentSpacer>10</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_76mmOtomelaraC_Weapon</turretGunDef>
-      <turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>14</turretTopDrawSize>
 			<turretBurstCooldownTime>2</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
@@ -46,17 +46,26 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>3,3</size>
+    	<size>3,3</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_76mmOtomelaraC</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(1,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -109,7 +118,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_76mmOtomelaraC_indirect_Base</defName>
 		<label>OTO Melara 76/62C (indirect)</label>
-    <description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
+    	<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
 		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M76mmOtomelaraC</texPath>
@@ -128,16 +137,16 @@
 		</statBases>
 		<costList>
 			<Steel>1000</Steel>
-      <ComponentIndustrial>45</ComponentIndustrial>
+      		<ComponentIndustrial>45</ComponentIndustrial>
 			<Plasteel>100</Plasteel>
-      <ComponentSpacer>10</ComponentSpacer>
+      		<ComponentSpacer>10</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_76mmOtomelaraC_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>2</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>14</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_76mmOtomelaraC</designatorDropdown>
 		<comps>
@@ -145,13 +154,25 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<spreadReduction>1.1</spreadReduction>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 		</comps>
-    <size>(3,3)</size>
+    	<size>(3,3)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_76mmOtomelaraC</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(1,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">
@@ -182,16 +203,16 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_76mmOtomelaraC_indirect_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>25</minRange>
+        		<minRange>25</minRange>
 				<range>16000</range>
 				<soundCast>Sound_76mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>50</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+				<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>42</ticksBetweenBurstShots>
-				<burstShotCount>10</burstShotCount>
+				<burstShotCount>3</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 				<requireLineOfSight>false</requireLineOfSight>
 				<circularError>1</circularError>
@@ -217,6 +238,11 @@
 				<ammoSet>AmmoSet_76mmOtomelaraC_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretChargeBoostExtension">
+				<chargeOffset>1</chargeOffset>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>

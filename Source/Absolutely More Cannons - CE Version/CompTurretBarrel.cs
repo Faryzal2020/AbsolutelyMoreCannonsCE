@@ -36,7 +36,7 @@ namespace AbsolutelyMoreCannons
         // Debug: Track rotation changes
         private float lastLoggedRotation = -999f;
         private int ticksSinceLastRotationLog = 0;
-        private CompProperties_TurretBarrel Props { get { return (CompProperties_TurretBarrel)props; } }
+        public CompProperties_TurretBarrel Props { get { return (CompProperties_TurretBarrel)props; } }
 
         private ThingWithComps turret;
         private TurretBarrelExtension extension;
@@ -71,6 +71,7 @@ namespace AbsolutelyMoreCannons
 
         // Multi-barrel support: per-barrel firing animation state
         private int[] barrelFiringTicksRemaining = new int[0]; // Tracks firing animation for each barrel
+        private float[] barrelFiringRotation = new float[0]; // Tracks captured firing rotation for each barrel
         private int currentSequentialBarrel = 0; // Which barrel fires next in sequential mode
 
         // Multi-barrel support: per-barrel recoil animation state
@@ -793,6 +794,10 @@ namespace AbsolutelyMoreCannons
                     {
                         barrelFiringTicksRemaining = new int[barrelCount];
                     }
+                    if (barrelFiringRotation == null || barrelFiringRotation.Length != barrelCount)
+                    {
+                        barrelFiringRotation = new float[barrelCount];
+                    }
 
                     // Start burst sound sustainer if not already playing
                     if (burstSoundDef != null && burstSoundSustainer == null)
@@ -813,11 +818,14 @@ namespace AbsolutelyMoreCannons
                         //Log.Warning($"[Burst Sound DEBUG] burstSoundDef is null, cannot start sound for {parent.def.defName}");
                     }
 
+                    float shotRotation = GetCurrentBarrelRotation();
+
                     // Trigger firing animation and recoil for each barrel that fires
                     if (Extension.sequentialFiring && barrelCount > 1)
                     {
                         // Sequential firing: only the current barrel fires
                         barrelFiringTicksRemaining[currentSequentialBarrel] = Extension.firingAnimation.durationTicks;
+                        barrelFiringRotation[currentSequentialBarrel] = shotRotation;
 
                         // Spawn muzzle flash effect for this barrel only
                         if (!string.IsNullOrEmpty(Extension.firingAnimation.muzzleFlashEffect))
@@ -840,6 +848,7 @@ namespace AbsolutelyMoreCannons
                         for (int i = 0; i < barrelCount; i++)
                         {
                             barrelFiringTicksRemaining[i] = Extension.firingAnimation.durationTicks;
+                            barrelFiringRotation[i] = shotRotation;
                         }
 
                         // Spawn muzzle flash effect for all barrels
@@ -942,8 +951,10 @@ namespace AbsolutelyMoreCannons
                     return;
                 }
 
-                // Calculate flash position at barrel tip
-                float barrelRotation = GetCurrentBarrelRotation();
+                // Calculate flash position at barrel tip using shot-specific rotation
+                float barrelRotation = (barrelFiringRotation != null && barrelIndex < barrelFiringRotation.Length && barrelFiringTicksRemaining != null && barrelIndex < barrelFiringTicksRemaining.Length && barrelFiringTicksRemaining[barrelIndex] > 0)
+                    ? barrelFiringRotation[barrelIndex]
+                    : GetCurrentBarrelRotation();
                 float angleRad = barrelRotation * Mathf.Deg2Rad;
                 
                 Vector3 barrelOffset = GetCurrentBarrelOffset();
@@ -1019,34 +1030,76 @@ namespace AbsolutelyMoreCannons
                 // Try to get turret top rotation - works with both vanilla and CE turrets
                 if (CETurretTop != null)
                 {
-                    // CE turret top - try multiple property names
-                    var curRotationProp = CETurretTop.GetType().GetProperty("CurRotation");
-                    if (curRotationProp != null)
+                    // 1. Try curRotationInt field FIRST (private field on Verse.TurretTop)
+                    // This reflects the actual graphic rotation of the turret top and prevents
+                    // the CurRotation property from returning live moving target coordinates during mid-burst.
+                    var curRotationIntField = CETurretTop.GetType().GetField("curRotationInt", 
+                        System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (curRotationIntField != null)
                     {
                         try
                         {
-                            var value = curRotationProp.GetValue(CETurretTop);
+                            var value = curRotationIntField.GetValue(CETurretTop);
                             if (value != null)
                             {
                                 rotation = (float)value;
                                 gotTurretTopRotation = true;
-                                
-                                // Debug success
-                                string successKey = $"SUCCESS_{debugKey}";
-                                if (!loggedTypes.Contains(successKey))
-                                {
-                                    loggedTypes.Add(successKey);
-                                    AMCLogger.LogTurretBarrel($" Successfully reading CurRotation property! Current value: {rotation}°");
-                                }
                             }
                         }
-                        catch (Exception ex)
+                        catch { }
+                    }
+
+                    // 2. Try curRotation field
+                    if (!gotTurretTopRotation)
+                    {
+                        var rotationField = CETurretTop.GetType().GetField("curRotation", 
+                            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (rotationField != null)
                         {
-                            string errorKey = $"ERROR_{debugKey}_CurRotation";
-                            if (!loggedTypes.Contains(errorKey))
+                            try
                             {
-                                loggedTypes.Add(errorKey);
-                                AMCLogger.LogTurretBarrel($" Error reading CurRotation: {ex.Message}");
+                                var value = rotationField.GetValue(CETurretTop);
+                                if (value != null)
+                                {
+                                    rotation = (float)value;
+                                    gotTurretTopRotation = true;
+                                }
+                            }
+                            catch { }
+                        }
+                    }
+
+                    // 3. Fallback to CurRotation property
+                    if (!gotTurretTopRotation)
+                    {
+                        var curRotationProp = CETurretTop.GetType().GetProperty("CurRotation");
+                        if (curRotationProp != null)
+                        {
+                            try
+                            {
+                                var value = curRotationProp.GetValue(CETurretTop);
+                                if (value != null)
+                                {
+                                    rotation = (float)value;
+                                    gotTurretTopRotation = true;
+                                    
+                                    // Debug success
+                                    string successKey = $"SUCCESS_{debugKey}";
+                                    if (!loggedTypes.Contains(successKey))
+                                    {
+                                        loggedTypes.Add(successKey);
+                                        AMCLogger.LogTurretBarrel($" Successfully reading CurRotation property! Current value: {rotation}°");
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                string errorKey = $"ERROR_{debugKey}_CurRotation";
+                                if (!loggedTypes.Contains(errorKey))
+                                {
+                                    loggedTypes.Add(errorKey);
+                                    AMCLogger.LogTurretBarrel($" Error reading CurRotation: {ex.Message}");
+                                }
                             }
                         }
                     }
@@ -2082,8 +2135,10 @@ namespace AbsolutelyMoreCannons
                     //  $"flashBrightness: {Extension.firingAnimation.flashBrightness}");
             }
 
-            // Calculate flash position at barrel tip
-            float barrelRotation = GetCurrentBarrelRotation();
+            // Calculate flash position at barrel tip using shot-specific rotation
+            float barrelRotation = (barrelFiringRotation != null && barrelIndex < barrelFiringRotation.Length && barrelFiringTicksRemaining != null && barrelIndex < barrelFiringTicksRemaining.Length && barrelFiringTicksRemaining[barrelIndex] > 0)
+                ? barrelFiringRotation[barrelIndex]
+                : GetCurrentBarrelRotation();
             float angleRad = barrelRotation * Mathf.Deg2Rad;
 
             // Get barrel offset to find barrel tip position
@@ -2277,18 +2332,27 @@ namespace AbsolutelyMoreCannons
 
             // Save/load per-barrel firing state
             List<int> barrelFiringTicksList = null;
+            List<float> barrelFiringRotationList = null;
             if (Scribe.mode == LoadSaveMode.Saving)
             {
                 if (barrelFiringTicksRemaining != null)
                     barrelFiringTicksList = barrelFiringTicksRemaining.ToList();
+                if (barrelFiringRotation != null)
+                    barrelFiringRotationList = barrelFiringRotation.ToList();
             }
             Scribe_Collections.Look(ref barrelFiringTicksList, "barrelFiringTicksRemaining", LookMode.Value);
+            Scribe_Collections.Look(ref barrelFiringRotationList, "barrelFiringRotation", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
                 if (barrelFiringTicksList != null)
                     barrelFiringTicksRemaining = barrelFiringTicksList.ToArray();
                 else
                     barrelFiringTicksRemaining = new int[0];
+
+                if (barrelFiringRotationList != null)
+                    barrelFiringRotation = barrelFiringRotationList.ToArray();
+                else
+                    barrelFiringRotation = new float[0];
             }
             
             // Save/load per-barrel recoil state

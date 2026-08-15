@@ -71,6 +71,11 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public bool inheritTurretRotation = true;
 
+        /// <summary>
+        /// Optional charge boost offset for indirect fire artillery (+1 to charge index up to max charge).
+        /// </summary>
+        public int chargeBoostOffset = 0;
+
         public CompProperties_TurretBarrel()
         {
             compClass = typeof(CompTurretBarrel);
