@@ -18,11 +18,15 @@ namespace AbsolutelyMoreCannons
         
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-            // Only show gizmo if we have an alternate def configured
+            // Only show gizmo if alternate def is configured
             if (string.IsNullOrEmpty(Props.alternateDef))
                 yield break;
                 
-            yield return new Command_Action
+            // Hide only if explicitly owned by a non-player faction
+            if (parent.Faction != null && !parent.Faction.IsPlayer)
+                yield break;
+                
+            var command = new Command_Action
             {
                 defaultLabel = Props.gizmoLabel ?? "Switch Fire Mode",
                 defaultDesc = Props.gizmoDesc ?? "Rebuild this turret in alternate fire mode",
@@ -30,6 +34,57 @@ namespace AbsolutelyMoreCannons
                 action = () => TrySwapMode(),
                 hotKey = KeyBindingDefOf.Misc1
             };
+
+            try
+            {
+                // Guard: Check if turret is broken down
+                var breakdownComp = parent.TryGetComp<CompBreakdownable>();
+                if (breakdownComp != null && breakdownComp.BrokenDown)
+                {
+                    command.Disable("Turret is broken down.");
+                }
+                else if (IsFiringOrBursting(parent))
+                {
+                    command.Disable("Turret is currently firing.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[TurretModeSwap] Error updating gizmo state: {ex.Message}");
+            }
+
+            yield return command;
+        }
+
+        private bool IsFiringOrBursting(Thing turret)
+        {
+            try
+            {
+                var gun = GetTurretGun(turret);
+                if (gun != null)
+                {
+                    var eq = gun.TryGetComp<CompEquippable>();
+                    if (eq?.PrimaryVerb != null && eq.PrimaryVerb.state == VerbState.Bursting)
+                    {
+                        return true;
+                    }
+                }
+                
+                var warmupField = turret.GetType().GetField("burstWarmupTicksLeft", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (warmupField != null)
+                {
+                    object val = warmupField.GetValue(turret);
+                    if (val is int ticks && ticks > 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[TurretModeSwap] Failed to check firing state: {ex.Message}");
+            }
+            return false;
         }
         
         private void TrySwapMode()
@@ -49,11 +104,13 @@ namespace AbsolutelyMoreCannons
             var position = parent.Position;
             var rotation = parent.Rotation;
             var faction = parent.Faction;
-            float currentHealth = parent.HitPoints;
+            bool wasSelected = Find.Selector.IsSelected(parent);
+            float healthPercent = (float)parent.HitPoints / (float)parent.MaxHitPoints;
+            float savedBarrelRotation = GetTurretTopRotation(parent);
             
             // Get forced target
             LocalTargetInfo forcedTarget = GetForcedTarget(parent);
-            Log.Message($"[TurretModeSwap] Saved target: {(forcedTarget.IsValid ? forcedTarget.ToString() : "None")}");
+            Log.Message($"[TurretModeSwap] Saved target: {(forcedTarget.IsValid ? forcedTarget.ToString() : "None")}, Saved barrel rotation: {savedBarrelRotation:F1}°");
             
             // Get manning pawn
             Pawn manningPawn = GetManningPawn(parent);
@@ -68,7 +125,7 @@ namespace AbsolutelyMoreCannons
             int burstCooldown = GetBurstCooldown(parent);
             Log.Message($"[TurretModeSwap] Saved burst cooldown: {burstCooldown} ticks");
             
-            // Get ammo info (will spawn one stack at a time during reload)
+            // Get ammo info
             ThingDef spawnedAmmoType = null;
             int totalAmmoToRestore = 0;
             var gun = GetTurretGun(parent);
@@ -77,7 +134,7 @@ namespace AbsolutelyMoreCannons
                 int ammo = GetCurrentAmmo(gun, out ThingDef ammoType);
                 if (ammo > 0 && ammoType != null)
                 {
-                    Log.Message($"[TurretModeSwap] Will restore {ammo}x {ammoType.defName} (stackLimit: {ammoType.stackLimit})");
+                    Log.Message($"[TurretModeSwap] Will restore {ammo}x {ammoType.defName}");
                     spawnedAmmoType = ammoType;
                     totalAmmoToRestore = ammo;
                 }
@@ -92,12 +149,26 @@ namespace AbsolutelyMoreCannons
                 Log.Message($"[TurretModeSwap] Saved heat value: {currentHeat:F1}");
                 
                 // Manually unregister from smoke manager BEFORE destroying
-                // (DestroyMode.Vanish might not call PostDeSpawn)
                 var smokeManager = map.GetComponent<MapComponent_TurretSmokeManager>();
                 if (smokeManager != null)
                 {
                     smokeManager.UnregisterSmoker(oldSmokeComp);
                     Log.Message($"[TurretModeSwap] Unregistered old turret from smoke manager");
+                }
+            }
+            
+            // Get FCS state before destroying old turret
+            Thing loadedFCSItem = null;
+            ThingDef savedTargetFCSDef = null;
+            var oldFCSComp = parent.TryGetComp<CompTurretFCS>();
+            if (oldFCSComp != null)
+            {
+                savedTargetFCSDef = oldFCSComp.targetFCSDef;
+                var fcsContainer = oldFCSComp.GetDirectlyHeldThings();
+                if (fcsContainer != null && fcsContainer.Count > 0 && oldFCSComp.LoadedFCSItem != null)
+                {
+                    loadedFCSItem = fcsContainer.Take(oldFCSComp.LoadedFCSItem);
+                    Log.Message($"[TurretModeSwap] Extracted loaded FCS: {loadedFCSItem?.def?.defName ?? "None"}");
                 }
             }
             
@@ -109,32 +180,60 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[TurretModeSwap] Spawning new turret: {alternateDef.defName}");
             var newTurret = ThingMaker.MakeThing(alternateDef, parent.Stuff);
             newTurret.SetFactionDirect(faction);
-            newTurret.HitPoints = (int)currentHealth;
+            newTurret.HitPoints = Mathf.Clamp(Mathf.RoundToInt(healthPercent * newTurret.MaxHitPoints), 1, newTurret.MaxHitPoints);
             
             GenSpawn.Spawn(newTurret, position, map, rotation);
             Log.Message($"[TurretModeSwap] New turret spawned");
-            
-            // Force power to activate immediately (bypasses 2-3 second delay)
-            if (wasPowered)
+
+            // Restore FCS state
+            if (loadedFCSItem != null || savedTargetFCSDef != null)
             {
-                var newPowerComp = newTurret.TryGetComp<CompPowerTrader>();
-                if (newPowerComp != null)
+                var newFCSComp = newTurret.TryGetComp<CompTurretFCS>();
+                if (newFCSComp != null)
                 {
-                    try
+                    newFCSComp.targetFCSDef = savedTargetFCSDef;
+                    if (loadedFCSItem != null)
                     {
-                        // Call SetUpPowerVars to force immediate power recognition
-                        var setupMethod = typeof(CompPowerTrader).GetMethod("SetUpPowerVars", 
-                            BindingFlags.Instance | BindingFlags.NonPublic);
-                        if (setupMethod != null)
+                        var newFcsContainer = newFCSComp.GetDirectlyHeldThings();
+                        if (newFcsContainer != null)
                         {
-                            setupMethod.Invoke(newPowerComp, null);
-                            Log.Message($"[TurretModeSwap] Forced power comp update - turret should be powered immediately");
+                            newFcsContainer.TryAdd(loadedFCSItem);
+                            Log.Message($"[TurretModeSwap] Restored loaded FCS ({loadedFCSItem.def.defName}) to new turret");
                         }
                     }
-                    catch (Exception ex)
+                }
+                else if (loadedFCSItem != null)
+                {
+                    GenPlace.TryPlaceThing(loadedFCSItem, position, map, ThingPlaceMode.Near);
+                    Log.Warning($"[TurretModeSwap] New turret lacks CompTurretFCS. Dropped {loadedFCSItem.def.defName} on ground.");
+                }
+            }
+
+            // Restore UI selection
+            if (wasSelected)
+            {
+                Find.Selector.Select(newTurret);
+            }
+            
+            // Force power connection & state immediately if it was powered
+            var newPowerComp = newTurret.TryGetComp<CompPowerTrader>();
+            if (newPowerComp != null)
+            {
+                try
+                {
+                    var setupMethod = typeof(CompPower).GetMethod("SetUpPowerVars", 
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    setupMethod?.Invoke(newPowerComp, null);
+                    
+                    if (wasPowered)
                     {
-                        Log.Warning($"[TurretModeSwap] Failed to force power update: {ex.Message}");
+                        newPowerComp.PowerOn = true;
+                        Log.Message($"[TurretModeSwap] Connected to power grid & activated power immediately");
                     }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[TurretModeSwap] Failed to connect power immediately: {ex.Message}");
                 }
             }
             
@@ -152,75 +251,33 @@ namespace AbsolutelyMoreCannons
                 if (newSmokeComp != null)
                 {
                     newSmokeComp.CurrentBurstHeat = currentHeat;
-                    Log.Message($"[TurretModeSwap] Restored heat value: {currentHeat:F1} - smoke will continue with new turret's settings");
-                }
-                else
-                {
-                    Log.Warning($"[TurretModeSwap] New turret does not have CompTurretSmoker - heat value lost");
+                    Log.Message($"[TurretModeSwap] Restored heat value: {currentHeat:F1}");
                 }
             }
             
-            // Restore forced target (can do immediately)
+            // Restore barrel rotation and forced target
             if (forcedTarget.IsValid)
             {
                 SetForcedTarget(newTurret, forcedTarget);
                 Log.Message($"[TurretModeSwap] Restored target: {forcedTarget}");
-                
-                // Add delayed rotation component to the new turret
-                Log.Message($"[TurretModeSwap] Creating CompDelayedRotation for {newTurret.def.defName}");
-                var delayedRotationComp = new CompDelayedRotation();
-                var turretWithComps = newTurret as ThingWithComps;
-                
-                if (turretWithComps == null)
-                {
-                    Log.Error($"[TurretModeSwap] Failed to cast newTurret to ThingWithComps! Type: {newTurret.GetType().Name}");
-                }
-                else
-                {
-                    delayedRotationComp.parent = turretWithComps;
-                    delayedRotationComp.Initialize(null);  // CompProperties not needed for this component
-                    Log.Message($"[TurretModeSwap] CompDelayedRotation created and initialized");
-                    
-                    // Add to the turret's components list
-                    // Search up the inheritance chain for the 'comps' field
-                    FieldInfo compsField = null;
-                    Type searchType = newTurret.GetType();
-                    while (searchType != null && compsField == null)
-                    {
-                        compsField = searchType.GetField("comps", BindingFlags.Instance | BindingFlags.NonPublic);
-                        if (compsField == null)
-                        {
-                            searchType = searchType.BaseType;
-                        }
-                    }
-                    
-                    if (compsField != null)
-                    {
-                        Log.Message($"[TurretModeSwap] Found 'comps' field in {searchType.Name}");
-                        var comps = compsField.GetValue(newTurret) as List<ThingComp>;
-                        if (comps != null)
-                        {
-                            int compCountBefore = comps.Count;
-                            comps.Add(delayedRotationComp);
-                            Log.Message($"[TurretModeSwap] Added to comps list (count: {compCountBefore} → {comps.Count})");
-                            
-                            delayedRotationComp.ScheduleRotation(forcedTarget, 2);
-                            Log.Message($"[TurretModeSwap] Rotation scheduled to aim at {forcedTarget} in 2 ticks");
-                        }
-                        else
-                        {
-                            Log.Warning($"[TurretModeSwap] Failed to get comps list - field value is null");
-                        }
-                    }
-                    else
-                    {
-                        Log.Error($"[TurretModeSwap] Failed to find 'comps' field in inheritance chain of {newTurret.GetType().Name}");
-                    }
-                }
             }
-            else
+
+            var turretWithComps = newTurret as ThingWithComps;
+            if (turretWithComps != null)
             {
-                Log.Message($"[TurretModeSwap] No valid target to restore rotation for");
+                var delayedRotationComp = new CompDelayedRotation();
+                delayedRotationComp.parent = turretWithComps;
+                delayedRotationComp.Initialize(null);
+                turretWithComps.AllComps.Add(delayedRotationComp);
+
+                if (forcedTarget.IsValid)
+                {
+                    delayedRotationComp.ScheduleRotation(forcedTarget, 2);
+                }
+                else if (savedBarrelRotation >= 0f)
+                {
+                    delayedRotationComp.ScheduleRotationAngle(savedBarrelRotation, 2);
+                }
             }
             
             // Reassign manning pawn
@@ -230,10 +287,10 @@ namespace AbsolutelyMoreCannons
                 Log.Message($"[TurretModeSwap] Reassigned manning pawn: {manningPawn.LabelShort}");
             }
             
-            // Trigger immediate reload - will spawn ammo one stack at a time
+            // Directly restore ammo into CompAmmoUser without spawning items on the ground
             if (spawnedAmmoType != null && totalAmmoToRestore > 0)
             {
-                TriggerReload(newTurret, spawnedAmmoType, totalAmmoToRestore, position, map);
+                RestoreTurretAmmo(newTurret, spawnedAmmoType, totalAmmoToRestore);
             }
             
             // Flash effect and message
@@ -245,14 +302,13 @@ namespace AbsolutelyMoreCannons
                 historical: false
             );
             
-            Log.Message($"[TurretModeSwap] ===== Mode swap complete - ammo will auto-reload from spawned items =====");
+            Log.Message($"[TurretModeSwap] ===== Mode swap complete =====");
         }
         
         private ThingWithComps GetTurretGun(Thing turret)
         {
             try
             {
-                // Try to get Gun property via reflection (CE turrets have this)
                 var gunProp = turret.GetType().GetProperty("Gun");
                 if (gunProp != null)
                 {
@@ -267,6 +323,36 @@ namespace AbsolutelyMoreCannons
             return null;
         }
         
+        private float GetTurretTopRotation(Thing turret)
+        {
+            try
+            {
+                var bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var fieldNames = new[] { "top", "Top", "turretTop", "TurretTop", "gunTop", "GunTop" };
+                foreach (var fieldName in fieldNames)
+                {
+                    var topField = turret.GetType().GetField(fieldName, bindingFlags);
+                    if (topField != null)
+                    {
+                        object turretTop = topField.GetValue(turret);
+                        if (turretTop != null)
+                        {
+                            var curRotationProp = turretTop.GetType().GetProperty("CurRotation");
+                            if (curRotationProp != null)
+                            {
+                                return (float)curRotationProp.GetValue(turretTop);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[TurretModeSwap] Failed to get turret top rotation: {ex.Message}");
+            }
+            return -1f;
+        }
+
         private LocalTargetInfo GetForcedTarget(Thing turret)
         {
             try
@@ -330,7 +416,6 @@ namespace AbsolutelyMoreCannons
                 var mannable = turret.TryGetComp<CompMannable>();
                 if (mannable != null)
                 {
-                    // Force the pawn to man the new turret
                     var job = JobMaker.MakeJob(JobDefOf.ManTurret, turret);
                     pawn.jobs.StartJob(job, JobCondition.InterruptForced);
                 }
@@ -345,7 +430,6 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
-                // burstCooldownTicksLeft is a public field in Building_TurretGunCE
                 var cooldownField = turret.GetType().GetField("burstCooldownTicksLeft");
                 if (cooldownField != null)
                 {
@@ -385,10 +469,9 @@ namespace AbsolutelyMoreCannons
                 var compAmmoUserType = Type.GetType("CombatExtended.CompAmmoUser, CombatExtended");
                 if (compAmmoUserType == null) return 0;
                 
-                var ammoComp = gun.AllComps.Find(c => c.GetType() == compAmmoUserType);
+                var ammoComp = gun.AllComps.Find(c => c.GetType() == compAmmoUserType || compAmmoUserType.IsAssignableFrom(c.GetType()));
                 if (ammoComp == null) return 0;
                 
-                // Get current ammo count
                 var curMagCountProp = compAmmoUserType.GetProperty("CurMagCount");
                 int count = 0;
                 if (curMagCountProp != null)
@@ -396,7 +479,6 @@ namespace AbsolutelyMoreCannons
                     count = (int)curMagCountProp.GetValue(ammoComp);
                 }
                 
-                // Get current ammo type
                 var currentAmmoField = compAmmoUserType.GetField("currentAmmoInt", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (currentAmmoField != null)
                 {
@@ -413,84 +495,46 @@ namespace AbsolutelyMoreCannons
             return 0;
         }
         
-        private void TriggerReload(Thing turret, ThingDef ammoType, int totalAmmoToLoad, IntVec3 position, Map map)
+        private void RestoreTurretAmmo(Thing turret, ThingDef ammoType, int totalAmmoToRestore)
         {
             try
             {
-                // Get the turret's gun
                 var gun = GetTurretGun(turret);
                 if (gun == null)
                 {
-                    Log.Warning("[TurretModeSwap] Could not get gun for reload trigger");
+                    Log.Warning("[TurretModeSwap] Could not get gun for ammo restoration");
                     return;
                 }
                 
-                // Get CompAmmoUser
                 var compAmmoUserType = Type.GetType("CombatExtended.CompAmmoUser, CombatExtended");
                 if (compAmmoUserType == null) return;
                 
-                var ammoComp = gun.AllComps.Find(c => c.GetType() == compAmmoUserType);
+                var ammoComp = gun.AllComps.Find(c => c.GetType() == compAmmoUserType || compAmmoUserType.IsAssignableFrom(c.GetType()));
                 if (ammoComp == null) return;
                 
-                // Get magazine size
-                var propsProp = compAmmoUserType.GetProperty("Props");
-                int magazineSize = 999999;
-                if (propsProp != null)
-                {
-                    var props = propsProp.GetValue(ammoComp);
-                    var magazineSizeProp = props.GetType().GetProperty("magazineSize");
-                    if (magazineSizeProp != null)
-                    {
-                        magazineSize = (int)magazineSizeProp.GetValue(props);
-                    }
-                }
+                var currentAmmoProp = compAmmoUserType.GetProperty("CurrentAmmo");
+                var selectedAmmoProp = compAmmoUserType.GetProperty("SelectedAmmo");
+                var curMagCountProp = compAmmoUserType.GetProperty("CurMagCount");
+                var magSizeProp = compAmmoUserType.GetProperty("MagSize");
                 
-                // Get stack limit
-                int stackLimit = ammoType.stackLimit;
+                currentAmmoProp?.SetValue(ammoComp, ammoType);
+                selectedAmmoProp?.SetValue(ammoComp, ammoType);
                 
-                // Spawn and reload one stack at a time
-                int loadedSoFar = 0;
-                int remaining = totalAmmoToLoad;
-                var loadAmmoMethod = compAmmoUserType.GetMethod("LoadAmmo");
+                int magSize = magSizeProp != null ? (int)magSizeProp.GetValue(ammoComp) : totalAmmoToRestore;
+                curMagCountProp?.SetValue(ammoComp, Mathf.Min(totalAmmoToRestore, magSize));
                 
-                while (remaining > 0 && loadedSoFar < magazineSize && loadAmmoMethod != null)
-                {
-                    // Spawn next stack
-                    int stackSize = Math.Min(remaining, stackLimit);
-                    Thing ammoThing = ThingMaker.MakeThing(ammoType);
-                    ammoThing.stackCount = stackSize;
-                    GenSpawn.Spawn(ammoThing, position, map);
-                    Log.Message($"[TurretModeSwap] Spawned stack of {stackSize}x {ammoType.defName}");
-                    
-                    // Immediately load from this stack
-                    loadAmmoMethod.Invoke(ammoComp, new object[] { ammoThing, false });
-                    
-                    int consumed = stackSize - (ammoThing.Destroyed ? 0 : ammoThing.stackCount);
-                    loadedSoFar += consumed;
-                    remaining -= consumed;
-                    
-                    Log.Message($"[TurretModeSwap] Loaded {consumed} rounds! Total: {loadedSoFar}/{totalAmmoToLoad}");
-                    
-                    // If ammo wasn't fully consumed, we're done (magazine full)
-                    if (!ammoThing.Destroyed)
-                    {
-                        Log.Message($"[TurretModeSwap] Magazine full, {ammoThing.stackCount} rounds remaining");
-                        break;
-                    }
-                }
-                
-                Log.Message($"[TurretModeSwap] Reload complete! Final count: {loadedSoFar}");
+                Log.Message($"[TurretModeSwap] Directly restored {Mathf.Min(totalAmmoToRestore, magSize)}x {ammoType.defName} ammo to {turret.def.defName}");
             }
             catch (Exception ex)
             {
-                Log.Warning($"[TurretModeSwap] Failed to trigger reload: {ex.Message}");
+                Log.Warning($"[TurretModeSwap] Failed to directly restore ammo: {ex.Message}");
             }
         }
         
         public override void PostExposeData()
         {
             base.PostExposeData();
-            // No state to save - all info comes from props
         }
     }
 }
+

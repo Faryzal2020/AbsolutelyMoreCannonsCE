@@ -124,7 +124,11 @@ namespace AbsolutelyMoreCannons
             GenClamor.DoClamor(this, 12f, ClamorDefOf.Impact);
             if (Controller.settings.EnableExtraEffects)
             {
-                ImpactFleckThrower.ThrowFleck(ExactPosition, Position, Map, def.projectile as ProjectilePropertiesCE, def, hitThing, shotRotation);
+                var ceProps = def.projectile as CombatExtended.ProjectilePropertiesCE;
+                if (ceProps != null)
+                {
+                    ImpactFleckThrower.ThrowFleck(ExactPosition, Position, Map, ceProps, def, hitThing, shotRotation);
+                }
             }
 
             Vector3 explodePos = ExactPosition;
@@ -137,7 +141,7 @@ namespace AbsolutelyMoreCannons
                 effecter.Cleanup();
             }
 
-            ProjectilePropertiesCE projectileCE = def.projectile as ProjectilePropertiesCE;
+            CombatExtended.ProjectilePropertiesCE projectileCE = def.projectile as CombatExtended.ProjectilePropertiesCE;
             if (projectileCE != null)
             {
                 float effectScale = projectileCE.detonateEffectsScaleOverride > 0 ? projectileCE.detonateEffectsScaleOverride : projectileCE.explosionRadius * 2;
@@ -160,19 +164,26 @@ namespace AbsolutelyMoreCannons
             // 3. Throw Airburst Fragments (Custom CompAirburstFragments or CE CompFragments fallback)
             ThrowAirburstFragments(explodePos);
 
-            // 4. Explosive damage if radius > 0
-            if (projectileCE != null && projectileCE.explosionRadius > 0f && DamageDef != null)
+            // 4. Explosive/Radial damage
+            if (projectileCE != null && DamageDef != null)
             {
-                GenExplosionCE.DoExplosion(
-                    explodePos.ToIntVec3(),
-                    Map,
-                    projectileCE.explosionRadius,
-                    DamageDef,
-                    launcher,
-                    Mathf.FloorToInt(DamageAmount),
-                    projectileCE.GetExplosionArmorPenetration(),
-                    def.projectile.soundExplode
-                );
+                if (projectileCE.explosionRadius > 0f)
+                {
+                    GenExplosionCE.DoExplosion(
+                        explodePos.ToIntVec3(),
+                        Map,
+                        projectileCE.explosionRadius,
+                        DamageDef,
+                        launcher,
+                        Mathf.FloorToInt(DamageAmount),
+                        projectileCE.GetExplosionArmorPenetration(),
+                        def.projectile.soundExplode
+                    );
+                }
+                else if (def.projectile is AbsolutelyMoreCannons.ProjectilePropertiesCE amcProps && amcProps.damageRadius > 0f)
+                {
+                    Patch_ProjectileCE_Impact_DamageRadius.ApplySilentDamageRadius(this, amcProps);
+                }
             }
 
             Destroy();

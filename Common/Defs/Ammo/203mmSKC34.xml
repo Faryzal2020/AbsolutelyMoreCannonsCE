@@ -188,14 +188,14 @@
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>0</damageAmountBase>
 			<explosionRadius>0</explosionRadius>
+			<aimHeightOffset>1.4</aimHeightOffset>
 		</projectile>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
 				<fragments>
 					<li>
-						<thingDef>Fragment_Large</thingDef>
-						<count>30</count>
-                        <explosionRadius>1</explosionRadius>
+						<thingDef>Airburst_Fragment_Large</thingDef>
+						<count>40</count>
 					</li>
 					<li>
 						<thingDef>Fragment_Small</thingDef>
@@ -214,7 +214,7 @@
 			<li Class="AbsolutelyMoreCannons.AirburstExtension">
 				<armingTicks>12</armingTicks>
 				<type>Flak</type>
-				<proximityRadius>5</proximityRadius>
+				<proximityRadius>6</proximityRadius>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -309,9 +309,8 @@
 			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
 				<fragments>
 					<li>
-						<thingDef>Fragment_Large</thingDef>
+						<thingDef>Airburst_Fragment_Large</thingDef>
 						<count>70</count>
-                        <explosionRadius>1</explosionRadius>
 					</li>
 					<li>
 						<thingDef>Fragment_Small</thingDef>
@@ -330,7 +329,7 @@
 			<li Class="AbsolutelyMoreCannons.AirburstExtension">
 				<armingTicks>60</armingTicks>
 				<type>Altitude</type>
-				<burstAltitude>10.0</burstAltitude>
+				<burstAltitude>15.0</burstAltitude>
 			</li>
 		</modExtensions>
 	</ThingDef>

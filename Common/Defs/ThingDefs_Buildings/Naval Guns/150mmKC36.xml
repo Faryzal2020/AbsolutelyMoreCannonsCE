@@ -46,6 +46,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_150mmKC36_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 60+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -144,6 +150,12 @@
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_150mmKC36_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 		</comps>
     <size>(4,4)</size>

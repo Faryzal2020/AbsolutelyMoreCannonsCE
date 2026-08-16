@@ -17,6 +17,7 @@
 			<Ammo_76mmOtomelaraC_HE>Bullet_76mmOtomelaraC_HE</Ammo_76mmOtomelaraC_HE>
 			<Ammo_76mmOtomelaraC_SAP>Bullet_76mmOtomelaraC_SAP</Ammo_76mmOtomelaraC_SAP>
 			<Ammo_76mmOtomelaraC_Airburst>Bullet_76mmOtomelaraC_Airburst</Ammo_76mmOtomelaraC_Airburst>
+			<Ammo_76mmOtomelaraC_Guided>Bullet_76mmOtomelaraC_Guided</Ammo_76mmOtomelaraC_Guided>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -28,6 +29,7 @@
 			<Ammo_76mmOtomelaraC_HE>Bullet_76mmOtomelaraC_indirect_HE</Ammo_76mmOtomelaraC_HE>
 			<Ammo_76mmOtomelaraC_SAP>Bullet_76mmOtomelaraC_indirect_SAP</Ammo_76mmOtomelaraC_SAP>
 			<Ammo_76mmOtomelaraC_Airburst>Bullet_76mmOtomelaraC_indirect_Airburst</Ammo_76mmOtomelaraC_Airburst>
+			<Ammo_76mmOtomelaraC_Guided>Bullet_76mmOtomelaraC_indirect_Guided</Ammo_76mmOtomelaraC_Guided>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -103,6 +105,23 @@
 		<ammoClass>GrenadeHETF</ammoClass>
 		<isMortarAmmo>true</isMortarAmmo>
 		<detonateProjectile>Bullet_76mmOtomelaraC_Airburst</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo76mmOtomelaraCBase">
+		<defName>Ammo_76mmOtomelaraC_Guided</defName>
+		<label>76x636mm (Guided)</label>
+		<graphicData>
+			<texPath>Things/Projectile/76mmOtomelaraCHE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>125.00</MarketValue>
+			<Mass>12.34</Mass>
+			<Bulk>12.32</Bulk>
+		</statBases>
+		<ammoClass>AMC_Guided</ammoClass>
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_76mmOtomelaraC_Guided</detonateProjectile>
 	</ThingDef>
 
 	<!-- ================== Projectiles ================== -->
@@ -187,6 +206,7 @@
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>0</damageAmountBase>
 			<explosionRadius>0</explosionRadius>
+			<aimHeightOffset>1.4</aimHeightOffset>
 		</projectile>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
@@ -218,6 +238,38 @@
 				<proximityRadius>5</proximityRadius>
 			</li>
 		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCBullet">
+		<defName>Bullet_76mmOtomelaraC_Guided</defName>
+		<label>76x636mm shell (Guided)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="AbsolutelyMoreCannons.ProjectilePropertiesCE">
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<speed>168</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>100</damageAmountBase>
+			<explosionRadius>0.5</explosionRadius>
+			<gravityFactor>5</gravityFactor>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<guidanceOnDescending>true</guidanceOnDescending>
+			<homingAcceleration>0.15</homingAcceleration>
+			<retargetRadius>20</retargetRadius>
+			<trajectoryWorker>AbsolutelyMoreCannons.VLSTrajectoryWorker</trajectoryWorker>
+			<guidanceDelay>1</guidanceDelay>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Small>5</Fragment_Small>
+				</fragments>
+				<fragAngleRange>0~10</fragAngleRange>
+			</li>
+		</comps>
 	</ThingDef>
 
 	<!-- ================== Indirect ================== -->
@@ -332,6 +384,49 @@
 				<burstAltitude>15.0</burstAltitude>
 			</li>
 		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="Base76mmOtomelaraCIndirectBullet">
+		<defName>Bullet_76mmOtomelaraC_indirect_Guided</defName>
+		<label>76x636mm shell (Guided)</label>
+		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/MediumShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="AbsolutelyMoreCannons.ProjectilePropertiesCE">
+			<speed>0</speed>
+			<flyOverhead>true</flyOverhead>
+			<dropsCasings>true</dropsCasings>
+			<casingMoteDefname>Fleck_BigShell</casingMoteDefname>
+			<casingFilthDefname>Filth_CannonAmmoCasings</casingFilthDefname>
+			<soundAmbient>MortarRound_Ambient</soundAmbient>
+			<soundImpactAnticipate>AMC_Directfire_PreImpact</soundImpactAnticipate>
+			<soundHitThickRoof>Artillery_HitThickRoof</soundHitThickRoof>
+			<gravityFactor>5</gravityFactor>
+			<shellingProps>
+				<tilesPerTick>0.15</tilesPerTick>
+				<range>18</range>
+				<damage>0.09428571428571429</damage>
+			</shellingProps>
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>100</damageAmountBase>
+			<explosionRadius>0.5</explosionRadius>
+			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<guidanceOnDescending>true</guidanceOnDescending>
+			<homingAcceleration>0.15</homingAcceleration>
+			<retargetRadius>20</retargetRadius>
+			<trajectoryWorker>AbsolutelyMoreCannons.VLSTrajectoryWorker</trajectoryWorker>
+			<guidanceDelay>4</guidanceDelay>
+		</projectile>
+		<comps>
+			<li Class="CombatExtended.CompProperties_Fragments">
+				<fragments>
+					<Fragment_Small>5</Fragment_Small>
+				</fragments>
+			</li>
+		</comps>
 	</ThingDef>
 
 	<!-- ==================== Recipes ========================== -->
@@ -457,6 +552,50 @@
 			<Ammo_76mmOtomelaraC_Airburst>10</Ammo_76mmOtomelaraC_Airburst>
 		</products>
 		<workAmount>37600</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_76mmOtomelaraC_Guided</defName>
+		<label>make 76x636mm (Guided) ammo x10</label>
+		<description>Craft 10 76x636mm (Guided).</description>
+		<jobString>Making 76x636mm (Guided).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>248</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>6</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>26</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_76mmOtomelaraC_Guided>10</Ammo_76mmOtomelaraC_Guided>
+		</products>
+		<workAmount>39600</workAmount>
 	</RecipeDef>
 
 </Defs>

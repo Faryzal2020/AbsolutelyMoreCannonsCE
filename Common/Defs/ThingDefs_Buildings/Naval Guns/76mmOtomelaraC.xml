@@ -47,6 +47,12 @@
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_76mmOtomelaraC_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -158,6 +164,12 @@
 				<spreadReduction>1.1</spreadReduction>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_76mmOtomelaraC_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
     	<size>(3,3)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>

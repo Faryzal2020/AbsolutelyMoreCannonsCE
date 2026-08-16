@@ -159,7 +159,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_152mmMsta_indirect_Base</defName>
 		<label>2S19 Msta (indirect)</label>
-    <description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+    	<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
 		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M152mmMsta</texPath>
@@ -178,16 +178,16 @@
 		</statBases>
 		<costList>
 			<Steel>900</Steel>
-      <ComponentIndustrial>15</ComponentIndustrial>
+      		<ComponentIndustrial>15</ComponentIndustrial>
 			<Plasteel>5</Plasteel>
-      <ComponentSpacer>1</ComponentSpacer>
+      		<ComponentSpacer>1</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_152mmMsta_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>9</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>22</turretTopDrawSize>
+      		<turretTopDrawSize>22</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_152mmMsta</designatorDropdown>
 		<comps>
@@ -204,12 +204,12 @@
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
 		</comps>
-    <size>(5,5)</size>
+    	<size>(5,5)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_152mmMsta</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    	<interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 			<barrelGraphic>
