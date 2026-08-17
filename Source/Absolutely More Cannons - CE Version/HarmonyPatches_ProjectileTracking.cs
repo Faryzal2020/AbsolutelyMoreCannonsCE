@@ -6,6 +6,7 @@ using HarmonyLib;
 using Verse;
 using RimWorld;
 using UnityEngine;
+using CombatExtended;
 
 namespace AbsolutelyMoreCannons
 {
@@ -159,6 +160,11 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
+                if (__instance is ProjectileCE projCE)
+                {
+                    TrajectoryWorkerUtility.InitializeLaunchRotation(projCE);
+                }
+
                 var settings = TurretBarrelAnimationMod.settings;
                 if (settings == null || !settings.logTemporaryDebug)
                 {
@@ -255,16 +261,25 @@ namespace AbsolutelyMoreCannons
                 float initialPitchDegrees = shotAngle * Mathf.Rad2Deg;
                 float distToTarget = hasTarget ? Vector2.Distance(origin, new Vector2(intendedTargetPos.x, intendedTargetPos.z)) : 0f;
                 string targetStr = hasTarget ? $"({intendedTargetPos.x:F1}, {intendedTargetPos.z:F1}) [Dist: {distToTarget:F1} tiles]" : "Unknown";
-                
+
+                Vector3 initialVel = Vector3.zero;
+                float screenRenderAngle = 0f;
+                if (__instance is ProjectileCE proj)
+                {
+                    initialVel = proj.velocity;
+                    screenRenderAngle = TrajectoryWorkerUtility.CalculateScreenAngle(initialVel);
+                }
+
                 AMCLogger.LogTemporaryDebug(
                     $"═══ PROJECTILE LAUNCHED ═══" +
                     $"\n  ID: #{projectileId} ({projectileLabel})" +
                     $"\n  Launcher: {turretLabel} at ({origin.x:F2}, {origin.y:F2})" +
                     $"\n  Intended Target: {targetStr}" +
-                    $"\n  Initial YAW: {shotRotation:F2}° (map-relative, North=0°)" +
-                    $"\n  Initial PITCH: {initialPitchDegrees:F2}° (elevation angle)" +
-                    $"\n  Shot Height: {shotHeight:F2}" +
-                    $"\n  Shot Speed: {shotSpeed:F1}" +
+                    $"\n  Initial 3D YAW (Aim Heading): {shotRotation:F2}° (East=90°)" +
+                    $"\n  Initial 3D PITCH (Elevation): {initialPitchDegrees:F2}°" +
+                    $"\n  Initial 3D Velocity: ({initialVel.x:F2}, {initialVel.y:F2}, {initialVel.z:F2})" +
+                    $"\n  Rendered 2D Screen Angle: {screenRenderAngle:F2}° (0°=North/Up on screen)" +
+                    $"\n  Shot Height: {shotHeight:F2} | Speed: {shotSpeed:F1}" +
                     $"\n═══════════════════════════"
                 );
             }
@@ -395,6 +410,9 @@ namespace AbsolutelyMoreCannons
                     flightTicks = (int)flightTicksField.GetValue(__instance);
                 }
                 
+                // Calculate 2D screen render angle
+                float screenRenderAngle = TrajectoryWorkerUtility.CalculateScreenAngle(velocity);
+
                 // === COMPREHENSIVE LOG ===
                 AMCLogger.LogTemporaryDebug(
                     $"PROJECTILE TICK #{projectileId} ({info.ProjectileLabel}): " +
@@ -402,7 +420,8 @@ namespace AbsolutelyMoreCannons
                     $"Pos: ({currentPosition.x:F2}, {currentPosition.y:F2}, {currentPosition.z:F2}) | " +
                     $"Dist: {distanceFromOrigin:F2} | " +
                     $"Vel: ({velocity.x:F2}, {velocity.y:F2}, {velocity.z:F2}) | Speed: {velocityMagnitude:F2} | " +
-                    $"YAW: {yawDegrees:F2}° | PITCH: {pitchDegrees:F2}° | " +
+                    $"3D YAW: {yawDegrees:F2}° | 3D PITCH: {pitchDegrees:F2}° | " +
+                    $"RenderAngle: {screenRenderAngle:F2}° | " +
                     (float.IsNaN(currentShotAngle) ? "" : $"ShotAngle: {currentShotAngle * Mathf.Rad2Deg:F2}° | ") +
                     (float.IsNaN(currentShotRotation) ? "" : $"ShotRotation: {currentShotRotation:F2}° | ")
                 );

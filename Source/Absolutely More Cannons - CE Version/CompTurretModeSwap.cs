@@ -204,7 +204,7 @@ namespace AbsolutelyMoreCannons
                 }
                 else if (loadedFCSItem != null)
                 {
-                    GenPlace.TryPlaceThing(loadedFCSItem, position, map, ThingPlaceMode.Near);
+                    TryPlaceThingSafe(loadedFCSItem, position, map, ThingPlaceMode.Near);
                     Log.Warning($"[TurretModeSwap] New turret lacks CompTurretFCS. Dropped {loadedFCSItem.def.defName} on ground.");
                 }
             }
@@ -531,6 +531,67 @@ namespace AbsolutelyMoreCannons
             }
         }
         
+        private static bool TryPlaceThingSafe(Thing thing, IntVec3 center, Map map, ThingPlaceMode mode)
+        {
+            if (thing == null || map == null) return false;
+            
+            try
+            {
+                return GenPlace.TryPlaceThing(thing, center, map, mode, out _);
+            }
+            catch
+            {
+                try
+                {
+                    var methods = typeof(GenPlace).GetMethods(BindingFlags.Public | BindingFlags.Static);
+                    foreach (var m in methods)
+                    {
+                        if (m.Name == "TryPlaceThing")
+                        {
+                            var paramsInfo = m.GetParameters();
+                            if (paramsInfo.Length >= 4 &&
+                                paramsInfo[0].ParameterType == typeof(Thing) &&
+                                paramsInfo[1].ParameterType == typeof(IntVec3) &&
+                                paramsInfo[2].ParameterType == typeof(Map) &&
+                                paramsInfo[3].ParameterType == typeof(ThingPlaceMode))
+                            {
+                                object[] args = new object[paramsInfo.Length];
+                                args[0] = thing;
+                                args[1] = center;
+                                args[2] = map;
+                                args[3] = mode;
+
+                                for (int i = 4; i < paramsInfo.Length; i++)
+                                {
+                                    if (paramsInfo[i].IsOut)
+                                    {
+                                        args[i] = null;
+                                    }
+                                    else if (paramsInfo[i].HasDefaultValue)
+                                    {
+                                        args[i] = paramsInfo[i].DefaultValue;
+                                    }
+                                    else
+                                    {
+                                        args[i] = null;
+                                    }
+                                }
+
+                                object result = m.Invoke(null, args);
+                                if (result is bool b) return b;
+                                return true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"[TurretModeSwap] Failed to place thing {thing.def?.defName}: {ex}");
+                }
+            }
+            return false;
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();

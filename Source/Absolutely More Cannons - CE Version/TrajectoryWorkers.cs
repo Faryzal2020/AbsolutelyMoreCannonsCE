@@ -4,6 +4,7 @@ using CombatExtended;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using HarmonyLib;
 
 namespace AbsolutelyMoreCannons
 {
@@ -30,17 +31,24 @@ namespace AbsolutelyMoreCannons
             var amcProps = projectile.Props as ProjectilePropertiesCE;
             bool isGuidedActive = TrajectoryWorkerUtility.IsGuidanceActive(projectile, amcProps);
 
+            Vector3 currentPos = projectile.ExactPosition;
+            Vector3 nextPos;
+
             if (!isGuidedActive && amcProps != null && amcProps.flyOverhead)
             {
-                Vector3 currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
-                Vector3 nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
+                currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
+                nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
 
                 projectile.velocity = nextPos - currentPos;
-                return nextPos;
+            }
+            else
+            {
+                projectile.shotSpeed = GetSpeed(projectile.velocity);
+                nextPos = BallisticMove(projectile);
             }
 
-            projectile.shotSpeed = GetSpeed(projectile.velocity);
-            return BallisticMove(projectile);
+            TrajectoryWorkerUtility.UpdateProjectileRotation(projectile);
+            return nextPos;
         }
 
         protected override void ReactiveAcceleration(ProjectileCE projectile)
@@ -88,6 +96,16 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        public override Vector3 ExactPosToDrawPos(Vector3 exactPosition, int FlightTicks, int ticksToTruePosition, float altitude)
+        {
+            float sh = Mathf.Max(0f, exactPosition.y * 0.84f);
+            if (FlightTicks < ticksToTruePosition)
+            {
+                sh *= (float)FlightTicks / ticksToTruePosition;
+            }
+            return new Vector3(exactPosition.x, altitude, exactPosition.z + sh);
+        }
+
         public override bool GuidedProjectile => true;
     }
 
@@ -101,17 +119,24 @@ namespace AbsolutelyMoreCannons
             var amcProps = projectile.Props as ProjectilePropertiesCE;
             bool isGuidedActive = TrajectoryWorkerUtility.IsGuidanceActive(projectile, amcProps);
 
+            Vector3 currentPos = projectile.ExactPosition;
+            Vector3 nextPos;
+
             if (!isGuidedActive && amcProps != null && amcProps.flyOverhead)
             {
-                Vector3 currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
-                Vector3 nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
+                currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
+                nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
 
                 projectile.velocity = nextPos - currentPos;
-                return nextPos;
+            }
+            else
+            {
+                projectile.shotSpeed = GetSpeed(projectile.velocity);
+                nextPos = BallisticMove(projectile);
             }
 
-            projectile.shotSpeed = GetSpeed(projectile.velocity);
-            return BallisticMove(projectile);
+            TrajectoryWorkerUtility.UpdateProjectileRotation(projectile);
+            return nextPos;
         }
 
         protected override void ReactiveAcceleration(ProjectileCE projectile)
@@ -137,6 +162,16 @@ namespace AbsolutelyMoreCannons
             projectile.velocity += delta.normalized * projectile.Props.speedGain / GenTicks.TicksPerRealSecond / GenTicks.TicksPerRealSecond;
         }
 
+        public override Vector3 ExactPosToDrawPos(Vector3 exactPosition, int FlightTicks, int ticksToTruePosition, float altitude)
+        {
+            float sh = Mathf.Max(0f, exactPosition.y * 0.84f);
+            if (FlightTicks < ticksToTruePosition)
+            {
+                sh *= (float)FlightTicks / ticksToTruePosition;
+            }
+            return new Vector3(exactPosition.x, altitude, exactPosition.z + sh);
+        }
+
         public override bool GuidedProjectile => true;
     }
 
@@ -150,17 +185,24 @@ namespace AbsolutelyMoreCannons
             var amcProps = projectile.Props as ProjectilePropertiesCE;
             bool isGuidedActive = TrajectoryWorkerUtility.IsGuidanceActive(projectile, amcProps);
 
+            Vector3 currentPos = projectile.ExactPosition;
+            Vector3 nextPos;
+
             if (!isGuidedActive && amcProps != null && amcProps.flyOverhead)
             {
-                Vector3 currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
-                Vector3 nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
+                currentPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks);
+                nextPos = TrajectoryWorkerUtility.GetLerpedPositionAtTick(projectile, projectile.FlightTicks + 1);
 
                 projectile.velocity = nextPos - currentPos;
-                return nextPos;
+            }
+            else
+            {
+                projectile.shotSpeed = GetSpeed(projectile.velocity);
+                nextPos = BallisticMove(projectile);
             }
 
-            projectile.shotSpeed = GetSpeed(projectile.velocity);
-            return BallisticMove(projectile);
+            TrajectoryWorkerUtility.UpdateProjectileRotation(projectile);
+            return nextPos;
         }
 
         protected override void ReactiveAcceleration(ProjectileCE projectile)
@@ -202,6 +244,16 @@ namespace AbsolutelyMoreCannons
             projectile.velocity = Vector3.RotateTowards(projectile.velocity, targetVelocity, steeringRate, 0f);
         }
 
+        public override Vector3 ExactPosToDrawPos(Vector3 exactPosition, int FlightTicks, int ticksToTruePosition, float altitude)
+        {
+            float sh = Mathf.Max(0f, exactPosition.y * 0.84f);
+            if (FlightTicks < ticksToTruePosition)
+            {
+                sh *= (float)FlightTicks / ticksToTruePosition;
+            }
+            return new Vector3(exactPosition.x, altitude, exactPosition.z + sh);
+        }
+
         public override bool GuidedProjectile => true;
     }
 
@@ -210,6 +262,60 @@ namespace AbsolutelyMoreCannons
     /// </summary>
     public static class TrajectoryWorkerUtility
     {
+        private static readonly AccessTools.FieldRef<ProjectileCE, Quaternion?> DrawRotationRef =
+            AccessTools.FieldRefAccess<ProjectileCE, Quaternion?>("_drawRotation");
+
+        public static float CalculateScreenAngle(Vector3 velocity)
+        {
+            float screenVx = velocity.x;
+            float screenVy = velocity.z + (velocity.y * 0.84f);
+
+            if (Mathf.Abs(screenVx) < 0.0001f && Mathf.Abs(screenVy) < 0.0001f)
+            {
+                return 0f;
+            }
+
+            return (new Vector3(screenVx, 0f, screenVy)).AngleFlat();
+        }
+
+        public static void UpdateProjectileRotation(ProjectileCE projectile)
+        {
+            if (projectile == null || projectile.velocity.sqrMagnitude < 0.0001f)
+            {
+                return;
+            }
+
+            float screenAngle = CalculateScreenAngle(projectile.velocity);
+            try
+            {
+                DrawRotationRef(projectile) = Quaternion.AngleAxis(screenAngle, Vector3.up);
+            }
+            catch
+            {
+                // Silently ignore if _drawRotation field access fails
+            }
+
+            // Note: shotRotation is left untouched so that ExactRotation (ground shadow) remains 100% accurate.
+        }
+
+        public static void InitializeLaunchRotation(ProjectileCE projectile)
+        {
+            if (projectile == null) return;
+
+            Vector3 vel = projectile.velocity;
+            if (vel.sqrMagnitude < 0.0001f && projectile.TrajectoryWorker != null)
+            {
+                vel = projectile.TrajectoryWorker.GetInitialVelocity(projectile.shotSpeed, projectile.shotRotation, projectile.shotAngle);
+            }
+
+            float screenAngle = CalculateScreenAngle(vel);
+            try
+            {
+                DrawRotationRef(projectile) = Quaternion.AngleAxis(screenAngle, Vector3.up);
+            }
+            catch { }
+        }
+
         public static bool IsGuidanceActive(ProjectileCE projectile, ProjectilePropertiesCE amcProps)
         {
             if (amcProps == null) return true;
