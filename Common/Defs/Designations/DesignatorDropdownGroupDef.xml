@@ -21,22 +21,7 @@
 	</DesignatorDropdownGroupDef>
 	
 	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_autocannon_autoloaders</defName>
-		<label>autocannon autoloaders</label>
-	</DesignatorDropdownGroupDef>
-	
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_cannon_autoloaders</defName>
-		<label>cannon autoloaders</label>
-	</DesignatorDropdownGroupDef>
-	
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_artillery_autoloaders</defName>
-		<label>artillery autoloaders</label>
-	</DesignatorDropdownGroupDef>
-	
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_navalgun_autoloaders</defName>
-		<label>naval gun autoloaders</label>
+		<defName>Group_AMC_autoloaders</defName>
+		<label>autoloaders</label>
 	</DesignatorDropdownGroupDef>
 </Defs>
