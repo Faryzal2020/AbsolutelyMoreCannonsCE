@@ -81,6 +81,10 @@
         .bg-fcs { background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
         .bg-feature { background: #334155; color: #cbd5e1; border: 1px solid #475569; }
         .bg-edited { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b; }
+        .bg-smoker { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid #0284c7; }
+        .bg-recoil { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid #d97706; }
+        .bg-rotary { background: rgba(192, 132, 252, 0.15); color: #c084fc; border: 1px solid #9333ea; }
+        .bg-accuracy { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid #059669; }
 
         .warning-badge { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; padding: 3px 6px; border-radius: 4px; font-size: 10px; margin-top: 3px; display: block; }
         .ok-badge { color: var(--accent-green); font-weight: bold; font-size: 11px; }
@@ -247,10 +251,12 @@
                 <!-- Single Mode Form View -->
                 <div id="singleModeView">
                     <div class="tab-bar">
-                        <button class="tab-btn active" onclick="switchTab('tabBasic', this)">📌 Basic & Building Stats</button>
+                        <button class="tab-btn active" onclick="switchTab('tabBasic', this)">📌 Basic & Stats</button>
                         <button class="tab-btn" onclick="switchTab('tabCosts', this)">💰 Costs</button>
-                        <button class="tab-btn" onclick="switchTab('tabBallistics', this)">🎯 Ballistics & Gun</button>
-                        <button class="tab-btn" onclick="switchTab('tabComps', this)">⚙️ Comps & Features</button>
+                        <button class="tab-btn" onclick="switchTab('tabBallistics', this)">🎯 Ballistics</button>
+                        <button class="tab-btn" onclick="switchTab('tabComps', this)">⚙️ Comps & FCS</button>
+                        <button class="tab-btn" onclick="switchTab('tabBarrelAnim', this)">📐 Barrel & Animations</button>
+                        <button class="tab-btn" onclick="switchTab('tabSmoker', this)">💨 Smoke & Particles</button>
                     </div>
 
                     <!-- Tab 1: Basic & Building Stats -->
@@ -340,10 +346,19 @@
                                 <label>Shot Spread</label>
                                 <input type="number" step="0.01" id="ed_shotSpread" oninput="onSingleFieldInput('shotSpread', this.value)">
                             </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_hasSelectableBursts" onchange="document.getElementById('ed_selectableBurstsBox').style.display = this.checked ? 'block' : 'none'"> 🎛️ Enable Selectable Burst Selection
+                                </label>
+                                <div id="ed_selectableBurstsBox" style="margin-top: 6px; display: none;">
+                                    <label style="font-size: 10px; color: var(--text-muted); font-weight: 600;">SELECTABLE BURST COUNTS (Comma-separated numbers, e.g. 3, 5, 10 or 20, 50, 100)</label>
+                                    <input type="text" id="ed_selectableBursts" placeholder="e.g. 3, 5, 10">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Tab 4: Comps -->
+                    <!-- Tab 4: Comps & FCS -->
                     <div id="tabComps" class="tab-content">
                         <div class="form-grid">
                             <div class="form-group">
@@ -362,6 +377,11 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_hasFcs"> 📡 Enable Fire Control System (CompProperties_TurretFCS)
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox">
                                     <input type="checkbox" id="ed_hasModeSwap"> 🔄 Mode Swap Capable
                                 </label>
                             </div>
@@ -370,7 +390,277 @@
                                 <select id="ed_swapAltDef"></select>
                             </div>
                         </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+                        <h4 style="color: var(--accent); margin-bottom: 8px;">🎯 Accuracy Override (CompProperties_AccuracyOverride)</h4>
+                        <div class="form-grid">
+                            <div class="form-group" style="grid-column: span 3;">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_hasAccuracyOverride"> Enable Accuracy Override
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Sway Reduction Factor</label>
+                                <input type="number" step="0.01" id="ed_swayReduction" placeholder="e.g. 0.1">
+                            </div>
+                            <div class="form-group">
+                                <label>Recoil Reduction Factor</label>
+                                <input type="number" step="0.01" id="ed_recoilReduction" placeholder="e.g. 0.1">
+                            </div>
+                            <div class="form-group">
+                                <label>Spread Reduction Factor</label>
+                                <input type="number" step="0.01" id="ed_spreadReduction" placeholder="e.g. 0.1">
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Tab 5: Barrel & Animations -->
+                    <div id="tabBarrelAnim" class="tab-content">
+                        <div style="background:#0f172a; padding:8px; border-radius:6px; margin-bottom:10px; border:1px solid var(--border-color);">
+                            <label class="form-checkbox" style="color:var(--accent); font-weight:bold;">
+                                <input type="checkbox" id="ed_hasBarrelExtension"> 📐 Enable Turret Barrel Extension (TurretBarrelExtension)
+                            </label>
+                        </div>
+
+                        <!-- Root Barrel Config -->
+                        <h4 style="color: var(--accent); margin-bottom: 6px;">1. Root Barrel Setup</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Barrel Draw Size</label>
+                                <input type="number" step="0.5" id="ed_barrelDrawSize" placeholder="e.g. 14.0">
+                            </div>
+                            <div class="form-group">
+                                <label>Barrel Offset Vector3</label>
+                                <input type="text" id="ed_barrelOffset" placeholder="(0,0,0.0)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_drawOnTop"> Draw On Top of Turret Base
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Barrel Amount (Count)</label>
+                                <input type="number" id="ed_barrelAmount" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Barrel Spacing (Tiles)</label>
+                                <input type="number" step="0.1" id="ed_barrelSpacing" placeholder="0.5">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_sequentialFiring"> Sequential Alternating Fire
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+
+                        <!-- Recoil Animation Group -->
+                        <div style="background:rgba(15, 23, 42, 0.6); padding:8px; border-radius:6px; margin-bottom:8px; border:1px solid var(--border-color);">
+                            <label class="form-checkbox" style="color:#fbbf24; font-weight:bold;">
+                                <input type="checkbox" id="ed_recoilEnabled"> 🔄 Recoil Animation Group
+                            </label>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Max Recoil Distance</label>
+                                <input type="number" step="0.05" id="ed_recMaxDist" placeholder="0.3">
+                            </div>
+                            <div class="form-group">
+                                <label>Recoil Duration (Ticks)</label>
+                                <input type="number" id="ed_recDuration" placeholder="15">
+                            </div>
+                            <div class="form-group">
+                                <label>Return Duration (Ticks)</label>
+                                <input type="number" id="ed_recReturn" placeholder="30">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_useRecoilCurve"> Use Recoil Curve
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_useReturnCurve"> Use Return Curve
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_affectsRotation"> Affects Rotation
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+
+                        <!-- Firing Animation Group -->
+                        <div style="background:rgba(15, 23, 42, 0.6); padding:8px; border-radius:6px; margin-bottom:8px; border:1px solid var(--border-color);">
+                            <label class="form-checkbox" style="color:#4ade80; font-weight:bold;">
+                                <input type="checkbox" id="ed_firingAnimEnabled"> 💥 Firing Flash & Sound Animation Group
+                            </label>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Duration Ticks</label>
+                                <input type="number" id="ed_firDuration" placeholder="8">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_drawFlash"> Draw Muzzle Flash
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Flash Color (RGBA)</label>
+                                <input type="text" id="ed_firFlashColor" placeholder="(1,0.7,0.3,1)">
+                            </div>
+                            <div class="form-group">
+                                <label>Flash Size</label>
+                                <input type="number" step="0.5" id="ed_firFlashSize" placeholder="12">
+                            </div>
+                            <div class="form-group">
+                                <label>Flash Brightness</label>
+                                <input type="number" step="0.1" id="ed_firFlashBrightness" placeholder="1.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Projectile Spawn Offset</label>
+                                <input type="number" step="0.5" id="ed_projSpawnOffset" placeholder="5.5">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Sustained Burst SoundDef</label>
+                                <input type="text" id="ed_burstSound" placeholder="e.g. AMC_Vulcan_BurstLoop">
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+
+                        <!-- Rotary Spinning Animation Group (Vulcan Gatling) -->
+                        <div style="background:rgba(15, 23, 42, 0.6); padding:8px; border-radius:6px; margin-bottom:8px; border:1px solid var(--border-color);">
+                            <label class="form-checkbox" style="color:#c084fc; font-weight:bold;">
+                                <input type="checkbox" id="ed_spinEnabled"> 🌀 Rotary / Spinning Animation Group (Gatling/Vulcan)
+                            </label>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Animation Mode</label>
+                                <select id="ed_spinMode">
+                                    <option value="RPMBased">RPMBased (Spin-Up & Spin-Down)</option>
+                                    <option value="Cycling">Cycling (Simple Rotation)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Max RPM</label>
+                                <input type="number" id="ed_spinMaxRPM" placeholder="3000">
+                            </div>
+                            <div class="form-group">
+                                <label>Spindown Time (s)</label>
+                                <input type="number" step="0.1" id="ed_spindownTime" placeholder="1.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Frame Count</label>
+                                <input type="number" id="ed_spinFrameCount" placeholder="4">
+                            </div>
+                            <div class="form-group">
+                                <label>Barrel Count (Animation)</label>
+                                <input type="number" id="ed_spinBarrelCount" placeholder="6">
+                            </div>
+                            <div class="form-group">
+                                <label>Spin Up SoundDef</label>
+                                <input type="text" id="ed_spinUpSound" placeholder="AMC_Vulcan_SpinUp">
+                            </div>
+                            <div class="form-group">
+                                <label>Spin Down SoundDef</label>
+                                <input type="text" id="ed_spinDownSound" placeholder="AMC_Vulcan_SpinDown">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 6: Smoke & Particles -->
+                    <div id="tabSmoker" class="tab-content">
+                        <div style="background:#0f172a; padding:8px; border-radius:6px; margin-bottom:10px; border:1px solid var(--border-color);">
+                            <label class="form-checkbox" style="color:var(--accent); font-weight:bold;">
+                                <input type="checkbox" id="ed_hasSmoker"> 💨 Enable Turret Smoker Component (CompProperties_TurretSmoker)
+                            </label>
+                        </div>
+
+                        <!-- Muzzle Smoke -->
+                        <h4 style="color: #38bdf8; margin-bottom: 6px;">1. Muzzle Smoke Particles</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_muzzleEnabled"> Enable Muzzle Smoke
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Muzzle FleckDef</label>
+                                <input type="text" id="ed_muzzleFleckDef" placeholder="AMC_MuzzleSmoke">
+                            </div>
+                            <div class="form-group">
+                                <label>Particle Count</label>
+                                <input type="number" id="ed_muzzleParticleCount" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Velocity (Cells/s)</label>
+                                <input type="number" id="ed_muzzleVelocity" placeholder="15">
+                            </div>
+                            <div class="form-group">
+                                <label>Particle Size Multiplier</label>
+                                <input type="text" id="ed_muzzleParticleSize" placeholder="1~2">
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+
+                        <!-- Heat Smoke -->
+                        <h4 style="color: #fbbf24; margin-bottom: 6px;">2. Heat Smoke Particles</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_heatEnabled"> Enable Heat Smoke
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Heat FleckDef</label>
+                                <input type="text" id="ed_heatFleckDef" placeholder="AMC_HeatSmoke">
+                            </div>
+                            <div class="form-group">
+                                <label>Heat Threshold (Shots)</label>
+                                <input type="number" id="ed_heatThreshold" placeholder="40">
+                            </div>
+                            <div class="form-group">
+                                <label>Decay Rate (per sec)</label>
+                                <input type="number" step="0.1" id="ed_heatDecayRate" placeholder="0.6">
+                            </div>
+                            <div class="form-group">
+                                <label>Emission Rate (per sec)</label>
+                                <input type="number" step="0.1" id="ed_heatEmissionRate" placeholder="1">
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 12px 0;">
+
+                        <!-- Shockwave Smoke -->
+                        <h4 style="color: #f87171; margin-bottom: 6px;">3. Shockwave Smoke Particles</h4>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-checkbox" style="margin-top: 18px;">
+                                    <input type="checkbox" id="ed_shockwaveEnabled"> Enable Shockwave Ring
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Shockwave FleckDef</label>
+                                <input type="text" id="ed_shockwaveFleckDef" placeholder="AMC_ShockwaveSmoke">
+                            </div>
+                            <div class="form-group">
+                                <label>Shockwave Radius (Cells)</label>
+                                <input type="number" id="ed_shockwaveRadius" placeholder="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Particle Density</label>
+                                <input type="number" id="ed_shockwaveDensity" placeholder="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
 
                 <!-- Dual-Mode Parallel & Sync Editor View -->
@@ -615,8 +905,13 @@
             updateHistoryButtons();
         }
 
-        function getSystem(systemLabel) {
-            return STATE.systems.find(s => s.systemLabel === systemLabel);
+        function getSystem(identifier) {
+            return STATE.systems.find(s => 
+                s.systemLabel === identifier ||
+                (s.directMode && s.directMode.defName === identifier) ||
+                (s.indirectMode && s.indirectMode.defName === identifier) ||
+                (s.primaryMode && s.primaryMode.defName === identifier)
+            );
         }
 
         function getEffectiveDef(defName) {
@@ -683,6 +978,28 @@
                 badges.push(pm.isManned ? '<span class="badge bg-manned">🧑 Manned</span>' : '<span class="badge bg-auto">🤖 Automatic</span>');
                 badges.push(pm.isPowered ? `<span class="badge bg-power">⚡ ${pm.powerWatts}W</span>` : '<span class="badge bg-feature">Unpowered</span>');
                 badges.push(sys.hasModeSwap ? '<span class="badge bg-swap">🔄 Mode Swap</span>' : '<span class="badge bg-feature">Single Mode</span>');
+
+                if (pm.hasFcs) badges.push('<span class="badge bg-fcs">📡 FCS</span>');
+                if (pm.accuracyOverride && pm.accuracyOverride.hasAccuracyOverride) badges.push('<span class="badge bg-accuracy">🎯 Accuracy Override</span>');
+                
+                if (pm.smokerData) {
+                    if (pm.smokerData.muzzleEnabled) badges.push('<span class="badge bg-smoker">💨 Muzzle Smoke</span>');
+                    if (pm.smokerData.heatEnabled) badges.push('<span class="badge bg-smoker">🔥 Heat Smoke</span>');
+                    if (pm.smokerData.shockwaveEnabled) badges.push('<span class="badge bg-smoker">💥 Shockwave Ring</span>');
+                }
+
+                if (pm.barrelExtension) {
+                    const bExt = pm.barrelExtension;
+                    if (bExt.recoilAnimation && bExt.recoilAnimation.enabled !== false && (pm.recoilAnimParams || Object.keys(bExt.recoilAnimation).length > 0)) {
+                        badges.push('<span class="badge bg-recoil">🔄 Recoil Anim</span>');
+                    }
+                    if (bExt.spinningAnimation && bExt.spinningAnimation.enabled) {
+                        badges.push('<span class="badge bg-rotary">🌀 Rotary Spin</span>');
+                    }
+                }
+
+                if (pm.hasSelectableBursts) badges.push('<span class="badge bg-ciws">🎛️ Selectable Burst</span>');
+                if (pm.hasSuppressionImmunity) badges.push('<span class="badge bg-feature">🛡️ Suppression Immunity</span>');
                 if (isModified) badges.push('<span class="badge bg-edited">✏️ EDITED</span>');
 
                 const costStr = Object.keys(pm.costs || {}).length > 0 ? Object.entries(pm.costs).map(([k,v]) => `<b>${k}</b>:${v}`).join(', ') : 'None';
@@ -716,7 +1033,7 @@
                             <div><b>Burst/Cooldown:</b> ${im.weapon.burstShotCount || 1} shots | ${im.cooldownTime || '-'}s</div>
                         </div>` : ''}
                     </td>
-                    <td><div>${badges.join(' ')}</div></td>
+                    <td style="max-width: 260px;"><div style="display:flex; flex-wrap:wrap; gap:4px;">${badges.join('')}</div></td>
                     <td>
                         <div class="compact-ammo-block">
                             <div class="ammo-header-line">
@@ -727,9 +1044,9 @@
                     </td>
                     <td>
                         <div style="display:flex; flex-direction:column; gap:4px;">
-                            <button class="btn btn-sm btn-accent" onclick="openSystemEditor('${sys.systemLabel}')">✏️ Edit System</button>
+                            <button class="btn btn-sm btn-accent" onclick="openSystemEditor('${pm.defName}')">✏️ Edit System</button>
                             <button class="btn btn-sm" onclick="showDiffModal('${pm.defName}')">🔍 Diff</button>
-                            ${isModified ? `<button class="btn btn-sm btn-danger" onclick="revertSystem('${sys.systemLabel}')">🔄 Revert</button>` : ''}
+                            ${isModified ? `<button class="btn btn-sm btn-danger" onclick="revertSystem('${pm.defName}')">🔄 Revert</button>` : ''}
                             ${auditHtml}
                         </div>
                     </td>
@@ -843,11 +1160,85 @@
             document.getElementById('ed_sightsEff').value = w.sightsEfficiency || 1;
             document.getElementById('ed_shotSpread').value = w.shotSpread || 0;
 
+            document.getElementById('ed_hasSelectableBursts').checked = !!def.hasSelectableBursts;
+            document.getElementById('ed_selectableBurstsBox').style.display = def.hasSelectableBursts ? 'block' : 'none';
+            document.getElementById('ed_selectableBursts').value = (def.selectableBursts || []).join(', ');
+
             document.getElementById('ed_isManned').checked = !!def.isManned;
             document.getElementById('ed_isPowered').checked = !!def.isPowered;
             document.getElementById('ed_powerWatts').value = def.powerWatts || 0;
+            document.getElementById('ed_hasFcs').checked = !!def.hasFcs;
             document.getElementById('ed_hasModeSwap').checked = !!def.hasModeSwap;
             document.getElementById('ed_swapAltDef').value = def.swapAltDef || '';
+
+            // Accuracy Override
+            const acc = def.accuracyOverride || {};
+            document.getElementById('ed_hasAccuracyOverride').checked = !!acc.hasAccuracyOverride;
+            document.getElementById('ed_swayReduction').value = acc.swayReduction || '';
+            document.getElementById('ed_recoilReduction').value = acc.recoilReduction || '';
+            document.getElementById('ed_spreadReduction').value = acc.spreadReduction || '';
+
+            // Barrel Extension & Animations
+            const bExt = def.barrelExtension || {};
+            document.getElementById('ed_hasBarrelExtension').checked = !!bExt.hasBarrelExtension;
+            document.getElementById('ed_barrelDrawSize').value = bExt.barrelDrawSize || '1.0';
+            document.getElementById('ed_barrelOffset').value = bExt.barrelOffset || '(0,0,0.0)';
+            document.getElementById('ed_drawOnTop').checked = !!bExt.drawOnTop;
+            document.getElementById('ed_barrelAmount').value = bExt.barrelAmount || 1;
+            document.getElementById('ed_barrelSpacing').value = bExt.barrelSpacing || 0.5;
+            document.getElementById('ed_sequentialFiring').checked = !!bExt.sequentialFiring;
+
+            // Recoil Anim
+            const rec = (bExt.recoilAnimation || def.recoilAnimParams) || {};
+            document.getElementById('ed_recoilEnabled').checked = rec.enabled !== false && Object.keys(rec).length > 0;
+            document.getElementById('ed_recMaxDist').value = rec.maxDistance || 0.3;
+            document.getElementById('ed_recDuration').value = rec.recoilDuration || 15;
+            document.getElementById('ed_recReturn').value = rec.returnDuration || 30;
+            document.getElementById('ed_useRecoilCurve').checked = rec.useRecoilCurve !== false;
+            document.getElementById('ed_useReturnCurve').checked = !!rec.useReturnCurve;
+            document.getElementById('ed_affectsRotation').checked = !!rec.affectsRotation;
+
+            // Firing Anim
+            const fir = (bExt.firingAnimation || def.firingAnimParams) || {};
+            document.getElementById('ed_firingAnimEnabled').checked = fir.enabled !== false && Object.keys(fir).length > 0;
+            document.getElementById('ed_firDuration').value = fir.durationTicks || 8;
+            document.getElementById('ed_drawFlash').checked = fir.drawFlash !== false;
+            document.getElementById('ed_firFlashColor').value = fir.flashColor || '(1,0.7,0.3,1)';
+            document.getElementById('ed_firFlashSize').value = fir.flashSize || 12;
+            document.getElementById('ed_firFlashBrightness').value = fir.flashBrightness || 1.5;
+            document.getElementById('ed_projSpawnOffset').value = fir.projectileSpawnOffset || 0;
+            document.getElementById('ed_burstSound').value = fir.burstSound || '';
+
+            // Spinning/Rotary Anim (Vulcan)
+            const spin = bExt.spinningAnimation || {};
+            document.getElementById('ed_spinEnabled').checked = !!spin.enabled;
+            document.getElementById('ed_spinMode').value = spin.animationMode || 'RPMBased';
+            document.getElementById('ed_spinMaxRPM').value = spin.maxRPM || 3000;
+            document.getElementById('ed_spindownTime').value = spin.spindownTime || 1.5;
+            document.getElementById('ed_spinFrameCount').value = spin.frameCount || 4;
+            document.getElementById('ed_spinBarrelCount').value = spin.barrelCount || 6;
+            document.getElementById('ed_spinUpSound').value = spin.spinUpSound || '';
+            document.getElementById('ed_spinDownSound').value = spin.spinDownSound || '';
+
+            // Smoker Comp
+            const smk = def.smokerData || {};
+            document.getElementById('ed_hasSmoker').checked = !!smk.hasSmoker;
+            document.getElementById('ed_muzzleEnabled').checked = !!smk.muzzleEnabled;
+            document.getElementById('ed_muzzleFleckDef').value = smk.muzzleFleckDef || 'AMC_MuzzleSmoke';
+            document.getElementById('ed_muzzleParticleCount').value = smk.muzzleParticleCount || 1;
+            document.getElementById('ed_muzzleVelocity').value = smk.muzzleVelocity || 15;
+            document.getElementById('ed_muzzleParticleSize').value = smk.muzzleParticleSize || '1~2';
+
+            document.getElementById('ed_heatEnabled').checked = !!smk.heatEnabled;
+            document.getElementById('ed_heatFleckDef').value = smk.heatFleckDef || 'AMC_HeatSmoke';
+            document.getElementById('ed_heatThreshold').value = smk.heatThreshold || 40;
+            document.getElementById('ed_heatDecayRate').value = smk.heatDecayRate || 0.6;
+            document.getElementById('ed_heatEmissionRate').value = smk.heatEmissionRate || 1;
+
+            document.getElementById('ed_shockwaveEnabled').checked = !!smk.shockwaveEnabled;
+            document.getElementById('ed_shockwaveFleckDef').value = smk.shockwaveFleckDef || 'AMC_ShockwaveSmoke';
+            document.getElementById('ed_shockwaveRadius').value = smk.shockwaveRadius || 1;
+            document.getElementById('ed_shockwaveDensity').value = smk.shockwaveDensity || 2;
         }
 
         function renderCostsTable(costs) {
@@ -1019,11 +1410,80 @@
                         updated.weapon.sightsEfficiency = document.getElementById('ed_sightsEff').value;
                         updated.weapon.shotSpread = document.getElementById('ed_shotSpread').value;
 
+                        updated.hasSelectableBursts = document.getElementById('ed_hasSelectableBursts').checked;
+                        const burstStr = document.getElementById('ed_selectableBursts').value;
+                        updated.selectableBursts = burstStr.split(',').map(s => s.trim()).filter(s => s && !isNaN(s));
+
                         updated.isManned = document.getElementById('ed_isManned').checked;
                         updated.isPowered = document.getElementById('ed_isPowered').checked;
                         updated.powerWatts = document.getElementById('ed_powerWatts').value;
+                        updated.hasFcs = document.getElementById('ed_hasFcs').checked;
                         updated.hasModeSwap = document.getElementById('ed_hasModeSwap').checked;
                         updated.swapAltDef = document.getElementById('ed_swapAltDef').value;
+
+                        updated.accuracyOverride = {
+                            hasAccuracyOverride: document.getElementById('ed_hasAccuracyOverride').checked,
+                            swayReduction: document.getElementById('ed_swayReduction').value,
+                            recoilReduction: document.getElementById('ed_recoilReduction').value,
+                            spreadReduction: document.getElementById('ed_spreadReduction').value
+                        };
+
+                        updated.barrelExtension = {
+                            hasBarrelExtension: document.getElementById('ed_hasBarrelExtension').checked,
+                            barrelDrawSize: document.getElementById('ed_barrelDrawSize').value,
+                            barrelOffset: document.getElementById('ed_barrelOffset').value,
+                            drawOnTop: document.getElementById('ed_drawOnTop').checked,
+                            barrelAmount: document.getElementById('ed_barrelAmount').value,
+                            barrelSpacing: document.getElementById('ed_barrelSpacing').value,
+                            sequentialFiring: document.getElementById('ed_sequentialFiring').checked,
+                            recoilAnimation: {
+                                enabled: document.getElementById('ed_recoilEnabled').checked,
+                                maxDistance: document.getElementById('ed_recMaxDist').value,
+                                recoilDuration: document.getElementById('ed_recDuration').value,
+                                returnDuration: document.getElementById('ed_recReturn').value,
+                                useRecoilCurve: document.getElementById('ed_useRecoilCurve').checked,
+                                useReturnCurve: document.getElementById('ed_useReturnCurve').checked,
+                                affectsRotation: document.getElementById('ed_affectsRotation').checked
+                            },
+                            firingAnimation: {
+                                enabled: document.getElementById('ed_firingAnimEnabled').checked,
+                                durationTicks: document.getElementById('ed_firDuration').value,
+                                drawFlash: document.getElementById('ed_drawFlash').checked,
+                                flashColor: document.getElementById('ed_firFlashColor').value,
+                                flashSize: document.getElementById('ed_firFlashSize').value,
+                                flashBrightness: document.getElementById('ed_firFlashBrightness').value,
+                                projectileSpawnOffset: document.getElementById('ed_projSpawnOffset').value,
+                                burstSound: document.getElementById('ed_burstSound').value
+                            },
+                            spinningAnimation: {
+                                enabled: document.getElementById('ed_spinEnabled').checked,
+                                animationMode: document.getElementById('ed_spinMode').value,
+                                maxRPM: document.getElementById('ed_spinMaxRPM').value,
+                                spindownTime: document.getElementById('ed_spindownTime').value,
+                                frameCount: document.getElementById('ed_spinFrameCount').value,
+                                barrelCount: document.getElementById('ed_spinBarrelCount').value,
+                                spinUpSound: document.getElementById('ed_spinUpSound').value,
+                                spinDownSound: document.getElementById('ed_spinDownSound').value
+                            }
+                        };
+
+                        updated.smokerData = {
+                            hasSmoker: document.getElementById('ed_hasSmoker').checked,
+                            muzzleEnabled: document.getElementById('ed_muzzleEnabled').checked,
+                            muzzleFleckDef: document.getElementById('ed_muzzleFleckDef').value,
+                            muzzleParticleCount: document.getElementById('ed_muzzleParticleCount').value,
+                            muzzleVelocity: document.getElementById('ed_muzzleVelocity').value,
+                            muzzleParticleSize: document.getElementById('ed_muzzleParticleSize').value,
+                            heatEnabled: document.getElementById('ed_heatEnabled').checked,
+                            heatFleckDef: document.getElementById('ed_heatFleckDef').value,
+                            heatThreshold: document.getElementById('ed_heatThreshold').value,
+                            heatDecayRate: document.getElementById('ed_heatDecayRate').value,
+                            heatEmissionRate: document.getElementById('ed_heatEmissionRate').value,
+                            shockwaveEnabled: document.getElementById('ed_shockwaveEnabled').checked,
+                            shockwaveFleckDef: document.getElementById('ed_shockwaveFleckDef').value,
+                            shockwaveRadius: document.getElementById('ed_shockwaveRadius').value,
+                            shockwaveDensity: document.getElementById('ed_shockwaveDensity').value
+                        };
                     }
                 }
 
@@ -1074,6 +1534,74 @@
                 if (costRegex.test(xml)) {
                     xml = xml.replace(costRegex, newCostBlock);
                 }
+            }
+
+            // Accuracy Override Patching
+            if (def.accuracyOverride && def.accuracyOverride.hasAccuracyOverride) {
+                const acc = def.accuracyOverride;
+                const accBlock = `<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">\n\t\t\t<swayReduction>${acc.swayReduction || 0.1}</swayReduction>\n\t\t\t<recoilReduction>${acc.recoilReduction || 0.1}</recoilReduction>\n\t\t\t<spreadReduction>${acc.spreadReduction || 0.1}</spreadReduction>\n\t\t</li>`;
+                const accRegex = /<li\s+Class=["']AbsolutelyMoreCannons\.CompProperties_AccuracyOverride["']>[\s\S]*?<\/li>/;
+                if (accRegex.test(xml)) {
+                    xml = xml.replace(accRegex, accBlock);
+                } else {
+                    xml = xml.replace(/(<comps>)/, `$1\n\t\t${accBlock}`);
+                }
+            }
+
+            // FCS Comp Patching
+            if (def.hasFcs) {
+                const fcsTag = `<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />`;
+                if (!xml.includes('CompProperties_TurretFCS')) {
+                    xml = xml.replace(/(<comps>)/, `$1\n\t\t${fcsTag}`);
+                }
+            }
+
+            // Selectable Bursts Patching
+            if (def.hasSelectableBursts && def.selectableBursts && def.selectableBursts.length > 0) {
+                const burstItems = def.selectableBursts.map(b => `\t\t\t\t<li>${b}</li>`).join('\n');
+                const burstBlock = `<selectableBurstCounts>\n${burstItems}\n\t\t\t</selectableBurstCounts>`;
+
+                const existingBurstRegex = /<selectableBurstCounts>[\s\S]*?<\/selectableBurstCounts>/;
+                if (existingBurstRegex.test(xml)) {
+                    xml = xml.replace(existingBurstRegex, burstBlock);
+                } else {
+                    const barrelExtRegex = /(<li\s+Class=["']AbsolutelyMoreCannons\.TurretBarrelExtension["'][^>]*>)/;
+                    if (barrelExtRegex.test(xml)) {
+                        xml = xml.replace(barrelExtRegex, `$1\n\t\t\t${burstBlock}`);
+                    } else {
+                        const modExtRegex = /(<modExtensions>)/;
+                        if (modExtRegex.test(xml)) {
+                            const newExt = `$1\n\t\t\t<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">\n\t\t\t\t${burstBlock}\n\t\t\t</li>`;
+                            xml = xml.replace(modExtRegex, newExt);
+                        } else {
+                            const endDefRegex = /(<\/ThingDef>)/;
+                            const newModExt = `\t<modExtensions>\n\t\t\t<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">\n\t\t\t\t${burstBlock}\n\t\t\t</li>\n\t</modExtensions>\n$1`;
+                            xml = xml.replace(endDefRegex, newModExt);
+                        }
+                    }
+                }
+            }
+
+            // Rotary / Spinning Animation Patching (Vulcan)
+            if (def.barrelExtension && def.barrelExtension.spinningAnimation && def.barrelExtension.spinningAnimation.enabled) {
+                const spin = def.barrelExtension.spinningAnimation;
+                let spinBlock = `<spinningAnimation>\n\t\t\t\t<enabled>true</enabled>\n\t\t\t\t<animationMode>${spin.animationMode || 'RPMBased'}</animationMode>\n\t\t\t\t<maxRPM>${spin.maxRPM || 3000}</maxRPM>\n\t\t\t\t<spindownTime>${spin.spindownTime || 1.5}</spindownTime>\n\t\t\t\t<frameCount>${spin.frameCount || 4}</frameCount>\n\t\t\t\t<barrelCount>${spin.barrelCount || 6}</barrelCount>`;
+                if (spin.spinUpSound) spinBlock += `\n\t\t\t\t<spinUpSound>${spin.spinUpSound}</spinUpSound>`;
+                if (spin.spinDownSound) spinBlock += `\n\t\t\t\t<spinDownSound>${spin.spinDownSound}</spinDownSound>`;
+                spinBlock += `\n\t\t\t</spinningAnimation>`;
+
+                const spinRegex = /<spinningAnimation>[\s\S]*?<\/spinningAnimation>/;
+                if (spinRegex.test(xml)) {
+                    xml = xml.replace(spinRegex, spinBlock);
+                } else {
+                    const barrelExtRegex = /(<li\s+Class=["']AbsolutelyMoreCannons\.TurretBarrelExtension["'][^>]*>)/;
+                    if (barrelExtRegex.test(xml)) {
+                        xml = xml.replace(barrelExtRegex, `$1\n\t\t\t${spinBlock}`);
+                    }
+                }
+            } else if (def.hasSelectableBursts === false) {
+                const existingBurstRegex = /\s*<selectableBurstCounts>[\s\S]*?<\/selectableBurstCounts>/;
+                xml = xml.replace(existingBurstRegex, '');
             }
 
             return xml.trim();

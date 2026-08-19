@@ -245,11 +245,12 @@ def parse_single_turret_def(elem, filepath, db):
     fire_arc_params = {}
     smoker_params = {}
 
+    has_mannable = False
     comp_lis = get_all_child_lis(merged, "comps")
     for comp in comp_lis:
         cls = comp.get("Class", "")
         if "CompProperties_Mannable" in cls or parent_name in ["AMCTurretMannedBase", "AMCArtilleryBase"]:
-            is_manned = True
+            has_mannable = True
         if "CompProperties_Power" in cls:
             is_powered = True
             p_val = comp.findtext("basePowerConsumption")
@@ -265,7 +266,6 @@ def parse_single_turret_def(elem, filepath, db):
             has_fcs = True
         if "CompProperties_TurretPreserveAmmo" in cls:
             has_preserve_ammo = True
-            is_manned = True
 
         if "CompProperties_AccuracyOverride" in cls:
             for child in comp:
@@ -287,7 +287,11 @@ def parse_single_turret_def(elem, filepath, db):
                 smoker_params["Shockwave"] = f"Rad: {comp.findtext('shockwaveRadius', '-')}, Density: {comp.findtext('shockwaveDensity', '-')}"
 
     if parent_name in ["AMCTurretMannedBase", "AMCArtilleryBase"]:
-        is_manned = True
+        has_mannable = True
+
+    is_manned = has_mannable
+    is_auto_parent = parent_name in ["AMCTurretAutoBase", "AMCArtilleryAutoBase"]
+    ai_combat_dangerous = merged.findtext("./building/ai_combatDangerous", "").lower() == "true"
 
     # Mod Extensions & Animations
     ext_lis = get_all_child_lis(merged, "modExtensions")
@@ -323,6 +327,74 @@ def parse_single_turret_def(elem, filepath, db):
 
         if "TurretSuppressionImmunityExtension" in ext_cls:
             has_suppression_immunity = True
+
+    # Detailed Barrel Extension Extraction
+    barrel_ext = None
+    for ext in ext_lis:
+        if "TurretBarrelExtension" in ext.get("Class", ""):
+            barrel_ext = ext
+            break
+
+    spinning_anim_params = {}
+    if barrel_ext is not None:
+        spin_node = barrel_ext.find("spinningAnimation")
+        if spin_node is not None:
+            spinning_anim_params = {
+                "enabled": spin_node.findtext("enabled", "false").lower() == "true",
+                "animationMode": spin_node.findtext("animationMode", "RPMBased"),
+                "maxRPM": spin_node.findtext("maxRPM", "3000"),
+                "spindownTime": spin_node.findtext("spindownTime", "1.5"),
+                "frameCount": spin_node.findtext("frameCount", "4"),
+                "barrelCount": spin_node.findtext("barrelCount", "6"),
+                "spinUpSound": spin_node.findtext("spinUpSound", ""),
+                "spinDownSound": spin_node.findtext("spinDownSound", "")
+            }
+
+    barrel_extension_data = {
+        "hasBarrelExtension": barrel_ext is not None,
+        "barrelDrawSize": barrel_ext.findtext("barrelDrawSize", "1.0") if barrel_ext is not None else "1.0",
+        "barrelOffset": barrel_ext.findtext("barrelOffset", "(0,0,0.0)") if barrel_ext is not None else "(0,0,0.0)",
+        "drawOnTop": barrel_ext.findtext("drawOnTop", "false").lower() == "true" if barrel_ext is not None else False,
+        "barrelAmount": barrel_ext.findtext("barrelAmount", "1") if barrel_ext is not None else "1",
+        "barrelSpacing": barrel_ext.findtext("barrelSpacing", "0.5") if barrel_ext is not None else "0.5",
+        "sequentialFiring": barrel_ext.findtext("sequentialFiring", "false").lower() == "true" if barrel_ext is not None else False,
+        "recoilAnimation": recoil_anim_params,
+        "firingAnimation": firing_anim_params,
+        "spinningAnimation": spinning_anim_params
+    }
+
+    # Detailed Smoker Extraction
+    smoker_comp = None
+    for comp in comp_lis:
+        if "CompProperties_TurretSmoker" in comp.get("Class", ""):
+            smoker_comp = comp
+            break
+
+    smoker_data = {
+        "hasSmoker": smoker_comp is not None,
+        "muzzleEnabled": smoker_comp.findtext("muzzleEnabled", "false").lower() == "true" if smoker_comp is not None else False,
+        "muzzleFleckDef": smoker_comp.findtext("muzzleFleckDef", "AMC_MuzzleSmoke") if smoker_comp is not None else "AMC_MuzzleSmoke",
+        "muzzleParticleCount": smoker_comp.findtext("muzzleParticleCount", "1") if smoker_comp is not None else "1",
+        "muzzleVelocity": smoker_comp.findtext("muzzleVelocity", "15") if smoker_comp is not None else "15",
+        "muzzleParticleSize": smoker_comp.findtext("muzzleParticleSize", "1~2") if smoker_comp is not None else "1~2",
+        "heatEnabled": smoker_comp.findtext("heatEnabled", "false").lower() == "true" if smoker_comp is not None else False,
+        "heatFleckDef": smoker_comp.findtext("heatFleckDef", "AMC_HeatSmoke") if smoker_comp is not None else "AMC_HeatSmoke",
+        "heatThreshold": smoker_comp.findtext("heatThreshold", "40") if smoker_comp is not None else "40",
+        "heatDecayRate": smoker_comp.findtext("heatDecayRate", "0.6") if smoker_comp is not None else "0.6",
+        "heatEmissionRate": smoker_comp.findtext("heatEmissionRate", "1") if smoker_comp is not None else "1",
+        "shockwaveEnabled": smoker_comp.findtext("shockwaveEnabled", "false").lower() == "true" if smoker_comp is not None else False,
+        "shockwaveFleckDef": smoker_comp.findtext("shockwaveFleckDef", "AMC_ShockwaveSmoke") if smoker_comp is not None else "AMC_ShockwaveSmoke",
+        "shockwaveRadius": smoker_comp.findtext("shockwaveRadius", "1") if smoker_comp is not None else "1",
+        "shockwaveDensity": smoker_comp.findtext("shockwaveDensity", "2") if smoker_comp is not None else "2"
+    }
+
+    # Accuracy Override Extraction
+    accuracy_override_data = {
+        "hasAccuracyOverride": len(accuracy_override_params) > 0,
+        "swayReduction": accuracy_override_params.get("swayReduction", "0"),
+        "recoilReduction": accuracy_override_params.get("recoilReduction", "0"),
+        "spreadReduction": accuracy_override_params.get("spreadReduction", "0")
+    }
 
     # Weapon Def
     weapon_tuple = db.raw_defs.get(turret_gun_def)
@@ -400,7 +472,7 @@ def parse_single_turret_def(elem, filepath, db):
             "chargeSpeeds": charge_speeds
         }
 
-    # Warnings
+    # Warnings & Audit Rules
     warnings = []
     if not tex_ok:
         warnings.append(f"Missing Base Texture: {tex_path}")
@@ -411,6 +483,20 @@ def parse_single_turret_def(elem, filepath, db):
     if has_mode_swap:
         if not swap_alt_def or swap_alt_def not in db.all_def_names:
             warnings.append(f"ModeSwap target def missing: {swap_alt_def}")
+
+    # Unmanned Audit Checks
+    is_unmanned_dir = "unmanned" in os.path.basename(os.path.dirname(filepath)).lower()
+    if is_unmanned_dir or is_auto_parent:
+        if not is_auto_parent:
+            warnings.append("Unmanned turret must inherit from AMCTurretAutoBase or AMCArtilleryAutoBase")
+        if not ai_combat_dangerous:
+            warnings.append("Unmanned turret non-functional: Missing ai_combatDangerous=true")
+        if has_mannable:
+            warnings.append("Unmanned turret non-functional: Cannot have CompProperties_Mannable")
+        if not is_powered:
+            warnings.append("Unmanned turret expected to have power consumption comp")
+        if not has_fcs:
+            warnings.append("Unmanned turret expected to have FCS comp")
 
     return {
         "defName": def_name,
@@ -435,13 +521,13 @@ def parse_single_turret_def(elem, filepath, db):
         "swapGizmoLabel": swap_gizmo_label,
         "hasFcs": has_fcs,
         "hasPreserveAmmo": has_preserve_ammo,
-        "accuracyOverrideParams": accuracy_override_params,
-        "fireArcParams": fire_arc_params,
-        "smokerParams": smoker_params,
+        "accuracyOverride": accuracy_override_data,
+        "smokerData": smoker_data,
+        "barrelExtension": barrel_extension_data,
         "recoilAnimParams": recoil_anim_params,
         "firingAnimParams": firing_anim_params,
+        "hasSelectableBursts": bool(selectable_bursts),
         "selectableBursts": selectable_bursts,
-        "maxRPMs": max_rpms,
         "hasSuppressionImmunity": has_suppression_immunity,
         "weapon": weapon_data,
         "warnings": warnings
