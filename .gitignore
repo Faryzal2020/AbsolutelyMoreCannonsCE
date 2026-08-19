@@ -26,6 +26,7 @@ x86/
 *.log
 
 # Others
+.DS_store
 .agent/
 .agents/
 .gemini/

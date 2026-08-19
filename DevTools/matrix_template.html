@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMC Turret Matrix Editor & Audit Suite</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --header-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --accent-purple: #a855f7;
+            --border-color: #334155;
+            --modal-bg: #1e293b;
+            --input-bg: #0f172a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 15px; font-size: 12px; }
+
+        /* Top Header */
+        header.main-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .header-title-box h1 { font-size: 20px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .subtitle { color: var(--text-muted); font-size: 11.5px; margin-top: 2px; }
+
+        .header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mode-live { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .mode-sandbox { background: rgba(168, 85, 247, 0.25); color: #c084fc; border: 1px solid #a855f7; }
+
+        /* Buttons */
+        .btn { background: #334155; color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+        .btn:hover:not(:disabled) { background: #475569; border-color: var(--accent); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-accent { background: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
+        .btn-accent:hover:not(:disabled) { background: var(--accent-hover); color: #fff; }
+        .btn-success { background: var(--accent-green); color: #000; font-weight: bold; border-color: var(--accent-green); }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: #ef4444; }
+        .btn-danger:hover:not(:disabled) { background: #ef4444; color: #fff; }
+        .btn-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b; }
+        .btn-warning:hover:not(:disabled) { background: #f59e0b; color: #000; }
+        .btn-sm { padding: 3px 7px; font-size: 10px; border-radius: 4px; }
+
+        /* Metrics Grid */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .metric-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; text-align: center; }
+        .metric-value { font-size: 22px; font-weight: bold; color: var(--accent); margin-top: 2px; }
+        .metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Controls Bar */
+        .controls-bar { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; margin-bottom: 15px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+        .search-box input { background: var(--input-bg); border: 1px solid var(--border-color); color: white; padding: 6px 10px; border-radius: 6px; font-size: 12px; width: 260px; }
+        .search-box input:focus { outline: none; border-color: var(--accent); }
+        .filter-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn-filter { background: #334155; color: var(--text-main); border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 11px; transition: all 0.2s; }
+        .btn-filter.active, .btn-filter:hover { background: var(--accent); color: #000; font-weight: bold; }
+
+        /* Main Table */
+        .table-container { overflow-x: auto; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; width: 100%; }
+        table.main-table { width: 100%; border-collapse: collapse; text-align: left; table-layout: fixed; }
+        table.main-table th { background: #0f172a; color: var(--accent); font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; position: sticky; top: 0; z-index: 10; padding: 10px; border-bottom: 2px solid var(--border-color); }
+        table.main-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); vertical-align: top; word-wrap: break-word; }
+        table.main-table > tbody > tr:hover { background: #243047; }
+        table.main-table > tbody > tr.row-edited { border-left: 3px solid var(--accent-amber); background: rgba(245, 158, 11, 0.05); }
+
+        /* Badges */
+        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; margin: 2px; text-transform: uppercase; }
+        .bg-manned { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .bg-auto { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
+        .bg-power { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+        .bg-swap { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+        .bg-recoil { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+        .bg-ciws { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid #ec4899; }
+        .bg-fcs { background: rgba(14, 165, 233, 0.2); color: #38bdf8; border: 1px solid #0284c7; }
+        .bg-feature { background: #334155; color: #cbd5e1; border: 1px solid #475569; }
+        .bg-edited { background: rgba(245, 158, 11, 0.25); color: #fbbf24; border: 1px solid #f59e0b; }
+
+        .warning-badge { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; padding: 3px 6px; border-radius: 4px; font-size: 10px; margin-top: 3px; display: block; }
+        .ok-badge { color: var(--accent-green); font-weight: bold; font-size: 11px; }
+
+        .mode-box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 5px; padding: 5px 7px; margin-bottom: 5px; font-size: 11px; }
+        .mode-title { font-weight: bold; color: var(--accent); font-size: 11px; margin-bottom: 2px; display: flex; justify-content: space-between; }
+        .code-text { font-family: monospace; color: #fbbf24; font-size: 11px; }
+        .cost-list { font-size: 11px; color: var(--text-muted); line-height: 1.3; }
+
+        /* Ammo Table */
+        .compact-ammo-block { margin-bottom: 6px; background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border-color); border-radius: 5px; padding: 5px; width: 100%; }
+        .ammo-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5); padding-bottom: 3px; }
+        .ammo-set-title { color: var(--accent); font-weight: 600; font-size: 10.5px; }
+        .ammo-mag-badge { background: #334155; color: #cbd5e1; padding: 1px 5px; border-radius: 3px; font-size: 9.5px; }
+
+        /* Modal Base */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-container { background: var(--modal-bg); border: 1px solid var(--border-color); border-radius: 10px; width: 100%; max-width: 1000px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden; }
+        .modal-header { padding: 12px 16px; background: #0f172a; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 16px; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .modal-body { padding: 16px; overflow-y: auto; flex: 1; font-size: 12px; }
+        .modal-footer { padding: 12px 16px; background: #0f172a; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+
+        /* Mode & Tab Nav */
+        .mode-nav-bar { display: flex; gap: 8px; margin-bottom: 12px; background: #0f172a; padding: 6px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .mode-nav-btn { background: #1e293b; color: var(--text-muted); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 11px; transition: all 0.2s; }
+        .mode-nav-btn.active { background: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
+
+        .tab-bar { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; background: #0f172a; border-radius: 6px 6px 0 0; }
+        .tab-btn { background: none; border: none; color: var(--text-muted); padding: 8px 14px; cursor: pointer; font-weight: 500; font-size: 11px; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: bold; background: rgba(56, 189, 248, 0.05); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Form Controls */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 12px; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 10.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .form-group input, .form-group select, .form-group textarea { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 10px; border-radius: 5px; font-size: 12px; font-family: monospace; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent); }
+
+        /* Parallel Sync View Table */
+        .sync-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+        .sync-table th { background: #0f172a; color: var(--accent); padding: 8px; border-bottom: 1px solid var(--border-color); text-align: left; }
+        .sync-table td { padding: 6px 8px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .sync-btn { background: #334155; color: #fff; border: 1px solid var(--border-color); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: bold; transition: all 0.2s; }
+        .sync-btn.synced { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
+        .sync-btn.independent { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border-color: #f59e0b; }
+
+        /* Diff Viewer */
+        .diff-container { display: flex; gap: 10px; width: 100%; font-family: monospace; font-size: 11px; max-height: 60vh; overflow: auto; background: #0f172a; border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; }
+        .diff-pane { flex: 1; overflow-x: auto; white-space: pre; line-height: 1.4; }
+        .diff-line-add { background: rgba(34, 197, 94, 0.15); color: #4ade80; display: block; }
+        .diff-line-del { background: rgba(239, 68, 68, 0.15); color: #f87171; display: block; }
+
+        /* Toasts */
+        #toastContainer { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { background: #1e293b; border: 1px solid var(--accent); color: #fff; padding: 10px 14px; border-radius: 6px; font-size: 11.5px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 8px; animation: slideIn 0.2s ease-out; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-title-box">
+            <h1>🚀 AMC Turret Matrix Editor & Audit Suite</h1>
+            <div class="subtitle">Interactive Configurator, XML Exporter, State History & Exporter Validator for RimWorld CE</div>
+        </div>
+        <div class="header-actions">
+            <div id="sandboxPill" class="status-pill mode-live">● LIVE EDITOR MODE</div>
+            <button class="btn" onclick="toggleSandboxMode()">🧪 Sandbox Mode</button>
+            <button class="btn" id="btnUndo" onclick="undoAction()" disabled>↩️ Undo</button>
+            <button class="btn" id="btnRedo" onclick="redoAction()" disabled>↪️ Redo</button>
+            <button class="btn" onclick="openSnapshotModal()">📸 Snapshots</button>
+            <button class="btn btn-danger" onclick="revertAllEdits()">🔄 Revert All</button>
+            <button class="btn btn-warning" onclick="runAuditValidation()">🛡️ Validate Exporter</button>
+            <button class="btn btn-accent" onclick="openExportModal()">📤 Export XML / JSON</button>
+        </div>
+    </header>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Turret Systems</div>
+            <div class="metric-value" id="mTotalSystems">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Mode Swap Capable</div>
+            <div class="metric-value" id="mModeSwapCount">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Powered Turrets</div>
+            <div class="metric-value" id="mPoweredCount">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Animated / Recoil</div>
+            <div class="metric-value" id="mRecoilCount">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Modified Systems</div>
+            <div class="metric-value" id="mModifiedCount" style="color: var(--accent-amber);">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Audit Warnings</div>
+            <div class="metric-value" id="mWarningCount" style="color: var(--accent-green);">0</div>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search by caliber, defName, label, stats, ammo..." onkeyup="filterTable()">
+        </div>
+        <div class="filter-buttons">
+            <button class="btn-filter active" onclick="filterCategory('all', this)">All Categories</button>
+            <button class="btn-filter" onclick="filterCategory('Cannons', this)">Cannons</button>
+            <button class="btn-filter" onclick="filterCategory('Howitzers', this)">Howitzers</button>
+            <button class="btn-filter" onclick="filterCategory('Naval Guns', this)">Naval Guns</button>
+            <button class="btn-filter" onclick="filterCategory('Autocannons', this)">Autocannons</button>
+            <button class="btn-filter" onclick="filterCategory('RotaryCannons', this)">Rotary</button>
+            <button class="btn-filter" onclick="filterCategory('Unmanned', this)">Unmanned</button>
+            <button class="btn-filter" onclick="filterCategory('modified', this)" style="border-color: var(--accent-amber);">✏️ Modified Only</button>
+            <button class="btn-filter" onclick="filterWarnings(this)" style="border-color: var(--accent-red);">⚠️ Warnings Only</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="turretTable" class="main-table">
+            <thead>
+                <tr>
+                    <th style="width: 14%;">Turret System & Defs</th>
+                    <th style="width: 14%;">Gameplay Stats & Costs</th>
+                    <th style="width: 17%;">Firing & Ballistics</th>
+                    <th style="width: 21%;">Features & Comps</th>
+                    <th style="width: 24%;">AmmoSets & Projectiles</th>
+                    <th style="width: 10%;">Actions & Audit</th>
+                </tr>
+            </thead>
+            <tbody id="turretTbody">
+                <!-- Dynamically Rendered JS Rows -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal: Form Editor -->
+    <div class="modal-overlay" id="editorModal">
+        <div class="modal-container" style="max-width: 980px;">
+            <div class="modal-header">
+                <h2>✏️ Edit Turret System: <span id="edTitle" style="color: #fff;"></span></h2>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span id="edArchetypeBadge" class="badge bg-feature"></span>
+                    <button class="btn btn-sm" onclick="showDiffForCurrentDef()">🔍 View XML Diff</button>
+                    <button class="btn btn-sm btn-danger" onclick="revertCurrentDef()">🔄 Revert Turret</button>
+                    <button class="btn btn-sm" onclick="closeModal('editorModal')">✖</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- Mode Switcher Nav (For Dual-Mode Systems) -->
+                <div id="modeNavContainer" class="mode-nav-bar">
+                    <button class="mode-nav-btn active" id="btnModeDirect" onclick="switchEditorMode('direct')">🎯 Direct Mode</button>
+                    <button class="mode-nav-btn" id="btnModeIndirect" onclick="switchEditorMode('indirect')">🌐 Indirect Mode</button>
+                    <button class="mode-nav-btn" id="btnModeParallel" onclick="switchEditorMode('parallel')" style="border-color: var(--accent-amber);">⚖️ Dual-Mode Parallel & Sync View</button>
+                </div>
+
+                <!-- Single Mode Form View -->
+                <div id="singleModeView">
+                    <div class="tab-bar">
+                        <button class="tab-btn active" onclick="switchTab('tabBasic', this)">📌 Basic & Building Stats</button>
+                        <button class="tab-btn" onclick="switchTab('tabCosts', this)">💰 Costs</button>
+                        <button class="tab-btn" onclick="switchTab('tabBallistics', this)">🎯 Ballistics & Gun</button>
+                        <button class="tab-btn" onclick="switchTab('tabComps', this)">⚙️ Comps & Features</button>
+                    </div>
+
+                    <!-- Tab 1: Basic & Building Stats -->
+                    <div id="tabBasic" class="tab-content active">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Label</label>
+                                <input type="text" id="ed_label" oninput="onSingleFieldInput('label', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>DefName (Read-only)</label>
+                                <input type="text" id="ed_defName" readonly style="opacity: 0.7;">
+                            </div>
+                            <div class="form-group">
+                                <label>Parent Name</label>
+                                <input type="text" id="ed_parentName" oninput="onSingleFieldInput('parentName', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Max Hit Points (HP)</label>
+                                <input type="number" id="ed_hp" oninput="onSingleFieldInput('hp', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Work To Build</label>
+                                <input type="number" id="ed_work" oninput="onSingleFieldInput('work', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Mass (kg)</label>
+                                <input type="number" step="0.1" id="ed_mass" oninput="onSingleFieldInput('mass', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Bulk</label>
+                                <input type="number" step="0.1" id="ed_bulk" oninput="onSingleFieldInput('bulk', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Turret Cooldown Time (s)</label>
+                                <input type="number" step="0.1" id="ed_cooldownTime" oninput="onSingleFieldInput('cooldownTime', this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Costs -->
+                    <div id="tabCosts" class="tab-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <h4 style="color: var(--accent);">Resource Cost List</h4>
+                            <button class="btn btn-sm btn-accent" onclick="addCostRow()">➕ Add Resource</button>
+                        </div>
+                        <table class="cost-edit-table">
+                            <thead>
+                                <tr>
+                                    <th>ThingDef Resource</th>
+                                    <th>Count</th>
+                                    <th style="width: 50px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="costTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tab 3: Ballistics -->
+                    <div id="tabBallistics" class="tab-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Verb Class</label>
+                                <input type="text" id="ed_verbClass" oninput="onSingleFieldInput('verbClass', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Min Range (cells)</label>
+                                <input type="number" id="ed_minRange" oninput="onSingleFieldInput('minRange', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Max Range (cells)</label>
+                                <input type="number" id="ed_maxRange" oninput="onSingleFieldInput('maxRange', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Burst Shot Count</label>
+                                <input type="number" id="ed_burstShotCount" oninput="onSingleFieldInput('burstShotCount', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Warmup Time (s)</label>
+                                <input type="number" step="0.1" id="ed_warmupTime" oninput="onSingleFieldInput('warmupTime', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Sights Efficiency</label>
+                                <input type="number" step="0.1" id="ed_sightsEff" oninput="onSingleFieldInput('sightsEfficiency', this.value)">
+                            </div>
+                            <div class="form-group">
+                                <label>Shot Spread</label>
+                                <input type="number" step="0.01" id="ed_shotSpread" oninput="onSingleFieldInput('shotSpread', this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Comps -->
+                    <div id="tabComps" class="tab-content">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_isManned"> 🧑 Mannable Turret
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_isPowered"> ⚡ Requires Electrical Power
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Base Power Consumption (Watts)</label>
+                                <input type="number" id="ed_powerWatts">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="ed_hasModeSwap"> 🔄 Mode Swap Capable
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Alternate Mode DefTarget</label>
+                                <select id="ed_swapAltDef"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dual-Mode Parallel & Sync Editor View -->
+                <div id="parallelModeView" style="display: none;">
+                    <div style="background:#0f172a; padding:10px; border-radius:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <span style="color:var(--accent-amber); font-weight:bold;">⚖️ Dual-Mode Parallel Sync Editor</span>
+                            <div style="color:var(--text-muted); font-size:10.5px;">Click 🔗 to toggle auto-sync between Direct and Indirect modes. Physical stats sync by default.</div>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn btn-sm btn-accent" onclick="syncAllBuildingStats()">🔗 Sync Building Stats (Direct → Indirect)</button>
+                        </div>
+                    </div>
+
+                    <table class="sync-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Property Field</th>
+                                <th style="width: 32%;">🎯 Direct Mode</th>
+                                <th style="width: 11%; text-align:center;">Link State</th>
+                                <th style="width: 32%;">🌐 Indirect Mode</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parallelTableBody">
+                            <!-- Dynamically Rendered Sync Table Rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <span id="edSaveMsg" style="color: var(--text-muted); font-size: 11px;"></span>
+                <div>
+                    <button class="btn" onclick="closeModal('editorModal')">Cancel</button>
+                    <button class="btn btn-accent" onclick="saveEditorForm()">💾 Save System Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: XML Diff Viewer -->
+    <div class="modal-overlay" id="diffModal">
+        <div class="modal-container" style="max-width: 950px;">
+            <div class="modal-header">
+                <h2>🔍 Live XML Diff: <span id="diffDefName"></span></h2>
+                <div style="display: flex; gap: 8px;">
+                    <select id="diffDefSelector" onchange="switchDiffTarget(this.value)" style="background:var(--input-bg); border:1px solid var(--border-color); color:#fff; padding:4px 8px; border-radius:4px; font-size:11px;"></select>
+                    <button class="btn btn-sm" onclick="closeModal('diffModal')">✖</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 8px; color: var(--text-muted);">
+                    Original XML (Left) vs Exported Modified XML (Right)
+                </div>
+                <div class="diff-container" id="diffContainer">
+                    <div class="diff-pane" id="diffPaneOrig"></div>
+                    <div class="diff-pane" id="diffPaneMod"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('diffModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Snapshots History -->
+    <div class="modal-overlay" id="snapshotModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>📸 IndexedDB History & Backup Snapshots</h2>
+                <button class="btn btn-sm" onclick="closeModal('snapshotModal')">✖</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <input type="text" id="snapNameInput" placeholder="Snapshot label (e.g. Autocannon Nerf Pass)..." style="flex:1; background:var(--input-bg); border:1px solid var(--border-color); color:#fff; padding:6px 10px; border-radius:5px;">
+                    <button class="btn btn-accent" onclick="createManualSnapshot()">💾 Save Snapshot</button>
+                </div>
+                <table class="cost-edit-table">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Snapshot Label</th>
+                            <th>Edits Count</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="snapshotTableBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('snapshotModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Exporter -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal-container" style="max-width: 650px;">
+            <div class="modal-header">
+                <h2>📤 Export Matrix XML & State Payload</h2>
+                <button class="btn btn-sm" onclick="closeModal('exportModal')">✖</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                    <h4 style="color: var(--accent); margin-bottom: 4px;">1. Download State JSON for Python Sync Engine</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 8px;">Download `amc_matrix_export.json` and sync changes back to original files using CLI script:</p>
+                    <button class="btn btn-accent" onclick="downloadStateJson()">💾 Download amc_matrix_export.json</button>
+                </div>
+                <div style="background:#0f172a; padding:10px; border-radius:6px; border:1px solid var(--border-color);">
+                    <div style="font-size:10.5px; color:var(--text-muted); font-weight:bold; margin-bottom:4px;">TERMINAL CLI SYNC COMMANDS:</div>
+                    <code style="color:#fbbf24; font-family:monospace; display:block; margin-bottom:4px;">python DevTools/apply_matrix_edits.py amc_matrix_export.json</code>
+                    <code style="color:#f87171; font-family:monospace; display:block;">python DevTools/apply_matrix_edits.py --rollback</code>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('exportModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Exporter Audit Validation -->
+    <div class="modal-overlay" id="auditModal">
+        <div class="modal-container" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>🛡️ Exporter Validation & Audit Report</h2>
+                <button class="btn btn-sm" onclick="closeModal('auditModal')">✖</button>
+            </div>
+            <div class="modal-body" id="auditReportBody"></div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal('auditModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer"></div>
+
+    <!-- Embedded Data Payload -->
+    <script id="amc-turret-data" type="application/json">
+<!-- DATA_PAYLOAD_HERE -->
+    </script>
+
+    <!-- SPA Application Engine Script -->
+    <script>
+        let DB = { systems: [], ammoSets: {}, projectiles: {}, allDefNames: [] };
+        let STATE = {
+            systems: [],
+            modifiedDefs: {},
+            isSandbox: false,
+            activeCategory: 'all',
+            searchQuery: '',
+            undoStack: [],
+            redoStack: [],
+            activeSystemLabel: null,
+            activeEditMode: 'direct' // 'direct' | 'indirect' | 'parallel'
+        };
+
+        // Per-Field Link State (Default: Building stats linked, Firing stats unlinked)
+        let FIELD_LINKS = {
+            hp: true,
+            work: true,
+            mass: true,
+            bulk: true,
+            cooldownTime: true,
+            label: false,
+            parentName: false,
+            verbClass: false,
+            minRange: false,
+            maxRange: false,
+            burstShotCount: false,
+            warmupTime: false,
+            sightsEfficiency: false,
+            shotSpread: false
+        };
+
+        let dbInstance = null;
+
+        function initIndexedDB() {
+            return new Promise((resolve) => {
+                const request = indexedDB.open("AMCTurretMatrixDB", 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains("snapshots")) {
+                        db.createObjectStore("snapshots", { keyPath: "id", autoIncrement: true });
+                    }
+                };
+                request.onsuccess = (e) => {
+                    dbInstance = e.target.result;
+                    loadAutoSave();
+                    resolve();
+                };
+                request.onerror = () => resolve();
+            });
+        }
+
+        function saveAutoSave() {
+            if (!dbInstance) return;
+            const tx = dbInstance.transaction("snapshots", "readwrite");
+            const store = tx.objectStore("snapshots");
+            store.put({ id: "AUTOSAVE", name: "Auto-Save Draft", timestamp: new Date().toISOString(), state: STATE.modifiedDefs });
+        }
+
+        function loadAutoSave() {
+            if (!dbInstance) return;
+            const tx = dbInstance.transaction("snapshots", "readonly");
+            const store = tx.objectStore("snapshots");
+            const req = store.get("AUTOSAVE");
+            req.onsuccess = () => {
+                if (req.result && req.result.state && Object.keys(req.result.state).length > 0) {
+                    STATE.modifiedDefs = req.result.state;
+                    showToast("Restored auto-save draft from IndexedDB", "info");
+                    renderAll();
+                }
+            };
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const raw = document.getElementById('amc-turret-data').textContent;
+            try {
+                DB = JSON.parse(raw);
+                STATE.systems = JSON.parse(JSON.stringify(DB.systems));
+            } catch (e) {
+                console.error("Failed to parse DB JSON payload", e);
+            }
+
+            await initIndexedDB();
+            populateSelectOptions();
+            renderAll();
+        });
+
+        function populateSelectOptions() {
+            const swapSel = document.getElementById('ed_swapAltDef');
+            swapSel.innerHTML = '<option value="">-- None --</option>';
+            (DB.allDefNames || []).forEach(d => {
+                swapSel.innerHTML += `<option value="${d}">${d}</option>`;
+            });
+        }
+
+        function renderAll() {
+            renderMetrics();
+            renderTableRows();
+            updateHistoryButtons();
+        }
+
+        function getSystem(systemLabel) {
+            return STATE.systems.find(s => s.systemLabel === systemLabel);
+        }
+
+        function getEffectiveDef(defName) {
+            if (!defName) return null;
+            if (STATE.modifiedDefs[defName]) {
+                return STATE.modifiedDefs[defName];
+            }
+            for (let s of DB.systems) {
+                if (s.directMode && s.directMode.defName === defName) return s.directMode;
+                if (s.indirectMode && s.indirectMode.defName === defName) return s.indirectMode;
+            }
+            return null;
+        }
+
+        function renderMetrics() {
+            const systems = DB.systems;
+            document.getElementById('mTotalSystems').innerText = systems.length;
+            document.getElementById('mModeSwapCount').innerText = systems.filter(s => s.hasModeSwap).length;
+            document.getElementById('mPoweredCount').innerText = systems.filter(s => {
+                const dm = s.directMode || s.primaryMode;
+                return getEffectiveDef(dm.defName).isPowered;
+            }).length;
+
+            document.getElementById('mRecoilCount').innerText = systems.filter(s => {
+                const dm = s.directMode || s.primaryMode;
+                const d = getEffectiveDef(dm.defName);
+                return Object.keys(d.recoilAnimParams || {}).length > 0 || Object.keys(d.firingAnimParams || {}).length > 0;
+            }).length;
+
+            const modCount = Object.keys(STATE.modifiedDefs).length;
+            document.getElementById('mModifiedCount').innerText = modCount;
+
+            let totalWarns = 0;
+            systems.forEach(s => totalWarns += s.warnings.length);
+            document.getElementById('mWarningCount').innerText = totalWarns;
+            document.getElementById('mWarningCount').style.color = totalWarns > 0 ? 'var(--accent-red)' : 'var(--accent-green)';
+        }
+
+        function renderTableRows() {
+            const tbody = document.getElementById('turretTbody');
+            tbody.innerHTML = '';
+
+            STATE.systems.forEach(sys => {
+                const dm = sys.directMode ? getEffectiveDef(sys.directMode.defName) : null;
+                const im = sys.indirectMode ? getEffectiveDef(sys.indirectMode.defName) : null;
+                const pm = dm || im;
+
+                const isModified = (dm && STATE.modifiedDefs[dm.defName]) || (im && STATE.modifiedDefs[im.defName]);
+
+                if (STATE.activeCategory !== 'all') {
+                    if (STATE.activeCategory === 'modified' && !isModified) return;
+                    if (STATE.activeCategory !== 'modified' && sys.folder !== STATE.activeCategory) return;
+                }
+
+                if (STATE.searchQuery) {
+                    const textStr = (sys.systemLabel + " " + (dm ? dm.defName : "") + " " + (im ? im.defName : "") + " " + sys.folder).toLowerCase();
+                    if (!textStr.includes(STATE.searchQuery)) return;
+                }
+
+                const tr = document.createElement('tr');
+                if (isModified) tr.classList.add('row-edited');
+
+                let badges = [];
+                badges.push(pm.isManned ? '<span class="badge bg-manned">🧑 Manned</span>' : '<span class="badge bg-auto">🤖 Automatic</span>');
+                badges.push(pm.isPowered ? `<span class="badge bg-power">⚡ ${pm.powerWatts}W</span>` : '<span class="badge bg-feature">Unpowered</span>');
+                badges.push(sys.hasModeSwap ? '<span class="badge bg-swap">🔄 Mode Swap</span>' : '<span class="badge bg-feature">Single Mode</span>');
+                if (isModified) badges.push('<span class="badge bg-edited">✏️ EDITED</span>');
+
+                const costStr = Object.keys(pm.costs || {}).length > 0 ? Object.entries(pm.costs).map(([k,v]) => `<b>${k}</b>:${v}`).join(', ') : 'None';
+                let auditHtml = sys.warnings.length > 0 ? sys.warnings.map(w => `<span class="warning-badge">⚠️ ${w}</span>`).join('') : '<span class="ok-badge">✔ Valid</span>';
+
+                tr.innerHTML = `
+                    <td>
+                        <div style="font-weight: bold; color: var(--accent); font-size: 13px;">
+                            ${escapeHtml(sys.systemLabel)}
+                        </div>
+                        ${dm ? `<div>Direct: <span class='code-text'>${escapeHtml(dm.defName)}</span></div>` : ''}
+                        ${im ? `<div>Indirect: <span class='code-text'>${escapeHtml(im.defName)}</span></div>` : ''}
+                        <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+                            📂 ${escapeHtml(sys.folder)} | Parent: <span style="color: #cbd5e1;">${escapeHtml(pm.parentName)}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div><b>HP:</b> ${pm.hp} | <b>Work:</b> ${pm.work}</div>
+                        <div><b>Mass:</b> ${pm.mass}kg | <b>Bulk:</b> ${pm.bulk}</div>
+                        <div class="cost-list" style="margin-top: 3px;"><b>Cost:</b> ${costStr}</div>
+                    </td>
+                    <td>
+                        ${dm ? `<div class="mode-box">
+                            <div class="mode-title"><span>🎯 Direct</span> <span class="code-text">${dm.weapon.verbClass || '-'}</span></div>
+                            <div><b>Range:</b> ${dm.weapon.minRange || 0} - ${dm.weapon.maxRange || 0} cells</div>
+                            <div><b>Burst/Cooldown:</b> ${dm.weapon.burstShotCount || 1} shots | ${dm.cooldownTime || '-'}s</div>
+                        </div>` : ''}
+                        ${im ? `<div class="mode-box">
+                            <div class="mode-title"><span style="color:#c084fc;">🌐 Indirect</span> <span class="code-text">${im.weapon.verbClass || '-'}</span></div>
+                            <div><b>Range:</b> ${im.weapon.minRange || 0} - ${im.weapon.maxRange || 0} cells</div>
+                            <div><b>Burst/Cooldown:</b> ${im.weapon.burstShotCount || 1} shots | ${im.cooldownTime || '-'}s</div>
+                        </div>` : ''}
+                    </td>
+                    <td><div>${badges.join(' ')}</div></td>
+                    <td>
+                        <div class="compact-ammo-block">
+                            <div class="ammo-header-line">
+                                <span class="ammo-set-title">📦 <b>${pm.weapon.ammoSet || 'No AmmoSet'}</b></span>
+                                <span class="ammo-mag-badge">Mag: ${pm.weapon.magazineSize || '-'} | ${pm.weapon.reloadTime || '-'}s</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display:flex; flex-direction:column; gap:4px;">
+                            <button class="btn btn-sm btn-accent" onclick="openSystemEditor('${sys.systemLabel}')">✏️ Edit System</button>
+                            <button class="btn btn-sm" onclick="showDiffModal('${pm.defName}')">🔍 Diff</button>
+                            ${isModified ? `<button class="btn btn-sm btn-danger" onclick="revertSystem('${sys.systemLabel}')">🔄 Revert</button>` : ''}
+                            ${auditHtml}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable() {
+            STATE.searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            renderTableRows();
+        }
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            STATE.activeCategory = cat;
+            renderTableRows();
+        }
+
+        function filterWarnings(btn) {
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            STATE.activeCategory = 'warnings';
+            renderTableRows();
+        }
+
+        // --- System Editor Modal Handlers ---
+        function openSystemEditor(systemLabel) {
+            STATE.activeSystemLabel = systemLabel;
+            const sys = getSystem(systemLabel);
+
+            document.getElementById('edTitle').innerText = sys.systemLabel;
+            const archBadge = document.getElementById('edArchetypeBadge');
+            archBadge.innerText = sys.systemType.replace('_', ' ').toUpperCase();
+
+            // Setup Mode Switcher Bar
+            const modeNav = document.getElementById('modeNavContainer');
+            const btnDirect = document.getElementById('btnModeDirect');
+            const btnIndirect = document.getElementById('btnModeIndirect');
+            const btnParallel = document.getElementById('btnModeParallel');
+
+            if (sys.systemType === 'dual_mode') {
+                modeNav.style.display = 'flex';
+                btnDirect.style.display = 'inline-block';
+                btnIndirect.style.display = 'inline-block';
+                btnParallel.style.display = 'inline-block';
+                switchEditorMode('direct');
+            } else if (sys.systemType === 'indirect_only') {
+                modeNav.style.display = 'flex';
+                btnDirect.style.display = 'none';
+                btnIndirect.style.display = 'inline-block';
+                btnParallel.style.display = 'none';
+                switchEditorMode('indirect');
+            } else {
+                modeNav.style.display = 'flex';
+                btnDirect.style.display = 'inline-block';
+                btnIndirect.style.display = 'none';
+                btnParallel.style.display = 'none';
+                switchEditorMode('direct');
+            }
+
+            openModal('editorModal');
+        }
+
+        function switchEditorMode(mode) {
+            STATE.activeEditMode = mode;
+            document.querySelectorAll('.mode-nav-btn').forEach(b => b.classList.remove('active'));
+
+            if (mode === 'direct') {
+                document.getElementById('btnModeDirect').classList.add('active');
+                document.getElementById('singleModeView').style.display = 'block';
+                document.getElementById('parallelModeView').style.display = 'none';
+                populateSingleModeForm('direct');
+            } else if (mode === 'indirect') {
+                document.getElementById('btnModeIndirect').classList.add('active');
+                document.getElementById('singleModeView').style.display = 'block';
+                document.getElementById('parallelModeView').style.display = 'none';
+                populateSingleModeForm('indirect');
+            } else if (mode === 'parallel') {
+                document.getElementById('btnModeParallel').classList.add('active');
+                document.getElementById('singleModeView').style.display = 'none';
+                document.getElementById('parallelModeView').style.display = 'block';
+                renderParallelSyncTable();
+            }
+        }
+
+        function populateSingleModeForm(mode) {
+            const sys = getSystem(STATE.activeSystemLabel);
+            const defObj = mode === 'direct' ? (sys.directMode || sys.primaryMode) : (sys.indirectMode || sys.primaryMode);
+            const def = getEffectiveDef(defObj.defName);
+
+            document.getElementById('ed_label').value = def.label || '';
+            document.getElementById('ed_defName').value = def.defName || '';
+            document.getElementById('ed_parentName').value = def.parentName || '';
+            document.getElementById('ed_hp').value = def.hp || '';
+            document.getElementById('ed_work').value = def.work || '';
+            document.getElementById('ed_mass').value = def.mass || '';
+            document.getElementById('ed_bulk').value = def.bulk || '';
+            document.getElementById('ed_cooldownTime').value = def.cooldownTime || '';
+
+            renderCostsTable(def.costs || {});
+
+            const w = def.weapon || {};
+            document.getElementById('ed_verbClass').value = w.verbClass || '';
+            document.getElementById('ed_minRange').value = w.minRange || 0;
+            document.getElementById('ed_maxRange').value = w.maxRange || 0;
+            document.getElementById('ed_burstShotCount').value = w.burstShotCount || 1;
+            document.getElementById('ed_warmupTime').value = w.warmupTime || 0;
+            document.getElementById('ed_sightsEff').value = w.sightsEfficiency || 1;
+            document.getElementById('ed_shotSpread').value = w.shotSpread || 0;
+
+            document.getElementById('ed_isManned').checked = !!def.isManned;
+            document.getElementById('ed_isPowered').checked = !!def.isPowered;
+            document.getElementById('ed_powerWatts').value = def.powerWatts || 0;
+            document.getElementById('ed_hasModeSwap').checked = !!def.hasModeSwap;
+            document.getElementById('ed_swapAltDef').value = def.swapAltDef || '';
+        }
+
+        function renderCostsTable(costs) {
+            const tbody = document.getElementById('costTableBody');
+            tbody.innerHTML = '';
+            Object.entries(costs).forEach(([k, v]) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="text" value="${escapeHtml(k)}" class="cost-key"></td>
+                    <td><input type="number" value="${v}" class="cost-val"></td>
+                    <td><button class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()">✖</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function addCostRow() {
+            const tbody = document.getElementById('costTableBody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" value="Steel" class="cost-key"></td>
+                <td><input type="number" value="100" class="cost-val"></td>
+                <td><button class="btn btn-sm btn-danger" onclick="this.closest('tr').remove()">✖</button></td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function onSingleFieldInput(field, value) {
+            const sys = getSystem(STATE.activeSystemLabel);
+            if (sys.systemType === 'dual_mode' && FIELD_LINKS[field]) {
+                // Auto-sync value to counterpart if linked
+                const targetMode = STATE.activeEditMode === 'direct' ? 'indirect' : 'direct';
+                const counterpartObj = targetMode === 'direct' ? sys.directMode : sys.indirectMode;
+                const targetDef = getEffectiveDef(counterpartObj.defName);
+                if (targetDef) {
+                    if (field in targetDef) targetDef[field] = value;
+                    if (targetDef.weapon && field in targetDef.weapon) targetDef.weapon[field] = value;
+                }
+            }
+        }
+
+        // --- Parallel Sync View Table ---
+        function renderParallelSyncTable() {
+            const sys = getSystem(STATE.activeSystemLabel);
+            if (!sys.directMode || !sys.indirectMode) return;
+
+            const dm = getEffectiveDef(sys.directMode.defName);
+            const im = getEffectiveDef(sys.indirectMode.defName);
+
+            const tbody = document.getElementById('parallelTableBody');
+            tbody.innerHTML = '';
+
+            const fields = [
+                { key: 'hp', label: 'Max Hit Points (HP)', isGun: false },
+                { key: 'work', label: 'Work To Build', isGun: false },
+                { key: 'mass', label: 'Mass (kg)', isGun: false },
+                { key: 'bulk', label: 'Bulk', isGun: false },
+                { key: 'cooldownTime', label: 'Turret Cooldown (s)', isGun: false },
+                { key: 'minRange', label: 'Min Range (cells)', isGun: true },
+                { key: 'maxRange', label: 'Max Range (cells)', isGun: true },
+                { key: 'burstShotCount', label: 'Burst Shot Count', isGun: true },
+                { key: 'warmupTime', label: 'Warmup Time (s)', isGun: true },
+                { key: 'sightsEfficiency', label: 'Sights Efficiency', isGun: true },
+                { key: 'shotSpread', label: 'Shot Spread', isGun: true }
+            ];
+
+            fields.forEach(f => {
+                const tr = document.createElement('tr');
+                const valD = f.isGun ? (dm.weapon[f.key] || 0) : (dm[f.key] || 0);
+                const valI = f.isGun ? (im.weapon[f.key] || 0) : (im[f.key] || 0);
+                const isSynced = FIELD_LINKS[f.key];
+
+                tr.innerHTML = `
+                    <td><b>${f.label}</b></td>
+                    <td><input type="text" value="${valD}" oninput="onParallelInput('${f.key}', this.value, 'direct', ${f.isGun})"></td>
+                    <td style="text-align:center;">
+                        <button class="sync-btn ${isSynced ? 'synced' : 'independent'}" onclick="toggleFieldSync('${f.key}', this)">
+                            ${isSynced ? '🔗 Synced' : '🔓 Independent'}
+                        </button>
+                    </td>
+                    <td><input type="text" value="${valI}" id="p_ind_${f.key}" oninput="onParallelInput('${f.key}', this.value, 'indirect', ${f.isGun})"></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleFieldSync(fieldKey, btn) {
+            FIELD_LINKS[fieldKey] = !FIELD_LINKS[fieldKey];
+            if (FIELD_LINKS[fieldKey]) {
+                btn.className = 'sync-btn synced';
+                btn.innerText = '🔗 Synced';
+                syncFieldDirectToIndirect(fieldKey);
+            } else {
+                btn.className = 'sync-btn independent';
+                btn.innerText = '🔓 Independent';
+            }
+        }
+
+        function onParallelInput(fieldKey, value, mode, isGun) {
+            const sys = getSystem(STATE.activeSystemLabel);
+            const targetDef = mode === 'direct' ? getEffectiveDef(sys.directMode.defName) : getEffectiveDef(sys.indirectMode.defName);
+
+            if (isGun) targetDef.weapon[fieldKey] = value;
+            else targetDef[fieldKey] = value;
+
+            if (FIELD_LINKS[fieldKey]) {
+                const counterpart = mode === 'direct' ? getEffectiveDef(sys.indirectMode.defName) : getEffectiveDef(sys.directMode.defName);
+                if (isGun) counterpart.weapon[fieldKey] = value;
+                else counterpart[fieldKey] = value;
+
+                const indInput = document.getElementById(`p_ind_${fieldKey}`);
+                if (indInput && mode === 'direct') indInput.value = value;
+            }
+        }
+
+        function syncAllBuildingStats() {
+            const sys = getSystem(STATE.activeSystemLabel);
+            if (!sys.directMode || !sys.indirectMode) return;
+
+            const dm = getEffectiveDef(sys.directMode.defName);
+            const im = getEffectiveDef(sys.indirectMode.defName);
+
+            ['hp', 'work', 'mass', 'bulk', 'cooldownTime'].forEach(k => {
+                im[k] = dm[k];
+                FIELD_LINKS[k] = true;
+            });
+            im.costs = JSON.parse(JSON.stringify(dm.costs || {}));
+
+            renderParallelSyncTable();
+            showToast("Synced physical building stats from Direct → Indirect Mode", "success");
+        }
+
+        function saveEditorForm() {
+            const sys = getSystem(STATE.activeSystemLabel);
+            if (!sys) return;
+
+            pushUndoState();
+
+            const saveMode = (modeName) => {
+                const defObj = modeName === 'direct' ? (sys.directMode || sys.primaryMode) : (sys.indirectMode || sys.primaryMode);
+                if (!defObj) return;
+
+                const cur = getEffectiveDef(defObj.defName);
+                const updated = JSON.parse(JSON.stringify(cur));
+
+                if (STATE.activeEditMode === modeName || STATE.activeEditMode === 'parallel') {
+                    if (STATE.activeEditMode !== 'parallel') {
+                        updated.label = document.getElementById('ed_label').value;
+                        updated.parentName = document.getElementById('ed_parentName').value;
+                        updated.hp = document.getElementById('ed_hp').value;
+                        updated.work = document.getElementById('ed_work').value;
+                        updated.mass = document.getElementById('ed_mass').value;
+                        updated.bulk = document.getElementById('ed_bulk').value;
+                        updated.cooldownTime = document.getElementById('ed_cooldownTime').value;
+
+                        const newCosts = {};
+                        document.querySelectorAll('#costTableBody tr').forEach(tr => {
+                            const k = tr.querySelector('.cost-key').value.trim();
+                            const v = tr.querySelector('.cost-val').value.trim();
+                            if (k) newCosts[k] = v;
+                        });
+                        updated.costs = newCosts;
+
+                        updated.weapon.verbClass = document.getElementById('ed_verbClass').value;
+                        updated.weapon.minRange = document.getElementById('ed_minRange').value;
+                        updated.weapon.maxRange = document.getElementById('ed_maxRange').value;
+                        updated.weapon.burstShotCount = document.getElementById('ed_burstShotCount').value;
+                        updated.weapon.warmupTime = document.getElementById('ed_warmupTime').value;
+                        updated.weapon.sightsEfficiency = document.getElementById('ed_sightsEff').value;
+                        updated.weapon.shotSpread = document.getElementById('ed_shotSpread').value;
+
+                        updated.isManned = document.getElementById('ed_isManned').checked;
+                        updated.isPowered = document.getElementById('ed_isPowered').checked;
+                        updated.powerWatts = document.getElementById('ed_powerWatts').value;
+                        updated.hasModeSwap = document.getElementById('ed_hasModeSwap').checked;
+                        updated.swapAltDef = document.getElementById('ed_swapAltDef').value;
+                    }
+                }
+
+                updated.rawXml = generateXmlForDef(updated);
+                STATE.modifiedDefs[defObj.defName] = updated;
+            };
+
+            if (sys.directMode) saveMode('direct');
+            if (sys.indirectMode) saveMode('indirect');
+
+            saveAutoSave();
+            closeModal('editorModal');
+            renderAll();
+            showToast(`Saved changes for ${sys.systemLabel}`, "success");
+        }
+
+        // --- XML Generator ---
+        function generateXmlForDef(def) {
+            if (!STATE.modifiedDefs[def.defName]) {
+                return (def.rawXml || '').trim();
+            }
+            return patchXmlString(def.rawXml || '', def);
+        }
+
+        function patchXmlString(origXml, def) {
+            if (!origXml) return '';
+            let xml = origXml;
+
+            function replaceTag(tagName, newValue) {
+                if (newValue === undefined || newValue === null || newValue === '') return;
+                const tagRegex = new RegExp(`<${tagName}>[\\s\\S]*?<\\/${tagName}>`, 'g');
+                if (tagRegex.test(xml)) {
+                    xml = xml.replace(tagRegex, `<${tagName}>${newValue}</${tagName}>`);
+                }
+            }
+
+            if (def.label) replaceTag('label', escapeHtml(def.label));
+            if (def.hp) replaceTag('MaxHitPoints', def.hp);
+            if (def.work) replaceTag('WorkToBuild', def.work);
+            if (def.mass) replaceTag('Mass', def.mass);
+            if (def.bulk) replaceTag('Bulk', def.bulk);
+            if (def.cooldownTime) replaceTag('turretBurstCooldownTime', def.cooldownTime);
+
+            if (def.costs && Object.keys(def.costs).length > 0) {
+                let costItems = Object.entries(def.costs).map(([k,v]) => `      <${k}>${v}</${k}>`).join('\n');
+                let newCostBlock = `<costList>\n${costItems}\n    </costList>`;
+                const costRegex = /<costList>[\s\S]*?<\/costList>/;
+                if (costRegex.test(xml)) {
+                    xml = xml.replace(costRegex, newCostBlock);
+                }
+            }
+
+            return xml.trim();
+        }
+
+        // --- XML Diff Modal ---
+        function showDiffModal(defName) {
+            const sys = STATE.systems.find(s => (s.directMode && s.directMode.defName === defName) || (s.indirectMode && s.indirectMode.defName === defName) || (s.primaryMode && s.primaryMode.defName === defName));
+            
+            const selector = document.getElementById('diffDefSelector');
+            selector.innerHTML = '';
+            if (sys.directMode) selector.innerHTML += `<option value="${sys.directMode.defName}">Direct Building: ${sys.directMode.defName}</option>`;
+            if (sys.indirectMode) selector.innerHTML += `<option value="${sys.indirectMode.defName}">Indirect Building: ${sys.indirectMode.defName}</option>`;
+            selector.value = defName;
+
+            switchDiffTarget(defName);
+            openModal('diffModal');
+        }
+
+        function switchDiffTarget(defName) {
+            const orig = DB.systems.flatMap(s => [s.directMode, s.indirectMode, s.primaryMode]).find(d => d && d.defName === defName);
+            const cur = getEffectiveDef(defName);
+
+            const origText = orig ? (orig.rawXml || '').trim() : '';
+            const modText = generateXmlForDef(cur);
+
+            document.getElementById('diffDefName').innerText = defName;
+            renderDiffView(origText, modText);
+        }
+
+        function renderDiffView(origText, modText) {
+            const origLines = origText.split('\n');
+            const modLines = modText.split('\n');
+
+            let origHtml = '';
+            let modHtml = '';
+
+            const maxLen = Math.max(origLines.length, modLines.length);
+            for (let i = 0; i < maxLen; i++) {
+                const l1 = origLines[i] !== undefined ? origLines[i] : '';
+                const l2 = modLines[i] !== undefined ? modLines[i] : '';
+
+                if (l1 === l2) {
+                    origHtml += `<div>${escapeHtml(l1)}</div>`;
+                    modHtml += `<div>${escapeHtml(l2)}</div>`;
+                } else {
+                    origHtml += `<div class="diff-line-del">${escapeHtml(l1 || ' ')}</div>`;
+                    modHtml += `<div class="diff-line-add">${escapeHtml(l2 || ' ')}</div>`;
+                }
+            }
+
+            document.getElementById('diffPaneOrig').innerHTML = origHtml;
+            document.getElementById('diffPaneMod').innerHTML = modHtml;
+        }
+
+        function showDiffForCurrentDef() {
+            const sys = getSystem(STATE.activeSystemLabel);
+            if (sys) showDiffModal(sys.directMode ? sys.directMode.defName : sys.primaryMode.defName);
+        }
+
+        function pushUndoState() {
+            STATE.undoStack.push(JSON.stringify(STATE.modifiedDefs));
+            STATE.redoStack = [];
+            updateHistoryButtons();
+        }
+
+        function undoAction() {
+            if (STATE.undoStack.length === 0) return;
+            STATE.redoStack.push(JSON.stringify(STATE.modifiedDefs));
+            const prev = STATE.undoStack.pop();
+            STATE.modifiedDefs = JSON.parse(prev);
+            saveAutoSave();
+            renderAll();
+            showToast("Undone last change", "info");
+        }
+
+        function redoAction() {
+            if (STATE.redoStack.length === 0) return;
+            STATE.undoStack.push(JSON.stringify(STATE.modifiedDefs));
+            const next = STATE.redoStack.pop();
+            STATE.modifiedDefs = JSON.parse(next);
+            saveAutoSave();
+            renderAll();
+            showToast("Redone last change", "info");
+        }
+
+        function updateHistoryButtons() {
+            document.getElementById('btnUndo').disabled = STATE.undoStack.length === 0;
+            document.getElementById('btnRedo').disabled = STATE.redoStack.length === 0;
+        }
+
+        function revertSystem(systemLabel) {
+            const sys = getSystem(systemLabel);
+            if (!sys) return;
+            pushUndoState();
+            if (sys.directMode) delete STATE.modifiedDefs[sys.directMode.defName];
+            if (sys.indirectMode) delete STATE.modifiedDefs[sys.indirectMode.defName];
+            if (sys.primaryMode) delete STATE.modifiedDefs[sys.primaryMode.defName];
+            saveAutoSave();
+            renderAll();
+            showToast(`Reverted ${systemLabel} to original state`, "info");
+        }
+
+        function revertCurrentDef() {
+            if (STATE.activeSystemLabel) {
+                revertSystem(STATE.activeSystemLabel);
+                closeModal('editorModal');
+            }
+        }
+
+        function revertAllEdits() {
+            if (confirm("Are you sure you want to revert all matrix modifications back to original XML files?")) {
+                pushUndoState();
+                STATE.modifiedDefs = {};
+                saveAutoSave();
+                renderAll();
+                showToast("Reverted all modifications back to original state", "warning");
+            }
+        }
+
+        function openSnapshotModal() {
+            renderSnapshotsList();
+            openModal('snapshotModal');
+        }
+
+        function createManualSnapshot() {
+            const name = document.getElementById('snapNameInput').value.trim() || "Snapshot " + new Date().toLocaleTimeString();
+            if (!dbInstance) return;
+            const tx = dbInstance.transaction("snapshots", "readwrite");
+            const store = tx.objectStore("snapshots");
+            store.add({ name, timestamp: new Date().toISOString(), state: STATE.modifiedDefs });
+            document.getElementById('snapNameInput').value = '';
+            tx.oncomplete = () => {
+                renderSnapshotsList();
+                showToast(`Saved snapshot "${name}"`, "success");
+            };
+        }
+
+        function renderSnapshotsList() {
+            if (!dbInstance) return;
+            const tbody = document.getElementById('snapshotTableBody');
+            tbody.innerHTML = '';
+            const tx = dbInstance.transaction("snapshots", "readonly");
+            const store = tx.objectStore("snapshots");
+            const req = store.getAll();
+            req.onsuccess = () => {
+                req.result.forEach(snap => {
+                    if (snap.id === "AUTOSAVE") return;
+                    const tr = document.createElement('tr');
+                    const modCount = Object.keys(snap.state || {}).length;
+                    tr.innerHTML = `
+                        <td>${new Date(snap.timestamp).toLocaleString()}</td>
+                        <td><b>${escapeHtml(snap.name)}</b></td>
+                        <td>${modCount} defs</td>
+                        <td>
+                            <button class="btn btn-sm btn-accent" onclick="restoreSnapshot(${snap.id})">Restore</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSnapshot(${snap.id})">✖</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+        }
+
+        function restoreSnapshot(id) {
+            const tx = dbInstance.transaction("snapshots", "readonly");
+            const store = tx.objectStore("snapshots");
+            const req = store.get(id);
+            req.onsuccess = () => {
+                if (req.result) {
+                    pushUndoState();
+                    STATE.modifiedDefs = req.result.state;
+                    saveAutoSave();
+                    closeModal('snapshotModal');
+                    renderAll();
+                    showToast(`Restored snapshot "${req.result.name}"`, "success");
+                }
+            };
+        }
+
+        function deleteSnapshot(id) {
+            const tx = dbInstance.transaction("snapshots", "readwrite");
+            const store = tx.objectStore("snapshots");
+            store.delete(id);
+            tx.oncomplete = () => renderSnapshotsList();
+        }
+
+        function openExportModal() {
+            openModal('exportModal');
+        }
+
+        function downloadStateJson() {
+            const payload = {
+                timestamp: new Date().toISOString(),
+                modifiedDefs: STATE.modifiedDefs
+            };
+            const str = JSON.stringify(payload, null, 2);
+            downloadFile('amc_matrix_export.json', str, 'application/json');
+        }
+
+        function downloadFile(filename, text, mimeType) {
+            const blob = new Blob([text], { type: mimeType });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+        }
+
+        function runAuditValidation() {
+            const body = document.getElementById('auditReportBody');
+            body.innerHTML = '';
+
+            let passCount = 0;
+            let warnCount = 0;
+            const reportLines = [];
+
+            DB.systems.forEach(sys => {
+                const dm = getEffectiveDef(sys.directMode ? sys.directMode.defName : sys.primaryMode.defName);
+                if (dm.hp <= 0) {
+                    warnCount++;
+                    reportLines.push(`❌ <b>${dm.defName}</b>: MaxHitPoints must be greater than 0.`);
+                }
+                if (dm.weapon && parseFloat(dm.weapon.minRange) > parseFloat(dm.weapon.maxRange)) {
+                    warnCount++;
+                    reportLines.push(`❌ <b>${dm.defName}</b>: Min Range (${dm.weapon.minRange}) cannot exceed Max Range (${dm.weapon.maxRange}).`);
+                }
+                passCount++;
+            });
+
+            let summaryHtml = `
+                <div style="background:#0f172a; padding:12px; border-radius:6px; margin-bottom:12px; border:1px solid var(--border-color);">
+                    <h3 style="color:${warnCount > 0 ? 'var(--accent-red)' : 'var(--accent-green)'}; font-size:16px;">
+                        ${warnCount === 0 ? '✅ All Exporter Validations Passed Cleanly!' : `⚠️ Found ${warnCount} Validation Issue(s)`}
+                    </h3>
+                    <p style="color:var(--text-muted); font-size:11px; margin-top:4px;">
+                        Audited ${passCount} turret defs against RimWorld CE schema rules and cross-reference sanity checks.
+                    </p>
+                </div>
+            `;
+
+            if (reportLines.length > 0) {
+                summaryHtml += `<div style="display:flex; flex-direction:column; gap:6px;">${reportLines.join('')}</div>`;
+            }
+
+            body.innerHTML = summaryHtml;
+            openModal('auditModal');
+        }
+
+        function toggleSandboxMode() {
+            STATE.isSandbox = !STATE.isSandbox;
+            const pill = document.getElementById('sandboxPill');
+            if (STATE.isSandbox) {
+                pill.className = 'status-pill mode-sandbox';
+                pill.innerText = '🧪 TEST SANDBOX (Dry-Run Only)';
+                showToast("Switched to Testing Sandbox Mode", "info");
+            } else {
+                pill.className = 'status-pill mode-live';
+                pill.innerText = '● LIVE EDITOR MODE';
+                showToast("Switched to Live Editor Mode", "info");
+            }
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderColor = type === 'success' ? 'var(--accent-green)' : (type === 'warning' ? 'var(--accent-amber)' : 'var(--accent)');
+            toast.innerHTML = `<span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+    </script>
+</body>
+</html>
