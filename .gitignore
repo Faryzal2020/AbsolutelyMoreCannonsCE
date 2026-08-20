@@ -32,3 +32,10 @@ x86/
 .gemini/
 scratch/
 
+
+# TurretEditor local web tool
+TurretEditor/node_modules/
+TurretEditor/public/
+DevTools/turret_editor.db
+DevTools/turret_editor.db-shm
+DevTools/turret_editor.db-wal
