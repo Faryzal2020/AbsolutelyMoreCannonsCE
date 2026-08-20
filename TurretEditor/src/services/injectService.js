@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { abs, rel, DEFS_DIR } from '../paths.js';
 import { FIELD_BY_KEY, TOGGLE_BY_KEY, serialise } from '../xml/fieldMap.js';
+import { AMMO_FIELD_BY_KEY } from '../xml/fieldMapAmmo.js';
 import {
   setValue, setListValue, setCostList, addComponent, removeComponent,
   SKIP_NO_CHANGE,
@@ -33,7 +34,7 @@ export function applyChange(content, change) {
   }
 
   if (change.kind === 'field') {
-    const field = FIELD_BY_KEY.get(change.key);
+    const field = FIELD_BY_KEY.get(change.key) || AMMO_FIELD_BY_KEY.get(change.key);
     if (!field) return { content, changed: false, reason: 'unknown-field' };
     const value = serialise(field.type, change.to);
     return field.type === 'list'

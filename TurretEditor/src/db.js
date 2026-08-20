@@ -83,6 +83,36 @@ CREATE TABLE IF NOT EXISTS mod_extensions (
   params_json TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS ammo (
+  def_name               TEXT PRIMARY KEY,
+  file_id                INTEGER REFERENCES files(file_id) ON DELETE CASCADE,
+  label                  TEXT,
+  ammo_family            TEXT,
+  ammo_set_name          TEXT,
+  indirect_ammo_set_name TEXT,
+  ammo_class             TEXT,
+  has_direct_mode        INTEGER DEFAULT 1,
+  has_indirect_mode      INTEGER DEFAULT 1,
+  direct_bullet_def      TEXT,
+  indirect_bullet_def    TEXT,
+  market_value           REAL,
+  mass                   REAL,
+  bulk                   REAL,
+  modified               INTEGER NOT NULL DEFAULT 0,
+  data_json              TEXT NOT NULL,
+  original_json          TEXT NOT NULL,
+  updated_at             TEXT
+);
+
+CREATE TABLE IF NOT EXISTS ammo_recipes (
+  recipe_id        INTEGER PRIMARY KEY AUTOINCREMENT,
+  def_name         TEXT NOT NULL REFERENCES ammo(def_name) ON DELETE CASCADE,
+  recipe_def       TEXT NOT NULL,
+  work_amount      INTEGER,
+  yield_count      INTEGER,
+  ingredients_json TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS meta (
   key   TEXT PRIMARY KEY,
   value TEXT
@@ -93,6 +123,8 @@ CREATE INDEX IF NOT EXISTS idx_turrets_modified ON turrets(modified);
 CREATE INDEX IF NOT EXISTS idx_costs_def       ON costs(def_name);
 CREATE INDEX IF NOT EXISTS idx_weapons_def     ON weapons(def_name);
 CREATE INDEX IF NOT EXISTS idx_ext_def         ON mod_extensions(def_name);
+CREATE INDEX IF NOT EXISTS idx_ammo_family     ON ammo(ammo_family);
+CREATE INDEX IF NOT EXISTS idx_ammo_modified   ON ammo(modified);
 `;
 
 let instance = null;
@@ -116,6 +148,8 @@ export async function closeDb() {
 /** Wipe every extracted row, keeping the schema. Used at the start of extract. */
 export function resetTables(db) {
   db.exec(`
+    DELETE FROM ammo_recipes;
+    DELETE FROM ammo;
     DELETE FROM mod_extensions;
     DELETE FROM weapons;
     DELETE FROM costs;

@@ -1,5 +1,7 @@
 import { FIELDS, COMPONENT_TOGGLES, getPath, serialise } from '../xml/fieldMap.js';
+import { AMMO_FIELDS } from '../xml/fieldMapAmmo.js';
 import { diskSnapshot } from './extractService.js';
+import { extractAllAmmo } from '../xml/extractAmmo.js';
 
 const isBlank = (v) => v === null || v === undefined || v === '';
 
@@ -29,8 +31,6 @@ function gateOpen(obj, field) {
 
 /**
  * Compute every pending change for one turret: DB state vs on-disk state.
- * @returns {Array<object>} change descriptors consumed by both the diff view
- *          and the injector.
  */
 export function diffTurret(current, disk) {
   const changes = [];
@@ -84,20 +84,71 @@ export function diffTurret(current, disk) {
   return changes;
 }
 
+export function diffAmmo(current, disk) {
+  const changes = [];
+  if (!disk) return changes;
+
+  for (const field of AMMO_FIELDS) {
+    const to = getPath(current, field.key);
+    const from = getPath(disk, field.key);
+    if (sameValue(from, to, field.type)) continue;
+
+    const targets = [];
+    if (field.doc === 'ammo') {
+      targets.push({ defName: current.defName, filePath: current.filePath });
+    } else if (field.doc === 'recipe') {
+      if (current.recipe?.defName) {
+        targets.push({ defName: current.recipe.defName, filePath: current.filePath });
+      }
+    } else if (field.doc === 'shared_projectile') {
+      if (current.hasDirectMode && current.directBulletDef) {
+        targets.push({ defName: current.directBulletDef, filePath: current.directFilePath || current.filePath });
+      }
+      if (current.hasIndirectMode && current.indirectBulletDef) {
+        targets.push({ defName: current.indirectBulletDef, filePath: current.indirectFilePath || current.filePath });
+      }
+    } else if (field.doc === 'direct_projectile') {
+      if (current.hasDirectMode && current.directBulletDef) {
+        targets.push({ defName: current.directBulletDef, filePath: current.directFilePath || current.filePath });
+      }
+    } else if (field.doc === 'indirect_projectile') {
+      if (current.hasIndirectMode && current.indirectBulletDef) {
+        targets.push({ defName: current.indirectBulletDef, filePath: current.indirectFilePath || current.filePath });
+      }
+    }
+
+    for (const t of targets) {
+      changes.push({
+        kind: 'field',
+        defName: t.defName,
+        ownerDefName: current.defName,
+        doc: field.doc,
+        filePath: t.filePath,
+        key: field.key,
+        label: field.key,
+        type: field.type,
+        from, to,
+        xmlPath: field.path.map((s) => (s.cls ? `li[${s.cls}]` : s.tag)).join(' > '),
+        serialised: serialise(field.type, to),
+      });
+    }
+  }
+
+  return changes;
+}
+
 /**
- * Diff every turret marked modified in the database against disk.
- * @param {object} db
- * @param {string[]|null} onlyDefs restrict to these defNames
+ * Diff every turret and ammo marked modified in the database against disk.
  */
 export function computeDiffs(db, onlyDefs = null) {
-  const disk = diskSnapshot();
-  const rows = db.all('SELECT def_name, data_json FROM turrets WHERE modified = 1 ORDER BY def_name');
+  const diskTurrets = diskSnapshot();
+  const turretRows = db.all('SELECT def_name, data_json FROM turrets WHERE modified = 1 ORDER BY def_name');
 
   const result = [];
-  for (const row of rows) {
+  for (const row of turretRows) {
     if (onlyDefs && !onlyDefs.includes(row.def_name)) continue;
     const current = JSON.parse(row.data_json);
-    const changes = diffTurret(current, disk.get(row.def_name));
+    const changes = diffTurret(current, diskTurrets.get(row.def_name));
     if (changes.length) {
       result.push({
         defName: row.def_name,
@@ -107,6 +158,27 @@ export function computeDiffs(db, onlyDefs = null) {
         changeCount: changes.length,
         changes,
       });
+    }
+  }
+
+  const ammoRows = db.all('SELECT def_name, data_json FROM ammo WHERE modified = 1 ORDER BY def_name');
+  if (ammoRows.length) {
+    const { ammo: diskAmmoList } = extractAllAmmo();
+    const diskAmmoMap = new Map(diskAmmoList.map((a) => [a.defName, a]));
+
+    for (const row of ammoRows) {
+      if (onlyDefs && !onlyDefs.includes(row.def_name)) continue;
+      const current = JSON.parse(row.data_json);
+      const changes = diffAmmo(current, diskAmmoMap.get(row.def_name));
+      if (changes.length) {
+        result.push({
+          defName: row.def_name,
+          label: current.label,
+          filePath: current.filePath,
+          changeCount: changes.length,
+          changes,
+        });
+      }
     }
   }
 

@@ -4,6 +4,9 @@ import { runInjection, runRollback, listBackups } from '../services/injectServic
 import {
   listTurrets, getTurret, updateTurret, revertTurret, revertAll, restoreState, previewXml,
 } from '../services/turretService.js';
+import {
+  listAmmo, getAmmo, updateAmmo, revertAmmo, revertAllAmmo,
+} from '../services/ammoService.js';
 import { metrics, auditReport } from '../services/auditService.js';
 import { buildSheet, toCsv, toWorkbook, describeColumns, exportMeta, DATASETS } from '../services/exportService.js';
 import { FIELDS, COMPONENT_TOGGLES } from '../xml/fieldMap.js';
@@ -20,6 +23,7 @@ export default async function apiRoutes(fastify, { db }) {
     ok: true,
     driver: db.kind,
     turrets: db.get('SELECT COUNT(*) AS n FROM turrets').n,
+    ammo: db.get('SELECT COUNT(*) AS n FROM ammo').n,
   }));
 
   fastify.get('/api/openapi.json', async () => openApiSpec());
@@ -27,7 +31,7 @@ export default async function apiRoutes(fastify, { db }) {
   // --- extraction -------------------------------------------------------
   fastify.post('/api/extract', async () => runExtraction(db));
 
-  // --- reading ----------------------------------------------------------
+  // --- reading turrets --------------------------------------------------
   fastify.get('/api/turrets', async (request) => {
     const { category, search, modified, warnings } = request.query;
     let turrets = listTurrets(db);
@@ -68,6 +72,50 @@ export default async function apiRoutes(fastify, { db }) {
   });
 
   fastify.post('/api/revert-all', async () => ({ ok: true, reverted: revertAll(db) }));
+
+  // --- ammunition endpoints ---------------------------------------------
+  fastify.get('/api/ammo', async (request) => {
+    const { ammoFamily, search, modified, mode } = request.query;
+    let list = listAmmo(db);
+
+    if (ammoFamily && ammoFamily !== 'all') {
+      list = list.filter((a) => a.ammoFamily.toLowerCase() === String(ammoFamily).toLowerCase());
+    }
+    if (modified === 'true') list = list.filter((a) => a.modified);
+    if (mode === 'direct') list = list.filter((a) => a.hasDirectMode && !a.hasIndirectMode);
+    if (mode === 'indirect') list = list.filter((a) => a.hasIndirectMode && !a.hasDirectMode);
+    if (mode === 'dual') list = list.filter((a) => a.hasDirectMode && a.hasIndirectMode);
+    if (search) {
+      const q = String(search).toLowerCase();
+      list = list.filter((a) => [
+        a.defName, a.label, a.ammoFamily, a.ammoClass, a.ammoSetName, a.indirectAmmoSetName,
+        a.directBulletDef, a.indirectBulletDef, a.filePath,
+      ].some((v) => String(v || '').toLowerCase().includes(q)));
+    }
+
+    return { ok: true, count: list.length, ammo: list };
+  });
+
+  fastify.get('/api/ammo/:defName', async (request, reply) => {
+    const item = getAmmo(db, request.params.defName);
+    return item ? { ok: true, ammo: item } : notFound(reply, `Unknown ammo def: ${request.params.defName}`);
+  });
+
+  fastify.put('/api/ammo/:defName', async (request, reply) => {
+    const patch = request.body;
+    if (!patch || typeof patch !== 'object' || Array.isArray(patch)) {
+      return reply.code(400).send({ ok: false, error: 'Request body must be a JSON object.' });
+    }
+    const item = updateAmmo(db, request.params.defName, patch);
+    return item ? { ok: true, ammo: item } : notFound(reply, `Unknown ammo def: ${request.params.defName}`);
+  });
+
+  fastify.post('/api/ammo/:defName/revert', async (request, reply) => {
+    const item = revertAmmo(db, request.params.defName);
+    return item ? { ok: true, ammo: item } : notFound(reply, `Unknown ammo def: ${request.params.defName}`);
+  });
+
+  fastify.post('/api/revert-all-ammo', async () => ({ ok: true, reverted: revertAllAmmo(db) }));
 
   fastify.post('/api/restore', async (request, reply) => {
     const turrets = request.body?.turrets;

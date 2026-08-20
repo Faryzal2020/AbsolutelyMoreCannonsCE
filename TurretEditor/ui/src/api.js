@@ -22,6 +22,16 @@ export const api = {
     request(`/api/turrets/${encodeURIComponent(defName)}/revert`, { method: 'POST', body: '{}' }),
   revertAll: () => request('/api/revert-all', { method: 'POST', body: '{}' }),
   restore: (turrets) => request('/api/restore', { method: 'POST', body: JSON.stringify({ turrets }) }),
+
+  // Ammunition API
+  ammo: () => request('/api/ammo'),
+  ammoItem: (defName) => request(`/api/ammo/${encodeURIComponent(defName)}`),
+  updateAmmo: (defName, patch) =>
+    request(`/api/ammo/${encodeURIComponent(defName)}`, { method: 'PUT', body: JSON.stringify(patch) }),
+  revertAmmo: (defName) =>
+    request(`/api/ammo/${encodeURIComponent(defName)}/revert`, { method: 'POST', body: '{}' }),
+  revertAllAmmo: () => request('/api/revert-all-ammo', { method: 'POST', body: '{}' }),
+
   diffs: () => request('/api/diffs'),
   diffXml: (defName) => request(`/api/diffs/${encodeURIComponent(defName)}/xml`),
   inject: (options = {}) => request('/api/inject', { method: 'POST', body: JSON.stringify(options) }),

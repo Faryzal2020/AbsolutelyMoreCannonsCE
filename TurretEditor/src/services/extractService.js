@@ -1,12 +1,15 @@
 import { extractAll } from '../xml/extract.js';
+import { extractAllAmmo } from '../xml/extractAmmo.js';
 import { resetTables, setMeta, getMeta } from '../db.js';
 import { abs } from '../paths.js';
 import { upsertTurret, extensionRows } from './persist.js';
+import { upsertAmmoRecord } from './ammoService.js';
 
 /** Full XML -> SQLite ingest. Wipes and repopulates every extracted table. */
 export function runExtraction(db) {
   const started = Date.now();
   const { turrets, files, malformed, knownDefs } = extractAll();
+  const { ammo } = extractAllAmmo();
 
   const write = db.transaction(() => {
     resetTables(db);
@@ -17,6 +20,11 @@ export function runExtraction(db) {
       db.run('INSERT INTO files (file_path, abs_path, checksum, scanned_at) VALUES (?, ?, ?, ?)',
         filePath, abs(filePath), checksum, now);
       fileIds.set(filePath, db.get('SELECT file_id FROM files WHERE file_path = ?', filePath).file_id);
+    }
+
+    for (const a of ammo) {
+      const fileId = fileIds.get(a.filePath) ?? null;
+      upsertAmmoRecord(db, a, { fileId, modified: false, originalJson: JSON.stringify(a) });
     }
 
     for (const t of turrets) {
@@ -30,6 +38,7 @@ export function runExtraction(db) {
 
     setMeta(db, 'last_extraction', new Date().toISOString());
     setMeta(db, 'turret_count', turrets.length);
+    setMeta(db, 'ammo_count', ammo.length);
     setMeta(db, 'known_defs', JSON.stringify(knownDefs));
   });
 
@@ -41,6 +50,7 @@ export function runExtraction(db) {
     counts: {
       files: files.size,
       turrets: turrets.length,
+      ammo: ammo.length,
       weapons: new Set(turrets.map((t) => t.weaponDefName).filter(Boolean)).size,
       costs: turrets.reduce((n, t) => n + t.costs.length, 0),
       modExtensions: turrets.reduce((n, t) => n + extensionRows(t).length, 0),

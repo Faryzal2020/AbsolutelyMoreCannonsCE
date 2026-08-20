@@ -13,6 +13,7 @@ export const APP_ROOT = path.resolve(here, '..');
 export const MOD_ROOT = path.resolve(process.env.AMC_MOD_ROOT || path.resolve(APP_ROOT, '..'));
 export const DEFS_DIR = path.join(MOD_ROOT, 'Common', 'Defs');
 export const BUILDINGS_DIR = path.join(DEFS_DIR, 'ThingDefs_Buildings');
+export const AMMO_DIR = path.join(DEFS_DIR, 'Ammo');
 export const TEXTURES_DIR = path.join(MOD_ROOT, 'Common', 'Textures');
 export const DB_PATH = path.resolve(
   process.env.AMC_DB_PATH || path.join(MOD_ROOT, 'DevTools', 'turret_editor.db'),
