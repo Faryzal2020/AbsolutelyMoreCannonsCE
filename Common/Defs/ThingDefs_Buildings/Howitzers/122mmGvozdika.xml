@@ -45,6 +45,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.8</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0.5</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_122mmGvozdika_indirect_Base</alternateDef>
 				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>

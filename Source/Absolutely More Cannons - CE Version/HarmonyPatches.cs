@@ -58,6 +58,9 @@ namespace AbsolutelyMoreCannons
 
             // Try to patch CE turret methods at runtime
             TryPatchCETurrets(harmony);
+
+            // Patch enclosed manned turrets at runtime
+            HarmonyPatches_EnclosedTurret.TryPatchEnclosedTurrets(harmony);
         }
 
         /// <summary>

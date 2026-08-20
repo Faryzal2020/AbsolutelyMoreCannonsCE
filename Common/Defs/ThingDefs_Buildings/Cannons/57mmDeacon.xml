@@ -33,6 +33,12 @@
 			<turretBurstCooldownTime>4</turretBurstCooldownTime>
 		</building>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>0.8</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.2</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
 				<swayReduction>0.5</swayReduction>

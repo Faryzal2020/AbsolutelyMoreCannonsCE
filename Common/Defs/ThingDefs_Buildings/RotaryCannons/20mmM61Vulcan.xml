@@ -40,6 +40,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>0.8</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.2</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
 			<!-- Fire Arc Control -->
 			<li Class="CombatExtended.CompProperties_FireArc">
