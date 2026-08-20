@@ -19,6 +19,12 @@ import xml.etree.ElementTree as ET
 MOD_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DEFS_DIR = os.path.join(MOD_ROOT, "Common", "Defs")
 
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 def create_backup(file_path):
     """Creates a .bak backup of file_path if it doesn't already exist."""
     bak_path = file_path + ".bak"
@@ -39,9 +45,34 @@ def rollback_all():
                 restored_count += 1
                 print(f"  [RESTORED] {os.path.relpath(xml_full, MOD_ROOT)}")
     if restored_count > 0:
-        print(f"\n✅ Rollback complete: Restored {restored_count} XML file(s).")
+        print(f"\n[OK] Rollback complete: Restored {restored_count} XML file(s).")
     else:
-        print("\nℹ️ No backup files (.xml.bak) found to restore.")
+        print("\n[INFO] No backup files (.xml.bak) found to restore.")
+
+def find_def_block(content, def_name):
+    """Finds exact (start, end) character range of the <ThingDef>...</ThingDef> block containing <defName>def_name</defName>."""
+    import re
+    def_name_pattern = re.compile(rf'<defName>\s*{re.escape(def_name)}\s*</defName>')
+    def_match = def_name_pattern.search(content)
+    if not def_match:
+        return None
+
+    def_start = def_match.start()
+    def_end = def_match.end()
+
+    start_pos = content.rfind('<ThingDef', 0, def_start)
+    if start_pos == -1:
+        return None
+
+    if content.rfind('</ThingDef>', start_pos, def_start) != -1:
+        return None
+
+    end_tag_pos = content.find('</ThingDef>', def_end)
+    if end_tag_pos == -1:
+        return None
+
+    end_pos = end_tag_pos + len('</ThingDef>')
+    return (start_pos, end_pos)
 
 def apply_edits(json_file, dry_run=False):
     if not os.path.exists(json_file):
@@ -58,54 +89,60 @@ def apply_edits(json_file, dry_run=False):
 
     print(f"Processing edits for {len(turret_edits)} def(s)...")
     if dry_run:
-        print("🔍 [DRY-RUN MODE] No files will be modified on disk.")
+        print(" [DRY-RUN MODE] No files will be modified on disk.")
 
     files_to_edits = {}
     for def_name, def_payload in turret_edits.items():
+        # Main building Def
         rel_path = def_payload.get("filePath")
         if rel_path:
             files_to_edits.setdefault(rel_path, []).append((def_name, def_payload))
 
-    import re
+        # Nested weapon Def if present
+        weapon_payload = def_payload.get("weapon")
+        if isinstance(weapon_payload, dict):
+            w_def_name = weapon_payload.get("weaponDefName")
+            w_rel_path = weapon_payload.get("filePath") or rel_path
+            if w_def_name and w_rel_path:
+                files_to_edits.setdefault(w_rel_path, []).append((w_def_name, weapon_payload))
+
     updated_files = set()
 
     for rel_path, edits in files_to_edits.items():
         abs_path = os.path.join(MOD_ROOT, rel_path)
         if not os.path.exists(abs_path):
-            print(f"  ⚠️ Target XML file does not exist: {rel_path}")
+            print(f"  [WARN] Target XML file does not exist: {rel_path}")
             continue
-
-        if not dry_run:
-            create_backup(abs_path)
 
         with open(abs_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         file_modified = False
         for def_name, def_payload in edits:
-            raw_xml = def_payload.get("defXml", "").strip()
+            raw_xml = (def_payload.get("rawXml") or def_payload.get("defXml") or "").strip()
             if not raw_xml:
+                print(f"  [WARN] No raw XML content found for def {def_name}")
                 continue
 
-            pattern = re.compile(rf'(<ThingDef\b[^>]*>[\s\S]*?<defName>\s*{re.escape(def_name)}\s*</defName>[\s\S]*?</ThingDef>)')
-            match = pattern.search(content)
-            if match:
-                content = content[:match.start()] + raw_xml + content[match.end():]
+            block_range = find_def_block(content, def_name)
+            if block_range:
+                start_pos, end_pos = block_range
+                content = content[:start_pos] + raw_xml + content[end_pos:]
                 file_modified = True
-                print(f"  ✅ Replaced def {def_name} in {rel_path}")
+                print(f"  [OK] Replaced def {def_name} in {rel_path}")
             else:
-                print(f"  ⚠️ Could not find exact <ThingDef> block for {def_name} in {rel_path}")
+                print(f"  [WARN] Could not find exact <ThingDef> block for {def_name} in {rel_path}")
 
-        if file_modified and not dry_run:
-            with open(abs_path, "w", encoding="utf-8") as f:
-                f.write(content)
+        if file_modified:
+            if not dry_run:
+                create_backup(abs_path)
+                with open(abs_path, "w", encoding="utf-8") as f:
+                    f.write(content)
             updated_files.add(rel_path)
-        else:
-            print(f"  ⚠️ Could not find exact <ThingDef> block for {def_name} in {rel_path}")
 
     print(f"\nDone. Processed {len(updated_files)} file(s).")
     if updated_files and not dry_run:
-        print("💡 Backup (.bak) files were created before editing. Run with --rollback to undo.")
+        print("[INFO] Backup (.bak) files were created before editing. Run with --rollback to undo.")
 
 def main():
     parser = argparse.ArgumentParser(description="AMC Turret Matrix XML Exporter & Sync Engine")

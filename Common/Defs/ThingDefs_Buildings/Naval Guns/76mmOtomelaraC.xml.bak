@@ -8,7 +8,7 @@
 		<label>OTO Melara 76/62C</label>
 	</DesignatorDropdownGroupDef>
 
-	<ThingDef ParentName="AMCTurretMannedBase"> 
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_76mmOtomelaraC_Base</defName>
 		<label>OTO Melara 76/62C</label>
     	<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
@@ -23,17 +23,17 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/M76mmOtomelaraC_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>2000</MaxHitPoints>
+			<MaxHitPoints>720</MaxHitPoints>
 			<WorkToBuild>22500</WorkToBuild>
-			<Mass>30</Mass>
-			<Bulk>200</Bulk>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
 		</statBases>
 		<costList>
-      <Steel>1000</Steel>
-      <ComponentIndustrial>45</ComponentIndustrial>
-      <Plasteel>100</Plasteel>
-      <ComponentSpacer>10</ComponentSpacer>
-    </costList>
+			<Steel>1000</Steel>
+      		<ComponentIndustrial>45</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      		<ComponentSpacer>10</ComponentSpacer>
+		</costList>
 		<building>
 			<turretGunDef>Turret_76mmOtomelaraC_Weapon</turretGunDef>
       		<turretTopDrawSize>14</turretTopDrawSize>
@@ -65,13 +65,6 @@
 		</researchPrerequisites>
     	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
 		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<selectableBurstCounts>
-				<li>1</li>
-				<li>3</li>
-				<li>6</li>
-			</selectableBurstCounts>
-			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>
@@ -113,7 +106,7 @@
           <canTargetLocations>true</canTargetLocations>
         </targetParams>
 				<ticksBetweenBurstShots>42</ticksBetweenBurstShots>
-				<burstShotCount>3</burstShotCount>
+				<burstShotCount>10</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
@@ -143,17 +136,17 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/M76mmOtomelaraC_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>2000</MaxHitPoints>
+			<MaxHitPoints>720</MaxHitPoints>
 			<WorkToBuild>22500</WorkToBuild>
-			<Mass>30</Mass>
-			<Bulk>200</Bulk>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
 		</statBases>
 		<costList>
-      <Steel>1000</Steel>
-      <ComponentIndustrial>45</ComponentIndustrial>
-      <Plasteel>100</Plasteel>
-      <ComponentSpacer>10</ComponentSpacer>
-    </costList>
+			<Steel>1000</Steel>
+      		<ComponentIndustrial>45</ComponentIndustrial>
+			<Plasteel>100</Plasteel>
+      		<ComponentSpacer>10</ComponentSpacer>
+		</costList>
 		<building>
 			<turretGunDef>Turret_76mmOtomelaraC_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
@@ -168,10 +161,8 @@
 				<basePowerConsumption>900</basePowerConsumption>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
-			<swayReduction>0</swayReduction>
-			<recoilReduction>0</recoilReduction>
-			<spreadReduction>1.1</spreadReduction>
-		</li>
+				<spreadReduction>1.1</spreadReduction>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_76mmOtomelaraC_Base</alternateDef>
@@ -187,13 +178,6 @@
 		</researchPrerequisites>
     	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
 		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<selectableBurstCounts>
-				<li>1</li>
-				<li>3</li>
-				<li>6</li>
-			</selectableBurstCounts>
-			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>

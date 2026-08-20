@@ -18,6 +18,12 @@ import difflib
 import re
 import xml.etree.ElementTree as ET
 
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 # Add DevTools directory to import generate_turret_matrix
 DEVTOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, DEVTOOLS_DIR)
@@ -88,7 +94,7 @@ class TestTurretMatrixExporter(unittest.TestCase):
             # Assert the single added line matches our target new value
             self.assertIn(expected_tag_snippet, added[0], f"Added line {added[0]} must contain {expected_tag_snippet}")
 
-            print(f"  ✅ [PASS] {def_name} -> {tag_name} updated to '{new_val}' (Single line diff verified)")
+            print(f"  [PASS] {def_name} -> {tag_name} updated to '{new_val}' (Single line diff verified)")
 
         finally:
             # 5. Delete temporary exported XML file
@@ -160,7 +166,7 @@ class TestTurretMatrixExporter(unittest.TestCase):
             burst_lis = [li.text.strip() for li in ext_nodes[0].findall("li")]
             self.assertEqual(burst_lis, ["3", "5", "10"], f"Expected burst counts ['3', '5', '10'], got {burst_lis}")
 
-            print("  ✅ [PASS] Turret_155mmGCT_Base -> Selectable burst counts enabled with valid XML syntax [3, 5, 10]")
+            print("  [PASS] Turret_155mmGCT_Base -> Selectable burst counts enabled with valid XML syntax [3, 5, 10]")
 
         finally:
             if os.path.exists(temp_export_file):
@@ -231,7 +237,7 @@ class TestTurretMatrixExporter(unittest.TestCase):
             self.assertEqual(spin_nodes[0].findtext("maxRPM"), "3000")
             self.assertEqual(spin_nodes[0].findtext("frameCount"), "4")
 
-            print("  ✅ [PASS] Turret_20mmFlak38_Base -> Rotary spinning animation (Gatling/Vulcan) enabled with valid XML syntax")
+            print("  [PASS] Turret_20mmFlak38_Base -> Rotary spinning animation (Gatling/Vulcan) enabled with valid XML syntax")
 
         finally:
             if os.path.exists(temp_export_file):
@@ -267,14 +273,51 @@ class TestTurretMatrixExporter(unittest.TestCase):
             fcs_nodes = tree.findall(".//li[@Class='AbsolutelyMoreCannons.CompProperties_TurretFCS']")
             self.assertEqual(len(fcs_nodes), 1, "Exported XML must contain <CompProperties_TurretFCS>.")
 
-            print("  ✅ [PASS] Turret_20mmFlak38_Base -> AccuracyOverride & FCS comps enabled with valid XML syntax")
+            print("  [PASS] Turret_20mmFlak38_Base -> AccuracyOverride & FCS comps enabled with valid XML syntax")
+
+        finally:
+            if os.path.exists(temp_export_file):
+                os.remove(temp_export_file)
+
+    def test_turret_smoker_export(self):
+        """Test enabling CompProperties_TurretSmoker on a turret and verifying XML output."""
+        import tempfile
+        def_info = self.all_turrets["Turret_U20mmFlak38_Base"]
+        orig_xml = def_info['rawXml']
+
+        smoker_block = """<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+            <muzzleEnabled>true</muzzleEnabled>
+            <muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+        </li>"""
+
+        orig_xml_clean = re.sub(r'\s*<li\s+Class=["\']AbsolutelyMoreCannons\.CompProperties_TurretSmoker["\']>[\s\S]*?</li>', '', orig_xml)
+        patched_xml = re.sub(r'(<comps>)', r'\1\n\t\t' + smoker_block, orig_xml_clean)
+
+        temp_export_file = tempfile.NamedTemporaryFile(suffix=".xml", delete=False).name
+        try:
+            with open(temp_export_file, "w", encoding="utf-8") as f:
+                f.write(patched_xml)
+
+            tree = ET.fromstring(patched_xml)
+            self.assertIsNotNone(tree, "Exported XML with CompProperties_TurretSmoker must be valid XML.")
+
+            smoker_nodes = tree.findall(".//li[@Class='AbsolutelyMoreCannons.CompProperties_TurretSmoker']")
+            self.assertEqual(len(smoker_nodes), 1, "Exported XML must contain <CompProperties_TurretSmoker>.")
+            self.assertEqual(smoker_nodes[0].findtext("muzzleFleckDef"), "AMC_MuzzleSmoke")
+
+            print("  [PASS] Turret_U20mmFlak38_Base -> CompProperties_TurretSmoker enabled with valid XML syntax")
 
         finally:
             if os.path.exists(temp_export_file):
                 os.remove(temp_export_file)
 
 if __name__ == "__main__":
-    print("\n🚀 Running Automated Exporter & Single-Value Diff Test Suite...\n")
+    if hasattr(sys.stdout, "reconfigure"):
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+    print("\n[TEST] Running Automated Exporter & Single-Value Diff Test Suite...\n")
     suite = unittest.TestLoader().loadTestsFromTestCase(TestTurretMatrixExporter)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)

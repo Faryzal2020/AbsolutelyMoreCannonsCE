@@ -191,27 +191,43 @@ def get_all_child_lis(merged_elem, container_tag):
             items.append(li)
     return items
 
+def get_merged_child_text(merged_elem, path, default=""):
+    parts = path.strip("./").split("/")
+    if len(parts) == 1:
+        for child in reversed(merged_elem):
+            if child.tag == parts[0] and child.text is not None and child.text.strip():
+                return child.text.strip()
+        return default
+    elif len(parts) == 2:
+        container_tag, child_tag = parts
+        for container in reversed(merged_elem.findall(container_tag)):
+            val = container.findtext(child_tag)
+            if val is not None and val.strip():
+                return val.strip()
+        return default
+    return default
+
 def get_merged_stat(merged_elem, stat_name, default="-"):
-    for stat_node in merged_elem.findall("statBases"):
+    for stat_node in reversed(merged_elem.findall("statBases")):
         val = stat_node.findtext(stat_name)
         if val is not None:
-            return val
+            return val.strip()
     return default
 
 def parse_single_turret_def(elem, filepath, db):
     merged = db.get_merged_element(elem, filepath)
     def_name = elem.findtext("defName")
-    turret_gun_def = merged.findtext("./building/turretGunDef")
+    turret_gun_def = get_merged_child_text(merged, "./building/turretGunDef")
     if not turret_gun_def:
         return None
 
-    label = merged.findtext("label", def_name)
+    label = get_merged_child_text(merged, "label", def_name)
     parent_name = elem.get("ParentName", "")
-    designator_dropdown = merged.findtext("designatorDropdown", "")
+    designator_dropdown = get_merged_child_text(merged, "designatorDropdown", "")
 
     # Graphic
-    tex_path = merged.findtext("./graphicData/texPath", "")
-    ui_icon_path = merged.findtext("uiIconPath", "")
+    tex_path = get_merged_child_text(merged, "./graphicData/texPath", "")
+    ui_icon_path = get_merged_child_text(merged, "uiIconPath", "")
     tex_ok, _ = check_texture_exists(tex_path)
     icon_ok, _ = check_texture_exists(ui_icon_path)
 
@@ -220,15 +236,16 @@ def parse_single_turret_def(elem, filepath, db):
     work = get_merged_stat(merged, "WorkToBuild", get_merged_stat(merged, "WorkToMake"))
     mass = get_merged_stat(merged, "Mass")
     bulk = get_merged_stat(merged, "Bulk")
-    skill_req = merged.findtext("constructionSkillPrerequisite", "-")
-    cooldown_time = merged.findtext("./building/turretBurstCooldownTime", "-")
-    top_draw_size = merged.findtext("./building/turretTopDrawSize", "-")
+    skill_req = get_merged_child_text(merged, "constructionSkillPrerequisite", "-")
+    cooldown_time = get_merged_child_text(merged, "./building/turretBurstCooldownTime", "-")
+    top_draw_size = get_merged_child_text(merged, "./building/turretTopDrawSize", "-")
 
     # Costs
     costs = {}
-    for cost_node in merged.findall("costList"):
+    for cost_node in reversed(merged.findall("costList")):
         for item in cost_node:
-            costs[item.tag] = item.text.strip() if item.text else "0"
+            if item.tag not in costs:
+                costs[item.tag] = item.text.strip() if item.text else "0"
 
     # Comps & Feature Dicts
     is_manned = False
@@ -291,7 +308,7 @@ def parse_single_turret_def(elem, filepath, db):
 
     is_manned = has_mannable
     is_auto_parent = parent_name in ["AMCTurretAutoBase", "AMCArtilleryAutoBase"]
-    ai_combat_dangerous = merged.findtext("./building/ai_combatDangerous", "").lower() == "true"
+    ai_combat_dangerous = get_merged_child_text(merged, "./building/ai_combatDangerous", "").lower() == "true"
 
     # Mod Extensions & Animations
     ext_lis = get_all_child_lis(merged, "modExtensions")
@@ -403,7 +420,7 @@ def parse_single_turret_def(elem, filepath, db):
         w_elem, w_path = weapon_tuple
         w_merged = db.get_merged_element(w_elem, w_path)
         
-        w_tex_path = w_merged.findtext("./graphicData/texPath", "")
+        w_tex_path = get_merged_child_text(w_merged, "./graphicData/texPath", "")
         w_tex_ok, _ = check_texture_exists(w_tex_path)
 
         sights_eff = get_merged_stat(w_merged, "SightsEfficiency")

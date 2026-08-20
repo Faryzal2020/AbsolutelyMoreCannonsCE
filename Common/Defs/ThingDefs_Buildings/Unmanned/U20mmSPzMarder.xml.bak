@@ -8,7 +8,7 @@
 		<label>Auto Spz Marder</label>
 	</DesignatorDropdownGroupDef>
 
-	<ThingDef ParentName="AMCTurretAutoBase"> 
+	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_U20mmSPzMarder_Base</defName>
 		<label>Auto Spz Marder (Auto)</label>
     <description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 546, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
@@ -23,40 +23,27 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/U20mmSPzMarder_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>475</MaxHitPoints>
+			<MaxHitPoints>546</MaxHitPoints>
 			<WorkToBuild>7500</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
       <AimingAccuracy>0.95</AimingAccuracy>
 		</statBases>
 		<costList>
-      <Steel>300</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
-      <Plasteel>7</Plasteel>
-      <ComponentSpacer>3</ComponentSpacer>
-    </costList>
+			<Steel>300</Steel>
+      		<ComponentIndustrial>8</ComponentIndustrial>
+			<Plasteel>7</Plasteel>
+      		<ComponentSpacer>3</ComponentSpacer>
+		</costList>
 		<building>
 			<turretGunDef>Turret_U20mmSPzMarder_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
       		<turretTopDrawSize>13</turretTopDrawSize>
-			<turretBurstCooldownTime>1</turretBurstCooldownTime>
+			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
 		<designatorDropdown>Group_AMC_U20mmSPzMarder</designatorDropdown>
 		<comps>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
-				<muzzleEnabled>true</muzzleEnabled>
-				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>1</muzzleParticleCount>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleParticleSize>1~2</muzzleParticleSize>
-				<heatEnabled>true</heatEnabled>
-				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>40</heatThreshold>
-				<heatDecayRate>0.6</heatDecayRate>
-				<heatEmissionRate>1</heatEmissionRate>
-				<shockwaveEnabled>false</shockwaveEnabled>
-			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
@@ -73,16 +60,7 @@
 		<researchPrerequisites>
 			<li>Research_U20mmSPzMarder</li>
 		</researchPrerequisites>
-		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<selectableBurstCounts>
-				<li>3</li>
-				<li>8</li>
-				<li>16</li>
-			</selectableBurstCounts>
-			</li>
-	</modExtensions>
-</ThingDef>
+	</ThingDef>
 	
 	<ThingDef ParentName="BaseWeaponTurret">
 		<defName>Turret_U20mmSPzMarder_Weapon</defName>

@@ -1487,6 +1487,9 @@
                     }
                 }
 
+                if (updated.weapon) {
+                    updated.weapon.rawXml = patchWeaponXmlString(updated.weapon.rawXml || '', updated.weapon);
+                }
                 updated.rawXml = generateXmlForDef(updated);
                 STATE.modifiedDefs[defObj.defName] = updated;
             };
@@ -1502,10 +1505,35 @@
 
         // --- XML Generator ---
         function generateXmlForDef(def) {
-            if (!STATE.modifiedDefs[def.defName]) {
-                return (def.rawXml || '').trim();
-            }
             return patchXmlString(def.rawXml || '', def);
+        }
+
+        function patchWeaponXmlString(origXml, weapon) {
+            if (!origXml || !weapon) return origXml || '';
+            let xml = origXml;
+
+            function replaceTag(tagName, newValue) {
+                if (newValue === undefined || newValue === null || newValue === '') return;
+                const tagRegex = new RegExp(`<${tagName}>[\\s\\S]*?<\\/${tagName}>`, 'g');
+                if (tagRegex.test(xml)) {
+                    xml = xml.replace(tagRegex, `<${tagName}>${newValue}</${tagName}>`);
+                }
+            }
+
+            if (weapon.sightsEfficiency) replaceTag('SightsEfficiency', weapon.sightsEfficiency);
+            if (weapon.shotSpread) replaceTag('ShotSpread', weapon.shotSpread);
+            if (weapon.swayFactor) replaceTag('SwayFactor', weapon.swayFactor);
+            if (weapon.cooldown) replaceTag('RangedWeapon_Cooldown', weapon.cooldown);
+            if (weapon.minRange) replaceTag('minRange', weapon.minRange);
+            if (weapon.maxRange) replaceTag('range', weapon.maxRange);
+            if (weapon.burstShotCount) replaceTag('burstShotCount', weapon.burstShotCount);
+            if (weapon.ticksBetweenBurstShots) replaceTag('ticksBetweenBurstShots', weapon.ticksBetweenBurstShots);
+            if (weapon.warmupTime) replaceTag('warmupTime', weapon.warmupTime);
+            if (weapon.magazineSize) replaceTag('magazineSize', weapon.magazineSize);
+            if (weapon.reloadTime) replaceTag('reloadTime', weapon.reloadTime);
+            if (weapon.ammoSet) replaceTag('ammoSet', weapon.ammoSet);
+
+            return xml.trim();
         }
 
         function patchXmlString(origXml, def) {
@@ -1556,6 +1584,47 @@
                 }
             }
 
+            // Turret Smoker Comp Patching
+            if (def.smokerData && def.smokerData.hasSmoker) {
+                const smk = def.smokerData;
+                const isTrue = (val) => val === true || val === 'true';
+                let smokerBlock = `<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">`;
+                
+                smokerBlock += `\n\t\t\t\t<muzzleEnabled>${isTrue(smk.muzzleEnabled)}</muzzleEnabled>`;
+                if (isTrue(smk.muzzleEnabled)) {
+                    smokerBlock += `\n\t\t\t\t<muzzleFleckDef>${smk.muzzleFleckDef || 'AMC_MuzzleSmoke'}</muzzleFleckDef>`;
+                    smokerBlock += `\n\t\t\t\t<muzzleParticleCount>${smk.muzzleParticleCount || '1'}</muzzleParticleCount>`;
+                    smokerBlock += `\n\t\t\t\t<muzzleVelocity>${smk.muzzleVelocity || '15'}</muzzleVelocity>`;
+                    smokerBlock += `\n\t\t\t\t<muzzleParticleSize>${smk.muzzleParticleSize || '1.5'}</muzzleParticleSize>`;
+                }
+                
+                smokerBlock += `\n\t\t\t\t<heatEnabled>${isTrue(smk.heatEnabled)}</heatEnabled>`;
+                if (isTrue(smk.heatEnabled)) {
+                    smokerBlock += `\n\t\t\t\t<heatFleckDef>${smk.heatFleckDef || 'AMC_HeatSmoke'}</heatFleckDef>`;
+                    smokerBlock += `\n\t\t\t\t<heatThreshold>${smk.heatThreshold || '40'}</heatThreshold>`;
+                    smokerBlock += `\n\t\t\t\t<heatDecayRate>${smk.heatDecayRate || '0.6'}</heatDecayRate>`;
+                    smokerBlock += `\n\t\t\t\t<heatEmissionRate>${smk.heatEmissionRate || '1'}</heatEmissionRate>`;
+                }
+                
+                smokerBlock += `\n\t\t\t\t<shockwaveEnabled>${isTrue(smk.shockwaveEnabled)}</shockwaveEnabled>`;
+                if (isTrue(smk.shockwaveEnabled)) {
+                    smokerBlock += `\n\t\t\t\t<shockwaveFleckDef>${smk.shockwaveFleckDef || 'AMC_ShockwaveSmoke'}</shockwaveFleckDef>`;
+                    smokerBlock += `\n\t\t\t\t<shockwaveRadius>${smk.shockwaveRadius || '1'}</shockwaveRadius>`;
+                    smokerBlock += `\n\t\t\t\t<shockwaveDensity>${smk.shockwaveDensity || '2'}</shockwaveDensity>`;
+                }
+                smokerBlock += `\n\t\t\t</li>`;
+
+                const smokerRegex = /<li\s+Class=["']AbsolutelyMoreCannons\.CompProperties_TurretSmoker["']>[\s\S]*?<\/li>/;
+                if (smokerRegex.test(xml)) {
+                    xml = xml.replace(smokerRegex, smokerBlock);
+                } else {
+                    xml = xml.replace(/(<comps>)/, `$1\n\t\t\t${smokerBlock}`);
+                }
+            } else if (def.smokerData && def.smokerData.hasSmoker === false) {
+                const smokerRegex = /\s*<li\s+Class=["']AbsolutelyMoreCannons\.CompProperties_TurretSmoker["']>[\s\S]*?<\/li>/;
+                xml = xml.replace(smokerRegex, '');
+            }
+
             // Selectable Bursts Patching
             if (def.hasSelectableBursts && def.selectableBursts && def.selectableBursts.length > 0) {
                 const burstItems = def.selectableBursts.map(b => `\t\t\t\t<li>${b}</li>`).join('\n');
@@ -1602,6 +1671,22 @@
             } else if (def.hasSelectableBursts === false) {
                 const existingBurstRegex = /\s*<selectableBurstCounts>[\s\S]*?<\/selectableBurstCounts>/;
                 xml = xml.replace(existingBurstRegex, '');
+            }
+
+            // Recoil Animation Patching
+            if (def.barrelExtension && def.barrelExtension.recoilAnimation && def.barrelExtension.recoilAnimation.enabled) {
+                const rec = def.barrelExtension.recoilAnimation;
+                let recBlock = `<recoilAnimation>\n\t\t\t\t<maxDistance>${rec.maxDistance || 0.4}</maxDistance>\n\t\t\t\t<recoilDuration>${rec.recoilDuration || 6}</recoilDuration>\n\t\t\t\t<returnDuration>${rec.returnDuration || 8}</returnDuration>\n\t\t\t\t<useRecoilCurve>${rec.useRecoilCurve !== false}</useRecoilCurve>\n\t\t\t\t<useReturnCurve>${rec.useReturnCurve === true}</useReturnCurve>\n\t\t\t\t<affectsRotation>${rec.affectsRotation === true}</affectsRotation>\n\t\t\t</recoilAnimation>`;
+
+                const recRegex = /<recoilAnimation>[\s\S]*?<\/recoilAnimation>/;
+                if (recRegex.test(xml)) {
+                    xml = xml.replace(recRegex, recBlock);
+                } else {
+                    const barrelExtRegex = /(<li\s+Class=["']AbsolutelyMoreCannons\.TurretBarrelExtension["'][^>]*>)/;
+                    if (barrelExtRegex.test(xml)) {
+                        xml = xml.replace(barrelExtRegex, `$1\n\t\t\t${recBlock}`);
+                    }
+                }
             }
 
             return xml.trim();
