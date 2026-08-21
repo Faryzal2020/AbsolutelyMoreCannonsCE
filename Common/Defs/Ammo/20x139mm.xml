@@ -102,11 +102,11 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>ThumpCannon_Impact</soundExplode>
-			<screenShakeFactor>0.2</screenShakeFactor>
+			<screenShakeFactor>0.01</screenShakeFactor>
 			<speed>184</speed>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>16</damageAmountBase>
-			<explosionRadius>1</explosionRadius>
+			<explosionRadius>0.5</explosionRadius>
 			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
 		</projectile>
 		<comps>

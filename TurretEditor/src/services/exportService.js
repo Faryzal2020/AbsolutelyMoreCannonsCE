@@ -69,6 +69,11 @@ const TURRET_COLUMNS = [
   { key: 'swayReduction', header: 'Sway Reduction', group: 'Comps & FCS', width: 14, type: 'number', get: (t) => t.comps.accuracy.swayReduction },
   { key: 'recoilReduction', header: 'Recoil Reduction', group: 'Comps & FCS', width: 15, type: 'number', get: (t) => t.comps.accuracy.recoilReduction },
   { key: 'spreadReduction', header: 'Spread Reduction', group: 'Comps & FCS', width: 15, type: 'number', get: (t) => t.comps.accuracy.spreadReduction },
+  { key: 'enclosedTurret', header: 'Enclosed Turret', group: 'Comps & FCS', width: 15, summary: true, get: (t) => yesNo(t.comps.enclosed?.enabled) },
+  { key: 'bulletProtection', header: 'Bullet Protection', group: 'Comps & FCS', width: 15, type: 'number', get: (t) => t.comps.enclosed?.bulletProtection },
+  { key: 'explosiveProtection', header: 'Explosive Protection', group: 'Comps & FCS', width: 17, type: 'number', get: (t) => t.comps.enclosed?.explosiveProtection },
+  { key: 'temperatureProtection', header: 'Temp Protection', group: 'Comps & FCS', width: 15, type: 'number', get: (t) => t.comps.enclosed?.temperatureProtection },
+  { key: 'hidePawnGraphics', header: 'Hide Pawn Graphics', group: 'Comps & FCS', width: 16, get: (t) => yesNo(t.comps.enclosed?.hidePawnGraphics) },
 
   // Barrel
   { key: 'barrelExtension', header: 'Barrel Extension', group: 'Barrel & Animations', width: 15, get: (t) => yesNo(t.barrel.enabled) },

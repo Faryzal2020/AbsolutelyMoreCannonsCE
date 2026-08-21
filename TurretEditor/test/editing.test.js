@@ -128,6 +128,33 @@ test('editing across every field family', async (t) => {
     assert.ok(!fixture.read(VULCAN_FILE).includes('CompProperties_TurretFCS'));
   });
 
+  await t.test('enclosed turret comp values round trip and toggle correctly', async () => {
+    await app.put(`/api/turrets/${VULCAN}`, {
+      comps: {
+        enclosed: {
+          enabled: true,
+          bulletProtection: 0.8,
+          explosiveProtection: 0.2,
+          temperatureProtection: 0.0,
+          hidePawnGraphics: false,
+        },
+      },
+    });
+    const { body } = await app.post('/api/inject', { defNames: [VULCAN] });
+    assert.equal(body.skippedCount, 0, JSON.stringify(body.skipped));
+
+    const after = fixture.read(VULCAN_FILE);
+    assert.ok(after.includes('CompProperties_EnclosedTurret'));
+    assert.ok(after.includes('<bulletProtection>0.8</bulletProtection>'));
+    assert.ok(after.includes('<hidePawnGraphics>false</hidePawnGraphics>'));
+
+    await app.post('/api/extract');
+    const { body: reread } = await app.get(`/api/turrets/${VULCAN}`);
+    assert.equal(reread.turret.comps.enclosed.enabled, true);
+    assert.equal(reread.turret.comps.enclosed.bulletProtection, 0.8);
+    assert.equal(reread.turret.comps.enclosed.hidePawnGraphics, false);
+  });
+
   await t.test('a dry run reports changes without touching disk', async () => {
     const before = fixture.read(NAVAL_FILE);
     await app.put(`/api/turrets/${NAVAL}`, { stats: { mass: 99 } });

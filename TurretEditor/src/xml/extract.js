@@ -72,6 +72,11 @@ function blankTurret() {
       hasFcs: false, hasPreserveAmmo: false, hasSuppressionImmunity: false, hasFireArc: false,
       hasModeSwap: false, swapAltDef: '', swapGizmoLabel: '',
       accuracy: { enabled: false, swayReduction: null, recoilReduction: null, spreadReduction: null },
+      enclosed: {
+        enabled: false, bulletProtection: null, explosiveProtection: null, flameProtection: null,
+        meleeProtection: null, temperatureProtection: null, generalProtection: null,
+        hidePawnGraphics: true, centerPawnPosition: true,
+      },
     },
     ballistics: {
       verbClass: '', minRange: null, maxRange: null, burstShotCount: null,
@@ -212,6 +217,7 @@ function parseOne(entry, index, hasDef) {
   t.comps.hasFireArc = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_FireArc' }]);
   t.comps.hasModeSwap = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretModeSwap' }]);
   t.comps.accuracy.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_AccuracyOverride' }]);
+  t.comps.enclosed.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_EnclosedTurret' }]);
   t.comps.hasSuppressionImmunity = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretSuppressionImmunityExtension' }]);
   t.smoker.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretSmoker' }]);
   t.barrel.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretBarrelExtension' }]);

@@ -8,6 +8,7 @@ function Badges({ t }) {
   if (t.comps.isPowered) pills.push(<Pill key="pow" tone="lilac">{fmtNum(t.comps.powerWatts, '?')} W</Pill>);
   if (t.comps.hasFcs) pills.push(<Pill key="fcs" tone="mint">FCS</Pill>);
   if (t.comps.accuracy.enabled) pills.push(<Pill key="acc" tone="mint">Accuracy Override</Pill>);
+  if (t.comps.enclosed?.enabled) pills.push(<Pill key="enc" tone="butter">Enclosed</Pill>);
   if (t.smoker.muzzle.enabled) pills.push(<Pill key="mz" tone="peach">Muzzle Smoke</Pill>);
   if (t.smoker.heat.enabled) pills.push(<Pill key="ht" tone="peach">Heat Smoke</Pill>);
   if (t.smoker.shockwave.enabled) pills.push(<Pill key="sw" tone="peach">Shockwave</Pill>);

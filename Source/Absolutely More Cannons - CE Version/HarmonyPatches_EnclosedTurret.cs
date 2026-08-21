@@ -16,22 +16,52 @@ namespace AbsolutelyMoreCannons
     {
         public static void TryPatchEnclosedTurrets(Harmony harmony)
         {
-            // 1. Hide Pawn Graphic (Pawn.DrawAt)
+            // 1. Hide Pawn Graphic (Pawn.DrawAt, Pawn.DynamicDrawPhaseAt, PawnRenderer.RenderPawnAt, PawnRenderer.DynamicDrawPhaseAt, PawnRenderTree.Draw)
             try
             {
-                var drawAtMethod = AccessTools.DeclaredMethod(typeof(Pawn), "DrawAt", new Type[] { typeof(Vector3), typeof(bool) })
-                                  ?? AccessTools.DeclaredMethod(typeof(Pawn), "DrawAt")
-                                  ?? AccessTools.Method(typeof(Pawn), "DrawAt")
-                                  ?? AccessTools.Method(typeof(Thing), "DrawAt");
+                var drawAtMethod = AccessTools.Method(typeof(Pawn), "DrawAt");
                 if (drawAtMethod != null)
                 {
                     harmony.Patch(drawAtMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_Pawn_DrawAt)));
-                    Log.Message("[AMC Enclosed Turret] Patched Pawn.DrawAt for graphic hiding.");
                 }
+
+                var pawnDynDrawMethod = AccessTools.Method(typeof(Pawn), "DynamicDrawPhaseAt");
+                if (pawnDynDrawMethod != null)
+                {
+                    harmony.Patch(pawnDynDrawMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_Pawn_DynamicDrawPhaseAt)));
+                }
+
+                var pawnRendererType = AccessTools.TypeByName("Verse.PawnRenderer");
+                if (pawnRendererType != null)
+                {
+                    var renderPawnAtMethod = AccessTools.Method(pawnRendererType, "RenderPawnAt");
+                    if (renderPawnAtMethod != null)
+                    {
+                        harmony.Patch(renderPawnAtMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_PawnRenderer_RenderPawnAt)));
+                    }
+
+                    var rendererDynDrawMethod = AccessTools.Method(pawnRendererType, "DynamicDrawPhaseAt");
+                    if (rendererDynDrawMethod != null)
+                    {
+                        harmony.Patch(rendererDynDrawMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_PawnRenderer_DynamicDrawPhaseAt)));
+                    }
+                }
+
+                var pawnRenderTreeType = AccessTools.TypeByName("Verse.PawnRenderTree");
+                if (pawnRenderTreeType != null)
+                {
+                    var treeDrawMethod = AccessTools.Method(pawnRenderTreeType, "Draw");
+                    if (treeDrawMethod != null)
+                    {
+                        harmony.Patch(treeDrawMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_PawnRenderTree_Draw)));
+                    }
+                }
+
+                Log.Message("[AMC Enclosed Turret] Patched Pawn rendering methods for graphic hiding.");
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] DrawAt patch skipped: {ex.Message}");
+                Log.Warning($"[AMC Enclosed Turret] Graphic hiding patch skipped: {ex.Message}");
             }
 
             // 2. Center Pawn Name & Selection (Pawn.DrawPos)
@@ -157,10 +187,63 @@ namespace AbsolutelyMoreCannons
             }
         }
 
-        // 1. Hide Pawn Graphic Prefix
+        private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnRendererPawnRef = AccessTools.FieldRefAccess<PawnRenderer, Pawn>("pawn");
+
+        private static Pawn GetPawnFromRenderer(PawnRenderer renderer)
+        {
+            if (renderer == null) return null;
+            try
+            {
+                return PawnRendererPawnRef(renderer);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        // 1. Hide Pawn Graphic Prefixes
         public static bool Prefix_Pawn_DrawAt(Pawn __instance)
         {
             if (__instance != null && __instance.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp) && comp.Props.hidePawnGraphics)
+            {
+                return false; // Skip drawing pawn visual graphics
+            }
+            return true;
+        }
+
+        public static bool Prefix_Pawn_DynamicDrawPhaseAt(Pawn __instance)
+        {
+            if (__instance != null && __instance.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp) && comp.Props.hidePawnGraphics)
+            {
+                return false; // Skip drawing pawn visual graphics
+            }
+            return true;
+        }
+
+        public static bool Prefix_PawnRenderer_RenderPawnAt(PawnRenderer __instance)
+        {
+            Pawn pawn = GetPawnFromRenderer(__instance);
+            if (pawn != null && pawn.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp) && comp.Props.hidePawnGraphics)
+            {
+                return false; // Skip drawing pawn visual graphics
+            }
+            return true;
+        }
+
+        public static bool Prefix_PawnRenderer_DynamicDrawPhaseAt(PawnRenderer __instance)
+        {
+            Pawn pawn = GetPawnFromRenderer(__instance);
+            if (pawn != null && pawn.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp) && comp.Props.hidePawnGraphics)
+            {
+                return false; // Skip drawing pawn visual graphics
+            }
+            return true;
+        }
+
+        public static bool Prefix_PawnRenderTree_Draw(PawnDrawParms parms)
+        {
+            if (parms.pawn != null && parms.pawn.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp) && comp.Props.hidePawnGraphics)
             {
                 return false; // Skip drawing pawn visual graphics
             }

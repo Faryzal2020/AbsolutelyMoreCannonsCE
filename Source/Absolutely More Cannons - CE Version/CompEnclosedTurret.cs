@@ -117,9 +117,9 @@ namespace AbsolutelyMoreCannons
             if (turret == null || !turret.Spawned)
                 return false;
 
-            // Must be mannable
+            // Must be mannable and pawn must actively be at interaction spot manning it
             var mannableComp = turret.GetComp<CompMannable>();
-            if (mannableComp == null)
+            if (mannableComp == null || mannableComp.ManningPawn != pawn)
                 return false;
 
             comp = turret.GetComp<CompEnclosedTurret>();

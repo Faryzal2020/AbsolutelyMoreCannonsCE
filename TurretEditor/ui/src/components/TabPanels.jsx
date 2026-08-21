@@ -192,6 +192,29 @@ export function CompsTab({ draft, set, dirty, allTurrets }) {
           </div>
         )}
       </Section>
+
+      <Section title="Enclosed Manned Turret" tone="butter">
+        <Toggle label="Enclosed turret comp (CompProperties_EnclosedTurret)"
+          checked={draft.comps.enclosed?.enabled} onChange={(v) => set('comps.enclosed.enabled', v)} />
+        {draft.comps.enclosed?.enabled && (
+          <div style={{ marginTop: 8 }}>
+            <div className="grid">
+              {f('comps.enclosed.bulletProtection', 'Bullet Protection (0-1)', { type: 'number', step: '0.1' })}
+              {f('comps.enclosed.explosiveProtection', 'Explosive Protection (0-1)', { type: 'number', step: '0.1' })}
+              {f('comps.enclosed.flameProtection', 'Flame Protection (0-1)', { type: 'number', step: '0.1' })}
+              {f('comps.enclosed.meleeProtection', 'Melee Protection (0-1)', { type: 'number', step: '0.1' })}
+              {f('comps.enclosed.temperatureProtection', 'Temperature Protection (0-1)', { type: 'number', step: '0.1' })}
+              {f('comps.enclosed.generalProtection', 'General Protection (0-1)', { type: 'number', step: '0.1' })}
+            </div>
+            <div style={{ marginTop: 8 }}>
+              <Toggle label="Hide pawn graphics while operating" checked={draft.comps.enclosed?.hidePawnGraphics}
+                onChange={(v) => set('comps.enclosed.hidePawnGraphics', v)} />
+              <Toggle label="Center pawn position & name over turret" checked={draft.comps.enclosed?.centerPawnPosition}
+                onChange={(v) => set('comps.enclosed.centerPawnPosition', v)} />
+            </div>
+          </div>
+        )}
+      </Section>
     </>
   );
 }

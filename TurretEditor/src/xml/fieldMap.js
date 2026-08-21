@@ -16,6 +16,7 @@ export const SMOKER_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_
 export const POWER_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_Power' }];
 export const SWAP_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretModeSwap' }];
 export const ACCURACY_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_AccuracyOverride' }];
+export const ENCLOSED_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_EnclosedTurret' }];
 export const AMMO_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_AmmoUser' }];
 export const SHOOT_VERB = [{ tag: 'verbs' }, { tag: 'li', match: { tag: 'verbClass', contains: 'Verb_Shoot' } }];
 
@@ -39,6 +40,14 @@ export const FIELDS = [
   f('comps.accuracy.swayReduction', 'building', [...ACCURACY_COMP, { tag: 'swayReduction' }], 'float', 'Sway Reduction', { gate: 'comps.accuracy.enabled' }),
   f('comps.accuracy.recoilReduction', 'building', [...ACCURACY_COMP, { tag: 'recoilReduction' }], 'float', 'Recoil Reduction', { gate: 'comps.accuracy.enabled' }),
   f('comps.accuracy.spreadReduction', 'building', [...ACCURACY_COMP, { tag: 'spreadReduction' }], 'float', 'Spread Reduction', { gate: 'comps.accuracy.enabled' }),
+  f('comps.enclosed.bulletProtection', 'building', [...ENCLOSED_COMP, { tag: 'bulletProtection' }], 'float', 'Bullet Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.explosiveProtection', 'building', [...ENCLOSED_COMP, { tag: 'explosiveProtection' }], 'float', 'Explosive Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.flameProtection', 'building', [...ENCLOSED_COMP, { tag: 'flameProtection' }], 'float', 'Flame Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.meleeProtection', 'building', [...ENCLOSED_COMP, { tag: 'meleeProtection' }], 'float', 'Melee Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.temperatureProtection', 'building', [...ENCLOSED_COMP, { tag: 'temperatureProtection' }], 'float', 'Temperature Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.generalProtection', 'building', [...ENCLOSED_COMP, { tag: 'generalProtection' }], 'float', 'General Protection', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.hidePawnGraphics', 'building', [...ENCLOSED_COMP, { tag: 'hidePawnGraphics' }], 'bool', 'Hide Pawn Graphics', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.centerPawnPosition', 'building', [...ENCLOSED_COMP, { tag: 'centerPawnPosition' }], 'bool', 'Center Pawn Position', { gate: 'comps.enclosed.enabled' }),
 
   // ---- Ballistics (weapon ThingDef) ------------------------------------
   f('ballistics.verbClass', 'weapon', [...SHOOT_VERB, { tag: 'verbClass' }], 'string', 'Verb Class'),
@@ -133,6 +142,8 @@ export const COMPONENT_TOGGLES = [
     body: '<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">\n  <alternateDef></alternateDef>\n  <gizmoLabel>Switch Mode</gizmoLabel>\n</li>' },
   { key: 'comps.accuracy.enabled', container: 'comps', cls: 'CompProperties_AccuracyOverride', label: 'Accuracy Override',
     body: '<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">\n  <swayReduction>0.1</swayReduction>\n  <recoilReduction>0.1</recoilReduction>\n  <spreadReduction>0.1</spreadReduction>\n</li>' },
+  { key: 'comps.enclosed.enabled', container: 'comps', cls: 'CompProperties_EnclosedTurret', label: 'Enclosed Turret',
+    body: '<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">\n  <bulletProtection>1.0</bulletProtection>\n  <explosiveProtection>0.8</explosiveProtection>\n  <temperatureProtection>0.5</temperatureProtection>\n  <hidePawnGraphics>true</hidePawnGraphics>\n</li>' },
   { key: 'smoker.enabled', container: 'comps', cls: 'CompProperties_TurretSmoker', label: 'Smoker Component',
     body: '<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">\n  <muzzleEnabled>false</muzzleEnabled>\n  <heatEnabled>false</heatEnabled>\n  <shockwaveEnabled>false</shockwaveEnabled>\n</li>' },
   { key: 'barrel.enabled', container: 'modExtensions', cls: 'TurretBarrelExtension', label: 'Barrel Extension',
