@@ -15,7 +15,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M127mmOtobredaC</texPath>
-			<drawSize>(25,25)</drawSize>
+			<drawSize>(15,15)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -36,10 +36,11 @@
 		</costList>
 		<building>
 			<turretGunDef>Turret_127mmOtobredaC_Weapon</turretGunDef>
-      		<turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>13</turretTopDrawSize>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_127mmOtobredaC</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -58,6 +59,10 @@
 				<swayReduction>0.1</swayReduction>
 				<recoilReduction>0.1</recoilReduction>
 				<spreadReduction>0.1</spreadReduction>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -102,7 +107,7 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>5,5</size>
+    	<size>6,6</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_127mmOtobredaC</li>
@@ -116,7 +121,7 @@
 					<drawSize>(3,3)</drawSize>
 				</barrelGraphic>
 				<barrelOffset>(0,0,0.0)</barrelOffset>
-				<barrelDrawSize>14.0</barrelDrawSize>
+				<barrelDrawSize>13.0</barrelDrawSize>
 				<drawOnTop>false</drawOnTop>
 				<recoilAnimation>
 					<maxDistance>0.3</maxDistance>
@@ -203,7 +208,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M127mmOtobredaC</texPath>
-			<drawSize>(25,25)</drawSize>
+			<drawSize>(15,15)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -227,8 +232,9 @@
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      		<turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>13</turretTopDrawSize>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_127mmOtobredaC</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -242,6 +248,10 @@
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -281,7 +291,7 @@
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 		</comps>
-    	<size>(5,5)</size>
+    	<size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_127mmOtobredaC</li>
@@ -300,7 +310,7 @@
 					<drawSize>(3,3)</drawSize>
 				</underBarrelGraphic>
 				<barrelOffset>(0,0,0.0)</barrelOffset>
-				<barrelDrawSize>14.0</barrelDrawSize>
+				<barrelDrawSize>13.0</barrelDrawSize>
 				<drawOnTop>false</drawOnTop>
 				<recoilAnimation>
 					<maxDistance>0.2</maxDistance>

@@ -17,6 +17,25 @@ namespace AbsolutelyMoreCannons
         private static int rotationClampingPatchCallCount = 0;
         
         /// <summary>
+        /// Helper to verify if a thing is an AMC-configured turret.
+        /// </summary>
+        private static bool IsAMCConfiguredTurret(Thing caster)
+        {
+            if (caster == null) return false;
+
+            if (caster.TryGetComp<CompTurretBarrel>() != null) return true;
+            if (caster.def != null && caster.def.HasModExtension<TurretBarrelExtension>()) return true;
+
+            if (caster.ParentHolder is Thing parentThing)
+            {
+                if (parentThing.TryGetComp<CompTurretBarrel>() != null) return true;
+                if (parentThing.def != null && parentThing.def.HasModExtension<TurretBarrelExtension>()) return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Postfix for Verb_LaunchProjectileCE.ShiftTarget - clamps shotRotation for turrets
         /// This patch includes diagnostic logging to determine the reference frame of shotRotation
         /// </summary>
@@ -41,11 +60,11 @@ namespace AbsolutelyMoreCannons
                 // Get the verb type
                 Type verbType = __instance.GetType();
                 
-                // Check if it's a turret
+                // Check if it's an AMC-configured turret
                 Thing caster = GetCasterFromVerb(__instance);
-                if (caster == null || !IsTurret(caster))
+                if (caster == null || !IsAMCConfiguredTurret(caster))
                 {
-                    return; // Only process turrets
+                    return; // Only process AMC-configured turrets
                 }
                 
                 // Get shotRotation field
@@ -257,7 +276,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC] Error in Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC] Error in Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation: {ex.Message}");
+                }
             }
         }
         

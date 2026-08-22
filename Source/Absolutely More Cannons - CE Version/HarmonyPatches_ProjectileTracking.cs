@@ -40,7 +40,10 @@ namespace AbsolutelyMoreCannons
                 var projectileCEType = AccessTools.TypeByName("CombatExtended.ProjectileCE");
                 if (projectileCEType == null)
                 {
-                    Log.Warning("[AMC] Could not find ProjectileCE type for projectile tracking");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Warning("[AMC] Could not find ProjectileCE type for projectile tracking");
+                    }
                     return;
                 }
                 
@@ -72,12 +75,18 @@ namespace AbsolutelyMoreCannons
                 }
                 else
                 {
-                    Log.Warning("[AMC] Could not find ProjectileCE.Launch method for projectile tracking");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Warning("[AMC] Could not find ProjectileCE.Launch method for projectile tracking");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching ProjectileCE.Launch: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching ProjectileCE.Launch: {ex}");
+                }
             }
         }
         
@@ -108,7 +117,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching ProjectileCE.Tick: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching ProjectileCE.Tick: {ex}");
+                }
             }
         }
         
@@ -141,7 +153,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching Destroy: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching Destroy: {ex}");
+                }
             }
         }
         

@@ -15,7 +15,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M100mmModel1953</texPath>
-			<drawSize>(25,25)</drawSize>
+			<drawSize>(15,15)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -40,6 +40,7 @@
 			<turretBurstCooldownTime>1</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_100mmModel1953</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -57,6 +58,10 @@
 				<swayReduction>0.1</swayReduction>
 				<recoilReduction>0.1</recoilReduction>
 				<spreadReduction>0.1</spreadReduction>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -108,43 +113,49 @@
 		</researchPrerequisites>
 		<interactionCellOffset>(2,0,-3)</interactionCellOffset>
 		<modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<barrelGraphic>
-				<texPath>Things/Building/M100mmModel1953_Barrel</texPath>
-				<graphicClass>Graphic_Single</graphicClass>
-				<drawSize>(3,3)</drawSize>
-			</barrelGraphic>
-			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>10.0</barrelDrawSize>
-			<drawOnTop>false</drawOnTop>
-			<recoilAnimation>
-				<maxDistance>0.5</maxDistance>
-				<recoilDuration>15</recoilDuration>
-				<returnDuration>30</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
-			</recoilAnimation>
-			<firingAnimation>
-				<enabled>true</enabled>
-				<projectileSpawnOffset>5.5</projectileSpawnOffset>
-				<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>30</flashSize>
-				<flashBrightness>2.0</flashBrightness>
-				<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
-					</points>
-				</flashIntensityCurve>
-			</firingAnimation>
-		</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M100mmModel1953_Barrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>10.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<recoilAnimation>
+					<maxDistance>0.5</maxDistance>
+					<recoilDuration>15</recoilDuration>
+					<returnDuration>30</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>5.5</projectileSpawnOffset>
+					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>30</flashSize>
+					<flashBrightness>2.0</flashBrightness>
+					<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
 		</modExtensions>
 	</ThingDef>
 	
@@ -228,6 +239,7 @@
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
       		<turretTopDrawSize>10</turretTopDrawSize>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_100mmModel1953</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -241,6 +253,10 @@
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">

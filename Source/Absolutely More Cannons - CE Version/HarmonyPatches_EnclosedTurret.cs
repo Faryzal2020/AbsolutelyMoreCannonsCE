@@ -57,11 +57,17 @@ namespace AbsolutelyMoreCannons
                     }
                 }
 
-                Log.Message("[AMC Enclosed Turret] Patched Pawn rendering methods for graphic hiding.");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("[AMC Enclosed Turret] Patched Pawn rendering methods for graphic hiding.");
+                }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] Graphic hiding patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] Graphic hiding patch skipped: {ex.Message}");
+                }
             }
 
             // 2. Center Pawn Name & Selection (Pawn.DrawPos)
@@ -72,28 +78,40 @@ namespace AbsolutelyMoreCannons
                 if (drawPosProp != null)
                 {
                     harmony.Patch(drawPosProp, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_Pawn_DrawPos)));
-                    Log.Message("[AMC Enclosed Turret] Patched Pawn.DrawPos for label re-centering.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC Enclosed Turret] Patched Pawn.DrawPos for label re-centering.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] DrawPos patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] DrawPos patch skipped: {ex.Message}");
+                }
             }
 
             // 3. Fine-grained Damage & Hit Check Protection (Pawn.PreApplyDamage)
             try
             {
                 var preApplyDamageMethod = AccessTools.DeclaredMethod(typeof(Pawn), "PreApplyDamage")
-                                          ?? AccessTools.Method(typeof(Pawn), "PreApplyDamage");
+                                           ?? AccessTools.Method(typeof(Pawn), "PreApplyDamage");
                 if (preApplyDamageMethod != null)
                 {
                     harmony.Patch(preApplyDamageMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_Pawn_PreApplyDamage)));
-                    Log.Message("[AMC Enclosed Turret] Patched Pawn.PreApplyDamage for fine-grained damage protection.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC Enclosed Turret] Patched Pawn.PreApplyDamage for fine-grained damage protection.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] PreApplyDamage patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] PreApplyDamage patch skipped: {ex.Message}");
+                }
             }
 
             // 4. Fire Immunity (FireUtility.TryAttachFire)
@@ -103,12 +121,18 @@ namespace AbsolutelyMoreCannons
                 if (tryAttachFireMethod != null)
                 {
                     harmony.Patch(tryAttachFireMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_FireUtility_TryAttachFire)));
-                    Log.Message("[AMC Enclosed Turret] Patched FireUtility.TryAttachFire for fire immunity.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC Enclosed Turret] Patched FireUtility.TryAttachFire for fire immunity.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] FireUtility patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] FireUtility patch skipped: {ex.Message}");
+                }
             }
 
             // 5. Temperature Immunity (Thing.AmbientTemperature & HediffGivers)
@@ -119,12 +143,18 @@ namespace AbsolutelyMoreCannons
                 if (ambTempProp != null)
                 {
                     harmony.Patch(ambTempProp, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_Pawn_AmbientTemperature)));
-                    Log.Message("[AMC Enclosed Turret] Patched AmbientTemperature for temperature immunity.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC Enclosed Turret] Patched AmbientTemperature for temperature immunity.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] AmbientTemperature patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] AmbientTemperature patch skipped: {ex.Message}");
+                }
             }
 
             try
@@ -141,7 +171,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] Hypothermia patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] Hypothermia patch skipped: {ex.Message}");
+                }
             }
 
             try
@@ -158,7 +191,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] Heatstroke patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] Heatstroke patch skipped: {ex.Message}");
+                }
             }
 
             // 6. CE Suppression Immunity (CompSuppressable)
@@ -178,12 +214,18 @@ namespace AbsolutelyMoreCannons
                     {
                         harmony.Patch(addSuppMethod, prefix: new HarmonyMethod(typeof(HarmonyPatches_EnclosedTurret), nameof(Prefix_CompSuppressable_AddSuppression)));
                     }
-                    Log.Message("[AMC Enclosed Turret] Patched CompSuppressable for CE suppression immunity.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC Enclosed Turret] Patched CompSuppressable for CE suppression immunity.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC Enclosed Turret] CompSuppressable patch skipped: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC Enclosed Turret] CompSuppressable patch skipped: {ex.Message}");
+                }
             }
         }
 

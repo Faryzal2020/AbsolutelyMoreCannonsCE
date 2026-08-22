@@ -24,11 +24,17 @@ namespace AbsolutelyMoreCannons
             try
             {
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
-                Log.Message("Turret Barrel Animation: Executed harmony.PatchAll() successfully.");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("Turret Barrel Animation: Executed harmony.PatchAll() successfully.");
+                }
             }
             catch (Exception ex)
             {
-                Log.Error($"Turret Barrel Animation: Error executing harmony.PatchAll(): {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"Turret Barrel Animation: Error executing harmony.PatchAll(): {ex}");
+                }
             }
 
             // Patch GenDraw.DrawRadiusRing to handle large turret ranges (>70 tiles)
@@ -61,6 +67,9 @@ namespace AbsolutelyMoreCannons
 
             // Patch enclosed manned turrets at runtime
             HarmonyPatches_EnclosedTurret.TryPatchEnclosedTurrets(harmony);
+
+            // Patch turret view transfer at runtime
+            HarmonyPatches_TurretViewTransfer.TryPatchTurretViewTransfer(harmony);
         }
 
         /// <summary>
@@ -197,12 +206,18 @@ namespace AbsolutelyMoreCannons
                         original: allowsPlacingMethod,
                         prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Prefix_PlaceWorker_ShowTurretRadius_AllowsPlacing))
                     );
-                    Log.Message("Turret Barrel Animation: Patched PlaceWorker_ShowTurretRadius.AllowsPlacing for null-map safety.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("Turret Barrel Animation: Patched PlaceWorker_ShowTurretRadius.AllowsPlacing for null-map safety.");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"Turret Barrel Animation: Error patching PlaceWorker_ShowTurretRadius.AllowsPlacing: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"Turret Barrel Animation: Error patching PlaceWorker_ShowTurretRadius.AllowsPlacing: {ex.Message}");
+                }
             }
         }
 
@@ -237,7 +252,10 @@ namespace AbsolutelyMoreCannons
 
             if (ceTurretType != null)
             {
-                Log.Message("Turret Barrel Animation: Found CombatExtended turrets, applying patches.");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("Turret Barrel Animation: Found CombatExtended turrets, applying patches.");
+                }
 
                 // Patch CE verb firing to trigger barrel animations
                 // We patch Verb_LaunchProjectileCE.TryCastShot because this is called when CE turrets actually fire
@@ -255,7 +273,10 @@ namespace AbsolutelyMoreCannons
                             original: shotsPerBurstForMethod,
                             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShotsPerBurstFor))
                         );
-                        Log.Message("Turret Barrel Animation: Patched Verb_ShootCE.ShotsPerBurstFor");
+                        if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                        {
+                            Log.Message("Turret Barrel Animation: Patched Verb_ShootCE.ShotsPerBurstFor");
+                        }
                     }
                 }
 
@@ -287,7 +308,10 @@ namespace AbsolutelyMoreCannons
             }
             else
             {
-                Log.Message("Turret Barrel Animation: CombatExtended not found. Barrel animations will only work with basic recoil.");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("Turret Barrel Animation: CombatExtended not found. Barrel animations will only work with basic recoil.");
+                }
                 PatchTurretFCSOperability(harmony, null);
             }
         }
@@ -334,7 +358,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC] Harmony patch skipped for {original.DeclaringType?.Name}.{original.Name}: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC] Harmony patch skipped for {original.DeclaringType?.Name}.{original.Name}: {ex.Message}");
+                }
             }
         }
 
@@ -799,7 +826,10 @@ namespace AbsolutelyMoreCannons
             
             if (ceTurretTopType != null)
             {
-                Log.Message("Turret Barrel Animation: Found CE TurretTop class, patching Draw method.");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("Turret Barrel Animation: Found CE TurretTop class, patching Draw method.");
+                }
                 
                 // Try to patch the Draw method
                 var drawMethod = AccessTools.Method(ceTurretTopType, "Draw");
@@ -809,7 +839,10 @@ namespace AbsolutelyMoreCannons
                         original: drawMethod,
                         postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretTopDraw))
                     );
-                    Log.Message("Turret Barrel Animation: Successfully patched CE TurretTop.Draw method.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("Turret Barrel Animation: Successfully patched CE TurretTop.Draw method.");
+                    }
                 }
                 else
                 {
@@ -821,15 +854,18 @@ namespace AbsolutelyMoreCannons
                             original: drawAtMethod,
                             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TurretTopDraw))
                         );
-                        Log.Message("Turret Barrel Animation: Successfully patched CE TurretTop.DrawAt method.");
+                        if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                        {
+                            Log.Message("Turret Barrel Animation: Successfully patched CE TurretTop.DrawAt method.");
+                        }
                     }
-                    else
+                    else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
                     {
                         Log.Warning("Turret Barrel Animation: Could not find Draw or DrawAt method in CE TurretTop class.");
                     }
                 }
             }
-            else
+            else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
             {
                 Log.Message("Turret Barrel Animation: CE TurretTop class not found. Using Y offset method only.");
             }
@@ -872,7 +908,7 @@ namespace AbsolutelyMoreCannons
                     postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_LaunchProjectileCE_IncrementBarrelCount))
                 );
             }
-            else
+            else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
             {
                 Log.Warning("[Projectile Offset] Could not find Verb_LaunchProjectileCE.IncrementBarrelCount method");
             }
@@ -935,7 +971,10 @@ namespace AbsolutelyMoreCannons
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[AMC]     ✗ Failed to patch: {ex.Message}");
+                    if (settings != null && settings.logStartup)
+                    {
+                        Log.Warning($"[AMC]     ✗ Failed to patch: {ex.Message}");
+                    }
                 }
             }
             if (settings != null && settings.logStartup)
@@ -1434,7 +1473,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"Turret Barrel Animation: Error in Postfix_TurretDrawAt: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"Turret Barrel Animation: Error in Postfix_TurretDrawAt: {ex.Message}");
+                }
             }
         }
 
@@ -1490,13 +1532,15 @@ namespace AbsolutelyMoreCannons
                 if (turret != null)
                 {
                     // Debug: Log turret top altitude
-                    string turretTopAltitudeKey = $"TURRETTOP_ALTITUDE_{turret.def.defName}";
-                    if (!AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Contains(turretTopAltitudeKey))
+                    if (TurretBarrelAnimationMod.settings?.logTemporaryDebug ?? false)
                     {
-                        AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Add(turretTopAltitudeKey);
-                        // Try to get turret top draw position
-                        var turretTopDrawPos = turret.DrawPos;
-                        Verse.Log.Message($"[Altitude Debug] Turret Top (via parent turret) Y position: {turretTopDrawPos.y:F3}");
+                        string turretTopAltitudeKey = $"TURRETTOP_ALTITUDE_{turret.def.defName}";
+                        if (!AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Contains(turretTopAltitudeKey))
+                        {
+                            AbsolutelyMoreCannons.CompTurretBarrel.loggedTypes.Add(turretTopAltitudeKey);
+                            var turretTopDrawPos = turret.DrawPos;
+                            Verse.Log.Message($"[Altitude Debug] Turret Top (via parent turret) Y position: {turretTopDrawPos.y:F3}");
+                        }
                     }
                     
                     var barrelComp = turret.GetComp<CompTurretBarrel>();
@@ -1510,7 +1554,7 @@ namespace AbsolutelyMoreCannons
                         }
                     }
                 }
-                else
+                else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
                 {
                     // Debug: Log that we couldn't find the turret
                     Log.Warning($"Turret Barrel Animation: Could not find parent turret from turret top. TurretTop type: {turretTopType.Name}");
@@ -1518,8 +1562,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                // Log the error for debugging
-                Log.Warning($"Turret Barrel Animation: Error drawing barrel after turret top: {ex.Message}\n{ex.StackTrace}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"Turret Barrel Animation: Error drawing barrel after turret top: {ex.Message}\n{ex.StackTrace}");
+                }
             }
         }
         
@@ -1680,7 +1726,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Warning($"[Barrel Animation] Error in IncrementBarrelCount offset patch: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[Barrel Animation] Error in IncrementBarrelCount offset patch: {ex.Message}");
+                }
             }
         }
 
@@ -1695,7 +1744,10 @@ namespace AbsolutelyMoreCannons
                 var verbType = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
                 if (verbType == null)
                 {
-                    Log.Message("[AMC] CE Verb_LaunchProjectileCE not found - projectile launch logging disabled.");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC] CE Verb_LaunchProjectileCE not found - projectile launch logging disabled.");
+                    }
                     return;
                 }
 
@@ -1732,21 +1784,27 @@ namespace AbsolutelyMoreCannons
                             launchMethod,
                             postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_ProjectileCE_Launch_V2))
                         );
-                        Log.Message("[AMC] Successfully patched ProjectileCE.Launch for projectile spawn logging.");
+                        if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                        {
+                            Log.Message("[AMC] Successfully patched ProjectileCE.Launch for projectile spawn logging.");
+                        }
                     }
-                    else
+                    else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
                     {
                         Log.Warning("[AMC] Could not find ProjectileCE.Launch method with specified signature.");
                     }
                 }
-                else
+                else if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
                 {
                     Log.Warning("[AMC] Could not find ProjectileCE type.");
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC] Error setting up CE projectile launch logging: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC] Error setting up CE projectile launch logging: {ex.Message}");
+                }
             }
         }
         public static void Postfix_ProjectileCE_Launch_V2(Thing launcher, Vector2 origin, float shotAngle, float shotRotation, float shotHeight, float shotSpeed, Thing equipment, float distance)
