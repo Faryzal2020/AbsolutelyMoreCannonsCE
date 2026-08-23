@@ -111,7 +111,7 @@
 		<researchPrerequisites>
 			<li>Research_100mmModel1953</li>
 		</researchPrerequisites>
-		<interactionCellOffset>(2,0,-3)</interactionCellOffset>
+		<interactionCellOffset>(1,0,-3)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelGraphic>
@@ -301,7 +301,7 @@
 		<researchPrerequisites>
 			<li>Research_100mmModel1953</li>
 		</researchPrerequisites>
-    	<interactionCellOffset>(2,0,-3)</interactionCellOffset>
+    	<interactionCellOffset>(1,0,-3)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelGraphic>

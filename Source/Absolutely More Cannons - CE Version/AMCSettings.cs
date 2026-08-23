@@ -53,6 +53,13 @@ namespace AbsolutelyMoreCannons
         public bool logTurretSmokeParticleTick = false;       // Per-tick particle position/velocity logging
         public bool logProjectileOffsets = false;             // Forward and lateral projectile spawn offsets
         public bool logAirburstDetonation = false;            // Log airburst shell explosion and fragment telemetry
+        public bool logMuzzleFlashMod = false;                // Third-party Muzzle Flash mod spawn/suppression logging
+
+        /// <summary>
+        /// Check if third-party Muzzle Flash mod (by IssacZhuang) is loaded in current session.
+        /// </summary>
+        public static bool IsMuzzleFlashModActive => Verse.GenTypes.GetTypeInAnyAssembly("MuzzleFlash.Patch.HarmonyPatch_Verb") != null 
+                                                   || HarmonyLib.AccessTools.TypeByName("MuzzleFlash.Patch.HarmonyPatch_Verb") != null;
 
         /// <summary>
         /// Save and load settings from XML
@@ -101,6 +108,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
             Scribe_Values.Look(ref logProjectileOffsets, "logProjectileOffsets", false);
             Scribe_Values.Look(ref logAirburstDetonation, "logAirburstDetonation", false);
+            Scribe_Values.Look(ref logMuzzleFlashMod, "logMuzzleFlashMod", false);
             
             // Log settings after they're loaded/saved ONLY if startup logging is enabled
             if ((Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.Saving) && logStartup)
@@ -150,6 +158,10 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Turret Smoke Particle Tick Logging: {logTurretSmokeParticleTick}");
             Log.Message("[AMC] Projectile Offsets Logging: " + logProjectileOffsets);
             Log.Message("[AMC] Airburst Detonation Logging: " + logAirburstDetonation);
+            if (IsMuzzleFlashModActive)
+            {
+                Log.Message("[AMC] Muzzle Flash Mod Logging: " + logMuzzleFlashMod);
+            }
             Log.Message("[AMC] =======================================");
         }
 
@@ -498,6 +510,19 @@ namespace AbsolutelyMoreCannons
             Widgets.Label(airburstHelpRect, "  (Logs shell explosion location, fragment IDs, stats, and 3D launch angles)");
             Text.Font = GameFont.Small;
 
+            if (IsMuzzleFlashModActive)
+            {
+                listing.Gap(4);
+                listing.CheckboxLabeled(
+                    "Log Muzzle Flash Mod Events",
+                    ref logMuzzleFlashMod
+                );
+                Text.Font = GameFont.Tiny;
+                Rect mfHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(mfHelpRect, "  (Logs allowed vs suppressed flash graphics from third-party Muzzle Flash mod)");
+                Text.Font = GameFont.Small;
+            }
+
             listing.Gap(12);
 
             // === QUICK ACTIONS ===
@@ -546,6 +571,10 @@ namespace AbsolutelyMoreCannons
             logTemporaryDebug = true;
             logFragmentProjectiles = true;
             logTurretViewTransfer = true;
+            if (IsMuzzleFlashModActive)
+            {
+                logMuzzleFlashMod = true;
+            }
         }
 
         private void DisableAllLogs()
@@ -571,6 +600,7 @@ namespace AbsolutelyMoreCannons
             logTemporaryDebug = false;
             logFragmentProjectiles = false;
             logTurretViewTransfer = false;
+            logMuzzleFlashMod = false;
         }
     }
 }

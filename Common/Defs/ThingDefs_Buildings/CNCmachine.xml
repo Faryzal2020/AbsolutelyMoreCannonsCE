@@ -44,7 +44,7 @@
     <designationCategory>Production</designationCategory>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <recipes>
-      <li>Make_FCSComputer</li>
+      <li>AMC_Make_FCS_Basic</li>
     </recipes>
 		<inspectorTabs>
 			<li>ITab_Bills</li>
@@ -168,71 +168,4 @@
     </requiredCapacities>
     <prioritizeSustains>true</prioritizeSustains>
   </WorkGiverDef>
-
-  <RecipeDef>
-    <defName>Make_FCSComputer</defName>
-    <label>make an FCS Computer</label>
-    <description>FCS (Fire Control System) Computer module is used to build unmanned cannon turrets from AMC</description>
-    <jobString>Making an FCS Computer.</jobString>
-    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-    <effectWorking>Smith</effectWorking>
-    <soundWorking>Recipe_Machining</soundWorking>
-    <workAmount>1000</workAmount>
-    <unfinishedThingDef>UnfinishedComponent</unfinishedThingDef>
-    <researchPrerequisite>Automated_FCS</researchPrerequisite>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>30</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Gold</li>
-          </thingDefs>
-        </filter>
-        <count>20</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>ComponentIndustrial</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>ComponentSpacer</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>Steel</li>
-        <li>Gold</li>
-        <li>ComponentIndustrial</li>
-        <li>ComponentSpacer</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <FCSComputer>1</FCSComputer>
-    </products>
-		<skillRequirements>
-			<Crafting>5</Crafting>
-		</skillRequirements>
-    <workSkill>Crafting</workSkill>
-    <recipeUsers>
-      <li>FabricationBench</li>
-      <li>CNCmachine</li>
-      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
-    </recipeUsers>
-  </RecipeDef>
 </Defs>

@@ -70,6 +70,9 @@ namespace AbsolutelyMoreCannons
 
             // Patch turret view transfer at runtime
             HarmonyPatches_TurretViewTransfer.TryPatchTurretViewTransfer(harmony);
+
+            // Patch third-party Muzzle Flash mod if present
+            TryPatchMuzzleFlashMod(harmony);
         }
 
         /// <summary>
@@ -1833,6 +1836,186 @@ namespace AbsolutelyMoreCannons
              {
                  Log.Warning($"[AMC] Error in projectile launch logger: {ex.Message}");
              }
+        }
+
+        /// <summary>
+        /// Checks if the third-party 'Muzzle Flash' mod (by IssacZhuang) is loaded.
+        /// If loaded, patches MuzzleFlashUtility.SpawnMuzzleFlash to prevent ghost flashes on aborted burst shots.
+        /// We patch SpawnMuzzleFlash (the actual flash renderer) rather than the Harmony postfix method,
+        /// because Harmony inlines postfixes into IL — patching the postfix method itself has no effect.
+        /// </summary>
+        private static void TryPatchMuzzleFlashMod(Harmony harmony)
+        {
+            try
+            {
+                Type muzzleFlashUtilType = Verse.GenTypes.GetTypeInAnyAssembly("MuzzleFlash.MuzzleFlashUtility") 
+                                          ?? AccessTools.TypeByName("MuzzleFlash.MuzzleFlashUtility");
+
+                if (muzzleFlashUtilType == null)
+                {
+                    foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                    {
+                        try
+                        {
+                            var found = asm.GetType("MuzzleFlash.MuzzleFlashUtility");
+                            if (found != null)
+                            {
+                                muzzleFlashUtilType = found;
+                                break;
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
+                if (muzzleFlashUtilType == null)
+                {
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Message("[AMC] Muzzle Flash mod not detected on startup.");
+                    }
+                    return;
+                }
+
+                // Patch SpawnMuzzleFlash (extension method on Map)
+                MethodInfo spawnMethod = AccessTools.Method(muzzleFlashUtilType, "SpawnMuzzleFlash");
+                if (spawnMethod != null)
+                {
+                    var tryCastNextBurstShot = AccessTools.Method(typeof(Verb), "TryCastNextBurstShot");
+
+                    // 1. Prefix on TryCastNextBurstShot — mark turret burst start, reset flags
+                    var burstPrefix = new HarmonyMethod(typeof(HarmonyPatches), nameof(Prefix_Verb_TryCastNextBurstShot_MarkTurretBurst));
+                    burstPrefix.priority = HarmonyLib.Priority.First;
+                    harmony.Patch(
+                        original: tryCastNextBurstShot,
+                        prefix: burstPrefix
+                    );
+
+                    // 2. Postfix on Verb_LaunchProjectileCE.TryCastShot — positive gate (open only when projectile spawned)
+                    Type verbLaunchCEType = typeof(CombatExtended.Verb_LaunchProjectileCE);
+                    MethodInfo tryCastShot = AccessTools.Method(verbLaunchCEType, "TryCastShot");
+                    if (tryCastShot != null)
+                    {
+                        harmony.Patch(
+                            original: tryCastShot,
+                            postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_TryCastShot_MuzzleFlashGate))
+                        );
+                    }
+
+                    // 3. Prefix on SpawnMuzzleFlash — consumes the positive gate
+                    harmony.Patch(
+                        original: spawnMethod,
+                        prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Prefix_MuzzleFlashUtility_SpawnMuzzleFlash))
+                    );
+
+                    // 4. Postfix on TryCastNextBurstShot — clear flags after MF mod's postfix runs (Priority.Last)
+                    var burstPostfix = new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_TryCastNextBurstShot_ClearTurretBurst));
+                    burstPostfix.priority = HarmonyLib.Priority.Last;
+                    harmony.Patch(
+                        original: tryCastNextBurstShot,
+                        postfix: burstPostfix
+                    );
+
+                    Log.Message("[AMC] Patched MuzzleFlashUtility.SpawnMuzzleFlash to prevent ghost flashes on aborted turret bursts.");
+                }
+                else
+                {
+                    Log.Warning("[AMC] Muzzle Flash mod detected, but SpawnMuzzleFlash method was not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[AMC] Failed to patch Muzzle Flash mod: {ex.Message}");
+            }
+        }
+        /// <summary>
+        /// Positive gate: set to true ONLY when Verb_LaunchProjectileCE.TryCastShot returns true
+        /// (a projectile was actually spawned) for a turret caster. SpawnMuzzleFlash consumes this flag.
+        /// This eliminates ghost flashes from:
+        /// - Burst wind-down ticks (TryCastNextBurstShot runs but TryCastShot is not called or returns false)
+        /// - Aborted shots (target downed/invalid, CE skips projectile spawn)
+        /// </summary>
+        [ThreadStatic]
+        private static bool _allowMuzzleFlash;
+
+        /// <summary>
+        /// Postfix on Verb_LaunchProjectileCE.TryCastShot — sets the allow flag when a shot actually fires.
+        /// </summary>
+        public static void Postfix_TryCastShot_MuzzleFlashGate(bool __result, object __instance)
+        {
+            _allowMuzzleFlash = false;
+
+            if (!__result) return;
+
+            try
+            {
+                var verb = __instance as Verb;
+                if (verb?.caster == null) return;
+                if (!(verb.caster is Building_Turret)) return;
+
+                _allowMuzzleFlash = true;
+                AMCLogger.LogMuzzleFlashMod($"[GATE OPEN] TryCastShot succeeded → flash allowed | Turret: {verb.caster.LabelCap}");
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Harmony Prefix on MuzzleFlashUtility.SpawnMuzzleFlash.
+        /// Only allows the flash if a turret projectile was actually spawned on this tick.
+        /// For non-turret sources (pawns etc.), always allows.
+        /// </summary>
+        public static bool Prefix_MuzzleFlashUtility_SpawnMuzzleFlash()
+        {
+            if (_allowMuzzleFlash)
+            {
+                AMCLogger.LogMuzzleFlashMod("[SPAWNED] SpawnMuzzleFlash allowed (gate open).");
+                _allowMuzzleFlash = false; // Consume
+                return true;
+            }
+
+            // If gate is not open, check if this is even a turret flash.
+            // Non-turret flashes (pawn weapons) won't set the gate, so we always allow them.
+            // We can't distinguish here, so we use a secondary flag.
+            if (!_isTurretBurstActive)
+            {
+                // Not inside a turret burst → this is a pawn weapon flash, allow it
+                return true;
+            }
+
+            AMCLogger.LogMuzzleFlashMod("[PREVENTED] Blocked SpawnMuzzleFlash call (no successful TryCastShot for this burst tick).");
+            return false;
+        }
+
+        /// <summary>
+        /// Tracks whether we are currently inside a turret's TryCastNextBurstShot call.
+        /// Used to distinguish turret flashes from pawn weapon flashes in SpawnMuzzleFlash.
+        /// </summary>
+        [ThreadStatic]
+        private static bool _isTurretBurstActive;
+
+        /// <summary>
+        /// Prefix on Verb.TryCastNextBurstShot — marks the start of a turret burst tick.
+        /// </summary>
+        public static void Prefix_Verb_TryCastNextBurstShot_MarkTurretBurst(Verb __instance)
+        {
+            _isTurretBurstActive = false;
+            _allowMuzzleFlash = false;
+
+            if (__instance?.caster == null) return;
+            if (__instance.caster is Building_Turret)
+            {
+                _isTurretBurstActive = true;
+            }
+        }
+
+        /// <summary>
+        /// Postfix on Verb.TryCastNextBurstShot — clears the turret burst flag after the full tick.
+        /// Runs AFTER the MF mod's postfix has already called (or not called) SpawnMuzzleFlash.
+        /// </summary>
+        public static void Postfix_Verb_TryCastNextBurstShot_ClearTurretBurst(Verb __instance)
+        {
+            _isTurretBurstActive = false;
+            _allowMuzzleFlash = false;
         }
     }
 }

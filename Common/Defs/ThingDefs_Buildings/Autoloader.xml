@@ -55,17 +55,7 @@
 			<li Class="CombatExtended.CompProperties_AmmoListUser">
 				<magazineSize>6000</magazineSize>
 				<reloadTime>9.2</reloadTime>
-				<ammoSet>AmmoSet_20x138mmB</ammoSet>
-				<additionalAmmoSets>
-					<li>AmmoSet_20x102mmNATO</li>
-					<li>AmmoSet_20x139mm_Shells</li>
-					<li>AmmoSet_25x137mmNATO</li>
-					<li>AmmoSet_30x165mm_Shells</li>
-					<li>AmmoSet_30x170mm_Shells</li>
-					<li>AmmoSet_30x184mm_Shells</li>
-					<li>AmmoSet_37x249mm_Shells</li>
-					<li>AmmoSet_40x365mmBofors</li>
-				</additionalAmmoSets>
+				<additionalAmmoSets />
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -128,20 +118,7 @@
 			<li Class="CombatExtended.CompProperties_AmmoListUser">
 				<magazineSize>800</magazineSize>
 				<reloadTime>9.8</reloadTime>
-				<ammoSet>AmmoSet_88mmFLAK41_Shells</ammoSet>
-				<additionalAmmoSets>
-					<li>AmmoSet_57mmOQF_Shells</li>
-					<li>AmmoSet_75mmPAK40_Shells</li>
-					<li>AmmoSet_75mmLEIG18_Shells</li>
-					<li>AmmoSet_76mmOtomelaraC_Shells</li>
-					<li>AmmoSet_76mmOtomelaraC_indirect_Shells</li>
-					<li>AmmoSet_90mmM26_Shells</li>
-					<li>AmmoSet_100mmBS3_Shells</li>
-					<li>AmmoSet_100mmModel1953_Shells</li>
-					<li>AmmoSet_100mmModel1953_indirect_Shells</li>
-					<li>AmmoSet_105mmL7A3_Shells</li>
-					<li>AmmoSet_106mmM40_Shells</li>
-				</additionalAmmoSets>
+				<additionalAmmoSets />
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -204,29 +181,7 @@
 			<li Class="CombatExtended.CompProperties_AmmoListUser">
 				<magazineSize>300</magazineSize>
 				<reloadTime>9.8</reloadTime>
-				<ammoSet>AmmoSet_150mmKC36_Shells</ammoSet>
-				<additionalAmmoSets>
-					<li>AmmoSet_120mmTAK120_Shells</li>
-					<li>AmmoSet_120mmTAK120_indirect_Shells</li>
-					<li>AmmoSet_122mm2A12_Shells</li>
-					<li>AmmoSet_122mm2A12_indirect_Shells</li>
-					<li>AmmoSet_127mmMark16_Shells</li>
-					<li>AmmoSet_127mmMark16_indirect_Shells</li>
-					<li>AmmoSet_127mmSKC34_Shells</li>
-					<li>AmmoSet_127mmSKC34_indirect_Shells</li>
-					<li>AmmoSet_127mmTypeC_Shells</li>
-					<li>AmmoSet_127mmTypeC_indirect_Shells</li>
-					<li>AmmoSet_128mmPAK44_Shells</li>
-					<li>AmmoSet_150mmSIG33_Shells</li>
-					<li>AmmoSet_152mm2A65_Shells</li>
-					<li>AmmoSet_152mm2A65_indirect_Shells</li>
-					<li>AmmoSet_155mmGCT_Shells</li>
-					<li>AmmoSet_155mmGCT_indirect_Shells</li>
-					<li>AmmoSet_203mmSKC34_Shells</li>
-					<li>AmmoSet_233mmBLMK1_Shells</li>
-					<li>AmmoSet_406mm2A3_indirect_Shells</li>
-					<li>AmmoSet_600mmKarlGerat_Shells</li>
-				</additionalAmmoSets>
+				<additionalAmmoSets />
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>

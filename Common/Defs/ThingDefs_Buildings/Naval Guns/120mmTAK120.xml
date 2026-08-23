@@ -65,20 +65,41 @@
 				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleParticleSize>1~2</muzzleParticleSize>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 7)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>20</heatThreshold>
-				<heatDecayRate>0.48</heatDecayRate>
-				<heatEmissionRate>3.5</heatEmissionRate>
+				<heatThreshold>10</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.34</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 3)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>6</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>5</shockwaveRadius>
-				<shockwaveDensity>50</shockwaveDensity>
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 		</comps>
 		<placeWorkers>
@@ -232,22 +253,42 @@
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
-			
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 6)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>20</heatThreshold>
-				<heatDecayRate>0.48</heatDecayRate>
-				<heatEmissionRate>3.5</heatEmissionRate>
+				<heatThreshold>2</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>5</shockwaveRadius>
-				<shockwaveDensity>50</shockwaveDensity>
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 6)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
 				<transferViewOrigin>true</transferViewOrigin>

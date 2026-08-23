@@ -269,7 +269,7 @@
 		<researchPrerequisites>
 			<li>Research_76mmOtomelaraC</li>
 		</researchPrerequisites>
-    	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
+    	<interactionCellOffset>(1,0,-3)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<selectableBurstCounts>

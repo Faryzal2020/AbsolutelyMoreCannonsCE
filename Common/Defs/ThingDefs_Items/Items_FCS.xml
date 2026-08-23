@@ -25,7 +25,7 @@
       <li>ComponentIndustrial</li>
     </tradeTags>
     <thingCategories>
-      <li>Items</li>
+      <li>AMCMaterials</li>
     </thingCategories>
   </ThingDef>
 
@@ -59,6 +59,7 @@
     <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Automated_FCS</researchPrerequisite>
     <ingredients>
       <li>
         <filter>
@@ -80,6 +81,8 @@
     <recipeUsers>
       <li>FabricationBench</li>
       <li>TableMachining</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
     </recipeUsers>
   </RecipeDef>
 
@@ -115,6 +118,7 @@
     <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Automated_FCS_2</researchPrerequisite>
     <ingredients>
       <li>
         <filter>
@@ -135,6 +139,8 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
     </recipeUsers>
   </RecipeDef>
 

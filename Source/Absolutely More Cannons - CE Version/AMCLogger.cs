@@ -188,5 +188,14 @@ namespace AbsolutelyMoreCannons
                 return;
             Log.Message($"{PREFIX} [SMOKE_TICK] {message}");
         }
+
+        // === MUZZLE FLASH MOD LOGGING ===
+
+        public static void LogMuzzleFlashMod(string message)
+        {
+            if (Settings == null || !Settings.logMuzzleFlashMod)
+                return;
+            Log.Message($"{PREFIX} [MUZZLE_FLASH_MOD] {message}");
+        }
     }
 }
