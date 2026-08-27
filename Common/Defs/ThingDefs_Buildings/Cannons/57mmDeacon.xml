@@ -157,14 +157,14 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>4</minRange>
+        		<minRange>4</minRange>
 				<range>90</range>
 				<soundCast>Sound_6Pdr</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>40</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>

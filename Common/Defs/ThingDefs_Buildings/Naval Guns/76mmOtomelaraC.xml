@@ -222,6 +222,11 @@
 				<reloadTime>1</reloadTime>
 				<ammoSet>AmmoSet_76mmOtomelaraC_Shells</ammoSet>
 			</li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>TRUE</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+				<aimedBurstShotCount>1</aimedBurstShotCount>
+			</li>
 		</comps>
 	</ThingDef>
 

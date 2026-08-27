@@ -94,7 +94,7 @@
 		<defName>Ammo_76mmOtomelaraC_Airburst</defName>
 		<label>76x636mm (Airburst)</label>
 		<graphicData>
-			<texPath>Things/Projectile/76mmOtomelaraCHE</texPath>
+			<texPath>Things/Projectile/76mmOtomelaraCAB</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<statBases>
@@ -111,7 +111,7 @@
 		<defName>Ammo_76mmOtomelaraC_Guided</defName>
 		<label>76x636mm (Guided)</label>
 		<graphicData>
-			<texPath>Things/Projectile/76mmOtomelaraCHE</texPath>
+			<texPath>Things/Projectile/76mmOtomelaraCGUIDED</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<statBases>
@@ -181,6 +181,7 @@
 			<speed>168</speed>
 			<damageDef>Bullet</damageDef>
 			<damageAmountBase>435</damageAmountBase>
+			<explosionRadius>0.5</explosionRadius>
 			<armorPenetrationSharp>60</armorPenetrationSharp>
 			<armorPenetrationBlunt>53818.82</armorPenetrationBlunt>
 		</projectile>
@@ -340,8 +341,9 @@
 			<screenShakeFactor>0.2</screenShakeFactor>
 			<damageDef>Bullet</damageDef>
 			<damageAmountBase>435</damageAmountBase>
-			<explosionRadius>0</explosionRadius>
-			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+			<explosionRadius>0.5</explosionRadius>
+			<armorPenetrationSharp>60</armorPenetrationSharp>
+			<armorPenetrationBlunt>53818.82</armorPenetrationBlunt>
 		</projectile>
 	</ThingDef>
 
@@ -582,7 +584,7 @@
 						<li>ComponentIndustrial</li>
 					</thingDefs>
 				</filter>
-				<count>6</count>
+				<count>20</count>
 			</li>
 			<li>
 				<filter>
@@ -590,7 +592,7 @@
 						<li>FSX</li>
 					</thingDefs>
 				</filter>
-				<count>26</count>
+				<count>22</count>
 			</li>
 		</ingredients>
 		<fixedIngredientFilter>
