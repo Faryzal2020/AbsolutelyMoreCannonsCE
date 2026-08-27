@@ -150,6 +150,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<speed>168</speed>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>132</damageAmountBase>
@@ -176,6 +177,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
 			<speed>168</speed>
 			<damageDef>Bullet</damageDef>
 			<damageAmountBase>435</damageAmountBase>
@@ -184,6 +186,7 @@
 		</projectile>
 		<comps>
 			<li Class="CombatExtended.CompProperties_ExplosiveCE">
+				<screenShakeFactor>0.2</screenShakeFactor>
 				<damageAmountBase>652</damageAmountBase>
 				<explosiveDamageType>Bomb</explosiveDamageType>
 				<explosiveRadius>1</explosiveRadius>
@@ -202,6 +205,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<speed>168</speed>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>0</damageAmountBase>
@@ -250,6 +254,7 @@
 		</graphicData>
 		<projectile Class="AbsolutelyMoreCannons.ProjectilePropertiesCE">
 			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
 			<speed>168</speed>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>100</damageAmountBase>
@@ -304,6 +309,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>132</damageAmountBase>
 			<explosionRadius>2.5</explosionRadius>
@@ -331,6 +337,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
 			<damageDef>Bullet</damageDef>
 			<damageAmountBase>435</damageAmountBase>
 			<explosionRadius>0</explosionRadius>
@@ -348,11 +355,12 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>0</damageAmountBase>
 			<explosionRadius>0</explosionRadius>
 			<shellingProps>
-				<damage>0.09428571428571429</damage>
+				<damage>0.094</damage>
 			</shellingProps>
 		</projectile>
 		<comps>
@@ -373,8 +381,7 @@
 				<useEllipticalCone>true</useEllipticalCone>
     			<airburstSound>Explosion_Bomb</airburstSound>
 				<airburstFlashEffect>AMC_MuzzleFlashLight</airburstFlashEffect>
-				<airburstFlashScale>10.0</airburstFlashScale>
-				<airburstSmokeScale>1.0</airburstSmokeScale>
+				<airburstFlashScale>20.0</airburstFlashScale>
 			</li>
 		</comps>
 		<modExtensions>
@@ -410,6 +417,7 @@
 				<damage>0.09428571428571429</damage>
 			</shellingProps>
 			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.2</screenShakeFactor>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>100</damageAmountBase>
 			<explosionRadius>0.5</explosionRadius>

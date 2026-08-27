@@ -163,25 +163,36 @@ namespace AbsolutelyMoreCannons
                 {
                     float clampAngle = settings.rotationClampAngle;
                     
-                    // DISCOVERY: shotRotation + turretBase = DEVIATION (scatter angle)
-                    // Must work in SIGNED (-180° to +180°) space!
-                    // Note: "deviation = shotRotation - turretBaseRotation" is false. beware of AI hallucination
+                    // =========================================================================================
+                    // CRITICAL NON-NEGOTIABLE ARCHITECTURAL RULE: DO NOT ALTER THIS MATH OR CONVERT TO DeltaAngle!
+                    // =========================================================================================
+                    // Combat Extended's BaseTrajectoryWorker.ShotRotation formula is:
+                    //   shotRotation = (-90 + Mathf.Rad2Deg * Mathf.Atan2(w.z, w.x)) % 360
+                    // Standard RimWorld turretBaseRotation / AngleFlat formula is:
+                    //   turretBaseRotation = Mathf.Rad2Deg * Mathf.Atan2(w.x, w.z)
+                    //
+                    // Because CE's shotRotation uses a sign-inverted coordinate space relative to RimWorld turret base:
+                    // 1. Raw signed deviation MUST be calculated as: (shotRotation + turretBaseRotation)
+                    // 2. Re-converting back to CE space MUST be calculated as: (deviation - turretBaseRotation)
+                    //
+                    // WARNING: Replacing this with Mathf.DeltaAngle(turretBaseRotation, shotRotation) ASSUMES
+                    // both angles use the same coordinate space, which is FALSE in CE. Doing so causes a 90° to 180°
+                    // rotation corruption, directing bullets South-East when aiming South-West.
+                    // =========================================================================================
                     
-                    // 1. Calculate raw signed deviation
+                    // 1. Calculate raw signed deviation in CE inverted coordinate space
                     float deviation = shotRotation + turretBaseRotation;
                     
-                    // 2. Normalize to -180° to +180° (preserve sign!)
+                    // 2. Normalize deviation to [-180°, +180°] range
                     deviation = Mathf.Repeat(deviation + 180f, 360f) - 180f;
                     
                     float originalDeviation = deviation;
                     
-                    // 3. Clamp the deviation (in signed space)
+                    // 3. Clamp deviation within [-clampAngle, +clampAngle]
                     deviation = Mathf.Clamp(deviation, -clampAngle, clampAngle);
                     
-                    // 4. Convert back to shotRotation
+                    // 4. Convert back to CE shotRotation space
                     float clampedShotRotation = deviation - turretBaseRotation;
-                    
-                    // Normalize clampedShotRotation to -180° to +180°
                     clampedShotRotation = Mathf.Repeat(clampedShotRotation + 180f, 360f) - 180f;
                     
                     // Calculate actual direction for logging
@@ -217,59 +228,69 @@ namespace AbsolutelyMoreCannons
                         float shotAngle = (float)shotAngleField.GetValue(__instance);
                         float originalShotAngle = shotAngle;
                         
-                        // Convert to degrees for easier reading
-                        float shotAngleDegrees = shotAngle * Mathf.Rad2Deg;
-                        
-                        // DIAGNOSTIC: Log the raw values
-                        if (settings.logElevationLaunch)
+                        // Get base ballistic elevation angle (lastShotAngle is CE's pure target elevation requirement)
+                        FieldInfo lastShotAngleField = verbType.GetField("lastShotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                        float baseBallisticAngle = 0f;
+                        bool hasBaseAngle = false;
+                        if (lastShotAngleField != null)
                         {
-                            Log.Message($"[AMC ELEVATION] ═══ Elevation Analysis ═══");
-                            Log.Message($"[AMC ELEVATION] shotAngle (raw): {shotAngle:F6} rad = {shotAngleDegrees:F3}°");
+                            baseBallisticAngle = (float)lastShotAngleField.GetValue(__instance);
+                            hasBaseAngle = true;
                         }
                         
-                        // CORRECTED: CE uses POSITIVE angles for UPWARD elevation
-                        // So +10° means 10° upward, +1° means 1° upward
-                        // For minimum 3° upward, we want shotAngle ≥ +3° (more positive = more up)
-                        // So: clamp shotAngle to be AT LEAST as positive as +minElevation
-                        
-                        float minElevationRadians = settings.minimumElevationAngle * Mathf.Deg2Rad;
-                        
-                        // Clamp: if shotAngle < minElevation (less upward), set to minElevation
-                        float clampedAngle = Mathf.Max(shotAngle, minElevationRadians);
-                        
-                        if (settings.logElevationLaunch)
+                        float clampAngle = settings.elevationClampAngle;
+                        float clampAngleRad = clampAngle * Mathf.Deg2Rad;
+                        float clampedAngle = shotAngle;
+                        float originalDeviationRad = 0f;
+                        float clampedDeviationRad = 0f;
+
+                        if (hasBaseAngle)
                         {
-                            float clampedDegrees = clampedAngle * Mathf.Rad2Deg;
-                            Log.Message($"[AMC ELEVATION] Min elevation (CE format): {minElevationRadians:F6} rad = {settings.minimumElevationAngle:F3}°");
-                            Log.Message($"[AMC ELEVATION] Clamped angle: {clampedAngle:F6} rad = {clampedDegrees:F3}°");
+                            // Calculate raw vertical deviation caused by sway, recoil, and spread relative to target elevation angle
+                            originalDeviationRad = shotAngle - baseBallisticAngle;
+                            
+                            // Clamp vertical deviation within [-clampAngle, +clampAngle]
+                            clampedDeviationRad = Mathf.Clamp(originalDeviationRad, -clampAngleRad, clampAngleRad);
+                            
+                            // Recombine with base ballistic angle
+                            clampedAngle = baseBallisticAngle + clampedDeviationRad;
                         }
-                        
+                        else
+                        {
+                            // Fallback: If lastShotAngle is unretrievable
+                            if (settings.logElevationLaunch)
+                            {
+                                Log.Warning("[AMC ELEVATION] Could not find lastShotAngle field for relative elevation clamping");
+                            }
+                        }
+
                         // Set the clamped value
                         shotAngleField.SetValue(__instance, clampedAngle);
-                        
-                        // VERIFY: Read it back to confirm it was set
-                        float verifyAngle = (float)shotAngleField.GetValue(__instance);
-                        if (settings.logElevationLaunch && Mathf.Abs(verifyAngle - clampedAngle) > 0.0001f)
-                        {
-                            Log.Warning($"[AMC ELEVATION] VERIFICATION FAILED! Set {clampedAngle:F6} but read back {verifyAngle:F6}");
-                        }
-                        
-                        // Log when clamping occurs
-                        if (Mathf.Abs(clampedAngle - originalShotAngle) > 0.0001f)
-                        {
-                            float originalDegrees = originalShotAngle * Mathf.Rad2Deg;
-                            float clampedDegrees = clampedAngle * Mathf.Rad2Deg;
-                            Log.Message($"[AMC ELEVATION] {caster.LabelCap} elevation clamped: {originalDegrees:F3}° → {clampedDegrees:F3}° upward (min: {settings.minimumElevationAngle:F1}°)");
-                            Log.Message($"[AMC ELEVATION] Verified read-back: {verifyAngle * Mathf.Rad2Deg:F3}°");
-                        }
-                        else if (settings.logElevationLaunch)
-                        {
-                            Log.Message($"[AMC ELEVATION] No clamping needed (elevation: {shotAngleDegrees:F3}° ≥ min: {settings.minimumElevationAngle:F1}°)");
-                        }
-                        
+
+                        // DIAGNOSTIC LOGGING
                         if (settings.logElevationLaunch)
                         {
+                            float shotAngleDeg = shotAngle * Mathf.Rad2Deg;
+                            float baseBallisticDeg = baseBallisticAngle * Mathf.Rad2Deg;
+                            float originalDevDeg = originalDeviationRad * Mathf.Rad2Deg;
+                            float clampedDevDeg = clampedDeviationRad * Mathf.Rad2Deg;
+                            float clampedAngleDeg = clampedAngle * Mathf.Rad2Deg;
+
+                            Log.Message($"[AMC ELEVATION] ═══ Elevation Analysis ═══");
+                            Log.Message($"[AMC ELEVATION] {caster.LabelCap}");
+                            Log.Message($"[AMC ELEVATION] Base Target Elevation (ballistic): {baseBallisticDeg:F3}°");
+                            Log.Message($"[AMC ELEVATION] Unclamped shotAngle (CE):           {shotAngleDeg:F3}°");
+                            Log.Message($"[AMC ELEVATION] Raw Vertical Deviation:              {originalDevDeg:F3}°");
+                            Log.Message($"[AMC ELEVATION] Max Allowed Clamp Angle:            ±{clampAngle:F1}°");
+                            Log.Message($"[AMC ELEVATION] Clamped Vertical Deviation:          {clampedDevDeg:F3}°");
+                            Log.Message($"[AMC ELEVATION] Final Clamped shotAngle:             {clampedAngleDeg:F3}°");
                             Log.Message($"[AMC ELEVATION] ═══════════════════════════");
+                        }
+                        else if (Mathf.Abs(clampedAngle - originalShotAngle) > 0.0001f && settings.logRotationDiagnostics)
+                        {
+                            float origDevDeg = originalDeviationRad * Mathf.Rad2Deg;
+                            float clampedDevDeg = clampedDeviationRad * Mathf.Rad2Deg;
+                            Log.Message($"[AMC ELEVATION] {caster.LabelCap} elevation deviation clamped: {origDevDeg:F3}° → {clampedDevDeg:F3}° (max: ±{clampAngle:F1}°)");
                         }
                     }
                 }

@@ -302,18 +302,23 @@ namespace AbsolutelyMoreCannons
         {
             if (projectile == null) return;
 
-            Vector3 vel = projectile.velocity;
-            if (vel.sqrMagnitude < 0.0001f && projectile.TrajectoryWorker != null)
+            // Only set _drawRotation for guided projectiles (VLS, homing rockets, etc.).
+            // Standard ballistic projectiles must leave _drawRotation null so CE's dynamic parabolic arc rotation (ascending -> descending) runs.
+            if (projectile.TrajectoryWorker != null && projectile.TrajectoryWorker.GuidedProjectile)
             {
-                vel = projectile.TrajectoryWorker.GetInitialVelocity(projectile.shotSpeed, projectile.shotRotation, projectile.shotAngle);
-            }
+                Vector3 vel = projectile.velocity;
+                if (vel.sqrMagnitude < 0.0001f)
+                {
+                    vel = projectile.TrajectoryWorker.GetInitialVelocity(projectile.shotSpeed, projectile.shotRotation, projectile.shotAngle);
+                }
 
-            float screenAngle = CalculateScreenAngle(vel);
-            try
-            {
-                DrawRotationRef(projectile) = Quaternion.AngleAxis(screenAngle, Vector3.up);
+                float screenAngle = CalculateScreenAngle(vel);
+                try
+                {
+                    DrawRotationRef(projectile) = Quaternion.AngleAxis(screenAngle, Vector3.up);
+                }
+                catch { }
             }
-            catch { }
         }
 
         public static bool IsGuidanceActive(ProjectileCE projectile, ProjectilePropertiesCE amcProps)

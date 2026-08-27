@@ -1266,6 +1266,13 @@ namespace AbsolutelyMoreCannons
                 {
                     smokeComp.OnFired(turretBaseRotation);
                 }
+
+                // Trigger tracer line comp if present
+                var tracerLineComp = caster.TryGetComp<CompTracerLine>();
+                if (tracerLineComp != null)
+                {
+                    tracerLineComp.OnFired();
+                }
             }
             catch (Exception ex)
             {

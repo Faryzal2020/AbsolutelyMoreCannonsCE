@@ -63,14 +63,26 @@ namespace AbsolutelyMoreCannons
                     // Flak (Proximity) mode: Check intended target first (O(1))
                     if (intendedTargetThing != null && intendedTargetThing.Spawned)
                     {
-                        float distSq = (intendedTargetThing.Position - Position).LengthHorizontalSquared;
-                        if (distSq <= ext.proximityRadius * ext.proximityRadius)
+                        bool isValidTarget = true;
+                        if (intendedTargetThing is Pawn targetPawn)
                         {
-                            shouldDetonate = true;
+                            if (targetPawn.Dead || targetPawn.Downed || (launcher != null && !GenHostility.HostileTo(targetPawn, launcher)))
+                            {
+                                isValidTarget = false;
+                            }
+                        }
+
+                        if (isValidTarget)
+                        {
+                            float distSq = (intendedTargetThing.Position - Position).LengthHorizontalSquared;
+                            if (distSq <= ext.proximityRadius * ext.proximityRadius)
+                            {
+                                shouldDetonate = true;
+                            }
                         }
                     }
 
-                    // If intended target wasn't close enough, check for hostile pawns in range
+                    // If intended target wasn't close enough or valid, check for non-downed hostile pawns in range
                     if (!shouldDetonate && Map != null)
                     {
                         IEnumerable<Pawn> nearbyPawns = Position.PawnsInRange(Map, ext.proximityRadius);
@@ -78,7 +90,7 @@ namespace AbsolutelyMoreCannons
                         {
                             foreach (Pawn p in nearbyPawns)
                             {
-                                if (p != null && p.Spawned && !p.Dead && p != launcher && (launcher == null || GenHostility.HostileTo(p, launcher)))
+                                if (p != null && p.Spawned && !p.Dead && !p.Downed && p != launcher && (launcher == null || GenHostility.HostileTo(p, launcher)))
                                 {
                                     shouldDetonate = true;
                                     break;
@@ -120,71 +132,19 @@ namespace AbsolutelyMoreCannons
                 return;
             }
 
-            // 1. Clamor & Flecks
             GenClamor.DoClamor(this, 12f, ClamorDefOf.Impact);
-            if (Controller.settings.EnableExtraEffects)
-            {
-                var ceProps = def.projectile as CombatExtended.ProjectilePropertiesCE;
-                if (ceProps != null)
-                {
-                    ImpactFleckThrower.ThrowFleck(ExactPosition, Position, Map, ceProps, def, hitThing, shotRotation);
-                }
-            }
 
+            // Play Explosion Sound
+            SoundDef soundToPlay = def.projectile.soundExplode ?? SoundDef.Named("Explosion_Bomb");
+            soundToPlay?.PlayOneShot(new TargetInfo(Position, Map, false));
+
+            // Spawn Mote_BigExplode at airborne DrawPos (exact 2D screen location where shell is rendered)
+            Vector3 screenDrawPos = DrawPos;
+            MoteMaker.MakeStaticMote(screenDrawPos, Map, CE_ThingDefOf.Mote_BigExplode, 1.8f);
+
+            // Throw Airburst Fragments
             Vector3 explodePos = ExactPosition;
-
-            // 2. Visual Effects & Sounds
-            if (def.projectile.explosionEffect != null)
-            {
-                Effecter effecter = def.projectile.explosionEffect.Spawn();
-                effecter.Trigger(new TargetInfo(explodePos.ToIntVec3(), Map, false), new TargetInfo(explodePos.ToIntVec3(), Map, false));
-                effecter.Cleanup();
-            }
-
-            CombatExtended.ProjectilePropertiesCE projectileCE = def.projectile as CombatExtended.ProjectilePropertiesCE;
-            if (projectileCE != null)
-            {
-                float effectScale = projectileCE.detonateEffectsScaleOverride > 0 ? projectileCE.detonateEffectsScaleOverride : projectileCE.explosionRadius * 2;
-                if (projectileCE.detonateMoteDef != null)
-                {
-                    MoteMaker.MakeStaticMote(DrawPos, Map, CE_ThingDefOf.Mote_BigExplode, effectScale);
-                }
-                if (projectileCE.detonateFleckDef != null)
-                {
-                    FleckCreationData dataStatic = FleckMaker.GetDataStatic(DrawPos, MapHeld, projectileCE.detonateFleckDef, effectScale);
-                    MapHeld.flecks.CreateFleck(dataStatic);
-                }
-            }
-
-            if (def.projectile.soundExplode != null)
-            {
-                def.projectile.soundExplode.PlayOneShot(new TargetInfo(explodePos.ToIntVec3(), Map, false));
-            }
-
-            // 3. Throw Airburst Fragments (Custom CompAirburstFragments or CE CompFragments fallback)
             ThrowAirburstFragments(explodePos);
-
-            // 4. Explosive/Radial damage
-            if (projectileCE != null && DamageDef != null)
-            {
-                if (projectileCE.explosionRadius > 0f)
-                {
-                    GenExplosionCE.DoExplosion(
-                        explodePos.ToIntVec3(),
-                        Map,
-                        projectileCE.explosionRadius,
-                        DamageDef,
-                        launcher,
-                        Mathf.FloorToInt(DamageAmount),
-                        projectileCE.GetExplosionArmorPenetration(),
-                        def.projectile.soundExplode
-                    );
-                }
-                else if (def.projectile is AbsolutelyMoreCannons.ProjectilePropertiesCE amcProps && amcProps.damageRadius > 0f)
-                {
-                    Patch_ProjectileCE_Impact_DamageRadius.ApplySilentDamageRadius(this, amcProps);
-                }
-            }
 
             Destroy();
         }

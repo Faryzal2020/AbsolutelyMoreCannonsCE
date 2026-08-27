@@ -351,6 +351,13 @@ export function SmokeTab({ draft, set, dirty }) {
                 {f('smoker.shockwave.fleckDef', 'FleckDef')}
                 {f('smoker.shockwave.radius', 'Radius (cells)', { type: 'number', step: '0.5' })}
                 {f('smoker.shockwave.density', 'Particle Density', { type: 'number' })}
+                {f('smoker.shockwave.fadeOutSpeed', 'Fade Out Speed', { type: 'number', step: '0.1' })}
+                <div>
+                  <Toggle label="Gradient Density (thicker center, 10% edge)" checked={draft.smoker.shockwave.gradientDensity}
+                    onChange={(v) => set('smoker.shockwave.gradientDensity', v)} />
+                  <Toggle label="Gradient Particle Size (full center, 10% edge)" checked={draft.smoker.shockwave.gradientParticleSize}
+                    onChange={(v) => set('smoker.shockwave.gradientParticleSize', v)} />
+                </div>
               </div>
             )}
           </Section>

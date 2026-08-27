@@ -158,6 +158,15 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [AIRBURST] {message}");
         }
 
+        // === PROJECTILE TRACER LOGGING ===
+
+        public static void LogProjectileTracer(string message)
+        {
+            if (Settings == null || !Settings.logProjectileTracers)
+                return;
+            Log.Message($"{PREFIX} [TRACER] {message}");
+        }
+
         // === TURRET SMOKE LOGGING ===
 
         public static void LogTurretSmoke(string message)

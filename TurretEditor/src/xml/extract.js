@@ -97,7 +97,7 @@ function blankTurret() {
       enabled: false,
       muzzle: { enabled: false, fleckDef: '', particleCount: null, velocity: null, particleSize: '' },
       heat: { enabled: false, fleckDef: '', threshold: null, decayRate: null, emissionRate: null },
-      shockwave: { enabled: false, fleckDef: '', radius: null, density: null },
+      shockwave: { enabled: false, fleckDef: '', radius: null, density: null, fadeOutSpeed: null, gradientDensity: false, gradientParticleSize: false },
     },
     textures: { building: '', icon: '', weapon: '' },
     warnings: [],

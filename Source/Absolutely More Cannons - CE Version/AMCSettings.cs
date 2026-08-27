@@ -10,9 +10,15 @@ namespace AbsolutelyMoreCannons
     /// </summary>
     public class AMCSettings : ModSettings
     {
+        // === Master Logging Toggle ===
+        public bool enableLogging = false;
+
         // === Projectile Launch Logging ===
-        public bool logElevationLaunch = false; // Vertical angle logging
-        public bool logRotationLaunch = false;  // Horizontal angle/rotation logging
+        private bool _logElevationLaunch = false;
+        private bool _logRotationLaunch = false;
+
+        public bool logElevationLaunch { get => enableLogging && _logElevationLaunch; set => _logElevationLaunch = value; }
+        public bool logRotationLaunch { get => enableLogging && _logRotationLaunch; set => _logRotationLaunch = value; }
 
         // === Rotation Clamping ===
         public bool enableRotationClamping = false;
@@ -20,40 +26,65 @@ namespace AbsolutelyMoreCannons
         
         // === Elevation Clamping ===
         public bool enableElevationClamping = false;
-        public float minimumElevationAngle = 0.0f; // degrees (prevent shooting into ground)
+        public float elevationClampAngle = 5.0f; // degrees (max vertical pitch deviation)
+        public float minimumElevationAngle { get => elevationClampAngle; set => elevationClampAngle = value; } // backwards compatibility alias
         
         // === Diagnostic Logging ===
-        public bool logRotationDiagnostics = false; // AMC DIAGNOSTIC and AMC OBSERVE logs
-        public bool logStartup = true; // Mod initialization and patch success messages
-        public bool logTemporaryDebug = false; // Temporary debugging logs (e.g., projectile tick tracking)
-        public bool logFragmentProjectiles = false; // Sub-toggle for fragment projectile tracking (launch, tick, destroyed)
-        public bool logVerticalAngleDetailed = false; // Detailed vertical angle breakdown logging
-        public bool logTurretViewTransfer = false; // Turret view origin transfer and self-occlusion LoS bypass logs
-        
+        private bool _logRotationDiagnostics = false;
+        private bool _logStartup = true;
+        private bool _logTemporaryDebug = false;
+        private bool _logFragmentProjectiles = false;
+        private bool _logVerticalAngleDetailed = false;
+        private bool _logTurretViewTransfer = false;
+
+        public bool logRotationDiagnostics { get => enableLogging && _logRotationDiagnostics; set => _logRotationDiagnostics = value; }
+        public bool logStartup { get => enableLogging && _logStartup; set => _logStartup = value; }
+        public bool logTemporaryDebug { get => enableLogging && _logTemporaryDebug; set => _logTemporaryDebug = value; }
+        public bool logFragmentProjectiles { get => enableLogging && _logFragmentProjectiles; set => _logFragmentProjectiles = value; }
+        public bool logVerticalAngleDetailed { get => enableLogging && _logVerticalAngleDetailed; set => _logVerticalAngleDetailed = value; }
+        public bool logTurretViewTransfer { get => enableLogging && _logTurretViewTransfer; set => _logTurretViewTransfer = value; }
+
         // === Individual Accuracy Tuning (0-100%) ===
         public float swayReductionPercent = 0f;    // 0% = full sway, 100% = no sway
         public float recoilReductionPercent = 0f;  // 0% = full recoil, 100% = no recoil
         public float spreadReductionPercent = 0f;  // 0% = full spread, 100% = no spread
         public bool showAccuracyOverrideInspect = true; // Show per-turret accuracy overrides in inspect panel
 
-
         // === Turret Component Logging ===
-        public bool logTurretBarrel = false;
-        public bool logTurretModeSwap = false;
-        public bool logTurretAmmo = false;
-        public bool logTurretTarget = false;
-        public bool logTurretFireTimestamp = false;  // Timestamp when turret fires
-        public bool logFCS = false; // FCS accuracy & telemetry logging (off by default)
+        private bool _logTurretBarrel = false;
+        private bool _logTurretModeSwap = false;
+        private bool _logTurretAmmo = false;
+        private bool _logTurretTarget = false;
+        private bool _logTurretFireTimestamp = false;
+        private bool _logFCS = false;
+
+        public bool logTurretBarrel { get => enableLogging && _logTurretBarrel; set => _logTurretBarrel = value; }
+        public bool logTurretModeSwap { get => enableLogging && _logTurretModeSwap; set => _logTurretModeSwap = value; }
+        public bool logTurretAmmo { get => enableLogging && _logTurretAmmo; set => _logTurretAmmo = value; }
+        public bool logTurretTarget { get => enableLogging && _logTurretTarget; set => _logTurretTarget = value; }
+        public bool logTurretFireTimestamp { get => enableLogging && _logTurretFireTimestamp; set => _logTurretFireTimestamp = value; }
+        public bool logFCS { get => enableLogging && _logFCS; set => _logFCS = value; }
 
         // === General Component Logging ===
-        public bool logRotation = false;
-        public bool logAnimation = false;
-        public bool logTurretSmoke = false;
-        public bool logTurretSmokeParticleTelemetry = false;  // Detailed particle spawn/lifecycle logging
-        public bool logTurretSmokeParticleTick = false;       // Per-tick particle position/velocity logging
-        public bool logProjectileOffsets = false;             // Forward and lateral projectile spawn offsets
-        public bool logAirburstDetonation = false;            // Log airburst shell explosion and fragment telemetry
-        public bool logMuzzleFlashMod = false;                // Third-party Muzzle Flash mod spawn/suppression logging
+        private bool _logRotation = false;
+        private bool _logAnimation = false;
+        private bool _logTurretSmoke = false;
+        private bool _logTurretSmokeParticleTelemetry = false;
+        private bool _logTurretSmokeParticleTick = false;
+        private bool _logProjectileOffsets = false;
+        private bool _logAirburstDetonation = false;
+        private bool _logProjectileTracers = false;
+        private bool _logMuzzleFlashMod = false;
+
+        public bool logRotation { get => enableLogging && _logRotation; set => _logRotation = value; }
+        public bool logAnimation { get => enableLogging && _logAnimation; set => _logAnimation = value; }
+        public bool logTurretSmoke { get => enableLogging && _logTurretSmoke; set => _logTurretSmoke = value; }
+        public bool logTurretSmokeParticleTelemetry { get => enableLogging && _logTurretSmokeParticleTelemetry; set => _logTurretSmokeParticleTelemetry = value; }
+        public bool logTurretSmokeParticleTick { get => enableLogging && _logTurretSmokeParticleTick; set => _logTurretSmokeParticleTick = value; }
+        public bool logProjectileOffsets { get => enableLogging && _logProjectileOffsets; set => _logProjectileOffsets = value; }
+        public bool logAirburstDetonation { get => enableLogging && _logAirburstDetonation; set => _logAirburstDetonation = value; }
+        public bool logProjectileTracers { get => enableLogging && _logProjectileTracers; set => _logProjectileTracers = value; }
+        public bool logMuzzleFlashMod { get => enableLogging && _logMuzzleFlashMod; set => _logMuzzleFlashMod = value; }
 
         /// <summary>
         /// Check if third-party Muzzle Flash mod (by IssacZhuang) is loaded in current session.
@@ -68,9 +99,12 @@ namespace AbsolutelyMoreCannons
         {
             base.ExposeData();
 
+            // Master Logging Toggle
+            Scribe_Values.Look(ref enableLogging, "enableLogging", false);
+
             // Projectile Launch Logging
-            Scribe_Values.Look(ref logElevationLaunch, "logElevationLaunch", false);
-            Scribe_Values.Look(ref logRotationLaunch, "logRotationLaunch", false);
+            Scribe_Values.Look(ref _logElevationLaunch, "logElevationLaunch", false);
+            Scribe_Values.Look(ref _logRotationLaunch, "logRotationLaunch", false);
 
             // Rotation Clamping
             Scribe_Values.Look(ref enableRotationClamping, "enableRotationClamping", false);
@@ -78,37 +112,38 @@ namespace AbsolutelyMoreCannons
             
             // Elevation Clamping
             Scribe_Values.Look(ref enableElevationClamping, "enableElevationClamping", false);
-            Scribe_Values.Look(ref minimumElevationAngle, "minimumElevationAngle", 0.0f);
+            Scribe_Values.Look(ref elevationClampAngle, "elevationClampAngle", 5.0f);
             
             // Diagnostic Logging
-            Scribe_Values.Look(ref logRotationDiagnostics, "logRotationDiagnostics", false);
-            Scribe_Values.Look(ref logStartup, "logStartup", true);
-            Scribe_Values.Look(ref logTemporaryDebug, "logTemporaryDebug", false);
-            Scribe_Values.Look(ref logFragmentProjectiles, "logFragmentProjectiles", false);
-            Scribe_Values.Look(ref logVerticalAngleDetailed, "logVerticalAngleDetailed", false);
-            Scribe_Values.Look(ref logTurretViewTransfer, "logTurretViewTransfer", false);
+            Scribe_Values.Look(ref _logRotationDiagnostics, "logRotationDiagnostics", false);
+            Scribe_Values.Look(ref _logStartup, "logStartup", true);
+            Scribe_Values.Look(ref _logTemporaryDebug, "logTemporaryDebug", false);
+            Scribe_Values.Look(ref _logFragmentProjectiles, "logFragmentProjectiles", false);
+            Scribe_Values.Look(ref _logVerticalAngleDetailed, "logVerticalAngleDetailed", false);
+            Scribe_Values.Look(ref _logTurretViewTransfer, "logTurretViewTransfer", false);
             Scribe_Values.Look(ref swayReductionPercent, "swayReductionPercent", 0f);
             Scribe_Values.Look(ref recoilReductionPercent, "recoilReductionPercent", 0f);
             Scribe_Values.Look(ref spreadReductionPercent, "spreadReductionPercent", 0f);
             Scribe_Values.Look(ref showAccuracyOverrideInspect, "showAccuracyOverrideInspect", true);
 
             // Turret Component Logging
-            Scribe_Values.Look(ref logTurretBarrel, "logTurretBarrel", false);
-            Scribe_Values.Look(ref logTurretModeSwap, "logTurretModeSwap", false);
-            Scribe_Values.Look(ref logTurretAmmo, "logTurretAmmo", false);
-            Scribe_Values.Look(ref logTurretTarget, "logTurretTarget", false);
-            Scribe_Values.Look(ref logTurretFireTimestamp, "logTurretFireTimestamp", false);
-            Scribe_Values.Look(ref logFCS, "logFCS", false);
+            Scribe_Values.Look(ref _logTurretBarrel, "logTurretBarrel", false);
+            Scribe_Values.Look(ref _logTurretModeSwap, "logTurretModeSwap", false);
+            Scribe_Values.Look(ref _logTurretAmmo, "logTurretAmmo", false);
+            Scribe_Values.Look(ref _logTurretTarget, "logTurretTarget", false);
+            Scribe_Values.Look(ref _logTurretFireTimestamp, "logTurretFireTimestamp", false);
+            Scribe_Values.Look(ref _logFCS, "logFCS", false);
 
             // General Component Logging
-            Scribe_Values.Look(ref logRotation, "logRotation", false);
-            Scribe_Values.Look(ref logAnimation, "logAnimation", false);
-            Scribe_Values.Look(ref logTurretSmoke, "logTurretSmoke", false);
-            Scribe_Values.Look(ref logTurretSmokeParticleTelemetry, "logTurretSmokeParticleTelemetry", false);
-            Scribe_Values.Look(ref logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
-            Scribe_Values.Look(ref logProjectileOffsets, "logProjectileOffsets", false);
-            Scribe_Values.Look(ref logAirburstDetonation, "logAirburstDetonation", false);
-            Scribe_Values.Look(ref logMuzzleFlashMod, "logMuzzleFlashMod", false);
+            Scribe_Values.Look(ref _logRotation, "logRotation", false);
+            Scribe_Values.Look(ref _logAnimation, "logAnimation", false);
+            Scribe_Values.Look(ref _logTurretSmoke, "logTurretSmoke", false);
+            Scribe_Values.Look(ref _logTurretSmokeParticleTelemetry, "logTurretSmokeParticleTelemetry", false);
+            Scribe_Values.Look(ref _logTurretSmokeParticleTick, "logTurretSmokeParticleTick", false);
+            Scribe_Values.Look(ref _logProjectileOffsets, "logProjectileOffsets", false);
+            Scribe_Values.Look(ref _logAirburstDetonation, "logAirburstDetonation", false);
+            Scribe_Values.Look(ref _logProjectileTracers, "logProjectileTracers", false);
+            Scribe_Values.Look(ref _logMuzzleFlashMod, "logMuzzleFlashMod", false);
             
             // Log settings after they're loaded/saved ONLY if startup logging is enabled
             if ((Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.Saving) && logStartup)
@@ -122,9 +157,12 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         private void LogCurrentSettings()
         {
+            if (!enableLogging) return;
+
             Log.Message("[AMC] =======================================");
             Log.Message("[AMC] Mod Settings:");
             Log.Message("[AMC] =======================================");
+            Log.Message($"[AMC] Master Logging Enabled: {enableLogging}");
             Log.Message($"[AMC] Elevation Launch Logging: {logElevationLaunch}");
             Log.Message($"[AMC] Rotation Launch Logging: {logRotationLaunch}");
             Log.Message($"[AMC] ");
@@ -132,7 +170,7 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Rotation Clamp Angle: +/-{rotationClampAngle:F1} deg");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Elevation Clamping Enabled: {enableElevationClamping}");
-            Log.Message($"[AMC] Minimum Elevation Angle: {minimumElevationAngle:F1} deg");
+            Log.Message($"[AMC] Elevation Clamp Angle: +/-{elevationClampAngle:F1} deg");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Diagnostics Logging: {logRotationDiagnostics}");
             Log.Message($"[AMC] Startup Logging: {logStartup}");
@@ -167,15 +205,15 @@ namespace AbsolutelyMoreCannons
 
         // Scroll position for settings window
         private Vector2 scrollPosition = Vector2.zero;
-        private const float ContentHeight = 2000f; // Tall enough for all settings
         
         /// <summary>
         /// Draw the settings UI
         /// </summary>
         public void DoSettingsWindowContents(Rect inRect)
         {
+            float contentHeight = enableLogging ? 2000f : 800f;
             // Create scrollable view
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, ContentHeight);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, contentHeight);
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             
             Listing_Standard listing = new Listing_Standard();
@@ -184,26 +222,14 @@ namespace AbsolutelyMoreCannons
             // === HEADER ===
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(listing.GetRect(40f), "Absolutely More Cannons - Debug Logging");
+            Widgets.Label(listing.GetRect(40f), "Absolutely More Cannons - Mod Settings");
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
             listing.Gap();
 
-            // === PROJECTILE LAUNCH LOGGING ===
-            Widgets.Label(listing.GetRect(30f), "═══ Projectile Launch Logging ═══");
-            listing.Gap(4);
-            
-            listing.CheckboxLabeled(
-                "Log Elevation/Vertical Angle",
-                ref logElevationLaunch
-            );
-            
-            listing.CheckboxLabeled(
-                "Log Rotation/Horizontal Angle",
-                ref logRotationLaunch
-            );
-
-            listing.Gap();
+            // =========================================================================
+            // === GAMEPLAY RELATED SETTINGS (POSITIONED ON TOP OF LIST) ===
+            // =========================================================================
 
             // === ROTATION CLAMPING ===
             Widgets.Label(listing.GetRect(30f), "═══ Rotation Clamping ═══");
@@ -237,7 +263,6 @@ namespace AbsolutelyMoreCannons
                 Text.Anchor = TextAnchor.UpperLeft;
                 
                 listing.Gap(4);
-                // Add helper text using GetRect and Widgets.Label
                 Text.Font = GameFont.Tiny;
                 Rect helpTextRect = listing.GetRect(Text.LineHeight);
                 Widgets.Label(helpTextRect, "  (This clamps the shotRotation field before projectile launch)");
@@ -251,7 +276,7 @@ namespace AbsolutelyMoreCannons
             listing.Gap(4);
             
             listing.CheckboxLabeled(
-                "Enable Elevation Clamping (Prevent Ground Shots)",
+                "Enable Elevation Clamping (Turrets Only)",
                 ref enableElevationClamping
             );
             
@@ -262,111 +287,27 @@ namespace AbsolutelyMoreCannons
                 Rect labelRect = sliderRect.LeftPart(0.7f);
                 Rect valueRect = sliderRect.RightPart(0.25f);
                 
-                Widgets.Label(labelRect, $"  └─ Minimum Elevation: ");
-                minimumElevationAngle = Widgets.HorizontalSlider(
+                Widgets.Label(labelRect, $"  └─ Max Vertical Deviation: ");
+                elevationClampAngle = Widgets.HorizontalSlider(
                     labelRect.RightPart(0.6f),
-                    minimumElevationAngle,
+                    elevationClampAngle,
                     0f,
-                    10f,
+                    45f,
                     true,
-                    $"{minimumElevationAngle:F1}°"
+                    $"{elevationClampAngle:F1}°"
                 );
                 
                 // Display current value
                 Text.Anchor = TextAnchor.MiddleRight;
-                Widgets.Label(valueRect, $"≥{minimumElevationAngle:F1}°");
+                Widgets.Label(valueRect, $"±{elevationClampAngle:F1}°");
                 Text.Anchor = TextAnchor.UpperLeft;
                 
                 listing.Gap(4);
-                // Add helper text
                 Text.Font = GameFont.Tiny;
                 Rect helpTextRect = listing.GetRect(Text.LineHeight);
-                Widgets.Label(helpTextRect, "  (Diagnostic mode: watch logs to verify angle reference frame)");
+                Widgets.Label(helpTextRect, "  (Clamps vertical pitch deviation relative to target elevation angle)");
                 Text.Font = GameFont.Small;
             }
-
-            listing.Gap();
-            
-            // === DIAGNOSTIC LOGGING ===
-            Widgets.Label(listing.GetRect(30f), "═══ Diagnostic Logging ═══");
-            listing.Gap(4);
-            
-            listing.CheckboxLabeled(
-                "Enable Rotation Diagnostics (AMC DIAGNOSTIC/OBSERVE)",
-                ref logRotationDiagnostics
-            );
-            
-            listing.Gap(4);
-            Text.Font = GameFont.Tiny;
-            Rect diagHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(diagHelpRect, "  (Detailed rotation/deviation analysis logs)");
-            Text.Font = GameFont.Small;
-            
-            listing.Gap(8);
-            
-            listing.CheckboxLabeled(
-                "Enable Startup Logs",
-                ref logStartup
-            );
-            
-            listing.Gap(4);
-            Text.Font = GameFont.Tiny;
-            Rect startupHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(startupHelpRect, "  (Mod initialization and patch success messages)");
-            Text.Font = GameFont.Small;
-            
-            listing.Gap(8);
-            
-            
-            listing.CheckboxLabeled(
-                "Enable Temporary Debug Logs",
-                ref logTemporaryDebug
-            );
-            
-            if (logTemporaryDebug)
-            {
-                listing.Gap(4);
-                listing.CheckboxLabeled(
-                    "  └─ Include Fragment Projectile Tracking (Launch/Tick/Destroyed)",
-                    ref logFragmentProjectiles
-                );
-                Text.Font = GameFont.Tiny;
-                Rect fragHelpRect = listing.GetRect(Text.LineHeight);
-                Widgets.Label(fragHelpRect, "     (Off by default to suppress fragment projectile log flooding)");
-                Text.Font = GameFont.Small;
-            }
-            
-            listing.Gap(4);
-            Text.Font = GameFont.Tiny;
-            Rect tempDebugHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(tempDebugHelpRect, "  (Temporary debugging logs - e.g., projectile tick tracking)");
-            Text.Font = GameFont.Small;
-
-            listing.Gap(8);
-            
-            listing.CheckboxLabeled(
-                "Enable Detailed Vertical Angle Logging",
-                ref logVerticalAngleDetailed
-            );
-            
-            listing.Gap(4);
-            Text.Font = GameFont.Tiny;
-            Rect vertAngleHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(vertAngleHelpRect, "  (Shows breakdown: ballistic + sway + recoil + spread for each shot)");
-            Text.Font = GameFont.Small;
-
-            listing.Gap(8);
-
-            listing.CheckboxLabeled(
-                "Enable Turret View Transfer & LoS Bypass Logging",
-                ref logTurretViewTransfer
-            );
-            
-            listing.Gap(4);
-            Text.Font = GameFont.Tiny;
-            Rect viewTransferHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(viewTransferHelpRect, "  (Logs target searcher origin transfers and self-occlusion LineOfSight checks)");
-            Text.Font = GameFont.Small;
 
             listing.Gap();
             
@@ -418,130 +359,271 @@ namespace AbsolutelyMoreCannons
                 "Display per-turret accuracy override values when selecting turrets"
             );
 
-            listing.Gap();
+            listing.Gap(16);
 
-            // === TURRET COMPONENT LOGGING ===
-            Widgets.Label(listing.GetRect(30f), "═══ Turret Component Logging ═══");
+            // =========================================================================
+            // === DEBUG LOGGING (UPPER LEVEL TOGGLE AND LOG TOGGLES) ===
+            // =========================================================================
+
+            Widgets.Label(listing.GetRect(30f), "═══ Debug Logging ═══");
             listing.Gap(4);
 
             listing.CheckboxLabeled(
-                "Log Turret Barrel Events",
-                ref logTurretBarrel
-            );
-            listing.CheckboxLabeled(
-                "Log Turret Mode Swap",
-                ref logTurretModeSwap
-            );
-            listing.CheckboxLabeled(
-                "Log Turret Ammo",
-                ref logTurretAmmo
-            );
-            listing.CheckboxLabeled(
-                "Log Turret Target",
-                ref logTurretTarget
-            );
-            listing.CheckboxLabeled(
-                "Log Turret Fire Timestamp",
-                ref logTurretFireTimestamp
-            );
-            listing.CheckboxLabeled(
-                "Log FCS Performance & Accuracy Telemetry",
-                ref logFCS,
-                "Logs FCS warmup reductions, firing cone spread calculations, and extended range targeting (off by default)."
-            );
-
-            listing.Gap();
-
-            // === GENERAL COMPONENT LOGGING ===
-            Widgets.Label(listing.GetRect(30f), "═══ General Component Logging ═══");
-            listing.Gap(4);
-
-            listing.CheckboxLabeled(
-                "Log Rotation Events",
-                ref logRotation
-            );
-            listing.CheckboxLabeled(
-                "Log Animation Events",
-                ref logAnimation
-            );
-            listing.CheckboxLabeled(
-                "Log Turret Smoke (General)",
-                ref logTurretSmoke
-            );
-            
-            listing.Gap(4);
-            listing.CheckboxLabeled(
-                "  └─ Smoke Particle Telemetry (Detailed)",
-                ref logTurretSmokeParticleTelemetry
+                "Enable Debug Logging",
+                ref enableLogging,
+                "Master toggle to enable or disable all mod logging"
             );
             Text.Font = GameFont.Tiny;
-            Rect telemetryHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(telemetryHelpRect, "     (Logs particle spawn with full configuration and lifecycle events)");
-            Text.Font = GameFont.Small;
-            
-            listing.Gap(4);
-            listing.CheckboxLabeled(
-                "  └─ Smoke Particle Tick Tracking (Compact)",
-                ref logTurretSmokeParticleTick
-            );
-            Text.Font = GameFont.Tiny;
-            Rect tickHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(tickHelpRect, "     (Logs position/velocity each tick - very verbose!)");
+            Rect masterHelpRect = listing.GetRect(Text.LineHeight);
+            Widgets.Label(masterHelpRect, "  (Master toggle: enables/disables all logging output and displays log categories below)");
             Text.Font = GameFont.Small;
 
-            listing.Gap(8);
-            
-            listing.CheckboxLabeled(
-                "Log Projectile Spawn Offsets",
-                ref logProjectileOffsets
-            );
-            Text.Font = GameFont.Tiny;
-            Rect offsetHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(offsetHelpRect, "  (Logs forward and lateral projectile spawn position offsets)");
-            Text.Font = GameFont.Small;
-
-            listing.Gap(4);
-            listing.CheckboxLabeled(
-                "Log Airburst Detonation & Fragment Telemetry",
-                ref logAirburstDetonation
-            );
-            Text.Font = GameFont.Tiny;
-            Rect airburstHelpRect = listing.GetRect(Text.LineHeight);
-            Widgets.Label(airburstHelpRect, "  (Logs shell explosion location, fragment IDs, stats, and 3D launch angles)");
-            Text.Font = GameFont.Small;
-
-            if (IsMuzzleFlashModActive)
+            if (enableLogging)
             {
+                listing.Gap(12);
+
+                // === PROJECTILE LAUNCH LOGGING ===
+                Widgets.Label(listing.GetRect(30f), "  ═══ Projectile Launch Logging ═══");
+                listing.Gap(4);
+                
+                listing.CheckboxLabeled(
+                    "  Log Elevation/Vertical Angle",
+                    ref _logElevationLaunch
+                );
+                
+                listing.CheckboxLabeled(
+                    "  Log Rotation/Horizontal Angle",
+                    ref _logRotationLaunch
+                );
+
+                listing.Gap();
+
+                // === DIAGNOSTIC LOGGING ===
+                Widgets.Label(listing.GetRect(30f), "  ═══ Diagnostic Logging ═══");
+                listing.Gap(4);
+                
+                listing.CheckboxLabeled(
+                    "  Enable Rotation Diagnostics (AMC DIAGNOSTIC/OBSERVE)",
+                    ref _logRotationDiagnostics
+                );
+                
+                listing.Gap(4);
+                Text.Font = GameFont.Tiny;
+                Rect diagHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(diagHelpRect, "    (Detailed rotation/deviation analysis logs)");
+                Text.Font = GameFont.Small;
+                
+                listing.Gap(8);
+                
+                listing.CheckboxLabeled(
+                    "  Enable Startup Logs",
+                    ref _logStartup
+                );
+                
+                listing.Gap(4);
+                Text.Font = GameFont.Tiny;
+                Rect startupHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(startupHelpRect, "    (Mod initialization and patch success messages)");
+                Text.Font = GameFont.Small;
+                
+                listing.Gap(8);
+                
+                listing.CheckboxLabeled(
+                    "  Enable Temporary Debug Logs",
+                    ref _logTemporaryDebug
+                );
+                
+                if (_logTemporaryDebug)
+                {
+                    listing.Gap(4);
+                    listing.CheckboxLabeled(
+                        "    └─ Include Fragment Projectile Tracking (Launch/Tick/Destroyed)",
+                        ref _logFragmentProjectiles
+                    );
+                    Text.Font = GameFont.Tiny;
+                    Rect fragHelpRect = listing.GetRect(Text.LineHeight);
+                    Widgets.Label(fragHelpRect, "       (Off by default to suppress fragment projectile log flooding)");
+                    Text.Font = GameFont.Small;
+                }
+                
+                listing.Gap(4);
+                Text.Font = GameFont.Tiny;
+                Rect tempDebugHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(tempDebugHelpRect, "    (Temporary debugging logs - e.g., projectile tick tracking)");
+                Text.Font = GameFont.Small;
+
+                listing.Gap(8);
+                
+                listing.CheckboxLabeled(
+                    "  Enable Detailed Vertical Angle Logging",
+                    ref _logVerticalAngleDetailed
+                );
+                
+                listing.Gap(4);
+                Text.Font = GameFont.Tiny;
+                Rect vertAngleHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(vertAngleHelpRect, "    (Shows breakdown: ballistic + sway + recoil + spread for each shot)");
+                Text.Font = GameFont.Small;
+
+                listing.Gap(8);
+
+                listing.CheckboxLabeled(
+                    "  Enable Turret View Transfer & LoS Bypass Logging",
+                    ref _logTurretViewTransfer
+                );
+                
+                listing.Gap(4);
+                Text.Font = GameFont.Tiny;
+                Rect viewTransferHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(viewTransferHelpRect, "    (Logs target searcher origin transfers and self-occlusion LineOfSight checks)");
+                Text.Font = GameFont.Small;
+
+                listing.Gap();
+
+                // === TURRET COMPONENT LOGGING ===
+                Widgets.Label(listing.GetRect(30f), "  ═══ Turret Component Logging ═══");
+                listing.Gap(4);
+
+                listing.CheckboxLabeled(
+                    "  Log Turret Barrel Events",
+                    ref _logTurretBarrel
+                );
+                listing.CheckboxLabeled(
+                    "  Log Turret Mode Swap",
+                    ref _logTurretModeSwap
+                );
+                listing.CheckboxLabeled(
+                    "  Log Turret Ammo",
+                    ref _logTurretAmmo
+                );
+                listing.CheckboxLabeled(
+                    "  Log Turret Target",
+                    ref _logTurretTarget
+                );
+                listing.CheckboxLabeled(
+                    "  Log Turret Fire Timestamp",
+                    ref _logTurretFireTimestamp
+                );
+                listing.CheckboxLabeled(
+                    "  Log FCS Performance & Accuracy Telemetry",
+                    ref _logFCS,
+                    "Logs FCS warmup reductions, firing cone spread calculations, and extended range targeting (off by default)."
+                );
+
+                listing.Gap();
+
+                // === GENERAL COMPONENT LOGGING ===
+                Widgets.Label(listing.GetRect(30f), "  ═══ General Component Logging ═══");
+                listing.Gap(4);
+
+                listing.CheckboxLabeled(
+                    "  Log Rotation Events",
+                    ref _logRotation
+                );
+                listing.CheckboxLabeled(
+                    "  Log Animation Events",
+                    ref _logAnimation
+                );
+                listing.CheckboxLabeled(
+                    "  Log Turret Smoke (General)",
+                    ref _logTurretSmoke
+                );
+                
                 listing.Gap(4);
                 listing.CheckboxLabeled(
-                    "Log Muzzle Flash Mod Events",
-                    ref logMuzzleFlashMod
+                    "    └─ Smoke Particle Telemetry (Detailed)",
+                    ref _logTurretSmokeParticleTelemetry
                 );
                 Text.Font = GameFont.Tiny;
-                Rect mfHelpRect = listing.GetRect(Text.LineHeight);
-                Widgets.Label(mfHelpRect, "  (Logs allowed vs suppressed flash graphics from third-party Muzzle Flash mod)");
+                Rect telemetryHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(telemetryHelpRect, "       (Logs particle spawn with full configuration and lifecycle events)");
                 Text.Font = GameFont.Small;
-            }
+                
+                listing.Gap(4);
+                listing.CheckboxLabeled(
+                    "    └─ Smoke Particle Tick Tracking (Compact)",
+                    ref _logTurretSmokeParticleTick
+                );
+                Text.Font = GameFont.Tiny;
+                Rect tickHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(tickHelpRect, "       (Logs position/velocity each tick - very verbose!)");
+                Text.Font = GameFont.Small;
 
-            listing.Gap(12);
+                listing.Gap(8);
+                
+                listing.CheckboxLabeled(
+                    "  Log Projectile Spawn Offsets",
+                    ref _logProjectileOffsets
+                );
+                Text.Font = GameFont.Tiny;
+                Rect offsetHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(offsetHelpRect, "    (Logs forward and lateral projectile spawn position offsets)");
+                Text.Font = GameFont.Small;
 
-            // === QUICK ACTIONS ===
-            Widgets.Label(listing.GetRect(30f), "═══ Quick Actions ═══");
-            listing.Gap(4);
+                listing.Gap(4);
+                listing.CheckboxLabeled(
+                    "  Log Projectile Tracer Lines",
+                    ref _logProjectileTracers
+                );
+                Text.Font = GameFont.Tiny;
+                Rect tracerHelpRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(tracerHelpRect, "    (Logs tracer startPos, endPos, screen positions, and direction vectors per frame)");
+                Text.Font = GameFont.Small;
 
-            if (listing.ButtonText("Enable All Logs"))
-            {
-                EnableAllLogs();
-            }
-            if (listing.ButtonText("Disable All Logs"))
-            {
-                DisableAllLogs();
-            }
-            if (listing.ButtonText("Enable Only Projectile Launch Logs"))
-            {
-                DisableAllLogs();
-                logElevationLaunch = true;
-                logRotationLaunch = true;
+                if (IsMuzzleFlashModActive)
+                {
+                    listing.Gap(4);
+                    listing.CheckboxLabeled(
+                        "  Log Muzzle Flash Mod Events",
+                        ref _logMuzzleFlashMod
+                    );
+                    Text.Font = GameFont.Tiny;
+                    Rect mfHelpRect = listing.GetRect(Text.LineHeight);
+                    Widgets.Label(mfHelpRect, "    (Logs allowed vs suppressed flash graphics from third-party Muzzle Flash mod)");
+                    Text.Font = GameFont.Small;
+                }
+
+                listing.Gap(12);
+
+                // === QUICK ACTIONS ===
+                Widgets.Label(listing.GetRect(30f), "  ═══ Quick Actions ═══");
+                listing.Gap(4);
+
+                if (listing.ButtonText("Enable All Logs"))
+                {
+                    EnableAllLogs();
+                }
+                if (listing.ButtonText("Disable All Logs"))
+                {
+                    DisableAllLogs();
+                }
+                if (listing.ButtonText("Enable Only Projectile Launch Logs"))
+                {
+                    EnableAllLogs();
+                    _logElevationLaunch = true;
+                    _logRotationLaunch = true;
+                    _logStartup = false;
+                    _logRotationDiagnostics = false;
+                    _logVerticalAngleDetailed = false;
+                    _logTurretBarrel = false;
+                    _logTurretModeSwap = false;
+                    _logTurretAmmo = false;
+                    _logTurretTarget = false;
+                    _logTurretFireTimestamp = false;
+                    _logFCS = false;
+                    _logRotation = false;
+                    _logAnimation = false;
+                    _logTurretSmoke = false;
+                    _logTurretSmokeParticleTelemetry = false;
+                    _logTurretSmokeParticleTick = false;
+                    _logProjectileOffsets = false;
+                    _logAirburstDetonation = false;
+                    _logProjectileTracers = false;
+                    _logTemporaryDebug = false;
+                    _logFragmentProjectiles = false;
+                    _logTurretViewTransfer = false;
+                    _logMuzzleFlashMod = false;
+                }
             }
 
             listing.End();
@@ -550,57 +632,61 @@ namespace AbsolutelyMoreCannons
 
         private void EnableAllLogs()
         {
-            logElevationLaunch = true;
-            logRotationLaunch = true;
-            logStartup = true;
-            logRotationDiagnostics = true;
-            logVerticalAngleDetailed = true;
-            logTurretBarrel = true;
-            logTurretModeSwap = true;
-            logTurretAmmo = true;
-            logTurretTarget = true;
-            logTurretFireTimestamp = true;
-            logFCS = true;
-            logRotation = true;
-            logAnimation = true;
-            logTurretSmoke = true;
-            logTurretSmokeParticleTelemetry = true;
-            logTurretSmokeParticleTick = true;
-            logProjectileOffsets = true;
-            logAirburstDetonation = true;
-            logTemporaryDebug = true;
-            logFragmentProjectiles = true;
-            logTurretViewTransfer = true;
+            enableLogging = true;
+            _logElevationLaunch = true;
+            _logRotationLaunch = true;
+            _logStartup = true;
+            _logRotationDiagnostics = true;
+            _logVerticalAngleDetailed = true;
+            _logTurretBarrel = true;
+            _logTurretModeSwap = true;
+            _logTurretAmmo = true;
+            _logTurretTarget = true;
+            _logTurretFireTimestamp = true;
+            _logFCS = true;
+            _logRotation = true;
+            _logAnimation = true;
+            _logTurretSmoke = true;
+            _logTurretSmokeParticleTelemetry = true;
+            _logTurretSmokeParticleTick = true;
+            _logProjectileOffsets = true;
+            _logAirburstDetonation = true;
+            _logProjectileTracers = true;
+            _logTemporaryDebug = true;
+            _logFragmentProjectiles = true;
+            _logTurretViewTransfer = true;
             if (IsMuzzleFlashModActive)
             {
-                logMuzzleFlashMod = true;
+                _logMuzzleFlashMod = true;
             }
         }
 
         private void DisableAllLogs()
         {
-            logElevationLaunch = false;
-            logRotationLaunch = false;
-            logStartup = false;
-            logRotationDiagnostics = false;
-            logVerticalAngleDetailed = false;
-            logTurretBarrel = false;
-            logTurretModeSwap = false;
-            logTurretAmmo = false;
-            logTurretTarget = false;
-            logTurretFireTimestamp = false;
-            logFCS = false;
-            logRotation = false;
-            logAnimation = false;
-            logTurretSmoke = false;
-            logTurretSmokeParticleTelemetry = false;
-            logTurretSmokeParticleTick = false;
-            logProjectileOffsets = false;
-            logAirburstDetonation = false;
-            logTemporaryDebug = false;
-            logFragmentProjectiles = false;
-            logTurretViewTransfer = false;
-            logMuzzleFlashMod = false;
+            enableLogging = false;
+            _logElevationLaunch = false;
+            _logRotationLaunch = false;
+            _logStartup = false;
+            _logRotationDiagnostics = false;
+            _logVerticalAngleDetailed = false;
+            _logTurretBarrel = false;
+            _logTurretModeSwap = false;
+            _logTurretAmmo = false;
+            _logTurretTarget = false;
+            _logTurretFireTimestamp = false;
+            _logFCS = false;
+            _logRotation = false;
+            _logAnimation = false;
+            _logTurretSmoke = false;
+            _logTurretSmokeParticleTelemetry = false;
+            _logTurretSmokeParticleTick = false;
+            _logProjectileOffsets = false;
+            _logAirburstDetonation = false;
+            _logProjectileTracers = false;
+            _logTemporaryDebug = false;
+            _logFragmentProjectiles = false;
+            _logTurretViewTransfer = false;
+            _logMuzzleFlashMod = false;
         }
     }
 }

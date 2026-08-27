@@ -31,19 +31,39 @@
 			<mass>65~75</mass>
 			<diameter>10~12</diameter>
 		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ProjectileTracer">
+				<delay>2</delay>
+				<length>3.0</length>
+				<lineWidth>0.03</lineWidth>
+				<opacity>0.6</opacity>        <!-- 60% opacity -->
+				<color>#FFCC00</color>        <!-- Bright Golden Yellow via Hex -->
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ScatteredSparks">
+				<fleckDef>Fleck_SparkThrownFast</fleckDef> <!-- Fleck to spawn (defaults to Fleck_SparkThrownFast) -->
+				<count>5~12</count>                     <!-- Range/number of sparks thrown on impact -->
+				<speed>6.0~12.0</speed>                  <!-- Initial velocity speed of thrown sparks -->
+				<scale>0.2~0.4</scale>                   <!-- Spark size/scale -->
+				<airTime>0.15~0.3</airTime>              <!-- Spark lifespan in seconds before fading out -->
+				<spreadAngle>45</spreadAngle>            <!-- Cone spread angle (+/- 45°) -->
+				<reverseDirection>true</reverseDirection> <!-- true = ricochet sparks bouncing off impact point; false = forward along flight path -->
+				<chance>1.0</chance>                     <!-- Probability of triggering on impact (0.0 to 1.0) -->
+			</li>
+
+		</comps>
 		<modExtensions>
 			<li Class="ProjectileImpactFX.EffectProjectileExtension">
 				<explosionFleckDef>BlastFlame</explosionFleckDef>
 				<explosionFleckSize>0.8</explosionFleckSize>
 				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
-				<ImpactGlowFleckSize>0.5</ImpactGlowFleckSize>
+				<ImpactGlowFleckSize>2</ImpactGlowFleckSize>
 				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
 				<ImpactFleckSize>2</ImpactFleckSize>
 				<CreateTerrainEffects>true</CreateTerrainEffects>
 			</li>
 			<li Class="ProjectileImpactFX.EffectProjectileExtension">
 				<explosionFleckDef>Fleck_SparkThrownFast</explosionFleckDef>
-				<explosionFleckSize>2</explosionFleckSize>
+				<explosionFleckSize>3</explosionFleckSize>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -69,15 +89,28 @@
 			<mass>65~75</mass>
 			<diameter>10~12</diameter>
 		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ProjectileTracer">
+				<delay>2</delay>
+				<length>4.0</length>
+				<lineWidth>0.03</lineWidth>
+				<opacity>0.6</opacity>        <!-- 60% opacity -->
+				<color>#FFCC00</color>        <!-- Bright Golden Yellow via Hex -->
+			</li>
+		</comps>
 		<modExtensions>
 			<li Class="ProjectileImpactFX.EffectProjectileExtension">
 				<explosionFleckDef>BlastFlame</explosionFleckDef>
 				<explosionFleckSize>0.8</explosionFleckSize>
 				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
-				<ImpactGlowFleckSize>2.5</ImpactGlowFleckSize>
+				<ImpactGlowFleckSize>3</ImpactGlowFleckSize>
 				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
-				<ImpactFleckSize>3</ImpactFleckSize>
+				<ImpactFleckSize>4</ImpactFleckSize>
 				<CreateTerrainEffects>true</CreateTerrainEffects>
+			</li>
+			<li Class="ProjectileImpactFX.EffectProjectileExtension">
+				<explosionFleckDef>Fleck_SparkThrownFast</explosionFleckDef>
+				<explosionFleckSize>4</explosionFleckSize>
 			</li>
 		</modExtensions>
 	</ThingDef>

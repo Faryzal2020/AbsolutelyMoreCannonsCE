@@ -109,8 +109,9 @@ export const FIELDS = [
   f('smoker.muzzle.enabled', 'building', [...SMOKER_COMP, { tag: 'muzzleEnabled' }], 'bool', 'Muzzle Smoke Enabled', { gate: 'smoker.enabled' }),
   f('smoker.muzzle.fleckDef', 'building', [...SMOKER_COMP, { tag: 'muzzleFleckDef' }], 'string', 'Muzzle FleckDef', { gate: 'smoker.muzzle.enabled' }),
   f('smoker.muzzle.particleCount', 'building', [...SMOKER_COMP, { tag: 'muzzleParticleCount' }], 'int', 'Muzzle Particle Count', { gate: 'smoker.muzzle.enabled' }),
-  f('smoker.muzzle.velocity', 'building', [...SMOKER_COMP, { tag: 'muzzleVelocity' }], 'float', 'Muzzle Velocity (cells/s)', { gate: 'smoker.muzzle.enabled' }),
-  // muzzleParticleSize accepts RimWorld range syntax such as "1~2", so it stays a string.
+  // muzzleVelocity, muzzleVelDuration, and muzzleParticleSize accept RimWorld range syntax such as "10~20"
+  f('smoker.muzzle.velocity', 'building', [...SMOKER_COMP, { tag: 'muzzleVelocity' }], 'string', 'Muzzle Velocity (cells/s)', { gate: 'smoker.muzzle.enabled' }),
+  f('smoker.muzzle.velDuration', 'building', [...SMOKER_COMP, { tag: 'muzzleVelDuration' }], 'string', 'Muzzle Velocity Duration (ticks)', { gate: 'smoker.muzzle.enabled' }),
   f('smoker.muzzle.particleSize', 'building', [...SMOKER_COMP, { tag: 'muzzleParticleSize' }], 'string', 'Muzzle Size Multiplier', { gate: 'smoker.muzzle.enabled' }),
 
   f('smoker.heat.enabled', 'building', [...SMOKER_COMP, { tag: 'heatEnabled' }], 'bool', 'Heat Smoke Enabled', { gate: 'smoker.enabled' }),
@@ -123,6 +124,9 @@ export const FIELDS = [
   f('smoker.shockwave.fleckDef', 'building', [...SMOKER_COMP, { tag: 'shockwaveFleckDef' }], 'string', 'Shockwave FleckDef', { gate: 'smoker.shockwave.enabled' }),
   f('smoker.shockwave.radius', 'building', [...SMOKER_COMP, { tag: 'shockwaveRadius' }], 'float', 'Shockwave Radius (cells)', { gate: 'smoker.shockwave.enabled' }),
   f('smoker.shockwave.density', 'building', [...SMOKER_COMP, { tag: 'shockwaveDensity' }], 'int', 'Shockwave Particle Density', { gate: 'smoker.shockwave.enabled' }),
+  f('smoker.shockwave.fadeOutSpeed', 'building', [...SMOKER_COMP, { tag: 'shockwaveFadeOutSpeed' }], 'float', 'Particle Fade Out Speed', { gate: 'smoker.shockwave.enabled' }),
+  f('smoker.shockwave.gradientDensity', 'building', [...SMOKER_COMP, { tag: 'shockwaveGradientDensity' }], 'bool', 'Gradient Density', { gate: 'smoker.shockwave.enabled' }),
+  f('smoker.shockwave.gradientParticleSize', 'building', [...SMOKER_COMP, { tag: 'shockwaveGradientParticleSize' }], 'bool', 'Gradient Particle Size', { gate: 'smoker.shockwave.enabled' }),
 ];
 
 export const FIELD_BY_KEY = new Map(FIELDS.map((x) => [x.key, x]));

@@ -305,9 +305,9 @@ ThingComponents are active runtime components defined inside the `<comps>` list 
 | `<muzzleParticleCount>` | `int` | `3` | Number of smoke particles spawned per shot. |
 | `<muzzleSpawnDuration>` | `int` | `5` | Ticks over which particles are distributed. |
 | `<muzzleOffset>` | `Vector3` | `(0,0,0)` | Offset `(X,Y,Z)` from barrel tip. |
-| `<muzzleVelocity>` | `float` | `2.0` | Initial forward particle velocity. |
-| `<muzzleVelDuration>` | `int` | `20` | Ticks before particle transitions to wind motion. |
-| `<muzzleParticleSize>` | `string` | `"1.0"` | Particle scale (supports `"min~max"` format like `"1.2~2.5"`). |
+| `<muzzleVelocity>` | `string` | `"2.0"` | Initial forward particle velocity in cells/sec (supports `"min~max"` range format e.g. `"10~20"`). |
+| `<muzzleVelDuration>` | `string` | `"20"` | Ticks before particle transitions to wind motion (supports `"min~max"` range format e.g. `"30~50"`). |
+| `<muzzleParticleSize>` | `string` | `"1.0"` | Particle scale (supports `"min~max"` range format e.g. `"1.2~2.5"`). |
 | `<directionCone>` | `float` | `0.0` | Angular dispersion spread cone in degrees. |
 | `<muzzleSpawnDelay>` | `int` | `2` | Delay in ticks after shot before spawning particles. |
 
@@ -333,6 +333,9 @@ ThingComponents are active runtime components defined inside the `<comps>` list 
 | `<shockwaveDensity>` | `int` | `8` | Total particle count distributed around ring. |
 | `<shockwaveOffset>` | `Vector3` | `(0,0,0)` | Vertical height offset. |
 | `<shockwaveParticleSize>`| `float` | `1.0` | Particle size scale. |
+| `<shockwaveFadeOutSpeed>`| `float` | `1.0` | Particle fade out speed multiplier (`1.0` = default speed, `2.0` = 2x faster fade out). |
+| `<shockwaveGradientDensity>`| `bool` | `false` | When `true`, particle density is highest at center and tapers linearly to 10% density at `shockwaveRadius`. |
+| `<shockwaveGradientParticleSize>`| `bool` | `false` | When `true`, particle scale is 100% at center and tapers linearly to 10% scale at `shockwaveRadius`. |
 
 ---
 

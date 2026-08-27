@@ -185,6 +185,24 @@ namespace AbsolutelyMoreCannons
             GenSpawn.Spawn(newTurret, position, map, rotation);
             Log.Message($"[TurretModeSwap] New turret spawned");
 
+            // Restore NonSnapTurretRot if applicable
+            if (savedBarrelRotation >= 0f)
+            {
+                try
+                {
+                    var nonSnapField = newTurret.GetType().GetField("NonSnapTurretRot", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (nonSnapField != null)
+                    {
+                        nonSnapField.SetValue(newTurret, savedBarrelRotation);
+                        Log.Message($"[TurretModeSwap] Restored NonSnapTurretRot to {savedBarrelRotation:F1}°");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[TurretModeSwap] Failed to restore NonSnapTurretRot: {ex.Message}");
+                }
+            }
+
             // Restore FCS state
             if (loadedFCSItem != null || savedTargetFCSDef != null)
             {
@@ -328,6 +346,18 @@ namespace AbsolutelyMoreCannons
             try
             {
                 var bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+                // Check NonSnapTurretRot on CE turrets first
+                var nonSnapField = turret.GetType().GetField("NonSnapTurretRot", bindingFlags);
+                if (nonSnapField != null)
+                {
+                    object nonSnapVal = nonSnapField.GetValue(turret);
+                    if (nonSnapVal is float rot && rot >= 0f)
+                    {
+                        return rot;
+                    }
+                }
+
                 var fieldNames = new[] { "top", "Top", "turretTop", "TurretTop", "gunTop", "GunTop" };
                 foreach (var fieldName in fieldNames)
                 {

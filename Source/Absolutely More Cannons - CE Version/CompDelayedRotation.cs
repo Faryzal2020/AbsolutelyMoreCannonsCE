@@ -96,6 +96,17 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
+                if (parent != null)
+                {
+                    var nonSnapField = parent.GetType().GetField("NonSnapTurretRot", 
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (nonSnapField != null)
+                    {
+                        nonSnapField.SetValue(parent, rimWorldAngle);
+                        Log.Message($"[CompDelayedRotation] Set NonSnapTurretRot on {parent.def.defName} to {rimWorldAngle:F1}°");
+                    }
+                }
+
                 object turretTop = GetTurretTop();
                 if (turretTop == null) return;
                 

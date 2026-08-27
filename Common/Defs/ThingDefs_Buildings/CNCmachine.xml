@@ -45,6 +45,7 @@
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <recipes>
       <li>AMC_Make_FCS_Basic</li>
+      <li>AMC_Make_FCS_Advanced</li>
     </recipes>
 		<inspectorTabs>
 			<li>ITab_Bills</li>
