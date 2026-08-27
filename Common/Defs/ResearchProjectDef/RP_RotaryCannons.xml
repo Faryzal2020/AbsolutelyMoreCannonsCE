@@ -13,6 +13,19 @@
     <researchViewY>1</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>Research_30mmGAU8Avenger</defName>
+    <label>30mm GAU-8 Avenger</label>
+    <description>Gatling turret designed AROUND the GAU-8 Avenger. It has internal ammunition storage capacity of 1500 rounds, requiring 5 seconds per reload.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Research_20mmM61Vulcan</li>
+    </prerequisites>
+    <researchViewX>7</researchViewX>
+    <researchViewY>1</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
 
 
   <ResearchProjectDef>
