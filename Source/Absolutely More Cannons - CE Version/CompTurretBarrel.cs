@@ -106,6 +106,26 @@ namespace AbsolutelyMoreCannons
 
 
 
+        private float shotAccumulator = 0f;
+
+        public void ResetShotAccumulator()
+        {
+            shotAccumulator = 0f;
+        }
+
+        public int ConsumeShotsForCurrentTick()
+        {
+            float rpm = GetMaxRPM();
+            if (rpm <= 3600f)
+                return 1;
+
+            float shotsPerTick = rpm / 3600f;
+            shotAccumulator += shotsPerTick;
+            int count = Mathf.FloorToInt(shotAccumulator);
+            shotAccumulator -= count;
+            return Mathf.Max(1, count);
+        }
+
         public float GetMaxRPM()
         {
             if (Extension.maxRPMs != null && Extension.maxRPMs.Count > 0)
@@ -691,6 +711,7 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public virtual void OnWarmupStarted()
         {
+            ResetShotAccumulator();
             //Log.Message($"[Barrel Animation DEBUG] OnWarmupStarted called for {parent.def.defName}");
             
             if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)

@@ -132,6 +132,7 @@
 					<li>1200</li>
 					<li>2400</li>
 					<li>3600</li>
+					<li>3900</li>
 				</maxRPMs>
 				<selectableBurstCounts>
 					<li>20</li>
