@@ -1,5 +1,6 @@
 # Visual Studio files
 .vs/
+**/.vs/
 *.user
 *.suo
 *.userosscache
@@ -12,6 +13,10 @@ x64/
 x86/
 [Bb]in/
 [Oo]bj/
+**/bin/
+**/obj/
+**/[Bb]in/
+**/[Oo]bj/
 *.dll
 *.exe
 *.pdb

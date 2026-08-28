@@ -1049,6 +1049,9 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        private static bool isHighRPMSpawning = false;
+        private static float pendingSubTickOffset = 0f;
+
         /// <summary>
         /// Called after a CE verb tries to cast a shot.
         /// Only triggers firing animation if the shot was successful and the caster is a turret.
@@ -1056,6 +1059,10 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public static void Postfix_Verb_LaunchProjectileCE_TryCastShot(bool __result, object __instance)
         {
+            if (isHighRPMSpawning)
+            {
+                return;
+            }
             try
             {
                 // Only trigger if the shot was successful
@@ -1258,6 +1265,42 @@ namespace AbsolutelyMoreCannons
                 if (barrelComp != null)
                 {
                     barrelComp.TriggerFiring();
+
+                    // === HIGH RPM MULTI-SHOT HANDLING (>3600 RPM) ===
+                    if (barrelComp.GetMaxRPM() > 3600f)
+                    {
+                        int shotsToFire = barrelComp.ConsumeShotsForCurrentTick();
+                        if (shotsToFire > 1)
+                        {
+                            float rpm = barrelComp.GetMaxRPM();
+                            float speed = 100f; // Default fallback
+                            var shotSpeedProp = AccessTools.Property(__instance.GetType(), "ShotSpeed");
+                            if (shotSpeedProp != null)
+                            {
+                                try { speed = Convert.ToSingle(shotSpeedProp.GetValue(__instance)); } catch { }
+                            }
+
+                            float deltaD = (60f * speed) / rpm;
+                            isHighRPMSpawning = true;
+                            try
+                            {
+                                var tryCastShotMethod = AccessTools.Method(__instance.GetType(), "TryCastShot");
+                                if (tryCastShotMethod != null)
+                                {
+                                    for (int i = 1; i < shotsToFire; i++)
+                                    {
+                                        pendingSubTickOffset = (shotsToFire - 1 - i) * deltaD;
+                                        tryCastShotMethod.Invoke(__instance, null);
+                                    }
+                                }
+                            }
+                            finally
+                            {
+                                isHighRPMSpawning = false;
+                                pendingSubTickOffset = 0f;
+                            }
+                        }
+                    }
                 }
 
                 // Trigger smoke effects (use rotation extracted above)
@@ -1597,6 +1640,10 @@ namespace AbsolutelyMoreCannons
                      if (ticksFloat > 0f)
                      {
                          int ticks = Mathf.RoundToInt(ticksFloat);
+                         if (barrelComp.GetMaxRPM() > 3600f)
+                         {
+                             ticks = 1;
+                         }
                          // Use traverse or reflection to set the field since it might be protected/private or we just want to be safe
                          // ticksToNextBurstShot is protected in Verb
                          AccessTools.Field(typeof(Verb), "ticksToNextBurstShot").SetValue(__instance, ticks);
@@ -1817,10 +1864,22 @@ namespace AbsolutelyMoreCannons
                 }
             }
         }
-        public static void Postfix_ProjectileCE_Launch_V2(Thing launcher, Vector2 origin, float shotAngle, float shotRotation, float shotHeight, float shotSpeed, Thing equipment, float distance)
+        public static void Postfix_ProjectileCE_Launch_V2(object __instance, Thing launcher, Vector2 origin, float shotAngle, float shotRotation, float shotHeight, float shotSpeed, Thing equipment, float distance)
         {
              try
              {
+                 if (pendingSubTickOffset != 0f && __instance != null)
+                 {
+                     float rotRad = shotRotation * Mathf.Deg2Rad;
+                     Vector3 dir = new Vector3(Mathf.Sin(rotRad), 0f, Mathf.Cos(rotRad));
+                     var exactPosProp = AccessTools.Property(__instance.GetType(), "ExactPosition");
+                     if (exactPosProp != null)
+                     {
+                         Vector3 currentPos = (Vector3)exactPosProp.GetValue(__instance);
+                         exactPosProp.SetValue(__instance, currentPos + (dir * pendingSubTickOffset));
+                     }
+                 }
+
                  // Pass data to the logger with default values for missing context
                  AMCLogger.LogProjectileLaunch(
                      verbInstance: null,
