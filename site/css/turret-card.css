@@ -1,0 +1,241 @@
+/* ==========================================================================
+   AMC-CE Web Wiki - Turret Grid & Card Component Styles
+   ========================================================================== */
+
+/* Responsive Grid Layout */
+.turret-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Turret Card Shell */
+.turret-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+}
+
+.turret-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-highlight);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Card Header Section */
+.card-header {
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Turret Image / Frame */
+.card-thumb-container {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-thumb-img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    transition: transform var(--transition-fast);
+}
+
+.turret-card:hover .card-thumb-img {
+    transform: scale(1.08);
+}
+
+/* Placeholder Frame when no image exists */
+.placeholder-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+}
+
+.placeholder-icon {
+    font-size: 1.5rem;
+}
+
+.placeholder-caliber {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin-top: 0.2rem;
+}
+
+/* Card Title Meta */
+.card-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.2rem;
+}
+
+.card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.category-tag {
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+/* Card Badges Section */
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Common Core Stats Grid */
+.card-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem 0.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 0.1rem;
+}
+
+.stat-value.highlight {
+    color: var(--accent-cyan);
+}
+
+/* Specialized Features Highlight Box */
+.card-specialized-box {
+    padding: 0.85rem 1.25rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.specialized-header {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.specialized-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.specialized-item {
+    color: var(--text-secondary);
+    line-height: 1.35;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+}
+
+.specialized-item strong {
+    color: var(--text-primary);
+}
+
+/* Card Action Footer */
+.card-footer {
+    padding: 0.85rem 1.25rem;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.view-btn {
+    width: 100%;
+    background: rgba(56, 189, 248, 0.1);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 0.55rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.view-btn:hover {
+    background: var(--accent-cyan);
+    color: #000;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+/* Mobile Responsiveness for Cards */
+@media (max-width: 480px) {
+    .turret-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

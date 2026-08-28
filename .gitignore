@@ -37,6 +37,7 @@ x86/
 .agent/
 .agents/
 .gemini/
+.claude/
 scratch/
 
 
