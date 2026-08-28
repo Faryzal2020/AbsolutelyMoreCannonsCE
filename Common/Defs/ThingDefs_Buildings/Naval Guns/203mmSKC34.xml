@@ -109,6 +109,12 @@
 				<ammoSet>AmmoSet_203mmSKC34_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 <!-- INDIRECT -->

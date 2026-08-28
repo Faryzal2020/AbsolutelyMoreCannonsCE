@@ -65,6 +65,16 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        /// <summary>
+        /// Logs produced elevation and deviation telemetry for turrets with clamping settings enabled.
+        /// </summary>
+        public static void LogTurretClamping(string message)
+        {
+            if (Settings == null || !Settings.logTurretClamping)
+                return;
+            Log.Message($"{PREFIX} {message}");
+        }
+
         // === TURRET COMPONENT LOGGING ===
 
         public static void LogTurretBarrel(string message)

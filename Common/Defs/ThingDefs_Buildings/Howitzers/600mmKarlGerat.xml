@@ -223,6 +223,12 @@
 				<ammoSet>AmmoSet_600mmKarlGerat_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>5</maxVerticalDeviation>
+				<maxRotationDeviation>5</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>

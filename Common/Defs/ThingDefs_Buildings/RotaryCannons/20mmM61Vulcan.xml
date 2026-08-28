@@ -120,7 +120,7 @@
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSprayDisciplineExtension">
 				<defaultEnableSprayDiscipline>true</defaultEnableSprayDiscipline>
-				<shotsPerTarget>4</shotsPerTarget>
+				<shotsPerTarget>10</shotsPerTarget>
 				<cycleConeDegrees>10</cycleConeDegrees>
 				<allowToggle>true</allowToggle>
 			</li>
@@ -289,6 +289,10 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0.5,1</CasingOffset>
 				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
 	</ThingDef>

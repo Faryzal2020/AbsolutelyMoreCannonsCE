@@ -16,18 +16,11 @@ namespace AbsolutelyMoreCannons
         // === Projectile Launch Logging ===
         private bool _logElevationLaunch = false;
         private bool _logRotationLaunch = false;
+        private bool _logTurretClamping = false;
 
         public bool logElevationLaunch { get => enableLogging && _logElevationLaunch; set => _logElevationLaunch = value; }
         public bool logRotationLaunch { get => enableLogging && _logRotationLaunch; set => _logRotationLaunch = value; }
-
-        // === Rotation Clamping ===
-        public bool enableRotationClamping = false;
-        public float rotationClampAngle = 5.0f; // degrees
-        
-        // === Elevation Clamping ===
-        public bool enableElevationClamping = false;
-        public float elevationClampAngle = 5.0f; // degrees (max vertical pitch deviation)
-        public float minimumElevationAngle { get => elevationClampAngle; set => elevationClampAngle = value; } // backwards compatibility alias
+        public bool logTurretClamping { get => enableLogging && _logTurretClamping; set => _logTurretClamping = value; }
         
         // === Diagnostic Logging ===
         private bool _logRotationDiagnostics = false;
@@ -105,14 +98,7 @@ namespace AbsolutelyMoreCannons
             // Projectile Launch Logging
             Scribe_Values.Look(ref _logElevationLaunch, "logElevationLaunch", false);
             Scribe_Values.Look(ref _logRotationLaunch, "logRotationLaunch", false);
-
-            // Rotation Clamping
-            Scribe_Values.Look(ref enableRotationClamping, "enableRotationClamping", false);
-            Scribe_Values.Look(ref rotationClampAngle, "rotationClampAngle", 5.0f);
-            
-            // Elevation Clamping
-            Scribe_Values.Look(ref enableElevationClamping, "enableElevationClamping", false);
-            Scribe_Values.Look(ref elevationClampAngle, "elevationClampAngle", 5.0f);
+            Scribe_Values.Look(ref _logTurretClamping, "logTurretClamping", false);
             
             // Diagnostic Logging
             Scribe_Values.Look(ref _logRotationDiagnostics, "logRotationDiagnostics", false);
@@ -165,12 +151,7 @@ namespace AbsolutelyMoreCannons
             Log.Message($"[AMC] Master Logging Enabled: {enableLogging}");
             Log.Message($"[AMC] Elevation Launch Logging: {logElevationLaunch}");
             Log.Message($"[AMC] Rotation Launch Logging: {logRotationLaunch}");
-            Log.Message($"[AMC] ");
-            Log.Message($"[AMC] Rotation Clamping Enabled: {enableRotationClamping}");
-            Log.Message($"[AMC] Rotation Clamp Angle: +/-{rotationClampAngle:F1} deg");
-            Log.Message($"[AMC] ");
-            Log.Message($"[AMC] Elevation Clamping Enabled: {enableElevationClamping}");
-            Log.Message($"[AMC] Elevation Clamp Angle: +/-{elevationClampAngle:F1} deg");
+            Log.Message($"[AMC] Turret Clamping Logging: {logTurretClamping}");
             Log.Message($"[AMC] ");
             Log.Message($"[AMC] Rotation Diagnostics Logging: {logRotationDiagnostics}");
             Log.Message($"[AMC] Startup Logging: {logStartup}");
@@ -231,86 +212,7 @@ namespace AbsolutelyMoreCannons
             // === GAMEPLAY RELATED SETTINGS (POSITIONED ON TOP OF LIST) ===
             // =========================================================================
 
-            // === ROTATION CLAMPING ===
-            Widgets.Label(listing.GetRect(30f), "═══ Rotation Clamping ═══");
-            listing.Gap(4);
-            
-            listing.CheckboxLabeled(
-                "Enable Rotation Clamping (Turrets Only)",
-                ref enableRotationClamping
-            );
-            
-            if (enableRotationClamping)
-            {
-                listing.Gap(4);
-                Rect sliderRect = listing.GetRect(22f);
-                Rect labelRect = sliderRect.LeftPart(0.7f);
-                Rect valueRect = sliderRect.RightPart(0.25f);
-                
-                Widgets.Label(labelRect, $"  └─ Max Deviation Angle: ");
-                rotationClampAngle = Widgets.HorizontalSlider(
-                    labelRect.RightPart(0.6f),
-                    rotationClampAngle,
-                    0f,
-                    45f,
-                    true,
-                    $"{rotationClampAngle:F1}°"
-                );
-                
-                // Display current value
-                Text.Anchor = TextAnchor.MiddleRight;
-                Widgets.Label(valueRect, $"±{rotationClampAngle:F1}°");
-                Text.Anchor = TextAnchor.UpperLeft;
-                
-                listing.Gap(4);
-                Text.Font = GameFont.Tiny;
-                Rect helpTextRect = listing.GetRect(Text.LineHeight);
-                Widgets.Label(helpTextRect, "  (This clamps the shotRotation field before projectile launch)");
-                Text.Font = GameFont.Small;
-            }
 
-            listing.Gap();
-            
-            // === ELEVATION CLAMPING ===
-            Widgets.Label(listing.GetRect(30f), "═══ Elevation Clamping ═══");
-            listing.Gap(4);
-            
-            listing.CheckboxLabeled(
-                "Enable Elevation Clamping (Turrets Only)",
-                ref enableElevationClamping
-            );
-            
-            if (enableElevationClamping)
-            {
-                listing.Gap(4);
-                Rect sliderRect = listing.GetRect(22f);
-                Rect labelRect = sliderRect.LeftPart(0.7f);
-                Rect valueRect = sliderRect.RightPart(0.25f);
-                
-                Widgets.Label(labelRect, $"  └─ Max Vertical Deviation: ");
-                elevationClampAngle = Widgets.HorizontalSlider(
-                    labelRect.RightPart(0.6f),
-                    elevationClampAngle,
-                    0f,
-                    45f,
-                    true,
-                    $"{elevationClampAngle:F1}°"
-                );
-                
-                // Display current value
-                Text.Anchor = TextAnchor.MiddleRight;
-                Widgets.Label(valueRect, $"±{elevationClampAngle:F1}°");
-                Text.Anchor = TextAnchor.UpperLeft;
-                
-                listing.Gap(4);
-                Text.Font = GameFont.Tiny;
-                Rect helpTextRect = listing.GetRect(Text.LineHeight);
-                Widgets.Label(helpTextRect, "  (Clamps vertical pitch deviation relative to target elevation angle)");
-                Text.Font = GameFont.Small;
-            }
-
-            listing.Gap();
-            
             // === ACCURACY TUNING ===
             Widgets.Label(listing.GetRect(30f), "═══ Vertical Accuracy Tuning ═══");
             listing.Gap(4);
@@ -394,6 +296,11 @@ namespace AbsolutelyMoreCannons
                 listing.CheckboxLabeled(
                     "  Log Rotation/Horizontal Angle",
                     ref _logRotationLaunch
+                );
+
+                listing.CheckboxLabeled(
+                    "  Log Turret Clamping & Elevation Deviation",
+                    ref _logTurretClamping
                 );
 
                 listing.Gap();
@@ -635,6 +542,7 @@ namespace AbsolutelyMoreCannons
             enableLogging = true;
             _logElevationLaunch = true;
             _logRotationLaunch = true;
+            _logTurretClamping = true;
             _logStartup = true;
             _logRotationDiagnostics = true;
             _logVerticalAngleDetailed = true;
@@ -666,6 +574,7 @@ namespace AbsolutelyMoreCannons
             enableLogging = false;
             _logElevationLaunch = false;
             _logRotationLaunch = false;
+            _logTurretClamping = false;
             _logStartup = false;
             _logRotationDiagnostics = false;
             _logVerticalAngleDetailed = false;
