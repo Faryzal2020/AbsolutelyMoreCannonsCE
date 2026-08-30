@@ -1,5 +1,5 @@
 {
-  "generatedAt": "28/08/2026",
+  "generatedAt": "31/08/2026",
   "totalTurrets": 45,
   "turrets": [
     {
@@ -3421,7 +3421,7 @@
       "description": "The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 1720, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).",
       "category": "Howitzers",
       "caliber": "155mm",
-      "imageUrl": "images/extracted/Turret_155mmGCT_Base.png",
+      "imageUrl": "images/turrets/155mmGCT.png",
       "fireModes": [
         "Direct",
         "Indirect"
@@ -6993,7 +6993,7 @@
       "description": "The Otobreda 127/54C was an Italian naval gun developed for rapid-fire against surface and shore targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 1440, Cooldown: 5.0s, Range: 7-22000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 150 penetration.",
       "category": "Naval Guns",
       "caliber": "127mm",
-      "imageUrl": "images/extracted/Turret_127mmOtobredaC_Base.png",
+      "imageUrl": "images/turrets/127mmOtobredaC.png",
       "fireModes": [
         "Direct",
         "Indirect"

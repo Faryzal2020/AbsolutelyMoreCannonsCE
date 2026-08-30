@@ -1,7 +1,8 @@
 {
   "_comment": "Map turret defName to custom thumbnail image path relative to site root, e.g. 'Turret_155mmGCT_Base': 'images/turrets/155mmGCT.png'. If set to null or omitted, the site automatically falls back to extracted textures or tactical placeholders.",
   "overrides": {
-    "Turret_155mmGCT_Base": null,
+    "Turret_155mmGCT_Base": "images/turrets/155mmGCT.png",
+    "Turret_127mmOtobredaC_Base": "images/turrets/127mmOtobredaC.png",
     "Turret_30mmMGAU8Avenger_Base": null,
     "Turret_20mmM61Vulcan_Base": null,
     "Turret_76mmOtomelaraC_Base": null,
