@@ -3254,7 +3254,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 495.0,
@@ -3286,7 +3287,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 6.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -3401,7 +3405,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 6.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.39916666666666667
+            }
           }
         }
       ]
@@ -3420,7 +3428,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Enclosed Protection"
+        "Enclosed Protection",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 1720.0,
@@ -3458,7 +3467,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -3574,7 +3586,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.4645384615384615
+            }
           }
         }
       ]
@@ -3624,7 +3640,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": null,
@@ -3724,8 +3743,8 @@
             "airburst": null,
             "guided": null,
             "shellingProps": {
-              "range": 0.0,
-              "tilesPerTick": 0.0,
+              "range": 24.0,
+              "tilesPerTick": 0.15,
               "damage": 5.2
             }
           }
@@ -3746,7 +3765,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Enclosed Protection"
+        "Enclosed Protection",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 720.0,
@@ -3783,7 +3803,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -3899,7 +3922,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.217
+            }
           }
         }
       ]
@@ -3919,7 +3946,8 @@
       "badges": [
         "Dual Mode",
         "Enclosed Protection",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2625.0,
@@ -3961,7 +3989,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -4077,7 +4108,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.31581818181818183
+            }
           }
         }
       ]
@@ -4096,7 +4131,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Enclosed Protection"
+        "Enclosed Protection",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 1280.0,
@@ -4133,7 +4169,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -4249,7 +4288,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.31581818181818183
+            }
           }
         }
       ]
@@ -4267,7 +4310,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 315.0,
@@ -4298,7 +4342,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 6.0,
+          "tilesPerTick": 0.1
+        }
       },
       "modes": {
         "direct": {
@@ -4413,7 +4460,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 6.0,
+              "tilesPerTick": 0.1,
+              "damage": 0.26
+            }
           }
         }
       ]
@@ -4431,7 +4482,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 3360.0,
@@ -4463,7 +4515,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 12.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -4578,7 +4633,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 12.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.385
+            }
           }
         }
       ]
@@ -4596,7 +4655,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2160.0,
@@ -4628,7 +4688,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 6.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -4743,7 +4806,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 6.0,
+              "tilesPerTick": 0.15,
+              "damage": 3.642352941176471
+            }
           }
         },
         {
@@ -4801,7 +4868,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 6.0,
+              "tilesPerTick": 0.15,
+              "damage": 3.132935483870968
+            }
           }
         }
       ]
@@ -4821,7 +4892,8 @@
       "badges": [
         "Dual Mode",
         "Variable RPM",
-        "Smart Autoloader"
+        "Smart Autoloader",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2250.0,
@@ -4860,7 +4932,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -4976,7 +5051,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.09928571428571428
+            }
           }
         }
       ]
@@ -4994,7 +5073,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 1440.0,
@@ -5027,7 +5107,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -5143,7 +5226,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.1635
+            }
           }
         }
       ]
@@ -5162,7 +5249,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 972.0,
@@ -5199,7 +5287,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -5315,7 +5406,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.15
+            }
           }
         }
       ]
@@ -5334,7 +5429,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2500.0,
@@ -5375,7 +5471,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -5491,7 +5590,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.21
+            }
           }
         },
         {
@@ -5537,7 +5640,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]
@@ -5555,7 +5662,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2240.0,
@@ -5588,7 +5696,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -5704,7 +5815,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.24
+            }
           }
         },
         {
@@ -5746,7 +5861,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]
@@ -5764,7 +5883,8 @@
         "Indirect"
       ],
       "badges": [
-        "Dual Mode"
+        "Dual Mode",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 3500.0,
@@ -5797,7 +5917,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -5913,7 +6036,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.24
+            }
           }
         },
         {
@@ -5955,7 +6082,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]
@@ -5974,6 +6105,7 @@
       ],
       "badges": [
         "Dual Mode",
+        "Cross-Map Shelling",
         "Airburst / Flak"
       ],
       "common": {
@@ -6007,7 +6139,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 36.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -6123,7 +6258,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 36.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.41
+            }
           }
         },
         {
@@ -6165,7 +6304,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 36.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         },
         {
@@ -6213,22 +6356,26 @@
               "subFragments": [
                 {
                   "type": "Airburst_Fragment_Large",
-                  "count": 40
+                  "count": 70
                 },
                 {
                   "type": "Fragment_Small",
-                  "count": 40
+                  "count": 30
                 }
               ],
-              "fragAngleRange": "-20~-1",
+              "fragAngleRange": "-25~25",
               "fragXZAngleRange": "-35~35",
-              "type": "Flak",
-              "armingTicks": 12,
-              "proximityRadius": 6.0,
-              "burstAltitude": 0.0
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
             },
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 36.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.41
+            }
           }
         }
       ]
@@ -6247,7 +6394,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 1792.0,
@@ -6284,7 +6432,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -6400,7 +6551,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.21
+            }
           }
         },
         {
@@ -6446,7 +6601,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]
@@ -6467,6 +6626,7 @@
         "Dual Mode",
         "Variable RPM",
         "Smart Autoloader",
+        "Cross-Map Shelling",
         "Airburst / Flak"
       ],
       "common": {
@@ -6515,7 +6675,10 @@
         },
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 18.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -6633,7 +6796,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.09428571428571429
+            }
           }
         },
         {
@@ -6679,7 +6846,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         },
         {
@@ -6727,22 +6898,26 @@
               "subFragments": [
                 {
                   "type": "Airburst_Fragment",
-                  "count": 20
+                  "count": 35
                 },
                 {
                   "type": "Fragment_Small",
                   "count": 20
                 }
               ],
-              "fragAngleRange": "-20~-1",
-              "fragXZAngleRange": "-25~25",
-              "type": "Flak",
-              "armingTicks": 1,
-              "proximityRadius": 5.0,
-              "burstAltitude": 0.0
+              "fragAngleRange": "-18~18",
+              "fragXZAngleRange": "-18~18",
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
             },
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.094
+            }
           }
         },
         {
@@ -6799,10 +6974,14 @@
               "guidanceOnDescending": true,
               "homingAcceleration": 0.15,
               "retargetRadius": 20.0,
-              "guidanceDelay": 1.0,
+              "guidanceDelay": 4.0,
               "trajectoryWorker": "AbsolutelyMoreCannons.VLSTrajectoryWorker"
             },
-            "shellingProps": null
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.09428571428571429
+            }
           }
         }
       ]
@@ -6821,7 +7000,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 1440.0,
@@ -6858,7 +7038,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -6974,7 +7157,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.21
+            }
           }
         },
         {
@@ -7020,7 +7207,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]
@@ -7267,7 +7458,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 3020.0,
@@ -7304,7 +7496,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -7422,7 +7617,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.31581818181818183
+            }
           }
         }
       ]
@@ -7441,7 +7640,8 @@
       ],
       "badges": [
         "Dual Mode",
-        "Variable RPM"
+        "Variable RPM",
+        "Cross-Map Shelling"
       ],
       "common": {
         "maxHitPoints": 2060.0,
@@ -7478,7 +7678,10 @@
         "nonSnapRotation": null,
         "airburst": null,
         "guided": null,
-        "shellingProps": null
+        "shellingProps": {
+          "range": 24.0,
+          "tilesPerTick": 0.15
+        }
       },
       "modes": {
         "direct": {
@@ -7596,7 +7799,11 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.21
+            }
           }
         },
         {
@@ -7642,7 +7849,11 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": null
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 1.0
+            }
           }
         }
       ]

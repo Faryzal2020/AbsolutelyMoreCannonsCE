@@ -28,81 +28,73 @@
     box-shadow: var(--shadow-glow);
 }
 
-/* Card Header Section */
-.card-header {
-    padding: 1.25rem 1.25rem 1rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+/* Top Full-Width Hero Thumbnail Frame */
+.card-hero-thumb {
+    width: 100%;
+    height: 160px;
+    background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
     border-bottom: 1px solid var(--border-subtle);
-}
-
-/* Turret Image / Frame */
-.card-thumb-container {
-    width: 72px;
-    height: 72px;
-    min-width: 72px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
+    padding: 1rem;
 }
 
-.card-thumb-img {
-    max-width: 85%;
-    max-height: 85%;
+.card-hero-thumb .card-thumb-img {
+    max-width: 90%;
+    max-height: 90%;
     object-fit: contain;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
     transition: transform var(--transition-fast);
 }
 
-.turret-card:hover .card-thumb-img {
+.turret-card:hover .card-hero-thumb .card-thumb-img {
     transform: scale(1.08);
 }
 
-/* Placeholder Frame when no image exists */
-.placeholder-thumb {
+.card-hero-thumb .placeholder-thumb {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
 }
 
-.placeholder-icon {
-    font-size: 1.5rem;
+.card-hero-thumb .placeholder-icon {
+    font-size: 2.2rem;
 }
 
-.placeholder-caliber {
-    font-size: 0.65rem;
+.card-hero-thumb .placeholder-caliber {
+    font-size: 0.75rem;
     font-weight: 700;
     color: var(--accent-cyan);
-    margin-top: 0.2rem;
+    margin-top: 0.3rem;
 }
 
-/* Card Title Meta */
-.card-meta {
-    flex: 1;
-    min-width: 0;
+/* Card Header Bar (Title & Subtitle) */
+.card-header-bar {
+    padding: 1rem 1.25rem 0.6rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+}
+
+.card-title-group {
+    display: flex;
+    flex-direction: column;
 }
 
 .card-title {
-    font-size: 1.15rem;
-    line-height: 1.3;
+    font-size: 1.2rem;
+    line-height: 1.25;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.25rem;
 }
 
-.card-subtitle {
+.card-subtitle-bar {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -115,23 +107,76 @@
     font-weight: 600;
 }
 
+.sub-divider {
+    color: var(--text-muted);
+}
+
 /* Card Badges Section */
 .card-badges {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    padding: 0.75rem 1.25rem;
-    background: rgba(0, 0, 0, 0.15);
-    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.4rem 1.25rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Common Core Stats Grid */
+/* Direct vs Indirect Range Comparison Panel */
+.card-range-panel {
+    background: rgba(15, 23, 42, 0.7);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.65rem 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.card-range-panel.dual-mode {
+    justify-content: space-between;
+}
+
+.card-range-panel.single-mode {
+    justify-content: space-between;
+}
+
+.range-mode-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.range-mode-col.indirect {
+    text-align: right;
+}
+
+.range-mode-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-subtle);
+    margin: 0 0.75rem;
+}
+
+.range-mode-tag {
+    font-size: 0.675rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.range-val {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+}
+
+/* Core Stats Grid */
 .card-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.75rem 0.5rem;
-    padding: 1rem 1.25rem;
+    gap: 0.6rem 0.5rem;
+    padding: 0.85rem 1.25rem;
     background: var(--bg-card);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 .stat-item {
@@ -140,7 +185,7 @@
 }
 
 .stat-label {
-    font-size: 0.7rem;
+    font-size: 0.675rem;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -148,21 +193,87 @@
 }
 
 .stat-value {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin-top: 0.1rem;
+    margin-top: 0.05rem;
 }
 
 .stat-value.highlight {
     color: var(--accent-cyan);
 }
 
+/* Ammo & Damage Summary Box */
+.card-ammo-box {
+    padding: 0.75rem 1.25rem;
+    background: rgba(30, 41, 59, 0.4);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+}
+
+.ammo-box-header {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+}
+
+.ammo-box-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.card-ammo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.775rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.ammo-row-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+.ammo-row-val {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.ammo-row-val strong {
+    color: var(--accent-amber);
+}
+
+.ammo-row-val small {
+    color: var(--accent-cyan);
+    margin-left: 0.2rem;
+}
+
+.ammo-more-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 0.15rem;
+    font-style: italic;
+}
+
 /* Specialized Features Highlight Box */
 .card-specialized-box {
-    padding: 0.85rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     background: rgba(15, 23, 42, 0.6);
-    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
     font-size: 0.8rem;
     flex: 1;
 }
@@ -173,25 +284,20 @@
     color: var(--accent-amber);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 0.4rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
+    margin-bottom: 0.35rem;
 }
 
 .specialized-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.25rem;
 }
 
 .specialized-item {
     color: var(--text-secondary);
+    font-size: 0.775rem;
     line-height: 1.35;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.35rem;
 }
 
 .specialized-item strong {
@@ -200,9 +306,9 @@
 
 /* Card Action Footer */
 .card-footer {
-    padding: 0.85rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     background: var(--bg-surface);
-    border-top: 1px solid var(--border-subtle);
+    margin-top: auto;
 }
 
 .view-btn {

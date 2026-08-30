@@ -19,14 +19,11 @@ EXTRACTED_IMG_DIR = os.path.join(SITE_DIR, "images", "extracted")
 os.makedirs(os.path.dirname(OUTPUT_JSON_PATH), exist_ok=True)
 os.makedirs(EXTRACTED_IMG_DIR, exist_ok=True)
 
-# Storage dictionaries for Defs
 raw_defs_by_name = {}      # defName -> ET.Element
 raw_defs_by_abstract = {}  # Name (Abstract) -> ET.Element
 ammo_sets_by_name = {}     # defName -> AmmoSet dict
 recipes_by_product = {}    # product defName -> Recipe dict
-thing_categories = {}      # defName -> Category dict
 
-# Load image overrides
 image_overrides = {}
 if os.path.exists(OVERRIDES_JSON_PATH):
     try:
@@ -59,7 +56,6 @@ def parse_xml_files():
                         if def_name and not is_abstract:
                             raw_defs_by_name[def_name] = elem
                         
-                        # Special handling for AmmoSetDef and RecipeDef
                         if "AmmoSetDef" in elem.tag:
                             def_name = elem.findtext("defName")
                             if def_name:
@@ -82,8 +78,33 @@ def parse_xml_files():
                 except Exception as e:
                     print(f"Error parsing XML file {file_path}: {e}")
 
+def merge_xml_elements(parent_elem, child_elem):
+    """Recursively merge parent and child XML trees preserving nested attributes and tags."""
+    merged = ET.Element(child_elem.tag or parent_elem.tag, {**parent_elem.attrib, **child_elem.attrib})
+    
+    parent_children_by_tag = {}
+    for p_child in parent_elem:
+        parent_children_by_tag[p_child.tag] = p_child
+        
+    for c_child in child_elem:
+        if c_child.tag in parent_children_by_tag:
+            p_child = parent_children_by_tag[c_child.tag]
+            if len(c_child) > 0 or len(p_child) > 0:
+                merged.append(merge_xml_elements(p_child, c_child))
+            else:
+                merged.append(c_child)
+            del parent_children_by_tag[c_child.tag]
+        else:
+            merged.append(c_child)
+            
+    for remaining_p_child in parent_children_by_tag.values():
+        merged.append(remaining_p_child)
+        
+    merged.text = child_elem.text if (child_elem.text and child_elem.text.strip()) else parent_elem.text
+    return merged
+
 def get_merged_xml(elem):
-    """Recursively merge attributes and tags from ParentName hierarchy."""
+    """Recursively merge attributes and tags from ParentName hierarchy using tree merger."""
     parent_name = elem.attrib.get("ParentName")
     if not parent_name or parent_name not in raw_defs_by_abstract:
         return elem
@@ -91,21 +112,7 @@ def get_merged_xml(elem):
     parent_elem = raw_defs_by_abstract[parent_name]
     merged_parent = get_merged_xml(parent_elem)
     
-    # Create combined element starting with parent
-    combined = ET.Element(elem.tag, elem.attrib)
-    for child in merged_parent:
-        combined.append(ET.Element(child.tag, child.attrib))
-        combined[-1].text = child.text
-        combined[-1].extend(child)
-        
-    # Override/add child elements
-    for child in elem:
-        existing = combined.find(child.tag)
-        if existing is not None:
-            combined.remove(existing)
-        combined.append(child)
-        
-    return combined
+    return merge_xml_elements(merged_parent, elem)
 
 def parse_recipe(elem):
     """Extract crafting recipe details."""
@@ -138,14 +145,12 @@ def parse_recipe(elem):
 
 def find_image(tex_path, def_name):
     """Resolve texture image URL or copy texture to extracted images folder."""
-    # 1. Check manual image overrides
     if def_name in image_overrides and image_overrides[def_name]:
         return image_overrides[def_name]
         
     if not tex_path:
         return None
         
-    # Standardize texture path
     clean_path = tex_path.strip().replace("\\", "/")
     png_rel_path = clean_path + ".png"
     src_file = os.path.join(TEXTURES_DIR, png_rel_path)
@@ -175,12 +180,9 @@ def extract_comp_info(comps_elem, extensions_elem):
         "shellingProps": None
     }
     
-    # Process comps
     if comps_elem is not None:
         for li in comps_elem.findall("li"):
             cls = li.attrib.get("Class", "")
-            comp_class = li.findtext("compClass", "")
-            
             if "CompProperties_EnclosedTurret" in cls:
                 specialized["enclosed"] = {
                     "bulletProtection": float(li.findtext("bulletProtection", "0")) * 100,
@@ -197,7 +199,6 @@ def extract_comp_info(comps_elem, extensions_elem):
                     specialized["ammoPreservation"] = {}
                 specialized["ammoPreservation"]["sprayDiscipline"] = True
                 
-    # Process mod extensions
     if extensions_elem is not None:
         for li in extensions_elem.findall("li"):
             cls = li.attrib.get("Class", "")
@@ -276,7 +277,6 @@ def parse_gun_and_ammo(gun_def_name):
                 burst_count = int(li.findtext("burstShotCount", "1"))
                 ticks_between = int(li.findtext("ticksBetweenBurstShots", "0"))
                 
-                # RPM calculation: (60 / (ticks_between / 60)) or similar tick rate
                 rpm = round((60.0 / (ticks_between / 60.0)) * burst_count, 1) if ticks_between > 0 else 0
                 
                 verb_info = {
@@ -293,7 +293,6 @@ def parse_gun_and_ammo(gun_def_name):
                     "requireLineOfSight": li.findtext("requireLineOfSight", "true").lower() == "true"
                 }
 
-    # Ammo User Comp & Charges
     ammo_set_name = None
     mag_size = 0
     reload_time = 0
@@ -312,7 +311,6 @@ def parse_gun_and_ammo(gun_def_name):
                 if speeds_elem is not None:
                     charge_speeds = [float(s.text) for s in speeds_elem.findall("li") if s.text]
 
-    # Parse ammo items from ammoSet
     ammunitions = []
     if ammo_set_name and ammo_set_name in ammo_sets_by_name:
         ammo_set = ammo_sets_by_name[ammo_set_name]
@@ -351,15 +349,11 @@ def parse_single_ammo(ammo_def_name, proj_def_name):
     mass = float(stat_bases.findtext("Mass", "0")) if stat_bases is not None else 0.0
     bulk = float(stat_bases.findtext("Bulk", "0")) if stat_bases is not None else 0.0
     
-    # Graphic & Icon
     graphic_elem = ammo_elem.find("graphicData")
     tex_path = graphic_elem.findtext("texPath") if graphic_elem is not None else None
     image_url = find_image(tex_path, ammo_def_name)
     
-    # Recipe
     recipe_info = recipes_by_product.get(ammo_def_name)
-    
-    # Projectile
     proj_info = parse_projectile(proj_def_name)
     
     return {
@@ -410,7 +404,6 @@ def parse_projectile(proj_def_name):
                 "damage": float(sp.findtext("damage", "1"))
             }
 
-    # Secondary Explosive Comp
     sec_explosive = None
     fragments = None
     airburst = None
@@ -450,7 +443,6 @@ def parse_projectile(proj_def_name):
                     "fragXZAngleRange": li.findtext("fragXZAngleRange", "")
                 }
 
-    # Mod Extensions for Airburst / Trajectory
     extensions_elem = proj_elem.find("modExtensions")
     if extensions_elem is not None:
         for li in extensions_elem.findall("li"):
@@ -463,7 +455,6 @@ def parse_projectile(proj_def_name):
                 airburst["proximityRadius"] = float(li.findtext("proximityRadius", "0"))
                 airburst["burstAltitude"] = float(li.findtext("burstAltitude", "0"))
 
-    # Guided properties
     guided_props = None
     if proj_props is not None:
         if proj_props.findtext("guidanceOnDescending") or proj_props.findtext("homingAcceleration"):
@@ -506,7 +497,6 @@ def determine_category_and_caliber(folder_name, def_name, label, desc):
     elif "Unmanned" in folder_name:
         cat = "Unmanned"
         
-    # Caliber extraction regex (e.g. 155mm, 30mm, 20x102mm, 76x636mm, 406mm, 600mm)
     caliber_match = re.search(r'(\d+mm|\d+x\d+mm|\d+x\d+)', label + " " + def_name + " " + desc)
     caliber = caliber_match.group(1) if caliber_match else "Cannon"
     
@@ -517,14 +507,12 @@ def extract_all_turrets():
     parse_xml_files()
     
     building_defs = []
-    # Identify all turret buildings
     for def_name, elem in raw_defs_by_name.items():
         building_elem = elem.find("building")
         if building_elem is not None and building_elem.find("turretGunDef") is not None:
             building_defs.append((def_name, elem))
             
-    # Pair Direct and Indirect variants
-    turret_groups = {} # group_id -> {"direct": elem, "indirect": elem}
+    turret_groups = {}
     
     for def_name, elem in building_defs:
         if def_name.endswith("_indirect_Base"):
@@ -548,16 +536,13 @@ def extract_all_turrets():
         primary_elem = get_merged_xml(primary_raw)
         
         label = primary_elem.findtext("label", group_id)
-        # Clean up indirect tag in primary label if needed
         clean_label = re.sub(r'\s*\(indirect\)', '', label, flags=re.IGNORECASE)
         description = primary_elem.findtext("description", "")
         
-        # Folder sub-category
         folder_sub = ""
         for root_dir, _, files in os.walk(DEFS_DIR):
             for f in files:
                 if f.endswith(".xml") and not f.endswith(".bak"):
-                    # quick check if primary_def_name is in this file
                     with open(os.path.join(root_dir, f), "r", encoding="utf-8", errors="ignore") as file_obj:
                         if primary_def_name in file_obj.read():
                             folder_sub = root_dir
@@ -565,12 +550,10 @@ def extract_all_turrets():
                             
         category, caliber = determine_category_and_caliber(folder_sub, primary_def_name, clean_label, description)
         
-        # Image
         graphic_elem = primary_elem.find("graphicData")
         tex_path = graphic_elem.findtext("texPath") if graphic_elem is not None else None
         image_url = find_image(tex_path, primary_def_name)
         
-        # Physical & Construction Stats
         stat_bases = primary_elem.find("statBases")
         hp = float(stat_bases.findtext("MaxHitPoints", "100")) if stat_bases is not None else 100
         work = float(stat_bases.findtext("WorkToBuild", "10000")) if stat_bases is not None else 10000
@@ -581,7 +564,6 @@ def extract_all_turrets():
         size_parts = [s.strip() for s in size_str.split(",") if s.strip()]
         size = [int(size_parts[0]), int(size_parts[1])] if len(size_parts) >= 2 else [3, 3]
         
-        # Costs & Requirements
         costs = {}
         cost_elem = primary_elem.find("costList")
         if cost_elem is not None:
@@ -596,7 +578,6 @@ def extract_all_turrets():
         if res_elem is not None:
             research_reqs = [r.text for r in res_elem.findall("li") if r.text]
             
-        # Comps & Extensions
         comps_elem = primary_elem.find("comps")
         ext_elem = primary_elem.find("modExtensions")
         specialized = extract_comp_info(comps_elem, ext_elem)
@@ -607,7 +588,6 @@ def extract_all_turrets():
                 if "CompProperties_Power" in li.attrib.get("Class", ""):
                     power = float(li.findtext("basePowerConsumption", "0"))
                     
-        # Direct vs Indirect Modes Processing
         direct_mode = None
         indirect_mode = None
         all_ammo_list = []
@@ -641,24 +621,64 @@ def extract_all_turrets():
                 ciws_global = i_ciws
             all_ammo_list.extend(i_ammo)
             
-        # Deduplicate ammunitions by defName
+        # Merge ammo entries across direct and indirect modes
         unique_ammo = {}
         for a in all_ammo_list:
-            if a["defName"] not in unique_ammo:
-                unique_ammo[a["defName"]] = a
+            def_name = a["defName"]
+            if def_name not in unique_ammo:
+                unique_ammo[def_name] = a
+            else:
+                existing_p = unique_ammo[def_name]["projectile"]
+                new_p = a["projectile"]
+                if new_p.get("shellingProps"):
+                    existing_p["shellingProps"] = new_p["shellingProps"]
+                if new_p.get("airburst"):
+                    if not existing_p.get("airburst"):
+                        existing_p["airburst"] = new_p["airburst"]
+                    else:
+                        existing_p["airburst"].update(new_p["airburst"])
+                if new_p.get("guided"):
+                    existing_p["guided"] = new_p["guided"]
+                if new_p.get("secondaryExplosive") and not existing_p.get("secondaryExplosive"):
+                    existing_p["secondaryExplosive"] = new_p["secondaryExplosive"]
+                if new_p.get("fragments") and not existing_p.get("fragments"):
+                    existing_p["fragments"] = new_p["fragments"]
+                if new_p.get("damageAmountBase", 0) > existing_p.get("damageAmountBase", 0):
+                    existing_p["damageAmountBase"] = new_p["damageAmountBase"]
+                    existing_p["damageDef"] = new_p["damageDef"]
+                if new_p.get("armorPenetrationSharp", 0) > existing_p.get("armorPenetrationSharp", 0):
+                    existing_p["armorPenetrationSharp"] = new_p["armorPenetrationSharp"]
+
         ammo_final = list(unique_ammo.values())
 
         if ciws_global:
             specialized["ciws"] = ciws_global
 
-        # Available Modes list
         fire_modes = []
         if direct_mode:
             fire_modes.append("Direct")
         if indirect_mode:
             fire_modes.append("Indirect")
 
-        # Dynamic Feature Badges
+        # Resolve global max shelling range & speed from ammo list
+        max_shelling_range = 0.0
+        shelling_tiles_per_tick = 0.0
+        for a in ammo_final:
+            sp = a.get("projectile", {}).get("shellingProps")
+            if sp:
+                r = float(sp.get("range", 0))
+                t = float(sp.get("tilesPerTick", 0))
+                if r > max_shelling_range:
+                    max_shelling_range = r
+                if t > shelling_tiles_per_tick:
+                    shelling_tiles_per_tick = t
+
+        if max_shelling_range > 0 or shelling_tiles_per_tick > 0:
+            specialized["shellingProps"] = {
+                "range": max_shelling_range,
+                "tilesPerTick": shelling_tiles_per_tick
+            }
+
         badges = []
         if len(fire_modes) > 1:
             badges.append("Dual Mode")
@@ -672,13 +692,9 @@ def extract_all_turrets():
             badges.append("Turret Clamping")
         if specialized["ammoPreservation"]:
             badges.append("Smart Autoloader")
-            
-        # Check shelling capability in projectiles
-        has_shelling = any(a.get("projectile", {}).get("shellingProps") for a in ammo_final)
-        if has_shelling:
+        if specialized["shellingProps"]:
             badges.append("Cross-Map Shelling")
             
-        # Check airburst capability
         has_airburst = any(a.get("projectile", {}).get("airburst") for a in ammo_final)
         if has_airburst:
             badges.append("Airburst / Flak")
@@ -694,7 +710,6 @@ def extract_all_turrets():
             "fireModes": fire_modes,
             "badges": badges,
             
-            # Common Core Specs
             "common": {
                 "maxHitPoints": hp,
                 "workToBuild": work,
@@ -708,25 +723,20 @@ def extract_all_turrets():
                 "costList": costs
             },
             
-            # Specialized Mechanics
             "specialized": specialized,
             
-            # Fire Control Modes (Direct / Indirect)
             "modes": {
                 "direct": direct_mode,
                 "indirect": indirect_mode
             },
             
-            # Ammunitions
             "ammunition": ammo_final
         }
 
         final_turrets_list.append(turret_entry)
 
-    # Sort turrets by category and label
     final_turrets_list.sort(key=lambda x: (x["category"], x["label"]))
     
-    # Save dataset to site/data/turrets_data.json
     output_data = {
         "generatedAt": os.popen("date /t").read().strip() if os.name == "nt" else "2026-08-28",
         "totalTurrets": len(final_turrets_list),
