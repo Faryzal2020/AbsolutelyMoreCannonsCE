@@ -53,6 +53,43 @@ export async function startApp() {
   };
 }
 
+/**
+ * Fresh MCP server bound to the current fixture, wired to a client over an
+ * in-memory transport pair. Spawning the real stdio binary would not see the
+ * fixture env vars, so the server module is imported lazily here just as
+ * startApp() does.
+ */
+export async function startMcp() {
+  const { Client } = await import('@modelcontextprotocol/sdk/client/index.js');
+  const { InMemoryTransport } = await import('@modelcontextprotocol/sdk/inMemory.js');
+  const { getDb, closeDb } = await import('../src/db.js');
+  const { createMcpServer } = await import('../src/mcp/server.js');
+
+  const db = await getDb();
+  const server = createMcpServer({ db });
+  const client = new Client({ name: 'amc-test-client', version: '1.0.0' }, { capabilities: {} });
+  const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+  await Promise.all([client.connect(clientTransport), server.connect(serverTransport)]);
+
+  return {
+    db,
+    client,
+    async close() {
+      await client.close();
+      await server.close();
+      await closeDb();
+    },
+    async listTools() {
+      return (await client.listTools()).tools;
+    },
+    /** Call a tool and return its parsed JSON payload plus the isError flag. */
+    async call(name, args = {}) {
+      const res = await client.callTool({ name, arguments: args });
+      return { isError: res.isError === true, body: JSON.parse(res.content[0].text) };
+    },
+  };
+}
+
 function json(res) {
   let body;
   try { body = JSON.parse(res.body); } catch { body = res.body; }

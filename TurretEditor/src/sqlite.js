@@ -28,6 +28,9 @@ export async function openDatabase(file) {
   if (kind === 'better-sqlite3') {
     raw.pragma('journal_mode = WAL');
     raw.pragma('foreign_keys = ON');
+    // The MCP server and the web editor can hold the same file open at once,
+    // so wait for a writer to finish instead of failing the call outright.
+    raw.pragma('busy_timeout = 5000');
     return {
       kind,
       raw,
@@ -40,7 +43,7 @@ export async function openDatabase(file) {
     };
   }
 
-  raw.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+  raw.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;');
   // node:sqlite returns null-prototype rows; normalise them so JSON.stringify
   // and object spread behave the way callers expect.
   const plain = (row) => (row ? { ...row } : null);

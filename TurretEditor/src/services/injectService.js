@@ -36,10 +36,14 @@ export function applyChange(content, change) {
   if (change.kind === 'field') {
     const field = FIELD_BY_KEY.get(change.key) || AMMO_FIELD_BY_KEY.get(change.key);
     if (!field) return { content, changed: false, reason: 'unknown-field' };
+    if (field.type === 'list') {
+      const items = Array.isArray(change.to)
+        ? change.to
+        : String(change.to ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+      return setListValue(content, change.defName, field.path, items);
+    }
     const value = serialise(field.type, change.to);
-    return field.type === 'list'
-      ? setListValue(content, change.defName, field.path, value)
-      : setValue(content, change.defName, field.path, value);
+    return setValue(content, change.defName, field.path, value);
   }
 
   return { content, changed: false, reason: change.kind };

@@ -64,12 +64,27 @@ function blankTurret() {
   return {
     defName: '', label: '', parentName: '', ancestry: [], category: '', filePath: '',
     designatorDropdown: '', size: '', mode: 'direct',
+    terrainAffordanceNeeded: '', researchPrerequisites: '', interactionCellOffset: '',
+    designationCategory: '', fillPercent: null, pathCost: null, passability: '',
+    placeWorkers: '', hasInteractionCell: false,
+    graphics: { shadowVolume: '', shadowOffset: '' },
+    building: {
+      aiCombatDangerous: false, turretBurstWarmupTime: null,
+      spawnedConceptLearnOpportunity: '', buildingTags: '',
+    },
     weaponDefName: '', weaponFilePath: '', weaponLabel: '',
-    stats: { maxHitPoints: null, workToBuild: null, mass: null, bulk: null, cooldownTime: null, topDrawSize: null, constructionSkill: null },
+    stats: {
+      maxHitPoints: null, workToBuild: null, mass: null, bulk: null, cooldownTime: null,
+      topDrawSize: null, constructionSkill: null, flammability: null, aimingAccuracy: null,
+      shootingAccuracyTurret: null, beauty: null,
+    },
     costs: [],
     comps: {
       isManned: false, isPowered: false, powerWatts: null,
       hasFcs: false, hasPreserveAmmo: false, hasSuppressionImmunity: false, hasFireArc: false,
+      hasTurretBarrel: false, hasSprayDiscipline: false,
+      preventOperatorSuppression: false, powerCompClass: '',
+      fireArc: { spanMin: null, spanMax: null, maxSpanDeviation: null, lineLength: null },
       hasModeSwap: false, swapAltDef: '', swapGizmoLabel: '',
       accuracy: { enabled: false, swayReduction: null, recoilReduction: null, spreadReduction: null },
       enclosed: {
@@ -82,22 +97,58 @@ function blankTurret() {
       verbClass: '', minRange: null, maxRange: null, burstShotCount: null,
       ticksBetween: null, warmupTime: null,
       sightsEfficiency: null, shotSpread: null, swayFactor: null, cooldown: null,
+      defaultProjectile: '', recoilAmount: null, recoilPattern: '', muzzleFlashScale: null,
+      soundCast: '', soundCastTail: '', circularError: null, indirectFirePenalty: null,
+      requireLineOfSight: false, stopBurstWithoutLos: false, ignorePartialLoSBlocker: false,
+      forceNormalTimeSpeed: false, hasStandardCommand: false, canTargetLocations: false,
     },
     ammo: { ammoSet: '', magazineSize: null, reloadTime: null },
+    clamping: { enabled: false, maxVerticalDeviation: null, maxRotationDeviation: null },
+    gunDraw: { enabled: false, casingOffset: '', casingAngleOffset: null },
+    fireModes: {
+      enabled: false, aiUseBurstMode: false, aiAimMode: '',
+      aimedBurstShotCount: null, noSingleShot: false, noSnapshot: false,
+    },
+    charges: { enabled: false, speeds: '' },
+    chargeBoost: { enabled: false, chargeOffset: null },
+    gun: { soundInteract: '', weaponTags: '', nightVisionEfficiency: null },
+    viewTransfer: { enabled: false, transferViewOrigin: false, ignoreSelfOcclusion: false },
+    tracer: { enabled: false, lineLength: null, lineWidth: null, lineOffset: '', durationTicks: null },
+    tracking: { enabled: false, enableMidBurstTracking: false },
+    nonSnap: {
+      enabled: false, speed: null, preferedAngleRange: null,
+      angleWeightMultiplier: null, minAngleWeight: null,
+    },
+    spray: {
+      enabled: false, defaultEnableSprayDiscipline: false, shotsPerTarget: null,
+      cycleConeDegrees: null, allowToggle: false,
+    },
     barrel: {
       enabled: false, drawSize: null, offset: '', drawOnTop: false,
       barrelAmount: null, barrelSpacing: null, sequentialFiring: false,
       selectableBursts: { enabled: false, counts: '' },
       maxRPMs: '',
+      graphic: { texPath: '', graphicClass: '', drawSize: '' },
+      underGraphic: { texPath: '', graphicClass: '', drawSize: '' },
       recoil: { enabled: false, maxDistance: null, recoilDuration: null, returnDuration: null, useRecoilCurve: false, useReturnCurve: false, affectsRotation: false },
-      firing: { enabled: false, durationTicks: null, drawFlash: false, flashColor: '', flashSize: null, flashBrightness: null, projectileSpawnOffset: null, burstSound: '' },
+      firing: { enabled: false, durationTicks: null, drawFlash: false, flashColor: '', flashSize: null, flashBrightness: null, projectileSpawnOffset: null, burstSound: '', flashOffset: null, muzzleFlashEffect: '' },
       spinning: { enabled: false, animationMode: 'RPMBased', maxRPM: null, spindownTime: null, frameCount: null, barrelCount: null, spinUpSound: '', spinDownSound: '' },
     },
     smoker: {
-      enabled: false,
-      muzzle: { enabled: false, fleckDef: '', particleCount: null, velocity: null, particleSize: '' },
-      heat: { enabled: false, fleckDef: '', threshold: null, decayRate: null, emissionRate: null },
-      shockwave: { enabled: false, fleckDef: '', radius: null, density: null, fadeOutSpeed: null, gradientDensity: false, gradientParticleSize: false },
+      enabled: false, directionCone: null,
+      muzzle: {
+        enabled: false, fleckDef: '', particleCount: null, velocity: null, particleSize: '',
+        offset: '', spawnDelay: null, spawnDuration: null,
+      },
+      heat: {
+        enabled: false, fleckDef: '', threshold: null, decayRate: null, emissionRate: null,
+        offset: '', decayIncrease: null, emissionIncrease: null, particleSize: null,
+        emissionPoints: null, emissionSpacing: null,
+      },
+      shockwave: {
+        enabled: false, fleckDef: '', radius: null, density: null, fadeOutSpeed: null,
+        gradientDensity: false, gradientParticleSize: false, offset: '', particleSize: null,
+      },
     },
     textures: { building: '', icon: '', weapon: '' },
     warnings: [],
@@ -194,18 +245,13 @@ function parseOne(entry, index, hasDef) {
   t.ancestry = index.ancestry(tree);
   t.category = categoryOf(file);
   t.filePath = rel(file);
-  t.designatorDropdown = resolveOne(merged, [{ tag: 'designatorDropdown' }])?.text || '';
-  t.size = resolveOne(merged, [{ tag: 'size' }])?.text || '';
   t.weaponDefName = weaponDefName;
-  t.textures.building = resolveOne(merged, [{ tag: 'graphicData' }, { tag: 'texPath' }])?.text || '';
-  t.textures.icon = resolveOne(merged, [{ tag: 'uiIconPath' }])?.text || '';
 
   const weaponEntry = index.byDefName.get(weaponDefName) || null;
   const mergedWeapon = weaponEntry ? index.merged(weaponEntry.tree) : null;
   if (weaponEntry) {
     t.weaponFilePath = rel(weaponEntry.file);
     t.weaponLabel = resolveOne(mergedWeapon, [{ tag: 'label' }])?.text || '';
-    t.textures.weapon = resolveOne(mergedWeapon, [{ tag: 'graphicData' }, { tag: 'texPath' }])?.text || '';
   }
 
   // Component / extension presence drives the badge pills and the edit gates.
@@ -219,7 +265,23 @@ function parseOne(entry, index, hasDef) {
   t.comps.accuracy.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_AccuracyOverride' }]);
   t.comps.enclosed.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_EnclosedTurret' }]);
   t.comps.hasSuppressionImmunity = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretSuppressionImmunityExtension' }]);
+  t.comps.hasTurretBarrel = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretBarrel' }]);
+  t.comps.hasSprayDiscipline = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretSprayDiscipline' }]);
+  t.viewTransfer.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretViewTransfer' }]);
+  t.tracer.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TracerLine' }]);
+  t.tracking.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretTrackingExtension' }]);
+  t.nonSnap.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'NonSnapTurretExtension' }]);
+  t.spray.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretSprayDisciplineExtension' }]);
   t.smoker.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretSmoker' }]);
+
+  // Weapon-side comps and extensions live on the gun def, not the building.
+  if (mergedWeapon) {
+    t.clamping.enabled = hasElement(mergedWeapon, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretClampingExtension' }]);
+    t.gunDraw.enabled = hasElement(mergedWeapon, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'GunDrawExtension' }]);
+    t.fireModes.enabled = hasElement(mergedWeapon, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_FireModes' }]);
+    t.charges.enabled = hasElement(mergedWeapon, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_Charges' }]);
+    t.chargeBoost.enabled = hasElement(mergedWeapon, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretChargeBoostExtension' }]);
+  }
   t.barrel.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretBarrelExtension' }]);
   t.barrel.selectableBursts.enabled = hasElement(merged, [
     { tag: 'modExtensions' }, { tag: 'li', cls: 'TurretBarrelExtension' }, { tag: 'selectableBurstCounts' },

@@ -22,6 +22,7 @@ Other entry points:
 | --- | --- |
 | `npm start` | Build UI if needed, serve, open a browser |
 | `npm run serve` | Same, without opening a browser (CI / agents) |
+| `npm run mcp` | Serve the same pipeline to AI clients over MCP (stdio) |
 | `npm test` | Full integration suite against a throwaway copy of the mod XML |
 | `npm run build` | Rebuild the dashboard bundle only |
 
@@ -65,6 +66,10 @@ child def.
 its XML location. Extraction, diffing and injection all walk the same table, so a value can never be read
 from one tag and written to another. `GET /api/schema` publishes the whole catalogue at runtime.
 
+Each entry carries a `doc` of `building` or `weapon`, which decides both the def the value is read from
+and the def an edit is written back to. Component toggles carry it too, so a weapon-side comp such as
+`CompProperties_FireModes` is added to the gun def and its file rather than the building's.
+
 ## REST API
 
 Every endpoint is JSON-only and deterministic, so scripts and agents can drive the entire pipeline without
@@ -100,6 +105,55 @@ curl       http://localhost:3000/api/diffs
 curl -X POST http://localhost:3000/api/inject   -H 'Content-Type: application/json' -d '{}'
 curl -X POST http://localhost:3000/api/rollback -H 'Content-Type: application/json' -d '{}'
 ```
+
+## MCP server
+
+The same pipeline is exposed to AI clients over MCP (stdio), so Claude Desktop, Claude Code, Cursor,
+Antigravity and similar tools can read stats, balance in bulk, review diffs and commit them to XML.
+
+```bash
+npm run mcp
+```
+
+Copy the `amc-turret-editor` entry from `mcp-config-sample.json` into your client's MCP config. The mod
+root is resolved from the script's own location, so no working directory is needed; point `AMC_MOD_ROOT`
+and `AMC_DB_PATH` at a copy of the mod if you want the AI to experiment without touching your files.
+
+| Tool | Purpose |
+| --- | --- |
+| `list_turrets` | Compact listing (`category`, `search`, `modified`, `warnings`) |
+| `get_turret` | One full record |
+| `get_field_catalogue` | Every editable key with type and gating comp |
+| `get_metrics` / `get_audit` | Dashboard counters, validation findings |
+| `update_turret` | Set fields on one turret by dotted key |
+| `batch_update_turrets` | `set` / `mul` / `add` across a filter, in one transaction |
+| `revert_turret` / `revert_all` | Discard pending edits |
+| `get_diffs` | Pending changes as `key`, `from`, `to` |
+| `preview_turret_xml` | Side-by-side XML for one def |
+| `inject_xml_changes` | Write to disk — **previews unless `dryRun: false`** |
+| `list_backups` / `rollback_xml` | Inspect and restore `.xml.bak` files |
+| `extract_defs` | Re-read the XML — refuses while edits are pending |
+| `list_ammo` / `get_ammo` / `revert_ammo` | Ammo defs, read and revert |
+
+### Three things the tools do differently to the REST API
+
+**Field keys are validated.** `update_turret` takes flat dotted keys — `stats.maxHitPoints`,
+`ballistics.cooldown`, `ammo.magazineSize` — checked against `fieldMap.js` and translated into the nested
+patch the services expect. `PUT /api/turrets/:defName` merges whatever it is handed, so a mistaken key
+would be stored verbatim, mark the record modified, and then inject nothing; over MCP it comes back as a
+`rejected` entry instead. Call `get_field_catalogue` (also served as the `amc://fields` resource) first —
+it returns three groups: `fields` (dotted scalar keys), `toggles` (add or remove a whole comp or
+modExtension) and `special` (structures with their own injector, currently the `costs` list, which takes
+a whole `[{thingDef, count}]` array and accepts `mul`/`add` to scale every count). Fields behind a
+switched-off comp are rejected the same way, unless the same call switches the comp on.
+
+**Listings are projections.** The full records are ~365 KB of JSON for the whole mod, which would swamp a
+model's context on one call. Listings read the indexed columns instead — about 14 KB for all 65 turrets,
+26x smaller than the records and 34x smaller than the raw XML — and full detail stays behind `get_turret`.
+
+**Destructive calls are opt-in.** `inject_xml_changes` and `rollback_xml` dry-run unless told otherwise,
+and `extract_defs` refuses to wipe the tables while any edit is still pending, since re-extraction
+discards anything that has not been injected. Pass `force: true` to override.
 
 ## Spreadsheet export
 
@@ -179,6 +233,7 @@ is used instead — `src/sqlite.js` exposes one API for both, and `GET /api/heal
 ```
 TurretEditor/
   server.js              entry point: port check, listen, open browser
+  mcp-server.js          MCP entry point: stdio transport, guarded auto-extract
   src/
     app.js               Fastify app factory (also used by the tests)
     paths.js  db.js  sqlite.js  xlsx.js
@@ -191,6 +246,7 @@ TurretEditor/
       tree.js            tree query helpers
     services/            extract, diff, inject, turret, audit, export, persist
     routes/              api.js, openapi.js
+    mcp/                 server.js, tools.js, fieldPatch.js, projections.js
   ui/                    React sources (Vite)
   public/                built dashboard, served statically
   test/                  integration suite

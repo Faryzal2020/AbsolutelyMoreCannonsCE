@@ -29,7 +29,7 @@ export function openApiSpec() {
         post: {
           tags: ['pipeline'],
           summary: 'Scan Common/Defs/ThingDefs_Buildings and repopulate SQLite',
-          description: 'Wipes the extracted tables and re-reads every XML file. Safe to call repeatedly.',
+          description: 'Wipes the extracted tables and re-reads every XML file. Any pending edit that has not been injected is discarded.',
           responses: { 200: ok('Extraction summary with per-entity counts', {
             type: 'object',
             properties: {

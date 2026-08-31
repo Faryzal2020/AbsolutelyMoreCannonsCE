@@ -45,9 +45,18 @@ export function diffTurret(current, disk) {
     const now = Boolean(getPath(current, toggle.key));
     const was = Boolean(getPath(disk, toggle.key));
     if (now === was) continue;
+
+    // A weapon-side comp has to be added to the weapon ThingDef, in the weapon's
+    // file — writing it into the building def would attach it to the wrong thing.
+    const onWeapon = toggle.doc === 'weapon';
+    if (onWeapon && !current.weaponDefName) continue;
+
     changes.push({
       kind: 'component', action: now ? 'add' : 'remove',
-      defName: current.defName, doc: 'building', filePath: current.filePath,
+      defName: onWeapon ? current.weaponDefName : current.defName,
+      ownerDefName: current.defName,
+      doc: toggle.doc || 'building',
+      filePath: onWeapon ? (current.weaponFilePath || current.filePath) : current.filePath,
       key: toggle.key, label: toggle.label, container: toggle.container, cls: toggle.cls,
       from: was, to: now,
       xmlPath: `${toggle.container} > li Class="${toggle.cls}"`,
