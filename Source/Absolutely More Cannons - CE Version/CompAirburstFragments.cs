@@ -109,16 +109,10 @@ namespace AbsolutelyMoreCannons
                         PenetrationAmount
                     );
                 }
-                else
-                {
-                    // Throw micro spark fleck on impact
-                    FleckCreationData sparkData = FleckMaker.GetDataStatic(ExactPosition, Map, FleckDefOf.MicroSparksFast);
-                    sparkData.velocityAngle = Rand.Range(0, 360);
-                    sparkData.velocitySpeed = Rand.Range(3f, 8f);
-                    sparkData.scale = Rand.Range(0.25f, 0.6f);
-                    sparkData.airTimeLeft = 0.15f;
-                    Map.flecks.CreateFleck(sparkData);
-                }
+
+                // Explicitly trigger CompScatteredSparks on fragment impact
+                var comp = GetComp<CompScatteredSparks>();
+                comp?.OnImpact(hitThing);
             }
         }
     }
@@ -214,59 +208,6 @@ namespace AbsolutelyMoreCannons
                     map.flecks.CreateFleck(flashData);
                 }
 
-                // 4. Airburst Smoke Puffs (AMC_MuzzleSmoke / AMC_MuzzleSmokeHeavy)
-                if (Props.airburstSmokeScale > 0f)
-                {
-                    FleckDef smokeDef = Props.airburstSmokeFleck ?? DefDatabase<FleckDef>.GetNamedSilentFail("AMC_MuzzleSmoke") ?? FleckDefOf.Smoke;
-                    if (smokeDef != null)
-                    {
-                        for (int i = 0; i < 8; i++)
-                        {
-                            Vector3 offsetPos = pos + new Vector3(Rand.Range(-0.6f, 0.6f), Rand.Range(-0.3f, 0.3f), Rand.Range(-0.6f, 0.6f));
-                            FleckCreationData smokeData = FleckMaker.GetDataStatic(offsetPos, map, smokeDef);
-                            smokeData.scale = Props.airburstSmokeScale * Rand.Range(1.0f, 1.6f);
-                            smokeData.velocityAngle = Rand.Range(0, 360);
-                            smokeData.velocitySpeed = Rand.Range(1.5f, 4.5f);
-                            smokeData.rotationRate = Rand.Range(-30f, 30f);
-                            map.flecks.CreateFleck(smokeData);
-                        }
-                    }
-
-                    FleckDef heavySmokeDef = DefDatabase<FleckDef>.GetNamedSilentFail("AMC_MuzzleSmokeHeavy");
-                    if (heavySmokeDef != null)
-                    {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            Vector3 offsetPos = pos + new Vector3(Rand.Range(-0.4f, 0.4f), 0f, Rand.Range(-0.4f, 0.4f));
-                            FleckCreationData heavyData = FleckMaker.GetDataStatic(offsetPos, map, heavySmokeDef);
-                            heavyData.scale = Props.airburstSmokeScale * Rand.Range(1.2f, 2.0f);
-                            heavyData.velocityAngle = Rand.Range(0, 360);
-                            heavyData.velocitySpeed = Rand.Range(0.8f, 2.5f);
-                            heavyData.rotationRate = Rand.Range(-20f, 20f);
-                            map.flecks.CreateFleck(heavyData);
-                        }
-                    }
-
-                    // Sparks bursting outward
-                    for (int i = 0; i < 12; i++)
-                    {
-                        FleckCreationData sparkData = FleckMaker.GetDataStatic(pos, map, FleckDefOf.MicroSparksFast);
-                        sparkData.velocityAngle = Rand.Range(0, 360);
-                        sparkData.velocitySpeed = Rand.Range(6f, 16f);
-                        sparkData.scale = Rand.Range(0.4f, 1.1f);
-                        sparkData.airTimeLeft = Rand.Range(0.15f, 0.4f);
-                        map.flecks.CreateFleck(sparkData);
-                    }
-                }
-
-                // 5. Custom Effecter
-                if (Props.airburstEffecter != null)
-                {
-                    Effecter eff = Props.airburstEffecter.Spawn();
-                    TargetInfo targetInfo = new TargetInfo(cellPos, map, false);
-                    eff.Trigger(targetInfo, targetInfo);
-                    eff.Cleanup();
-                }
             }
             catch (Exception ex)
             {

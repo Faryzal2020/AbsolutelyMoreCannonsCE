@@ -182,6 +182,10 @@
 				<CasingOffset>0,-0.5</CasingOffset>
 				<CasingAngleOffset>0</CasingAngleOffset>
 			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
 		</modExtensions>
 	</ThingDef>
 	

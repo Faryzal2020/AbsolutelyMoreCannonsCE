@@ -12,11 +12,8 @@
     <altitudeLayer>Item</altitudeLayer>
     <stackLimit>10</stackLimit>
 
-    <!-- Placeholder value & weight so it stands out to trader & player -->
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <MarketValue>1</MarketValue>
-      <Mass>1.5</Mass>
       <Flammability>0.5</Flammability>
       <DeteriorationRate>1.0</DeteriorationRate>
     </statBases>
@@ -25,7 +22,7 @@
       <li>ComponentIndustrial</li>
     </tradeTags>
     <thingCategories>
-      <li>Items</li>
+      <li>AMCMaterials</li>
     </thingCategories>
   </ThingDef>
 
@@ -39,6 +36,10 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <techLevel>Industrial</techLevel>
+    <statBases>
+      <MarketValue>220</MarketValue>
+      <Mass>3.0</Mass>
+    </statBases>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
         <swayMultiplier>0.85</swayMultiplier>
@@ -55,10 +56,15 @@
     <label>make basic FCS module</label>
     <description>Craft a basic Fire Control System module for unmanned turrets.</description>
     <jobString>Crafting basic FCS module.</jobString>
-    <workAmount>500</workAmount>
+    <workAmount>3500</workAmount>
     <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <workSkill>Crafting</workSkill>
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Automated_FCS</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
     <ingredients>
       <li>
         <filter>
@@ -66,12 +72,21 @@
             <li>Steel</li>
           </thingDefs>
         </filter>
-        <count>1</count>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
         <li>Steel</li>
+        <li>ComponentIndustrial</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -80,6 +95,8 @@
     <recipeUsers>
       <li>FabricationBench</li>
       <li>TableMachining</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
     </recipeUsers>
   </RecipeDef>
 
@@ -94,6 +111,10 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <techLevel>Industrial</techLevel>
+    <statBases>
+      <MarketValue>850</MarketValue>
+      <Mass>2.5</Mass>
+    </statBases>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
         <swayMultiplier>0.50</swayMultiplier>
@@ -111,15 +132,44 @@
     <label>make advanced FCS module</label>
     <description>Craft an advanced Fire Control System module for unmanned turrets.</description>
     <jobString>Crafting advanced FCS module.</jobString>
-    <workAmount>800</workAmount>
+    <workAmount>7500</workAmount>
     <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <workSkill>Crafting</workSkill>
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Automated_FCS_2</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
             <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>100</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMC_FCS_Basic</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -128,6 +178,9 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>Steel</li>
+        <li>Plasteel</li>
+        <li>ComponentIndustrial</li>
+        <li>AMC_FCS_Basic</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -135,6 +188,8 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
     </recipeUsers>
   </RecipeDef>
 
@@ -149,6 +204,10 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <techLevel>Spacer</techLevel>
+    <statBases>
+      <MarketValue>2200</MarketValue>
+      <Mass>1.5</Mass>
+    </statBases>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.FCSPropertiesDefExtension">
         <swayMultiplier>0.15</swayMultiplier>
@@ -166,15 +225,44 @@
     <label>make spacer FCS module</label>
     <description>Craft a spacer Fire Control System module for unmanned turrets.</description>
     <jobString>Crafting spacer FCS module.</jobString>
-    <workAmount>1200</workAmount>
+    <workAmount>12500</workAmount>
     <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <workSkill>Crafting</workSkill>
     <effectWorking>Smith</effectWorking>
     <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Automated_FCS_2</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>15</Crafting>
+    </skillRequirements>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>Steel</li>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>40</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentSpacer</li>
+          </thingDefs>
+        </filter>
+        <count>3</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Gold</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMC_FCS_Advanced</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -182,7 +270,10 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>ComponentSpacer</li>
+        <li>Gold</li>
+        <li>AMC_FCS_Advanced</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>

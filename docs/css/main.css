@@ -1,0 +1,372 @@
+/* ==========================================================================
+   AMC-CE Web Wiki Design System & Main Stylesheet
+   ========================================================================== */
+
+:root {
+    /* Surface ladder — each step down the page hierarchy is a darker shade.
+       page < inset-deep < inset < control < surface */
+    --bg-base: #e9eef5;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #fbfcfe;
+    --bg-control: #f3f6fa;
+    --bg-inset: #f6f8fb;
+    --bg-inset-deep: #edf1f7;
+
+    --border-subtle: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --border-strong: #94a3b8;
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #5b6675;
+
+    --accent-blue: #2563eb;
+    --accent-amber: #b45309;
+    --accent-emerald: #059669;
+    --accent-rose: #be123c;
+    --accent-purple: #6d28d9;
+
+    /* Typography */
+    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* Layout & Spacing */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-full: 9999px;
+
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-elevated: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-control: 0 1px 2px rgba(15, 23, 42, 0.04);
+
+    --transition-fast: 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS Reset & Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Freeze the page behind the detail dialog, compensating for the scrollbar
+   so the layout does not shift when it disappears. */
+body.modal-open {
+    overflow: hidden;
+    padding-right: var(--scrollbar-gap, 0px);
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+/* Single visible focus treatment for every interactive control.
+   :where() keeps specificity at zero so component styles still win. */
+:where(button, select, input, textarea, a[href], [tabindex]):focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+}
+
+/* Main Layout Container */
+.app-main {
+    flex: 1;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+}
+
+/* Stats Counter & Controls Bar */
+.stats-counter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-medium);
+    border-bottom: 3px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.counter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.counter-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.counter-text strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Clear-all affordance, revealed only while filters narrow the list */
+.reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--bg-control);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-control);
+}
+
+.reset-btn:hover {
+    background: var(--bg-inset-deep);
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+    border-bottom-color: var(--border-strong);
+}
+
+.reset-btn:active {
+    transform: translateY(1px);
+    border-bottom-width: 1px;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.sort-controls label {
+    white-space: nowrap;
+}
+
+.sort-controls select {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.sort-controls select:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-card-hover);
+}
+
+.sort-controls select:focus {
+    border-color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+}
+
+/* Badges & Tags */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.badge-blue {
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+}
+
+.badge-amber {
+    background: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.badge-emerald {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.badge-purple {
+    background: #f5f3ff;
+    color: #5b21b6;
+    border: 1px solid #ddd6fe;
+}
+
+.badge-rose {
+    background: #fef2f2;
+    color: #9f1239;
+    border: 1px solid #fecdd3;
+}
+
+/* Shared monotone placeholder used by card and modal thumbnails */
+.placeholder-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    overflow: hidden;
+}
+
+.placeholder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.placeholder-icon svg {
+    width: 44px;
+    height: 44px;
+}
+
+.placeholder-caliber {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-top: 0.4rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--bg-surface);
+    border: 2px dashed var(--border-medium);
+    border-radius: var(--radius-lg);
+    margin-top: 2rem;
+}
+
+.empty-icon {
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+}
+
+.empty-state h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+}
+
+/* Counter bar stacks before the counter and the sort control can collide */
+@media (max-width: 620px) {
+    .stats-counter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+    }
+
+    .counter-group {
+        justify-content: space-between;
+    }
+
+    .sort-controls {
+        justify-content: space-between;
+    }
+
+    .sort-controls select {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .turret-card:hover,
+    .turret-card:hover .card-hero-thumb .card-thumb-img,
+    .modal-backdrop.open .modal-dialog {
+        transform: none;
+    }
+}

@@ -95,7 +95,7 @@ namespace AbsolutelyMoreCannons
                 // Spawn shockwave smoke immediately
                 if (Props.shockwaveEnabled)
                 {
-                    SpawnShockwaveSmoke();
+                    SpawnShockwaveSmoke(turretRotation);
                 }
             }
             catch (Exception ex)
@@ -287,15 +287,17 @@ namespace AbsolutelyMoreCannons
                         ).normalized;
                     }
                     
-                    // Get randomized size
+                    // Get randomized size, velocity, and velocity duration
                     float particleSize = Props.GetRandomParticleSize();
+                    float particleVelocity = Props.GetRandomMuzzleVelocity();
+                    int particleVelDuration = Props.GetRandomMuzzleVelDuration();
                     
                     var particle = new MuzzleSmokeParticle
                     {
                         position = spawnPosition,
                         direction = particleDirection,
-                        maxVelocity = Props.muzzleVelocity,
-                        velDuration = Props.muzzleVelDuration,
+                        maxVelocity = particleVelocity,
+                        velDuration = particleVelDuration,
                         ticksAlive = 0,
                         fleckDef = Props.muzzleFleckDef,
                         size = particleSize,
@@ -334,17 +336,16 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
-        /// Spawns radial shockwave smoke burst around muzzle (filled circle with density scaling)
+        /// Spawns radial shockwave smoke burst around muzzle (filled circle with S-curve sigmoid gradient density, particle size scaling, and fade out speed control)
         /// </summary>
-        private void SpawnShockwaveSmoke()
+        private void SpawnShockwaveSmoke(float turretRotation = float.NaN)
         {
             try
             {
                 // Get current turret rotation
-                float turretRotation = 0f;
-                if (barrelComp != null)
+                if (float.IsNaN(turretRotation))
                 {
-                    turretRotation = barrelComp.GetCurrentBarrelRotation();
+                    turretRotation = GetTurretRotation();
                 }
                 
                 // Rotate offset by turret direction
@@ -353,43 +354,97 @@ namespace AbsolutelyMoreCannons
                 
                 int totalParticles = 0;
                 
-                // Create filled circle by spawning at multiple radii
-                // Density scales linearly: at radius r, particles = density × (r / maxRadius)
-                int radiusSteps = Mathf.CeilToInt(Props.shockwaveRadius);
+                // Fade out speed calculation
+                float fadeOutSpeedFactor = Mathf.Max(0.01f, Props.shockwaveFadeOutSpeed);
+                float baseSolidTime = (Props.shockwaveFleckDef != null && Props.shockwaveFleckDef.solidTime > 0f) ? Props.shockwaveFleckDef.solidTime : 0.1f;
+                float baseFadeOutTime = (Props.shockwaveFleckDef != null && Props.shockwaveFleckDef.fadeOutTime > 0f) ? Props.shockwaveFleckDef.fadeOutTime : 1.0f;
                 
-                for (int r = 1; r <= radiusSteps; r++)
+                float solidTimeOverride = baseSolidTime / fadeOutSpeedFactor;
+                float airTimeLeft = (baseSolidTime + baseFadeOutTime) / fadeOutSpeedFactor;
+                
+                int radiusSteps = Mathf.Max(1, Mathf.CeilToInt(Props.shockwaveRadius));
+                float stepSize = Props.shockwaveRadius / radiusSteps;
+                
+                // If gradient density is enabled, spawn a small center core cluster
+                if (Props.shockwaveGradientDensity)
                 {
-                    float currentRadius = (Props.shockwaveRadius / radiusSteps) * r;
-                    float densityScale = (float)r / radiusSteps;
-                    int particlesAtRadius = Mathf.RoundToInt(Props.shockwaveDensity * densityScale);
-                    
-                    // Need at least a few particles per ring
-                    particlesAtRadius = Mathf.Max(particlesAtRadius, r == radiusSteps ? Props.shockwaveDensity : 4);
-                    
-                    // Spawn particles around this radius
-                    for (int i = 0; i < particlesAtRadius; i++)
+                    int centerParticles = Mathf.Max(1, Mathf.RoundToInt(Props.shockwaveDensity * 0.15f));
+                    float centerSize = Props.shockwaveParticleSize; // 100% size at center
+                    for (int c = 0; c < centerParticles; c++)
                     {
-                        float angle = (360f / particlesAtRadius) * i;
-                        // Add small random variation to angle
-                        angle += Rand.Range(-5f, 5f);
-                        float angleRad = angle * Mathf.Deg2Rad;
-                        
-                        // Add small random variation to radius
-                        float radiusVariation = currentRadius * Rand.Range(0.9f, 1.1f);
-                        
-                        Vector3 offset = new Vector3(
-                            Mathf.Cos(angleRad) * radiusVariation,
-                            0f,
-                            Mathf.Sin(angleRad) * radiusVariation
-                        );
-                        
-                        Vector3 particlePos = centerPosition + offset;
-                        
-                        // Spawn fleck
-                        FleckCreationData data = FleckMaker.GetDataStatic(particlePos, cachedMap, Props.shockwaveFleckDef, Props.shockwaveParticleSize);
+                        Vector3 particlePos = centerPosition + new Vector3(Rand.Range(-0.15f, 0.15f), 0f, Rand.Range(-0.15f, 0.15f));
+                        FleckCreationData data = FleckMaker.GetDataStatic(particlePos, cachedMap, Props.shockwaveFleckDef, centerSize);
                         data.rotationRate = Rand.Range(-20f, 20f);
                         data.velocityAngle = Rand.Range(0f, 360f);
                         data.velocitySpeed = Rand.Range(0.1f, 0.3f);
+                        data.solidTimeOverride = solidTimeOverride;
+                        data.airTimeLeft = airTimeLeft;
+                        cachedMap.flecks.CreateFleck(data);
+                        totalParticles++;
+                    }
+                }
+                
+                // Spawn concentric rings from r = 1 to radiusSteps with continuous radial spread
+                for (int r = 1; r <= radiusSteps; r++)
+                {
+                    float currentRadius = stepSize * r;
+                    float minRadius = (r == 1 && !Props.shockwaveGradientDensity) ? 0f : currentRadius - (stepSize * 0.5f);
+                    float maxRadius = currentRadius + (stepSize * 0.5f);
+                    
+                    float t = (float)r / radiusSteps; // Normalized distance (0.0 at center, 1.0 at edge)
+                    
+                    // Sigmoid / S-curve interpolation factor (SmoothStep: 3t^2 - 2t^3)
+                    float s = t * t * (3.0f - 2.0f * t);
+                    
+                    int particlesAtRadius;
+                    if (Props.shockwaveGradientDensity)
+                    {
+                        // S-curve gradient density tapering from 1.0 (100% center) to 0.10 (10% edge)
+                        float spatialDensityFactor = Mathf.Lerp(1.0f, 0.10f, s);
+                        float densityScale = t * spatialDensityFactor;
+                        particlesAtRadius = Mathf.Max(1, Mathf.RoundToInt(Props.shockwaveDensity * densityScale));
+                    }
+                    else
+                    {
+                        // Standard uniform spatial density (particle count per ring scales linearly with radius t)
+                        float densityScale = t;
+                        particlesAtRadius = Mathf.Max(1, Mathf.RoundToInt(Props.shockwaveDensity * densityScale));
+                    }
+                    
+                    // Particle size calculation
+                    float finalParticleSize;
+                    if (Props.shockwaveGradientParticleSize)
+                    {
+                        // S-curve gradient particle size tapering from 1.0 (100% center) to 0.10 (10% edge)
+                        float sizeFactor = Mathf.Lerp(1.0f, 0.10f, s);
+                        finalParticleSize = Props.shockwaveParticleSize * sizeFactor;
+                    }
+                    else
+                    {
+                        finalParticleSize = Props.shockwaveParticleSize;
+                    }
+                    
+                    // Spawn particles continuously between minRadius and maxRadius
+                    for (int i = 0; i < particlesAtRadius; i++)
+                    {
+                        float angle = (360f / particlesAtRadius) * i + Rand.Range(-5f, 5f);
+                        float angleRad = angle * Mathf.Deg2Rad;
+                        float particleRadius = Rand.Range(minRadius, maxRadius);
+                        
+                        Vector3 offset = new Vector3(
+                            Mathf.Cos(angleRad) * particleRadius,
+                            0f,
+                            Mathf.Sin(angleRad) * particleRadius
+                        );
+                        Vector3 particlePos = centerPosition + offset;
+                        
+                        // Spawn fleck
+                        FleckCreationData data = FleckMaker.GetDataStatic(particlePos, cachedMap, Props.shockwaveFleckDef, finalParticleSize);
+                        data.rotationRate = Rand.Range(-20f, 20f);
+                        data.velocityAngle = Rand.Range(0f, 360f);
+                        data.velocitySpeed = Rand.Range(0.1f, 0.3f);
+                        data.solidTimeOverride = solidTimeOverride;
+                        data.airTimeLeft = airTimeLeft;
                         cachedMap.flecks.CreateFleck(data);
                         
                         totalParticles++;
@@ -398,7 +453,8 @@ namespace AbsolutelyMoreCannons
 
                 AMCLogger.LogTurretSmoke(
                     $"Spawned shockwave smoke for {parent.def.defName} - " +
-                    $"Radius: {Props.shockwaveRadius}, Total particles: {totalParticles} (across {radiusSteps} rings)");
+                    $"Radius: {Props.shockwaveRadius}, Total particles: {totalParticles} across {radiusSteps} rings " +
+                    $"(FadeOutSpeed: {Props.shockwaveFadeOutSpeed:F2}x, GradDensity: {Props.shockwaveGradientDensity}, GradSize: {Props.shockwaveGradientParticleSize})");
             }
             catch (Exception ex)
             {
@@ -456,12 +512,11 @@ namespace AbsolutelyMoreCannons
         public Vector3[] GetHeatSmokePositions()
         {
             // Get current turret rotation
-            float turretRotation = 0f;
+            float turretRotation = GetTurretRotation();
             int barrelCount = 1;
             
             if (barrelComp != null)
             {
-                turretRotation = barrelComp.GetCurrentBarrelRotation();
                 barrelCount = Mathf.Max(1, barrelComp.Extension.barrelAmount);
             }
             
@@ -527,6 +582,51 @@ namespace AbsolutelyMoreCannons
             
             // Fallback to turret position
             return parent.DrawPos;
+        }
+
+        /// <summary>
+        /// Gets current turret rotation angle from barrelComp, CE top, or parent rotation fallback.
+        /// </summary>
+        public float GetTurretRotation()
+        {
+            if (barrelComp != null)
+            {
+                float rot = barrelComp.GetCurrentBarrelRotation();
+                if (!float.IsNaN(rot)) return rot;
+            }
+
+            if (parent is Building_Turret buildingTurret)
+            {
+                try
+                {
+                    var nonSnapField = buildingTurret.GetType().GetField("NonSnapTurretRot", 
+                        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+                    if (nonSnapField != null)
+                    {
+                        object val = nonSnapField.GetValue(buildingTurret);
+                        if (val is float fRot && fRot >= 0f) return fRot;
+                    }
+
+                    var topField = buildingTurret.GetType().GetField("top", 
+                        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+                    if (topField != null)
+                    {
+                        object top = topField.GetValue(buildingTurret);
+                        if (top != null)
+                        {
+                            var curRotationProp = top.GetType().GetProperty("CurRotation", 
+                                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+                            if (curRotationProp != null)
+                            {
+                                return (float)curRotationProp.GetValue(top);
+                            }
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            return parent.Rotation.AsAngle;
         }
 
         /// <summary>

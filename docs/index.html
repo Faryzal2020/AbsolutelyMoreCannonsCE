@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMC-CE Turret &amp; Ammunition Database</title>
+    <meta name="description" content="End-user wiki and interactive stats database for Absolutely More Cannons (Combat Extended Version).">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Modular CSS Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/turret-card.css">
+    <link rel="stylesheet" href="css/detail-modal.css">
+    <link rel="stylesheet" href="css/ammo-view.css">
+</head>
+<body>
+    <!-- Top Bar Navigation Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand-title-group">
+                <div class="logo-badge">AMC-CE</div>
+                <div class="title-meta">
+                    <h1 class="app-title">Turret &amp; Ammunition Stats Index</h1>
+                    <span class="sub-title">Combat Extended 1.6 &bull; Interactive Encyclopedia</span>
+                </div>
+            </div>
+
+            <div class="header-controls">
+                <!-- Search Box -->
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="search" id="search-input" placeholder="Search by name, caliber, or shell type..." aria-label="Search turrets and ammo">
+                    <button id="clear-search" class="clear-btn" type="button" aria-label="Clear search" hidden>&times;</button>
+                </div>
+
+                <!-- Collapses the filter bar on small screens -->
+                <button id="filter-toggle" class="filter-toggle" type="button" aria-expanded="true" aria-controls="filter-bar">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <line x1="4" y1="7" x2="20" y2="7"></line>
+                        <line x1="7" y1="12" x2="17" y2="12"></line>
+                        <line x1="10" y1="17" x2="14" y2="17"></line>
+                    </svg>
+                    <span>Filters</span><span class="filter-toggle-count"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <nav class="filter-bar" id="filter-bar" aria-label="Turret filters">
+            <div class="filter-group">
+                <span class="filter-label" id="category-label">Categories:</span>
+                <div class="filter-pills" id="category-pills" role="group" aria-labelledby="category-label">
+                    <button class="pill active" type="button" aria-pressed="true" data-category="all">All Turrets</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Autocannons">Autocannons</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Cannons">Cannons</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Howitzers">Howitzers</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Naval Guns">Naval Guns</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Rotary Cannons">Rotary Cannons</button>
+                    <button class="pill" type="button" aria-pressed="false" data-category="Unmanned">Unmanned</button>
+                </div>
+            </div>
+
+            <div class="filter-group secondary-filters">
+                <span class="filter-label" id="feature-label">Features:</span>
+                <div class="filter-pills" id="feature-pills" role="group" aria-labelledby="feature-label">
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Dual Mode">Dual Mode</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Enclosed Protection">Enclosed</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="CIWS Air Defense">CIWS</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Cross-Map Shelling">Shelling</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Variable RPM">Variable RPM</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Smart Autoloader">Autoloader</button>
+                    <button class="pill feature-pill" type="button" aria-pressed="false" data-feature="Airburst / Flak">Airburst</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+        <div class="stats-counter-bar">
+            <div class="counter-group">
+                <div id="turret-counter" class="counter-text" aria-live="polite" aria-atomic="true">Showing <strong>0</strong> of <strong>0</strong> turrets</div>
+                <button id="reset-filters" class="reset-btn" type="button" hidden>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    <span>Clear filters</span>
+                </button>
+            </div>
+            <div class="sort-controls">
+                <label for="sort-select">Sort by:</label>
+                <select id="sort-select" aria-label="Sort turrets">
+                    <option value="caliber-asc" selected>Caliber (Small &rarr; Large)</option>
+                    <option value="caliber-desc">Caliber (Large &rarr; Small)</option>
+                    <option value="name">Name (A &rarr; Z)</option>
+                    <option value="category">Category</option>
+                    <option value="hp-desc">Max HP (High &rarr; Low)</option>
+                    <option value="hp-asc">Max HP (Low &rarr; High)</option>
+                    <option value="range-desc">Max Range (High &rarr; Low)</option>
+                    <option value="range-asc">Max Range (Low &rarr; High)</option>
+                    <option value="cost-desc">Work to Build (High &rarr; Low)</option>
+                    <option value="cost-asc">Work to Build (Low &rarr; High)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Turret Grid Container -->
+        <section id="turret-grid" class="turret-grid" aria-label="Turret results">
+            <!-- Rendered dynamically by turretCard.js -->
+        </section>
+
+        <div id="no-results" class="empty-state" hidden>
+            <div class="empty-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <h3>No turrets found</h3>
+            <p>No turret matches every active filter. Clear them to start over.</p>
+        </div>
+
+        <noscript>
+            <div class="empty-state">
+                <h3>JavaScript required</h3>
+                <p>This database renders its turret and ammunition tables in the browser. Please enable JavaScript to browse it.</p>
+            </div>
+        </noscript>
+    </main>
+
+    <!-- Detail Modal Dialog -->
+    <div id="detail-modal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+            <button id="modal-close" class="modal-close-btn" type="button" aria-label="Close details">&times;</button>
+
+            <header class="modal-header">
+                <div class="modal-header-left">
+                    <div id="modal-thumb-container" class="modal-thumb"></div>
+                    <div class="modal-title-group">
+                        <span id="modal-category-badge" class="cat-tag">Category</span>
+                        <h2 id="modal-title" class="modal-title-text">Turret Title</h2>
+                        <span id="modal-caliber" class="caliber-text">Caliber</span>
+                    </div>
+                </div>
+
+                <!-- Dual Mode Toggle (Active for Dual Mode Turrets) -->
+                <div id="mode-switch-container" class="mode-switch-wrapper" style="display: none;">
+                    <span class="mode-switch-label" id="mode-switch-label">Fire Mode:</span>
+                    <div class="mode-toggle-group" role="group" aria-labelledby="mode-switch-label">
+                        <button id="mode-btn-direct" class="mode-toggle-btn active" type="button" data-mode="direct">Direct Fire</button>
+                        <button id="mode-btn-indirect" class="mode-toggle-btn" type="button" data-mode="indirect">Indirect Fire</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Modal Nav Tabs -->
+            <nav class="modal-tabs" role="tablist" aria-label="Turret detail sections">
+                <button class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="tab-overview" data-tab="tab-overview">Overview &amp; Building</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-ballistics" tabindex="-1" data-tab="tab-ballistics">Fire Control &amp; Ballistics</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-specialized" tabindex="-1" data-tab="tab-specialized">Specialized Features</button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="tab-ammo" tabindex="-1" data-tab="tab-ammo">Ammunition &amp; Shells (<span id="ammo-count-badge">0</span>)</button>
+            </nav>
+
+            <!-- Modal Content Panels -->
+            <div class="modal-body">
+                <div id="tab-overview" class="tab-panel active" role="tabpanel" tabindex="0"></div>
+                <div id="tab-ballistics" class="tab-panel" role="tabpanel" tabindex="0"></div>
+                <div id="tab-specialized" class="tab-panel" role="tabpanel" tabindex="0"></div>
+                <div id="tab-ammo" class="tab-panel" role="tabpanel" tabindex="0"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modular JS App Loading -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

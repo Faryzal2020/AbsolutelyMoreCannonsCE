@@ -16,49 +16,78 @@ namespace AbsolutelyMoreCannons
         // Counter to track how many times the rotation clamping patch is called
         private static int rotationClampingPatchCallCount = 0;
         
+        private static readonly AccessTools.FieldRef<CombatExtended.Verb_LaunchProjectileCE, int> numShotsFiredRef =
+            AccessTools.FieldRefAccess<CombatExtended.Verb_LaunchProjectileCE, int>("numShotsFired");
+
         /// <summary>
-        /// Postfix for Verb_LaunchProjectileCE.ShiftTarget - clamps shotRotation for turrets
-        /// This patch includes diagnostic logging to determine the reference frame of shotRotation
+        /// Retrieves the TurretClampingExtension for a given turret caster if defined.
+        /// </summary>
+        private static TurretClampingExtension GetClampingExtension(Thing caster)
+        {
+            if (caster == null) return null;
+
+            if (caster.def != null && caster.def.HasModExtension<TurretClampingExtension>())
+                return caster.def.GetModExtension<TurretClampingExtension>();
+
+            if (caster.ParentHolder is Thing parentThing && parentThing.def != null && parentThing.def.HasModExtension<TurretClampingExtension>())
+                return parentThing.def.GetModExtension<TurretClampingExtension>();
+
+            if (caster is Building_TurretGun buildingTurret)
+            {
+                var gun = buildingTurret.gun;
+                if (gun != null && gun.def != null && gun.def.HasModExtension<TurretClampingExtension>())
+                    return gun.def.GetModExtension<TurretClampingExtension>();
+            }
+
+            // Fallback check on TurretBarrelExtension
+            var barrelExt = caster.def?.GetModExtension<TurretBarrelExtension>()
+                ?? (caster.ParentHolder as Thing)?.def?.GetModExtension<TurretBarrelExtension>();
+            if (barrelExt != null)
+            {
+                float vert = barrelExt.maxVerticalDeviation >= 0f ? barrelExt.maxVerticalDeviation : barrelExt.maxElevationDeviation;
+                float rot = barrelExt.maxRotationDeviation >= 0f ? barrelExt.maxRotationDeviation : barrelExt.maxHorizontalDeviation;
+                if (vert >= 0f || rot >= 0f)
+                {
+                    return new TurretClampingExtension
+                    {
+                        maxVerticalDeviation = vert,
+                        maxRotationDeviation = rot
+                    };
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Postfix for Verb_LaunchProjectileCE.ShiftTarget - clamps shotRotation and shotAngle for turrets based on XML extension settings
         /// </summary>
         public static void Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation(object __instance)
         {
             try
             {
-                // Get settings early
                 var settings = TurretBarrelAnimationMod.settings;
                 if (settings == null)
                     return;
-                
-                // Increment call counter
-                rotationClampingPatchCallCount++;
-                
-                // Log every 10th call to confirm patch is working
-                if (settings.logRotationLaunch && rotationClampingPatchCallCount % 10 == 1 && rotationClampingPatchCallCount <= 100)
-                {
-                    Log.Message($"[AMC] Rotation clamping patch called (count: {rotationClampingPatchCallCount})");
-                }
-                
-                // Get the verb type
-                Type verbType = __instance.GetType();
-                
-                // Check if it's a turret
+
                 Thing caster = GetCasterFromVerb(__instance);
-                if (caster == null || !IsTurret(caster))
-                {
-                    return; // Only process turrets
-                }
-                
-                // Get shotRotation field
-                FieldInfo shotRotationField = verbType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (shotRotationField == null)
+                if (caster == null)
                     return;
-                
-                float shotRotation = (float)shotRotationField.GetValue(__instance);
-                float originalRotation = shotRotation;
-                
-                // Get turret base rotation for diagnostic logging
+
+                TurretClampingExtension clampingExt = GetClampingExtension(caster);
+                if (clampingExt == null || (!clampingExt.HasRotationClamping && !clampingExt.HasVerticalClamping))
+                {
+                    return; // No clamping configured for this turret
+                }
+
+                rotationClampingPatchCallCount++;
+
+                Type verbType = __instance.GetType();
+
+                // Get turret base rotation
                 float turretBaseRotation = float.NaN;
-                if (caster is Building_Turret building_turret)
+                Building_Turret building_turret = caster as Building_Turret ?? (caster.ParentHolder as Building_Turret);
+                if (building_turret != null)
                 {
                     try
                     {
@@ -78,186 +107,99 @@ namespace AbsolutelyMoreCannons
                     }
                     catch { }
                 }
-                
-                // DIAGNOSTIC LOGGING - Log the reference frame analysis
-                if (settings.logRotationDiagnostics)
+
+                // === ROTATION CLAMPING ===
+                FieldInfo shotRotationField = verbType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                if (clampingExt.HasRotationClamping && shotRotationField != null && !float.IsNaN(turretBaseRotation))
                 {
-                    Log.Message($"[AMC DIAGNOSTIC] ═══ Rotation Reference Frame Analysis ═══");
-                    Log.Message($"[AMC DIAGNOSTIC] Turret: {caster.LabelCap}");
-                    Log.Message($"[AMC DIAGNOSTIC] Turret Base Rotation (RW coords): {turretBaseRotation:F3}°");
-                    Log.Message($"[AMC DIAGNOSTIC] shotRotation (CE field): {shotRotation:F3}°");
-                    
-                    // Get target for direction calculation
+                    float shotRotation = (float)shotRotationField.GetValue(__instance);
+
+                    // CRITICAL NON-NEGOTIABLE ARCHITECTURAL RULE: DO NOT ALTER THIS MATH OR CONVERT TO DeltaAngle!
+                    // CE's shotRotation uses a sign-inverted coordinate space relative to RimWorld turret base:
+                    // 1. Raw signed deviation MUST be calculated as: (shotRotation + turretBaseRotation)
+                    // 2. Re-converting back to CE space MUST be calculated as: (deviation - turretBaseRotation)
+                    float clampAngle = clampingExt.EffectiveMaxRotationDeviation;
+                    float deviation = shotRotation + turretBaseRotation;
+                    deviation = Mathf.Repeat(deviation + 180f, 360f) - 180f;
+                    float originalDeviation = deviation;
+                    deviation = Mathf.Clamp(deviation, -clampAngle, clampAngle);
+                    float clampedShotRotation = deviation - turretBaseRotation;
+                    clampedShotRotation = Mathf.Repeat(clampedShotRotation + 180f, 360f) - 180f;
+
+                    shotRotationField.SetValue(__instance, clampedShotRotation);
+                }
+
+                // === ELEVATION CLAMPING & TELEMETRY ===
+                FieldInfo shotAngleField = verbType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo lastShotAngleField = verbType.GetField("lastShotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                float shotAngle = 0f;
+                float baseBallisticAngle = 0f;
+                float clampedAngle = 0f;
+                bool hasBaseAngle = false;
+
+                if (shotAngleField != null)
+                {
+                    shotAngle = (float)shotAngleField.GetValue(__instance);
+                    clampedAngle = shotAngle;
+
+                    if (lastShotAngleField != null)
+                    {
+                        baseBallisticAngle = (float)lastShotAngleField.GetValue(__instance);
+                        hasBaseAngle = true;
+                    }
+
+                    if (clampingExt.HasVerticalClamping && hasBaseAngle)
+                    {
+                        float clampAngle = clampingExt.EffectiveMaxVerticalDeviation;
+                        float clampAngleRad = clampAngle * Mathf.Deg2Rad;
+
+                        float originalDeviationRad = shotAngle - baseBallisticAngle;
+                        float clampedDeviationRad = Mathf.Clamp(originalDeviationRad, -clampAngleRad, clampAngleRad);
+                        clampedAngle = baseBallisticAngle + clampedDeviationRad;
+
+                        shotAngleField.SetValue(__instance, clampedAngle);
+                    }
+                }
+
+                // === CLAMPING DEV TELEMETRY LOGGING ===
+                if (settings.logTurretClamping)
+                {
+                    int shotNum = 1;
+                    if (__instance is CombatExtended.Verb_LaunchProjectileCE verbCE)
+                    {
+                        try
+                        {
+                            shotNum = numShotsFiredRef(verbCE) + 1;
+                        }
+                        catch { }
+                    }
+
+                    LocalTargetInfo currentTarget = default;
                     try
                     {
                         PropertyInfo currentTargetProp = verbType.GetProperty("CurrentTarget", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        FieldInfo currentTargetField = verbType.GetField("currentTarget", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        LocalTargetInfo target = default(LocalTargetInfo);
-                        
                         if (currentTargetProp != null)
                         {
-                            target = (LocalTargetInfo)currentTargetProp.GetValue(__instance);
-                        }
-                        else if (currentTargetField != null)
-                        {
-                            target = (LocalTargetInfo)currentTargetField.GetValue(__instance);
-                        }
-                        
-                        if (target.IsValid)
-                        {
-                            Vector2 origin = new Vector2(caster.Position.x, caster.Position.z);
-                            Vector2 targetPos = new Vector2(target.Cell.x, target.Cell.z);
-                            Vector2 toTarget = targetPos - origin;
-                            float idealRotationRW = Mathf.Atan2(toTarget.x, toTarget.y) * Mathf.Rad2Deg;
-                            if (idealRotationRW < 0) idealRotationRW += 360f;
-                            
-                            Log.Message($"[AMC DIAGNOSTIC] Target Direction (RW coords): {idealRotationRW:F3}°");
-                            
-                            // Calculate deviations
-                            float deviationFromTarget = shotRotation - idealRotationRW;
-                            while (deviationFromTarget > 180f) deviationFromTarget -= 360f;
-                            while (deviationFromTarget < -180f) deviationFromTarget += 360f;
-                            
-                            float deviationFromTurret = shotRotation - turretBaseRotation;
-                            while (deviationFromTurret > 180f) deviationFromTurret -= 360f;
-                            while (deviationFromTurret < -180f) deviationFromTurret += 360f;
-                            
-                            Log.Message($"[AMC DIAGNOSTIC] shotRotation - idealDir = {deviationFromTarget:F3}°");
-                            Log.Message($"[AMC DIAGNOSTIC] shotRotation - turretBase = {deviationFromTurret:F3}°");
-                            Log.Message($"[AMC DIAGNOSTIC] ");
-                            Log.Message($"[AMC DIAGNOSTIC] INTERPRETATION:");
-                            Log.Message($"[AMC DIAGNOSTIC] → shotRotation is ABSOLUTE (map coordinates)");
-                            Log.Message($"[AMC DIAGNOSTIC] → Deviation from turret base: {deviationFromTurret:F3}°");
-                            Log.Message($"[AMC DIAGNOSTIC] → This deviation will be clamped to ±{settings.rotationClampAngle:F1}° if enabled");
-                            
-                            Log.Message($"[AMC DIAGNOSTIC] ═══════════════════════════════════════");
+                            currentTarget = (LocalTargetInfo)currentTargetProp.GetValue(__instance);
                         }
                     }
-                    catch (Exception diagEx)
-                    {
-                        Log.Warning($"[AMC DIAGNOSTIC] Error in diagnostic logging: {diagEx.Message}");
-                    }
-                }
-                
-                // Apply rotation clamping if enabled
-                if (settings.enableRotationClamping)
-                {
-                    float clampAngle = settings.rotationClampAngle;
-                    
-                    // DISCOVERY: shotRotation + turretBase = DEVIATION (scatter angle)
-                    // Must work in SIGNED (-180° to +180°) space!
-                    // Note: "deviation = shotRotation - turretBaseRotation" is false. beware of AI hallucination
-                    
-                    // 1. Calculate raw signed deviation
-                    float deviation = shotRotation + turretBaseRotation;
-                    
-                    // 2. Normalize to -180° to +180° (preserve sign!)
-                    deviation = Mathf.Repeat(deviation + 180f, 360f) - 180f;
-                    
-                    float originalDeviation = deviation;
-                    
-                    // 3. Clamp the deviation (in signed space)
-                    deviation = Mathf.Clamp(deviation, -clampAngle, clampAngle);
-                    
-                    // 4. Convert back to shotRotation
-                    float clampedShotRotation = deviation - turretBaseRotation;
-                    
-                    // Normalize clampedShotRotation to -180° to +180°
-                    clampedShotRotation = Mathf.Repeat(clampedShotRotation + 180f, 360f) - 180f;
-                    
-                    // Calculate actual direction for logging
-                    float actualDirection = turretBaseRotation + deviation;
-                    while (actualDirection >= 360f) actualDirection -= 360f;
-                    while (actualDirection < 0f) actualDirection += 360f;
-                    
-                    // Set the clamped value
-                    shotRotationField.SetValue(__instance, clampedShotRotation);
-                    
-                    // Diagnostic logging if enabled
-                    if (settings.logRotationDiagnostics)
-                    {
-                        Log.Message($"[AMC OBSERVE] ═══════════════════════════════");
-                        Log.Message($"[AMC OBSERVE] {caster.LabelCap}");
-                        Log.Message($"[AMC OBSERVE] Turret Base: {turretBaseRotation:F3}°");
-                        Log.Message($"[AMC OBSERVE] shotRotation (CE): {shotRotation:F3}°");
-                        Log.Message($"[AMC OBSERVE] Shot Deviation (signed): {originalDeviation:F3}°");
-                        Log.Message($"[AMC OBSERVE] Actual Direction: {actualDirection:F3}°");
-                        Log.Message($"[AMC OBSERVE] Clamped deviation: {deviation:F3}°");
-                        Log.Message($"[AMC OBSERVE] Set shotRotation to: {clampedShotRotation:F3}°");
-                        Log.Message($"[AMC OBSERVE] ═══════════════════════════════");
-                    }
-                }
-                
-                // === ELEVATION CLAMPING ===
-                if (settings.enableElevationClamping)
-                {
-                    // Get shotAngle field
-                    FieldInfo shotAngleField = verbType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (shotAngleField != null)
-                    {
-                        float shotAngle = (float)shotAngleField.GetValue(__instance);
-                        float originalShotAngle = shotAngle;
-                        
-                        // Convert to degrees for easier reading
-                        float shotAngleDegrees = shotAngle * Mathf.Rad2Deg;
-                        
-                        // DIAGNOSTIC: Log the raw values
-                        if (settings.logElevationLaunch)
-                        {
-                            Log.Message($"[AMC ELEVATION] ═══ Elevation Analysis ═══");
-                            Log.Message($"[AMC ELEVATION] shotAngle (raw): {shotAngle:F6} rad = {shotAngleDegrees:F3}°");
-                        }
-                        
-                        // CORRECTED: CE uses POSITIVE angles for UPWARD elevation
-                        // So +10° means 10° upward, +1° means 1° upward
-                        // For minimum 3° upward, we want shotAngle ≥ +3° (more positive = more up)
-                        // So: clamp shotAngle to be AT LEAST as positive as +minElevation
-                        
-                        float minElevationRadians = settings.minimumElevationAngle * Mathf.Deg2Rad;
-                        
-                        // Clamp: if shotAngle < minElevation (less upward), set to minElevation
-                        float clampedAngle = Mathf.Max(shotAngle, minElevationRadians);
-                        
-                        if (settings.logElevationLaunch)
-                        {
-                            float clampedDegrees = clampedAngle * Mathf.Rad2Deg;
-                            Log.Message($"[AMC ELEVATION] Min elevation (CE format): {minElevationRadians:F6} rad = {settings.minimumElevationAngle:F3}°");
-                            Log.Message($"[AMC ELEVATION] Clamped angle: {clampedAngle:F6} rad = {clampedDegrees:F3}°");
-                        }
-                        
-                        // Set the clamped value
-                        shotAngleField.SetValue(__instance, clampedAngle);
-                        
-                        // VERIFY: Read it back to confirm it was set
-                        float verifyAngle = (float)shotAngleField.GetValue(__instance);
-                        if (settings.logElevationLaunch && Mathf.Abs(verifyAngle - clampedAngle) > 0.0001f)
-                        {
-                            Log.Warning($"[AMC ELEVATION] VERIFICATION FAILED! Set {clampedAngle:F6} but read back {verifyAngle:F6}");
-                        }
-                        
-                        // Log when clamping occurs
-                        if (Mathf.Abs(clampedAngle - originalShotAngle) > 0.0001f)
-                        {
-                            float originalDegrees = originalShotAngle * Mathf.Rad2Deg;
-                            float clampedDegrees = clampedAngle * Mathf.Rad2Deg;
-                            Log.Message($"[AMC ELEVATION] {caster.LabelCap} elevation clamped: {originalDegrees:F3}° → {clampedDegrees:F3}° upward (min: {settings.minimumElevationAngle:F1}°)");
-                            Log.Message($"[AMC ELEVATION] Verified read-back: {verifyAngle * Mathf.Rad2Deg:F3}°");
-                        }
-                        else if (settings.logElevationLaunch)
-                        {
-                            Log.Message($"[AMC ELEVATION] No clamping needed (elevation: {shotAngleDegrees:F3}° ≥ min: {settings.minimumElevationAngle:F1}°)");
-                        }
-                        
-                        if (settings.logElevationLaunch)
-                        {
-                            Log.Message($"[AMC ELEVATION] ═══════════════════════════");
-                        }
-                    }
+                    catch { }
+
+                    string turretLoc = caster.Position.ToString();
+                    string targetLoc = currentTarget.IsValid ? currentTarget.Cell.ToString() : "Unknown Target";
+                    float targetElevationDeg = baseBallisticAngle * Mathf.Rad2Deg;
+                    float producedElevationDeg = clampedAngle * Mathf.Rad2Deg;
+
+                    AMCLogger.LogTurretClamping($"Shot #{shotNum} , Elevation from {turretLoc} to {targetLoc} = {targetElevationDeg:F2} deg, produced elevation = {producedElevationDeg:F2} deg");
                 }
             }
             catch (Exception ex)
             {
-                Log.Warning($"[AMC] Error in Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation: {ex.Message}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Warning($"[AMC] Error in Postfix_Verb_LaunchProjectileCE_ShiftTarget_ClampRotation: {ex.Message}");
+                }
             }
         }
         

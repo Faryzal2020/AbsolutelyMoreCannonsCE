@@ -39,6 +39,22 @@
 				<recoilReduction>0.5</recoilReduction>
 				<spreadReduction>0.5</spreadReduction>
 			</li>
+			<!-- Fire Arc Control -->
+			<li Class="CombatExtended.CompProperties_FireArc">
+				<!-- Minimum and maximum arc span in degrees -->
+				<spanRange>
+					<min>30</min>  <!-- Minimum firing arc width -->
+					<max>180</max> <!-- Maximum firing arc width (full circle) -->
+				</spanRange>
+				
+				<!-- Maximum rotation from turret's facing direction -->
+				<!-- 360 = can rotate to any direction -->
+				<!-- 90 = can only rotate 90° left/right from facing -->
+				<maxSpanDeviation>90</maxSpanDeviation>
+				
+				<!-- Visual indicator line length when adjusting -->
+				<lineLength>10</lineLength>
+			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
 				<!-- Muzzle Smoke -->
@@ -181,6 +197,10 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0,-0.5</CasingOffset>
 				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
 	</ThingDef>

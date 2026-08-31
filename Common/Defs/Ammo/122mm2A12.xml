@@ -90,6 +90,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
                 <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<speed>134</speed>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>279</damageAmountBase>
@@ -142,6 +143,7 @@
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
                 <soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
 			<damageDef>Bomb</damageDef>
 			<damageAmountBase>279</damageAmountBase>
 			<explosionRadius>3.5</explosionRadius>

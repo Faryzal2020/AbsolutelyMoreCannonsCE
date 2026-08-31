@@ -1,0 +1,38 @@
+{
+  "name": "amc-turret-editor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Unified local web tool for extracting, editing and injecting RimWorld turret ThingDef XML for Absolutely More Cannons (CE).",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "prestart": "node scripts/ensure-ui.js",
+    "start": "node server.js",
+    "serve": "node server.js --no-open",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "pretest": "node scripts/ensure-ui.js",
+    "test": "node --test --test-concurrency=1 \"test/*.test.js\""
+  },
+  "dependencies": {
+    "@fastify/static": "^8.0.4",
+    "fast-xml-parser": "^4.5.1",
+    "fastify": "^5.2.1",
+    "open": "^10.1.0"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^11.8.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.0.7"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

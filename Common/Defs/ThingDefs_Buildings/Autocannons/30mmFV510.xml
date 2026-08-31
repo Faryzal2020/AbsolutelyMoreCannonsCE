@@ -38,6 +38,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>100</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.8</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0.5</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -194,6 +200,11 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0,1.5</CasingOffset>
 				<CasingAngleOffset>180</CasingAngleOffset>
+			</li>
+			<li Class="CombatExtended.MultiBarrelExtension">
+				<offsets>
+					<li>(0, 0.5)</li>
+				</offsets>
 			</li>
 		</modExtensions>
 	</ThingDef>

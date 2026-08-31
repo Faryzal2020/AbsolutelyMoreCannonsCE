@@ -66,6 +66,10 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>false</shockwaveEnabled>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>

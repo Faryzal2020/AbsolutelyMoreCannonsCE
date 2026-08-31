@@ -39,6 +39,14 @@
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
 		<designatorDropdown>Group_AMC_75mmLEIG18</designatorDropdown>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_75mmLEIG18_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 8+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
+		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
@@ -129,6 +137,14 @@
       <turretTopDrawSize>7</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_75mmLEIG18</designatorDropdown>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_75mmLEIG18_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
+		</comps>
     <size>(3,3)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
@@ -197,6 +213,12 @@
 				<ammoSet>AmmoSet_75mmLEIG18_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>

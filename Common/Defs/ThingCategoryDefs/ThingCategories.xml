@@ -11,13 +11,13 @@
       <defName>AMCMaterials</defName>
       <label>AMC Materials</label>
       <parent>Manufactured</parent>
-      <iconPath>Things/Icons/MenuIcon</iconPath>
+      <iconPath>Things/Icons/Materials_CategoryIcon</iconPath>
     </ThingCategoryDef>
 
     <ThingCategoryDef>
       <defName>AMCTurrets</defName>
       <label>AMC Turrets</label>
       <parent>Buildings</parent>
-      <iconPath>Things/Icons/U57mmDeacon_MenuIcon</iconPath>
+      <iconPath>Things/Icons/MenuIcon</iconPath>
     </ThingCategoryDef>
 </Defs>

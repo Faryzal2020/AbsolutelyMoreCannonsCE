@@ -8,7 +8,7 @@
 		<label>Auto Flak 38</label>
 	</DesignatorDropdownGroupDef>
 
-	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+	<ThingDef ParentName="AMCTurretAutoBase"> 
 		<defName>Turret_U20mmFlak38_Base</defName>
 		<label>Auto Flak 38 (Unmanned)</label>
     <description>The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8x20 rounds) and requires 200 power to operate. Power: 200, HP: 390, Cooldown: 0.4s, Range: 70, Rate of Fire: 450 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.</description>
@@ -23,27 +23,40 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/U20mmFlak38_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>390</MaxHitPoints>
+			<MaxHitPoints>340</MaxHitPoints>
 			<WorkToBuild>5625</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
       		<AimingAccuracy>0.95</AimingAccuracy>
 		</statBases>
 		<costList>
-			<Steel>300</Steel>
-      		<ComponentIndustrial>2</ComponentIndustrial>
-			<Plasteel>5</Plasteel>
-      		<ComponentSpacer>2</ComponentSpacer>
-		</costList>
+      <Steel>300</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <Plasteel>5</Plasteel>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
 		<building>
 			<turretGunDef>Turret_U20mmFlak38_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
       		<turretTopDrawSize>9</turretTopDrawSize>
-			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
+			<turretBurstCooldownTime>1</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
 		<designatorDropdown>Group_AMC_U20mmFlak38</designatorDropdown>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>1</muzzleParticleCount>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>40</heatThreshold>
+				<heatDecayRate>0.6</heatDecayRate>
+				<heatEmissionRate>1</heatEmissionRate>
+				<shockwaveEnabled>false</shockwaveEnabled>
+			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
@@ -62,6 +75,11 @@
 		</researchPrerequisites>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<selectableBurstCounts>
+				<li>3</li>
+				<li>6</li>
+				<li>9</li>
+			</selectableBurstCounts>
 			<barrelGraphic>
 				<texPath>Things/Building/U20mmFlak38_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -76,24 +94,24 @@
 				<recoilDuration>6</recoilDuration>
 				<returnDuration>8</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
+				<useReturnCurve>true</useReturnCurve>
+				<affectsRotation>true</affectsRotation>
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
-				<durationTicks>8</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<durationTicks>8</durationTicks>  
 				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashColor>(1,0.7,0.3,1)</flashColor>  
 				<flashSize>8</flashSize>
 				<flashBrightness>0.8</flashBrightness>
-				<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashOffset>-2</flashOffset>  
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 				<flashIntensityCurve>
 					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
+					<li>(0, 1)</li>      
+					<li>(0.3, 0.9)</li>  
+					<li>(0.6, 0.6)</li>  
+					<li>(1, 0)</li>      
 					</points>
 				</flashIntensityCurve>
 			</firingAnimation>

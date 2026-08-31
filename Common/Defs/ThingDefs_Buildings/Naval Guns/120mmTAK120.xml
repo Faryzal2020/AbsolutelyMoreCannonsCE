@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 									
-	
+	<!--=============== 12cm/46 TAK120 ===============-->
 
 	<DesignatorDropdownGroupDef>
 		<defName>Group_AMC_120mmTAK120</defName>
@@ -11,11 +11,11 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> 
 		<defName>Turret_120mmTAK120_Base</defName>
 		<label>12cm/46 TAK120</label>
-    	<description>Manned: Yes, Indirect fire: Available, Power: 800W, HP: 1680, Cooldown: 2.0s, Range: 8-18000, Rate of Fire: 30 rounds per minute, Burst Count: 6, Magazine: 52, Reload: 1.0s. A formidable Swedish coastal defense piece.</description>
+    	<description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 1680, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
 		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M120mmTAK120</texPath>
-			<drawSize>(25,25)</drawSize>
+			<drawSize>(15,15)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -23,16 +23,16 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/M120mmTAK120_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>1680</MaxHitPoints>
+			<MaxHitPoints>2500</MaxHitPoints>
 			<WorkToBuild>35000</WorkToBuild>
-			<Mass>1</Mass>
-			<Bulk>1</Bulk>
+			<Mass>30</Mass>
+			<Bulk>200</Bulk>
 		</statBases>
 		<costList>
 			<Steel>1100</Steel>
-      		<ComponentIndustrial>40</ComponentIndustrial>
+			<ComponentIndustrial>40</ComponentIndustrial>
 			<Plasteel>50</Plasteel>
-      		<ComponentSpacer>10</ComponentSpacer>
+			<ComponentSpacer>10</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_120mmTAK120_Weapon</turretGunDef>
@@ -40,6 +40,7 @@
 			<turretBurstCooldownTime>2</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_120mmTAK120</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -59,50 +60,53 @@
 				<recoilReduction>0.1</recoilReduction>
 				<spreadReduction>0.1</spreadReduction>
 			</li>
-			
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
-				
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration> 
-				<muzzleOffset>(0, 0, 6.5)</muzzleOffset> 
-				<muzzleVelocity>15</muzzleVelocity> 
-				<muzzleVelDuration>40</muzzleVelDuration> 
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 7)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
-				<muzzleParticleSize>1~2</muzzleParticleSize> 
-				<muzzleSpawnDelay>1</muzzleSpawnDelay> 
+				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
 				
-				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>20</heatThreshold> 
-				<heatDecayRate>0.48</heatDecayRate> 
+				<heatThreshold>10</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.34</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 3)</heatOffset> 
+				<heatOffset>(0, 0, 3)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
-				<heatEmissionRate>3.5</heatEmissionRate> 
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
 
-				<heatParticleSize>0.6</heatParticleSize> 
-				<heatEmissionPoints>4</heatEmissionPoints> 
-				<heatEmissionSpacing>0.5</heatEmissionSpacing> 
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>6</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
 				
-				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>5</shockwaveRadius> 
-				<shockwaveDensity>50</shockwaveDensity> 
-				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> 
-				<shockwaveParticleSize>1.5</shockwaveParticleSize> 
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>5,5</size>
+    	<size>6,6</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_120mmTAK120</li>
@@ -110,6 +114,11 @@
     	<interactionCellOffset>(2,0,-3)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<selectableBurstCounts>
+				<li>1</li>
+				<li>3</li>
+				<li>6</li>
+			</selectableBurstCounts>
 				<barrelGraphic>
 					<texPath>Things/Building/M120mmTAK120_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -119,13 +128,13 @@
 				<barrelDrawSize>15.0</barrelDrawSize>
 				<drawOnTop>false</drawOnTop>
 				<recoilAnimation>
-					<maxDistance>0.3</maxDistance>
-					<recoilDuration>15</recoilDuration>
-					<returnDuration>30</returnDuration>
-					<useRecoilCurve>true</useRecoilCurve>
-					<useReturnCurve>false</useReturnCurve>
-					<affectsRotation>false</affectsRotation>
-				</recoilAnimation>
+				<maxDistance>0.3</maxDistance>
+				<recoilDuration>15</recoilDuration>
+				<returnDuration>30</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>true</useReturnCurve>
+				<affectsRotation>true</affectsRotation>
+			</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
 					<projectileSpawnOffset>5.5</projectileSpawnOffset>
@@ -192,10 +201,21 @@
 				<reloadTime>1</reloadTime>
 				<ammoSet>AmmoSet_120mmTAK120_Shells</ammoSet>
 			</li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>TRUE</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+				<aimedBurstShotCount>1</aimedBurstShotCount>
+			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
-
+<!-- INDIRECT -->
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_120mmTAK120_indirect_Base</defName>
 		<label>12cm/46 TAK120 (indirect)</label>
@@ -203,7 +223,7 @@
 		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M120mmTAK120</texPath>
-			<drawSize>(25,25)</drawSize>
+			<drawSize>(15,15)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -211,17 +231,17 @@
 		</graphicData>
 		<uiIconPath>Things/Icons/M120mmTAK120_MenuIcon</uiIconPath>
 		<statBases>
-			<MaxHitPoints>1680</MaxHitPoints>
+			<MaxHitPoints>2500</MaxHitPoints>
 			<WorkToBuild>35000</WorkToBuild>
-			<Mass>1</Mass>
-			<Bulk>1</Bulk>
+			<Mass>30</Mass>
+			<Bulk>200</Bulk>
 		</statBases>
 		<costList>
-			<Steel>1100</Steel>
-      		<ComponentIndustrial>40</ComponentIndustrial>
-			<Plasteel>50</Plasteel>
-      		<ComponentSpacer>10</ComponentSpacer>
-		</costList>
+      <Steel>1100</Steel>
+      <ComponentIndustrial>40</ComponentIndustrial>
+      <Plasteel>50</Plasteel>
+      <ComponentSpacer>10</ComponentSpacer>
+    </costList>
 		<building>
 			<turretGunDef>Turret_120mmTAK120_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
@@ -229,6 +249,7 @@
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
       		<turretTopDrawSize>15</turretTopDrawSize>
 		</building>
+		<fillPercent>2.0</fillPercent>
 		<designatorDropdown>Group_AMC_120mmTAK120</designatorDropdown>
 		<comps>
 			<li Class="CompProperties_Power">
@@ -243,45 +264,49 @@
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
-			
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
-				
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration> 
-				<muzzleOffset>(0, 0, 3)</muzzleOffset> 
-				<muzzleVelocity>15</muzzleVelocity> 
-				<muzzleVelDuration>20</muzzleVelDuration> 
-				<muzzleParticleSize>1.5</muzzleParticleSize> 
-				<muzzleSpawnDelay>1</muzzleSpawnDelay> 
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 6)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
 				
-				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>20</heatThreshold> 
-				<heatDecayRate>0.48</heatDecayRate> 
+				<heatThreshold>2</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 1)</heatOffset> 
+				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
-				<heatEmissionRate>3.5</heatEmissionRate> 
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
 
-				<heatParticleSize>0.6</heatParticleSize> 
-				<heatEmissionPoints>3</heatEmissionPoints> 
-				<heatEmissionSpacing>0.3</heatEmissionSpacing> 
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
 				
-				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>5</shockwaveRadius> 
-				<shockwaveDensity>50</shockwaveDensity> 
-				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> 
-				<shockwaveParticleSize>1.5</shockwaveParticleSize> 
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 6)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 		</comps>
-    	<size>(5,5)</size>
+    	<size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_120mmTAK120</li>
@@ -289,6 +314,11 @@
     	<interactionCellOffset>(2,0,-3)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<selectableBurstCounts>
+				<li>1</li>
+				<li>3</li>
+				<li>6</li>
+			</selectableBurstCounts>
 				<barrelGraphic>
 					<texPath>Things/Building/M120mmTAK120_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -303,22 +333,22 @@
 				<barrelDrawSize>15.0</barrelDrawSize>
 				<drawOnTop>false</drawOnTop>
 				<recoilAnimation>
-					<maxDistance>0.3</maxDistance>
-					<recoilDuration>15</recoilDuration>
-					<returnDuration>30</returnDuration>
-					<useRecoilCurve>true</useRecoilCurve>
-					<useReturnCurve>false</useReturnCurve>
-					<affectsRotation>false</affectsRotation>
-				</recoilAnimation>
+				<maxDistance>0.3</maxDistance>
+				<recoilDuration>15</recoilDuration>
+				<returnDuration>30</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>true</useReturnCurve>
+				<affectsRotation>true</affectsRotation>
+			</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
-					<projectileSpawnOffset>3</projectileSpawnOffset>
+					<projectileSpawnOffset>2.5</projectileSpawnOffset>
 					<durationTicks>10</durationTicks>  
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  
-					<flashSize>20</flashSize>
+					<flashSize>25</flashSize>
 					<flashBrightness>2.0</flashBrightness>
-					<flashOffset>-7</flashOffset>  
+					<flashOffset>-8</flashOffset>  
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 					<flashIntensityCurve>
 						<points>

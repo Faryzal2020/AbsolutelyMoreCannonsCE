@@ -364,27 +364,30 @@ namespace AbsolutelyMoreCannons
         private static float GetSwayReductionForVerb(object verbInstance)
         {
             Thing caster = GetCasterFromVerb(verbInstance);
+            if (caster == null) return 0f;
+
+            var fcsComp = GetFCSCompFromCaster(caster);
+            var comp = caster.TryGetComp<Comp_AccuracyOverride>();
+
+            // If neither FCS nor AccuracyOverride is configured on this caster, return 0% reduction
+            if (fcsComp == null && comp == null) return 0f;
+
             float baseReduction = 0f;
             float fcsMultiplier = 1.0f;
 
-            if (caster != null)
+            if (fcsComp != null && fcsComp.ActiveStats != null)
             {
-                var fcsComp = GetFCSCompFromCaster(caster);
-                if (fcsComp != null && fcsComp.ActiveStats != null)
-                {
-                    fcsMultiplier = fcsComp.ActiveStats.swayMultiplier;
-                }
+                fcsMultiplier = fcsComp.ActiveStats.swayMultiplier;
+            }
 
-                var comp = caster.TryGetComp<Comp_AccuracyOverride>();
-                if (comp != null)
-                {
-                    baseReduction = comp.GetSwayReduction();
-                }
-                else
-                {
-                    var settings = TurretBarrelAnimationMod.settings;
-                    baseReduction = (settings != null) ? settings.swayReductionPercent : 0f;
-                }
+            if (comp != null)
+            {
+                baseReduction = comp.GetSwayReduction();
+            }
+            else
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                baseReduction = (settings != null) ? settings.swayReductionPercent : 0f;
             }
 
             return 100f - ((100f - baseReduction) * fcsMultiplier);
@@ -393,27 +396,30 @@ namespace AbsolutelyMoreCannons
         private static float GetRecoilReductionForVerb(object verbInstance)
         {
             Thing caster = GetCasterFromVerb(verbInstance);
+            if (caster == null) return 0f;
+
+            var fcsComp = GetFCSCompFromCaster(caster);
+            var comp = caster.TryGetComp<Comp_AccuracyOverride>();
+
+            // If neither FCS nor AccuracyOverride is configured on this caster, return 0% reduction
+            if (fcsComp == null && comp == null) return 0f;
+
             float baseReduction = 0f;
             float fcsMultiplier = 1.0f;
 
-            if (caster != null)
+            if (fcsComp != null && fcsComp.ActiveStats != null)
             {
-                var fcsComp = GetFCSCompFromCaster(caster);
-                if (fcsComp != null && fcsComp.ActiveStats != null)
-                {
-                    fcsMultiplier = fcsComp.ActiveStats.recoilMultiplier;
-                }
+                fcsMultiplier = fcsComp.ActiveStats.recoilMultiplier;
+            }
 
-                var comp = caster.TryGetComp<Comp_AccuracyOverride>();
-                if (comp != null)
-                {
-                    baseReduction = comp.GetRecoilReduction();
-                }
-                else
-                {
-                    var settings = TurretBarrelAnimationMod.settings;
-                    baseReduction = (settings != null) ? settings.recoilReductionPercent : 0f;
-                }
+            if (comp != null)
+            {
+                baseReduction = comp.GetRecoilReduction();
+            }
+            else
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                baseReduction = (settings != null) ? settings.recoilReductionPercent : 0f;
             }
 
             return 100f - ((100f - baseReduction) * fcsMultiplier);

@@ -45,6 +45,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_600mmKarlGerat_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 40+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -142,6 +148,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_600mmKarlGerat_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
     <size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -211,6 +223,12 @@
 				<ammoSet>AmmoSet_600mmKarlGerat_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>5</maxVerticalDeviation>
+				<maxRotationDeviation>5</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>

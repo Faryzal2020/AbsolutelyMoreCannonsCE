@@ -14,8 +14,8 @@
     <!-- Muzzle Smoke: Quick puff from barrel when firing -->
     <FleckDef ParentName="AMC_SmokeBase">
         <defName>AMC_MuzzleSmoke</defName>
-        <solidTime>0.5</solidTime>
-        <fadeOutTime>1.5</fadeOutTime>
+        <solidTime>6</solidTime>
+        <fadeOutTime>3</fadeOutTime>
         <growthRate>0.5</growthRate>
     </FleckDef>
 

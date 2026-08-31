@@ -33,6 +33,12 @@
 			<turretBurstCooldownTime>4</turretBurstCooldownTime>
 		</building>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>0.8</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.2</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
 				<swayReduction>0.5</swayReduction>
@@ -151,14 +157,14 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>4</minRange>
+        		<minRange>4</minRange>
 				<range>90</range>
 				<soundCast>Sound_6Pdr</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>40</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
@@ -176,6 +182,10 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0,-0.5</CasingOffset>
 				<CasingAngleOffset>0</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
 	</ThingDef>

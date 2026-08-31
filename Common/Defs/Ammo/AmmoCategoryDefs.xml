@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<CombatExtended.AmmoCategoryDef>
+		<defName>AMC_Guided</defName>
+		<label>guided</label>
+		<labelShort>guided</labelShort>
+		<description>Precision guided ammunition equipped with terminal trajectory guidance capabilities.</description>
+	</CombatExtended.AmmoCategoryDef>
+
+</Defs>

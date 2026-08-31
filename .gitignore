@@ -1,6 +1,8 @@
 # Visual Studio files
 .vs/
+**/.vs/
 *.user
+*.csproj.user
 *.suo
 *.userosscache
 *.sln.docstates
@@ -12,7 +14,12 @@ x64/
 x86/
 [Bb]in/
 [Oo]bj/
+**/bin/
+**/obj/
+**/[Bb]in/
+**/[Oo]bj/
 *.dll
+!Assemblies/*.dll
 *.exe
 *.pdb
 
@@ -26,8 +33,17 @@ x86/
 *.log
 
 # Others
+.DS_store
 .agent/
 .agents/
 .gemini/
+.claude/
 scratch/
 
+
+# TurretEditor local web tool
+TurretEditor/node_modules/
+TurretEditor/public/
+DevTools/turret_editor.db
+DevTools/turret_editor.db-shm
+DevTools/turret_editor.db-wal

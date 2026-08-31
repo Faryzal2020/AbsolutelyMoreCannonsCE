@@ -101,14 +101,28 @@
 
   <ResearchProjectDef>
     <defName>Automated_FCS</defName>
-    <label>automated fire control system</label>
-    <description>Allows you to make Automated FCS computers, a necessary material to build unmanned cannon turrets.</description>
+    <label>fire control system module</label>
+    <description>Allows you to make Basic FCS Module, a necessary modules to make unmanned turrets operational.</description>
     <baseCost>1000</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>
       <li>AdvancedFabrication</li>
     </prerequisites>
     <researchViewX>8</researchViewX>
+    <researchViewY>0.5</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>Automated_FCS_2</defName>
+    <label>advanced fcs</label>
+    <description>Allows you to make Advanced FCS Module, improved version of the Basic FCS Module.</description>
+    <baseCost>1000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Automated_FCS</li>
+    </prerequisites>
+    <researchViewX>9</researchViewX>
     <researchViewY>0.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>

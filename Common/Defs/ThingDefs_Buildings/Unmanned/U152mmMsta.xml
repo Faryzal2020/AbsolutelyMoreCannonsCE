@@ -8,7 +8,7 @@
 		<label>Auto 2S19 Msta</label>
 	</DesignatorDropdownGroupDef>
 
-	<ThingDef ParentName="AMCTurretAutoBase"> <!-- AMCTurretAutoBase -->
+	<ThingDef ParentName="AMCTurretAutoBase"> 
 		<defName>Turret_U152mmMsta_Base</defName>
 		<label>Auto 2S19 Msta (Auto)</label>
     <description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 3020, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5). Capable of settlement bombardment.</description>
@@ -30,11 +30,11 @@
       <AimingAccuracy>0.95</AimingAccuracy>
 		</statBases>
 		<costList>
-			<Steel>1000</Steel>
+      <Steel>1000</Steel>
       <ComponentIndustrial>15</ComponentIndustrial>
-			<Plasteel>10</Plasteel>
+      <Plasteel>10</Plasteel>
       <ComponentSpacer>4</ComponentSpacer>
-		</costList>
+    </costList>
 		<building>
 			<turretGunDef>Turret_U152mmMsta_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
@@ -56,10 +56,10 @@
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
-				<swayReduction>0.8</swayReduction>
-				<recoilReduction>0.8</recoilReduction>
-				<spreadReduction>0.8</spreadReduction>
-			</li>
+			<swayReduction>0.8</swayReduction>
+			<recoilReduction>0.8</recoilReduction>
+			<spreadReduction>0.8</spreadReduction>
+		</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 		</comps>
 		<placeWorkers>
@@ -91,19 +91,19 @@
         </recoilAnimation>
         <firingAnimation>
           <enabled>true</enabled>
-          <durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+          <durationTicks>10</durationTicks>  
 		  <drawFlash>true</drawFlash>
-		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+		  <flashColor>(1,0.7,0.3,1)</flashColor>  
 		  <flashSize>30</flashSize>
 		  <flashBrightness>3.0</flashBrightness>
-		  <flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
-		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+		  <flashOffset>-1</flashOffset>  
+		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 		  <flashIntensityCurve>
 			<points>
-			<li>(0, 1)</li>      <!-- Full brightness at start -->
-			<li>(0.3, 0.9)</li>  <!-- Still bright -->
-			<li>(0.6, 0.6)</li>  <!-- Fading -->
-			<li>(1, 0)</li>      <!-- Faded out -->
+			<li>(0, 1)</li>      
+			<li>(0.3, 0.9)</li>  
+			<li>(0.6, 0.6)</li>  
+			<li>(1, 0)</li>      
 			</points>
 		  </flashIntensityCurve>
         </firingAnimation>
@@ -183,11 +183,11 @@
       <ShootingAccuracyTurret>1.5</ShootingAccuracyTurret>
 		</statBases>
 		<costList>
-			<Steel>1000</Steel>
+      <Steel>1000</Steel>
       <ComponentIndustrial>15</ComponentIndustrial>
-			<Plasteel>10</Plasteel>
+      <Plasteel>10</Plasteel>
       <ComponentSpacer>4</ComponentSpacer>
-		</costList>
+    </costList>
 		<tradeTags>
 			<li>CE_Turret</li>
 		</tradeTags>
@@ -204,7 +204,7 @@
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<!-- Add mode swap component -->
+			
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_U152mmMsta_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
@@ -238,19 +238,19 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
-				<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<durationTicks>10</durationTicks>  
 				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+				<flashColor>(1,0.7,0.3,1)</flashColor>  
 				<flashSize>35</flashSize>
 				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-4</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+				<flashOffset>-4</flashOffset>  
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 				<flashIntensityCurve>
 					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
+					<li>(0, 1)</li>      
+					<li>(0.3, 0.9)</li>  
+					<li>(0.6, 0.6)</li>  
+					<li>(1, 0)</li>      
 					</points>
 				</flashIntensityCurve>
 			</firingAnimation>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Save Our Ship 2</li>
+			<li>kentington.saveourship2</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+			<operations>
+				<!-- Allow all AMC turrets to be built on Save Our Ship 2 ship hulls and hardpoints -->
+				<li Class="PatchOperationAdd">
+					<xpath>Defs/ThingDef[@Name="AMCTurretBase" or @Name="AMCArtilleryBase"]/placeWorkers</xpath>
+					<value>
+						<li>SaveOurShip2.PlaceWorker_OnShipHull</li>
+					</value>
+				</li>
+			</operations>
+		</match>
+	</Operation>
+</Patch>

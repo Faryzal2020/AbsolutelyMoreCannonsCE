@@ -10,11 +10,13 @@ namespace AbsolutelyMoreCannons
         private const TargetIndex TurretInd = TargetIndex.A;
         private const TargetIndex FCSItemInd = TargetIndex.B;
 
-        private Building Turret => (Building)pawn.jobs.curJob.GetTarget(TurretInd).Thing;
-        private Thing FCSItem => pawn.jobs.curJob.GetTarget(FCSItemInd).Thing;
+        private Building Turret => TargetThingA as Building;
+        private Thing FCSItem => TargetThingB;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
+            if (Turret == null || FCSItem == null) return false;
+
             return pawn.Reserve(Turret, job, 1, -1, null, errorOnFailed) &&
                    pawn.Reserve(FCSItem, job, 1, 1, null, errorOnFailed);
         }
@@ -27,7 +29,7 @@ namespace AbsolutelyMoreCannons
             // Fail if turret no longer needs loading or target FCS changed
             this.FailOn(() =>
             {
-                var comp = Turret.TryGetComp<CompTurretFCS>();
+                var comp = Turret?.TryGetComp<CompTurretFCS>();
                 return comp == null || comp.HasFCS || comp.targetFCSDef == null;
             });
 
@@ -39,7 +41,7 @@ namespace AbsolutelyMoreCannons
             takeItem.initAction = () =>
             {
                 Pawn p = takeItem.actor;
-                Thing thing = p.jobs.curJob.GetTarget(FCSItemInd).Thing;
+                Thing thing = FCSItem;
                 if (thing != null)
                 {
                     p.carryTracker.TryStartCarry(thing, 1);

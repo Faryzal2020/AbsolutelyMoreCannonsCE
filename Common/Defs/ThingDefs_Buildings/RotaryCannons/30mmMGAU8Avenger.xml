@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Defs>
+									
+	<!--=============== M61 Vulcan ===============-->
+
+	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+		<defName>Turret_30mmGAU8Avenger_Base</defName>
+		<label>GAU-8 Avenger</label>
+    	<description>Use ammo set:30x173mm NATO \nGatling turret designed AROUND the GAU-8 Avenger</description>
+		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+		<graphicData>
+			<texPath>Things/Building/M30mmGAU8Avenger</texPath>
+			<drawSize>(10,10)</drawSize>
+			<shadowData>
+				<volume>(0.27,0.25,0.4)</volume>
+				<offset>(0,0,-0.1)</offset>
+			</shadowData>
+		</graphicData>
+		<uiIconPath>Things/Icons/M30mmGAU8Avenger_MenuIcon</uiIconPath>
+		<thingClass>CombatExtended.Building_CIWS_CE</thingClass> <!-- enableCIWS -->
+		<statBases>
+			<MaxHitPoints>1325</MaxHitPoints>
+			<WorkToBuild>35500</WorkToBuild>
+			<Mass>1</Mass>
+			<Bulk>1</Bulk>
+		</statBases>
+		<costList>
+			<Steel>1050</Steel>
+			<ComponentIndustrial>16</ComponentIndustrial>
+			<Plasteel>80</Plasteel>
+			<ComponentSpacer>4</ComponentSpacer>
+		</costList>
+		<building>
+			<turretGunDef>Turret_30mmGAU8Avenger_Weapon</turretGunDef>
+        	<turretTopDrawSize>10</turretTopDrawSize>
+			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
+		</building>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>800</basePowerConsumption>
+			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>1</muzzleParticleCount>
+				<muzzleSpawnDuration>-8</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 4)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>30~40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>200</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>3.0</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.6</decayIncrease>
+
+				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>2</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>4</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSprayDiscipline" />
+		</comps>
+		<placeWorkers>
+			<li>PlaceWorker_TurretTop</li>
+			<li>PlaceWorker_ShowTurretRadius</li>
+		</placeWorkers>
+    	<size>4,4</size>
+		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+		<researchPrerequisites>
+			<li>Research_30mmGAU8Avenger</li>
+		</researchPrerequisites>
+		<interactionCellOffset>(1,0,-2)</interactionCellOffset>
+		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>2</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSprayDisciplineExtension">
+				<defaultEnableSprayDiscipline>true</defaultEnableSprayDiscipline>
+				<shotsPerTarget>20</shotsPerTarget>
+				<cycleConeDegrees>10</cycleConeDegrees>
+				<allowToggle>true</allowToggle>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M30mmGAU8Avenger_Barrel</texPath>
+					<graphicClass>Graphic_Random</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>10.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<barrelAmount>1</barrelAmount>
+				<maxRPMs>
+					<li>1200</li>
+					<li>2400</li>
+					<li>3600</li>
+					<li>3900</li>
+				</maxRPMs>
+				<selectableBurstCounts>
+					<li>20</li>
+					<li>50</li>
+					<li>100</li>
+				</selectableBurstCounts>
+				<recoilAnimation>
+					<enabled>false</enabled>  <!-- Disable recoil for gatling -->
+				</recoilAnimation>
+				<spinningAnimation>
+					<enabled>true</enabled>
+					<animationMode>RPMBased</animationMode>
+					<spindownTime>1.5</spindownTime>
+					<frameCount>4</frameCount>
+					<spinUpSound>AMC_Vulcan_SpinUp</spinUpSound>
+					<spinDownSound>AMC_Vulcan_SpinDown</spinDownSound>
+				</spinningAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>5.5</projectileSpawnOffset>
+					<durationTicks>2</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<burstSound>AMC_Vulcan_BurstLoop</burstSound>
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>18</flashSize>
+					<flashBrightness>0.9</flashBrightness>
+					<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+	<ThingDef ParentName="BaseTurretGun">
+		<defName>Turret_30mmGAU8Avenger_Weapon</defName>
+		<label>GAU-8 Avenger gun</label>
+		<graphicData>
+			<texPath>Things/Building/M30mmGAU8Avenger_Top</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<description>Use ammo set:30x173mm NATO \nHas Indirect version:No \nShelling Range:0</description>
+		<statBases>
+			<SightsEfficiency>3.5</SightsEfficiency>
+			<ShotSpread>0.29</ShotSpread>
+			<SwayFactor>0.2</SwayFactor>
+			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
+			<Mass>1</Mass>
+		</statBases>
+		<soundInteract>AMC_Small_Interact</soundInteract>
+		<verbs>
+			<li Class="CombatExtended.VerbPropertiesCE">
+				<recoilAmount>0.1</recoilAmount>
+				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_30x173mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+        		<minRange>3</minRange>
+				<range>110</range>
+				<!--<soundCast>AMC_Vulcan_Shot</soundCast> Replaced with AMC_Vulcan_BurstLoop -->
+				<soundCastTail>GunTail_Heavy</soundCastTail>
+				<muzzleFlashScale>1</muzzleFlashScale>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
+				<!-- <ticksBetweenBurstShots>24</ticksBetweenBurstShots> Disabled for rotary gun-->
+				<!--<burstShotCount>8</burstShotCount> Disabled for rotary gun-->
+				<recoilPattern>Mounted</recoilPattern>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker> <!--
+				<requireLineOfSight>false</requireLineOfSight>
+				<circularError>10</circularError>
+				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<stopBurstWithoutLos>false</stopBurstWithoutLos> -->
+			</li>
+        
+			<!-- CIWS Projectile Interception -->
+			<li Class="CombatExtended.VerbProperties_CIWSProjectile">
+				<verbClass>CombatExtended.VerbCIWSProjectile</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_30x173mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+				<range>75</range>  <!-- Detection range for incoming projectiles -->
+				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
+				<burstShotCount>16</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				
+				<!-- CIWS-specific properties -->
+				<holdFireLabel>Intercept Projectiles</holdFireLabel>
+				<holdFireDesc>Toggle automatic interception of incoming projectiles</holdFireDesc>
+				<holdFireIcon>UI/Commands/HoldFire</holdFireIcon>
+			</li>
+			
+			<!-- Drop Pod/Skyfaller Interception -->
+			<li Class="CombatExtended.VerbProperties_CIWSSkyfaller">
+				<verbClass>CombatExtended.VerbCIWSSkyfaller</verbClass>
+				<hasStandardCommand>true</hasStandardCommand>
+				<defaultProjectile>Bullet_30x173mmNATO_AP</defaultProjectile>
+				<warmupTime>0.3</warmupTime>
+				<range>75</range>
+				<ticksBetweenBurstShots>24</ticksBetweenBurstShots>
+				<burstShotCount>16</burstShotCount>
+				<recoilPattern>Mounted</recoilPattern>
+				
+				<holdFireLabel>Intercept Drop Pods</holdFireLabel>
+				<holdFireDesc>Toggle automatic interception of drop pods and shuttles</holdFireDesc>
+			</li>
+		</verbs>
+		<comps> <!--
+			<li Class="CombatExtended.CompProperties_Charges">
+				<chargeSpeeds>
+					<li>30</li>
+					<li>40</li>
+					<li>50</li>
+					<li>60</li>
+					<li>70</li>
+				</chargeSpeeds>
+			</li> -->
+			<!-- Enable CIWS verb toggling -->
+			<li>
+				<compClass>CombatExtended.CompVerbDisabler</compClass>
+			</li>
+			<li Class="CombatExtended.CompProperties_AmmoUser">
+				<magazineSize>1500</magazineSize>
+				<reloadTime>1</reloadTime>
+				<ammoSet>AmmoSet_30x173mmNATO</ammoSet>
+			</li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<!-- Aimed burst shot count: if specified and >1, enables BurstFire mode -->
+				<aimedBurstShotCount>4</aimedBurstShotCount>
+				
+				<!-- Prevent single shot mode -->
+				<noSingleShot>true</noSingleShot>
+				
+				<!-- Allow snapshot and suppress fire modes -->
+				<noSnapshot>false</noSnapshot>
+				
+				<!-- AI settings -->
+				<aiUseBurstMode>true</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<CasingOffset>0.5,1</CasingOffset>
+				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
+	</ThingDef>
+	
+</Defs>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Defs>
+	<DamageDef ParentName="Bullet">
+		<defName>Airburst_Fragment_DamageDef</defName>
+		<label>airburst</label>
+		<hediff>Shredded</hediff>
+		<hediffSolid>Crack</hediffSolid>
+		<minDamageToFragment>5</minDamageToFragment>
+		<buildingDamageFactor>0.125</buildingDamageFactor>
+		<plantDamageFactor>0.125</plantDamageFactor>
+		<explosionCellFleck>AirPuff</explosionCellFleck>
+		<soundExplosion>BulletImpact_Ground</soundExplosion>
+	</DamageDef>
 	<ThingDef ParentName="BaseFragment">
 		<defName>Airburst_Fragment</defName>
 		<label>airburst fragments</label>
@@ -7,11 +18,11 @@
 			<texPath>Things/Projectile/Fragments/Airburst_Fragment</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<projectile Class="CombatExtended.ProjectilePropertiesCE">
-			<damageDef>Fragment</damageDef>
-			<damageAmountBase>34</damageAmountBase>
-			<explosionRadius>1.5</explosionRadius>
-			<speed>200</speed>
+		<projectile Class="AbsolutelyMoreCannons.ProjectilePropertiesCE">
+			<damageDef>Airburst_Fragment_DamageDef</damageDef>
+			<damageAmountBase>40</damageAmountBase>
+			<damageRadius>2</damageRadius>
+			<speed>160</speed>
 			<armorPenetrationSharp>10.5</armorPenetrationSharp>
 			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
 			<tickToTruePos>0</tickToTruePos>
@@ -20,51 +31,86 @@
 			<mass>65~75</mass>
 			<diameter>10~12</diameter>
 		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ProjectileTracer">
+				<delay>2</delay>
+				<length>3.0</length>
+				<lineWidth>0.03</lineWidth>
+				<opacity>0.6</opacity>        <!-- 60% opacity -->
+				<color>#FFCC00</color>        <!-- Bright Golden Yellow via Hex -->
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ScatteredSparks">
+				<fleckDef>Fleck_SparkThrownFast</fleckDef> <!-- Fleck to spawn (defaults to Fleck_SparkThrownFast) -->
+				<count>5~12</count>                     <!-- Range/number of sparks thrown on impact -->
+				<speed>6.0~12.0</speed>                  <!-- Initial velocity speed of thrown sparks -->
+				<scale>0.2~0.4</scale>                   <!-- Spark size/scale -->
+				<airTime>0.15~0.3</airTime>              <!-- Spark lifespan in seconds before fading out -->
+				<spreadAngle>45</spreadAngle>            <!-- Cone spread angle (+/- 45°) -->
+				<reverseDirection>true</reverseDirection> <!-- true = ricochet sparks bouncing off impact point; false = forward along flight path -->
+				<chance>1.0</chance>                     <!-- Probability of triggering on impact (0.0 to 1.0) -->
+			</li>
+
+		</comps>
 		<modExtensions>
 			<li Class="ProjectileImpactFX.EffectProjectileExtension">
 				<explosionFleckDef>BlastFlame</explosionFleckDef>
 				<explosionFleckSize>0.8</explosionFleckSize>
 				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
-				<ImpactGlowFleckSize>2.0</ImpactGlowFleckSize>
+				<ImpactGlowFleckSize>2</ImpactGlowFleckSize>
 				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
-				<ImpactFleckSize>1.2</ImpactFleckSize>
+				<ImpactFleckSize>2</ImpactFleckSize>
 				<CreateTerrainEffects>true</CreateTerrainEffects>
+			</li>
+			<li Class="ProjectileImpactFX.EffectProjectileExtension">
+				<explosionFleckDef>Fleck_SparkThrownFast</explosionFleckDef>
+				<explosionFleckSize>3</explosionFleckSize>
 			</li>
 		</modExtensions>
 	</ThingDef>
-	<ThingDef Class="CombatExtended.Lasers.LaserBeamDefCE" ParentName="BaseFragment">
-		<defName>Airburst_Fragment_Trail</defName>
-		<label>airburst fragments</label>
-        <thingClass>CombatExtended.Lasers.LaserBeamCE</thingClass>
-		<beamGraphic>BeamGraphic</beamGraphic>
+
+	<ThingDef ParentName="BaseFragment">
+		<defName>Airburst_Fragment_Large</defName>
+		<label>large airburst fragments</label>
 		<graphicData>
 			<texPath>Things/Projectile/Fragments/Airburst_Fragment</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<shaderType>TransparentPostLight</shaderType> <!-- Makes it brightly glow -->
-			<drawSize>1.5</drawSize>
 		</graphicData>
-		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+		<projectile Class="AbsolutelyMoreCannons.ProjectilePropertiesCE">
 			<damageDef>Fragment</damageDef>
-			<damageAmountBase>34</damageAmountBase>
-			<explosionRadius>1.5</explosionRadius>
-			<speed>200</speed>
-			<armorPenetrationSharp>10.5</armorPenetrationSharp>
-			<armorPenetrationBlunt>40.5</armorPenetrationBlunt>
+			<damageAmountBase>85</damageAmountBase>
+			<damageRadius>4</damageRadius>
+			<explosionRadius>0</explosionRadius>
+			<speed>160</speed>
+			<armorPenetrationSharp>20.5</armorPenetrationSharp>
+			<armorPenetrationBlunt>80.5</armorPenetrationBlunt>
 			<tickToTruePos>0</tickToTruePos>
 			<ballisticCoefficient>0.95~1.42</ballisticCoefficient>
 			<gravityFactor>5</gravityFactor>
 			<mass>65~75</mass>
 			<diameter>10~12</diameter>
 		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_ProjectileTracer">
+				<delay>2</delay>
+				<length>4.0</length>
+				<lineWidth>0.03</lineWidth>
+				<opacity>0.6</opacity>        <!-- 60% opacity -->
+				<color>#FFCC00</color>        <!-- Bright Golden Yellow via Hex -->
+			</li>
+		</comps>
 		<modExtensions>
 			<li Class="ProjectileImpactFX.EffectProjectileExtension">
 				<explosionFleckDef>BlastFlame</explosionFleckDef>
 				<explosionFleckSize>0.8</explosionFleckSize>
 				<ImpactGlowFleckDef>ExplosionFlash</ImpactGlowFleckDef>
-				<ImpactGlowFleckSize>2.0</ImpactGlowFleckSize>
+				<ImpactGlowFleckSize>3</ImpactGlowFleckSize>
 				<ImpactFleckDef>DustPuffThick</ImpactFleckDef>
-				<ImpactFleckSize>1.2</ImpactFleckSize>
+				<ImpactFleckSize>4</ImpactFleckSize>
 				<CreateTerrainEffects>true</CreateTerrainEffects>
+			</li>
+			<li Class="ProjectileImpactFX.EffectProjectileExtension">
+				<explosionFleckDef>Fleck_SparkThrownFast</explosionFleckDef>
+				<explosionFleckSize>4</explosionFleckSize>
 			</li>
 		</modExtensions>
 	</ThingDef>

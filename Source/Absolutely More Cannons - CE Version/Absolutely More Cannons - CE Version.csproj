@@ -6,7 +6,6 @@
     <RootNamespace>AbsolutelyMoreCannons</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
-    <BaseOutputPath>G:\SteamLibrary\steamapps\common\RimWorld\Mods\(Dev) Absolutely More Cannons - CE Version 1.6\Assemblies</BaseOutputPath>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

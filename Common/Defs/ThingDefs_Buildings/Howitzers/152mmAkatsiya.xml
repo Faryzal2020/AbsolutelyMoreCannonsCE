@@ -45,6 +45,18 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.8</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0.5</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_152mmAkatsiya_indirect_Base</alternateDef>
+				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -142,6 +154,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>200</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
+				<alternateDef>Turret_152mmAkatsiya_Base</alternateDef>
+				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
+				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
+				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
 		</comps>
     <size>(4,4)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -212,6 +230,12 @@
 				<ammoSet>AmmoSet_152mm2A65_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>

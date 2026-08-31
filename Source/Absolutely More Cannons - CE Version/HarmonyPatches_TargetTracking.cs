@@ -2,6 +2,7 @@ using HarmonyLib;
 using CombatExtended;
 using Verse;
 using RimWorld;
+using UnityEngine;
 
 namespace AbsolutelyMoreCannons
 {
@@ -69,7 +70,20 @@ namespace AbsolutelyMoreCannons
                 {
                     if (TurretTrackingUtility.CanTrackMidBurst(__instance))
                     {
-                        __instance.top?.TurretTopTick();
+                        if (__instance.NonSnap && __instance.NonSnapExtension != null)
+                        {
+                            float deltaAngle = __instance.DeltaAngle;
+                            float speed = __instance.NonSnapExtension.speed;
+                            __instance.NonSnapTurretRot += (Mathf.Abs(deltaAngle) - speed) > 0 ? Mathf.Sign(deltaAngle) * speed : deltaAngle;
+                            if (__instance.top != null)
+                            {
+                                __instance.top.CurRotation = __instance.NonSnapTurretRot;
+                            }
+                        }
+                        else
+                        {
+                            __instance.top?.TurretTopTick();
+                        }
                     }
                 }
             }

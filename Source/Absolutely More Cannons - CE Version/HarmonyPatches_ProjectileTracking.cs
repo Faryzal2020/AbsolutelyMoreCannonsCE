@@ -6,6 +6,7 @@ using HarmonyLib;
 using Verse;
 using RimWorld;
 using UnityEngine;
+using CombatExtended;
 
 namespace AbsolutelyMoreCannons
 {
@@ -39,7 +40,10 @@ namespace AbsolutelyMoreCannons
                 var projectileCEType = AccessTools.TypeByName("CombatExtended.ProjectileCE");
                 if (projectileCEType == null)
                 {
-                    Log.Warning("[AMC] Could not find ProjectileCE type for projectile tracking");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Warning("[AMC] Could not find ProjectileCE type for projectile tracking");
+                    }
                     return;
                 }
                 
@@ -71,12 +75,18 @@ namespace AbsolutelyMoreCannons
                 }
                 else
                 {
-                    Log.Warning("[AMC] Could not find ProjectileCE.Launch method for projectile tracking");
+                    if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                    {
+                        Log.Warning("[AMC] Could not find ProjectileCE.Launch method for projectile tracking");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching ProjectileCE.Launch: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching ProjectileCE.Launch: {ex}");
+                }
             }
         }
         
@@ -107,7 +117,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching ProjectileCE.Tick: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching ProjectileCE.Tick: {ex}");
+                }
             }
         }
         
@@ -140,7 +153,10 @@ namespace AbsolutelyMoreCannons
             }
             catch (Exception ex)
             {
-                Log.Error($"[AMC] Error patching Destroy: {ex}");
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Error($"[AMC] Error patching Destroy: {ex}");
+                }
             }
         }
         
@@ -159,6 +175,11 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
+                if (__instance is ProjectileCE projCE)
+                {
+                    TrajectoryWorkerUtility.InitializeLaunchRotation(projCE);
+                }
+
                 var settings = TurretBarrelAnimationMod.settings;
                 if (settings == null || !settings.logTemporaryDebug)
                 {
@@ -255,16 +276,30 @@ namespace AbsolutelyMoreCannons
                 float initialPitchDegrees = shotAngle * Mathf.Rad2Deg;
                 float distToTarget = hasTarget ? Vector2.Distance(origin, new Vector2(intendedTargetPos.x, intendedTargetPos.z)) : 0f;
                 string targetStr = hasTarget ? $"({intendedTargetPos.x:F1}, {intendedTargetPos.z:F1}) [Dist: {distToTarget:F1} tiles]" : "Unknown";
-                
+
+                Vector3 initialVel = Vector3.zero;
+                float screenRenderAngle = 0f;
+                float aimHeading = shotRotation;
+                if (__instance is ProjectileCE proj)
+                {
+                    initialVel = proj.velocity;
+                    screenRenderAngle = proj.DrawRotation.eulerAngles.y;
+                    if (initialVel.x != 0f || initialVel.z != 0f)
+                    {
+                        aimHeading = Mathf.Atan2(initialVel.x, initialVel.z) * Mathf.Rad2Deg;
+                    }
+                }
+
                 AMCLogger.LogTemporaryDebug(
                     $"═══ PROJECTILE LAUNCHED ═══" +
                     $"\n  ID: #{projectileId} ({projectileLabel})" +
                     $"\n  Launcher: {turretLabel} at ({origin.x:F2}, {origin.y:F2})" +
                     $"\n  Intended Target: {targetStr}" +
-                    $"\n  Initial YAW: {shotRotation:F2}° (map-relative, North=0°)" +
-                    $"\n  Initial PITCH: {initialPitchDegrees:F2}° (elevation angle)" +
-                    $"\n  Shot Height: {shotHeight:F2}" +
-                    $"\n  Shot Speed: {shotSpeed:F1}" +
+                    $"\n  Initial 3D YAW (Aim Heading): {aimHeading:F2}° (North=0°, East=90°)" +
+                    $"\n  Initial 3D PITCH (Elevation): {initialPitchDegrees:F2}°" +
+                    $"\n  Initial 3D Velocity: ({initialVel.x:F2}, {initialVel.y:F2}, {initialVel.z:F2})" +
+                    $"\n  Rendered 2D Screen Angle: {screenRenderAngle:F2}° (0°=North/Up on screen)" +
+                    $"\n  Shot Height: {shotHeight:F2} | Speed: {shotSpeed:F1}" +
                     $"\n═══════════════════════════"
                 );
             }
@@ -305,26 +340,53 @@ namespace AbsolutelyMoreCannons
                     return; // Projectile is no longer on the map
                 }
                 
-                // Get current position
                 Vector3 currentPosition = __instance.Position.ToVector3();
-                
-                // Try to get exact position if available
-                Type projectileType = __instance.GetType();
-                FieldInfo exactPosField = projectileType.GetField("ExactPosition", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (exactPosField == null)
+                Vector3 velocity = Vector3.zero;
+                float currentShotAngle = float.NaN;
+                float currentShotRotation = float.NaN;
+                int flightTicks = -1;
+                float screenRenderAngle = 0f;
+
+                if (__instance is ProjectileCE projCE)
                 {
-                    // Try property
-                    PropertyInfo exactPosProp = projectileType.GetProperty("ExactPosition", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (exactPosProp != null)
-                    {
-                        currentPosition = (Vector3)exactPosProp.GetValue(__instance);
-                    }
+                    currentPosition = projCE.ExactPosition;
+                    velocity = projCE.velocity;
+                    currentShotAngle = projCE.shotAngle;
+                    currentShotRotation = projCE.shotRotation;
+                    flightTicks = projCE.FlightTicks;
+                    screenRenderAngle = projCE.DrawRotation.eulerAngles.y;
                 }
                 else
                 {
-                    currentPosition = (Vector3)exactPosField.GetValue(__instance);
+                    Type projectileType = __instance.GetType();
+                    FieldInfo exactPosField = projectileType.GetField("ExactPosition", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (exactPosField != null)
+                    {
+                        currentPosition = (Vector3)exactPosField.GetValue(__instance);
+                    }
+                    FieldInfo velocityField = projectileType.GetField("velocity", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (velocityField != null)
+                    {
+                        velocity = (Vector3)velocityField.GetValue(__instance);
+                    }
+                    FieldInfo shotAngleField = projectileType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotAngleField != null)
+                    {
+                        currentShotAngle = (float)shotAngleField.GetValue(__instance);
+                    }
+                    FieldInfo shotRotationField = projectileType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (shotRotationField != null)
+                    {
+                        currentShotRotation = (float)shotRotationField.GetValue(__instance);
+                    }
+                    FieldInfo flightTicksField = projectileType.GetField("FlightTicks", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (flightTicksField != null)
+                    {
+                        flightTicks = (int)flightTicksField.GetValue(__instance);
+                    }
+                    screenRenderAngle = TrajectoryWorkerUtility.CalculateScreenAngle(velocity);
                 }
-                
+
                 // Get current tick
                 int currentTick = Find.TickManager.TicksGame;
                 int ticksSinceLaunch = currentTick - info.LaunchTick;
@@ -333,32 +395,15 @@ namespace AbsolutelyMoreCannons
                 Vector2 currentPos2D = new Vector2(currentPosition.x, currentPosition.z);
                 float distanceFromOrigin = Vector2.Distance(info.LaunchOrigin, currentPos2D);
                 
-                // Try to get velocity if available
-                Vector3 velocity = Vector3.zero;
-                FieldInfo velocityField = projectileType.GetField("velocity", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (velocityField != null)
-                {
-                    velocity = (Vector3)velocityField.GetValue(__instance);
-                }
-                
                 // === CALCULATE YAW AND PITCH ANGLES (MAP-RELATIVE, SIGNED) ===
-                
-                // YAW (Horizontal/Azimuth angle, map-relative, SIGNED)
-                // In RimWorld: North=0°, East=90°, South=180°/-180°, West=-90°
-                // Range: -180° to +180° (signed)
                 float yawDegrees = 0f;
                 if (velocity.x != 0f || velocity.z != 0f)
                 {
-                    // Atan2 gives us angle from East in radians, we convert to RimWorld's North=0° convention
-                    yawDegrees = (-90f + Mathf.Rad2Deg * Mathf.Atan2(velocity.z, velocity.x)) % 360f;
-                    // Normalize to -180 to +180 range (signed)
+                    yawDegrees = Mathf.Atan2(velocity.x, velocity.z) * Mathf.Rad2Deg;
                     if (yawDegrees > 180f) yawDegrees -= 360f;
                     if (yawDegrees < -180f) yawDegrees += 360f;
                 }
                 
-                // PITCH (Vertical angle from horizontal plane, SIGNED)
-                // Positive = upward, Negative = downward
-                // Range: -90° (straight down) to +90° (straight up)
                 float pitchDegrees = 0f;
                 float horizontalSpeed = Mathf.Sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
                 if (horizontalSpeed > 0.001f || Mathf.Abs(velocity.y) > 0.001f)
@@ -366,35 +411,8 @@ namespace AbsolutelyMoreCannons
                     pitchDegrees = Mathf.Rad2Deg * Mathf.Atan2(velocity.y, horizontalSpeed);
                 }
                 
-                // Velocity magnitude (total speed)
                 float velocityMagnitude = velocity.magnitude;
-                
-                // === ADDITIONAL DEBUG INFO ===
-                
-                // Get shotAngle and shotRotation from projectile if available
-                float currentShotAngle = float.NaN;
-                float currentShotRotation = float.NaN;
-                
-                FieldInfo shotAngleField = projectileType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (shotAngleField != null)
-                {
-                    currentShotAngle = (float)shotAngleField.GetValue(__instance);
-                }
-                
-                FieldInfo shotRotationField = projectileType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (shotRotationField != null)
-                {
-                    currentShotRotation = (float)shotRotationField.GetValue(__instance);
-                }
-                
-                // Get FlightTicks if available
-                int flightTicks = -1;
-                FieldInfo flightTicksField = projectileType.GetField("FlightTicks", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                if (flightTicksField != null)
-                {
-                    flightTicks = (int)flightTicksField.GetValue(__instance);
-                }
-                
+
                 // === COMPREHENSIVE LOG ===
                 AMCLogger.LogTemporaryDebug(
                     $"PROJECTILE TICK #{projectileId} ({info.ProjectileLabel}): " +
@@ -402,7 +420,8 @@ namespace AbsolutelyMoreCannons
                     $"Pos: ({currentPosition.x:F2}, {currentPosition.y:F2}, {currentPosition.z:F2}) | " +
                     $"Dist: {distanceFromOrigin:F2} | " +
                     $"Vel: ({velocity.x:F2}, {velocity.y:F2}, {velocity.z:F2}) | Speed: {velocityMagnitude:F2} | " +
-                    $"YAW: {yawDegrees:F2}° | PITCH: {pitchDegrees:F2}° | " +
+                    $"3D YAW: {yawDegrees:F2}° | 3D PITCH: {pitchDegrees:F2}° | " +
+                    $"RenderAngle: {screenRenderAngle:F2}° | " +
                     (float.IsNaN(currentShotAngle) ? "" : $"ShotAngle: {currentShotAngle * Mathf.Rad2Deg:F2}° | ") +
                     (float.IsNaN(currentShotRotation) ? "" : $"ShotRotation: {currentShotRotation:F2}° | ")
                 );
@@ -472,7 +491,7 @@ namespace AbsolutelyMoreCannons
                     float finalPitch = 0f;
                     if (finalVelocity.x != 0f || finalVelocity.z != 0f)
                     {
-                        finalYaw = (-90f + Mathf.Rad2Deg * Mathf.Atan2(finalVelocity.z, finalVelocity.x)) % 360f;
+                        finalYaw = Mathf.Atan2(finalVelocity.x, finalVelocity.z) * Mathf.Rad2Deg;
                         if (finalYaw > 180f) finalYaw -= 360f;
                         if (finalYaw < -180f) finalYaw += 360f;
                         

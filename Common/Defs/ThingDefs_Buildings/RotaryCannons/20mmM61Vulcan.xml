@@ -40,23 +40,13 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
-      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
-			<!-- Fire Arc Control -->
-			<li Class="CombatExtended.CompProperties_FireArc">
-				<!-- Minimum and maximum arc span in degrees -->
-				<spanRange>
-					<min>30</min>  <!-- Minimum firing arc width -->
-					<max>360</max> <!-- Maximum firing arc width (full circle) -->
-				</spanRange>
-				
-				<!-- Maximum rotation from turret's facing direction -->
-				<!-- 360 = can rotate to any direction -->
-				<!-- 90 = can only rotate 90° left/right from facing -->
-				<maxSpanDeviation>180</maxSpanDeviation>
-				
-				<!-- Visual indicator line length when adjusting -->
-				<lineLength>10</lineLength>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>0.8</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.2</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>false</hidePawnGraphics>
 			</li>
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
 				<!-- Muzzle Smoke -->
@@ -65,10 +55,10 @@
 				<muzzleParticleCount>1</muzzleParticleCount>
 				<muzzleSpawnDuration>-8</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
 				<muzzleOffset>(0, 0, 4)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
-				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>20~30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
-				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
 				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
 				
 				<!-- Heat Smoke -->
@@ -88,9 +78,18 @@
 				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
 				
 				<!-- Shockwave Smoke -->
-				<shockwaveEnabled>false</shockwaveEnabled>
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.7</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSprayDiscipline" />
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -103,11 +102,27 @@
 		</researchPrerequisites>
 		<interactionCellOffset>(0,0,0)</interactionCellOffset>
 		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>2</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
 				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSprayDisciplineExtension">
+				<defaultEnableSprayDiscipline>true</defaultEnableSprayDiscipline>
+				<shotsPerTarget>10</shotsPerTarget>
+				<cycleConeDegrees>10</cycleConeDegrees>
+				<allowToggle>true</allowToggle>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelGraphic>
@@ -274,6 +289,10 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0.5,1</CasingOffset>
 				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
 	</ThingDef>

@@ -101,6 +101,28 @@ namespace AbsolutelyMoreCannons
         /// List of selectable burst counts for the turret gizmo.
         /// </summary>
         public List<int> selectableBurstCounts = new List<int>();
+
+        /// <summary>
+        /// Optional maximum allowed vertical (elevation) deviation in degrees relative to target elevation angle.
+        /// Negative value (-1) disables vertical elevation clamping.
+        /// </summary>
+        public float maxVerticalDeviation = -1f;
+
+        /// <summary>
+        /// Optional maximum allowed horizontal (rotation) deviation in degrees relative to turret orientation.
+        /// Negative value (-1) disables horizontal rotation clamping.
+        /// </summary>
+        public float maxRotationDeviation = -1f;
+
+        /// <summary>
+        /// Alias for maxVerticalDeviation.
+        /// </summary>
+        public float maxElevationDeviation = -1f;
+
+        /// <summary>
+        /// Alias for maxRotationDeviation.
+        /// </summary>
+        public float maxHorizontalDeviation = -1f;
     }
 
     /// <summary>

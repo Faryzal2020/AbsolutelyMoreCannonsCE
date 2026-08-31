@@ -65,6 +65,16 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        /// <summary>
+        /// Logs produced elevation and deviation telemetry for turrets with clamping settings enabled.
+        /// </summary>
+        public static void LogTurretClamping(string message)
+        {
+            if (Settings == null || !Settings.logTurretClamping)
+                return;
+            Log.Message($"{PREFIX} {message}");
+        }
+
         // === TURRET COMPONENT LOGGING ===
 
         public static void LogTurretBarrel(string message)
@@ -142,6 +152,13 @@ namespace AbsolutelyMoreCannons
             Log.Message($"{PREFIX} [VERTICAL_ANGLE] {message}");
         }
 
+        public static void LogTurretViewTransfer(string message)
+        {
+            if (Settings == null || !Settings.logTurretViewTransfer)
+                return;
+            Log.Message($"{PREFIX} [VIEW_TRANSFER] {message}");
+        }
+
         // === AIRBURST DETONATION LOGGING ===
 
         public static void LogAirburst(string message)
@@ -149,6 +166,15 @@ namespace AbsolutelyMoreCannons
             if (Settings == null || !Settings.logAirburstDetonation)
                 return;
             Log.Message($"{PREFIX} [AIRBURST] {message}");
+        }
+
+        // === PROJECTILE TRACER LOGGING ===
+
+        public static void LogProjectileTracer(string message)
+        {
+            if (Settings == null || !Settings.logProjectileTracers)
+                return;
+            Log.Message($"{PREFIX} [TRACER] {message}");
         }
 
         // === TURRET SMOKE LOGGING ===
@@ -180,6 +206,15 @@ namespace AbsolutelyMoreCannons
             if (Settings == null || !Settings.logTurretSmokeParticleTick)
                 return;
             Log.Message($"{PREFIX} [SMOKE_TICK] {message}");
+        }
+
+        // === MUZZLE FLASH MOD LOGGING ===
+
+        public static void LogMuzzleFlashMod(string message)
+        {
+            if (Settings == null || !Settings.logMuzzleFlashMod)
+                return;
+            Log.Message($"{PREFIX} [MUZZLE_FLASH_MOD] {message}");
         }
     }
 }

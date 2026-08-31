@@ -130,7 +130,21 @@ namespace AbsolutelyMoreCannons
             if (selectableBurstCounts != null && selectableBurstCounts.Count > 0)
                 extension.selectableBurstCounts = selectableBurstCounts;
 
+            if (maxVerticalDeviation >= 0f)
+                extension.maxVerticalDeviation = maxVerticalDeviation;
+            if (maxRotationDeviation >= 0f)
+                extension.maxRotationDeviation = maxRotationDeviation;
+            if (maxElevationDeviation >= 0f)
+                extension.maxElevationDeviation = maxElevationDeviation;
+            if (maxHorizontalDeviation >= 0f)
+                extension.maxHorizontalDeviation = maxHorizontalDeviation;
+
             return extension;
         }
+
+        public float maxVerticalDeviation = -1f;
+        public float maxRotationDeviation = -1f;
+        public float maxElevationDeviation = -1f;
+        public float maxHorizontalDeviation = -1f;
     }
 }

@@ -33,11 +33,11 @@ namespace AbsolutelyMoreCannons
         /// <summary>Vector3 offset from barrel tip</summary>
         public Vector3 muzzleOffset = Vector3.zero;
         
-        /// <summary>Maximum forward velocity when first spawned</summary>
-        public float muzzleVelocity = 2.0f;
+        /// <summary>Maximum forward velocity when first spawned (supports "min~max" for random range)</summary>
+        public string muzzleVelocity = "2.0";
         
-        /// <summary>Ticks for directional motion before transitioning to default wind motion</summary>
-        public int muzzleVelDuration = 20;
+        /// <summary>Ticks for directional motion before transitioning to default wind motion (supports "min~max" for random range)</summary>
+        public string muzzleVelDuration = "20";
         
         /// <summary>Scale multiplier for particles (supports "min~max" for random range)</summary>
         public string muzzleParticleSize = "1.0";
@@ -51,6 +51,12 @@ namespace AbsolutelyMoreCannons
         // Parsed values
         private float muzzleParticleSizeMin = 1.0f;
         private float muzzleParticleSizeMax = 1.0f;
+
+        private float muzzleVelocityMin = 2.0f;
+        private float muzzleVelocityMax = 2.0f;
+
+        private int muzzleVelDurationMin = 20;
+        private int muzzleVelDurationMax = 20;
         
         /// <summary>
         /// Get randomized particle size based on configured range
@@ -60,6 +66,26 @@ namespace AbsolutelyMoreCannons
             if (muzzleParticleSizeMin == muzzleParticleSizeMax)
                 return muzzleParticleSizeMin;
             return Rand.Range(muzzleParticleSizeMin, muzzleParticleSizeMax);
+        }
+
+        /// <summary>
+        /// Get randomized muzzle velocity based on configured range
+        /// </summary>
+        public float GetRandomMuzzleVelocity()
+        {
+            if (muzzleVelocityMin == muzzleVelocityMax)
+                return muzzleVelocityMin;
+            return Rand.Range(muzzleVelocityMin, muzzleVelocityMax);
+        }
+
+        /// <summary>
+        /// Get randomized muzzle velocity duration based on configured range
+        /// </summary>
+        public int GetRandomMuzzleVelDuration()
+        {
+            if (muzzleVelDurationMin == muzzleVelDurationMax)
+                return muzzleVelDurationMin;
+            return Rand.Range(muzzleVelDurationMin, muzzleVelDurationMax + 1);
         }
 
         // === HEAT SMOKE ===
@@ -119,42 +145,23 @@ namespace AbsolutelyMoreCannons
         /// <summary>Scale multiplier for shockwave particles</summary>
         public float shockwaveParticleSize = 1.0f;
 
+        /// <summary>Particle fade out speed multiplier for shockwave smoke particles (1.0 = normal speed)</summary>
+        public float shockwaveFadeOutSpeed = 1.0f;
+
+        /// <summary>Toggle for gradient density (thicker at center, tapers to 10% at edge shockwaveRadius)</summary>
+        public bool shockwaveGradientDensity = false;
+
+        /// <summary>Toggle for gradient particle size (full size at center, tapers to 10% at edge shockwaveRadius)</summary>
+        public bool shockwaveGradientParticleSize = false;
+
         public override void ResolveReferences(ThingDef parentDef)
         {
             base.ResolveReferences(parentDef);
             
-            // Parse muzzle particle size - supports "min~max" format
-            if (!string.IsNullOrEmpty(muzzleParticleSize))
-            {
-                if (muzzleParticleSize.Contains("~"))
-                {
-                    string[] parts = muzzleParticleSize.Split('~');
-                    if (parts.Length == 2 && 
-                        float.TryParse(parts[0].Trim(), out float min) && 
-                        float.TryParse(parts[1].Trim(), out float max))
-                    {
-                        muzzleParticleSizeMin = min;
-                        muzzleParticleSizeMax = max;
-                    }
-                    else
-                    {
-                        Log.Warning($"[AMC] Invalid muzzleParticleSize format '{muzzleParticleSize}' for {parentDef?.defName}. Using default 1.0");
-                        muzzleParticleSizeMin = muzzleParticleSizeMax = 1.0f;
-                    }
-                }
-                else
-                {
-                    if (float.TryParse(muzzleParticleSize.Trim(), out float size))
-                    {
-                        muzzleParticleSizeMin = muzzleParticleSizeMax = size;
-                    }
-                    else
-                    {
-                        Log.Warning($"[AMC] Invalid muzzleParticleSize '{muzzleParticleSize}' for {parentDef?.defName}. Using default 1.0");
-                        muzzleParticleSizeMin = muzzleParticleSizeMax = 1.0f;
-                    }
-                }
-            }
+            // Parse range format "min~max" or single values
+            ParseStringRangeFloat(muzzleParticleSize, ref muzzleParticleSizeMin, ref muzzleParticleSizeMax, 1.0f, "muzzleParticleSize", parentDef);
+            ParseStringRangeFloat(muzzleVelocity, ref muzzleVelocityMin, ref muzzleVelocityMax, 2.0f, "muzzleVelocity", parentDef);
+            ParseStringRangeInt(muzzleVelDuration, ref muzzleVelDurationMin, ref muzzleVelDurationMax, 20, "muzzleVelDuration", parentDef);
             
             // Set default fleck defs if not specified
             if (muzzleEnabled && muzzleFleckDef == null)
@@ -169,6 +176,66 @@ namespace AbsolutelyMoreCannons
             {
                 shockwaveFleckDef = RimWorld.FleckDefOf.Smoke;
             }
+        }
+
+        private void ParseStringRangeFloat(string input, ref float minVal, ref float maxVal, float defaultVal, string paramName, ThingDef parentDef)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (input.Contains("~"))
+                {
+                    string[] parts = input.Split('~');
+                    if (parts.Length == 2 && 
+                        float.TryParse(parts[0].Trim(), out float min) && 
+                        float.TryParse(parts[1].Trim(), out float max))
+                    {
+                        minVal = min;
+                        maxVal = max;
+                        return;
+                    }
+                    Log.Warning($"[AMC] Invalid {paramName} range format '{input}' for {parentDef?.defName}. Using default {defaultVal}");
+                }
+                else if (float.TryParse(input.Trim(), out float val))
+                {
+                    minVal = maxVal = val;
+                    return;
+                }
+                else
+                {
+                    Log.Warning($"[AMC] Invalid {paramName} value '{input}' for {parentDef?.defName}. Using default {defaultVal}");
+                }
+            }
+            minVal = maxVal = defaultVal;
+        }
+
+        private void ParseStringRangeInt(string input, ref int minVal, ref int maxVal, int defaultVal, string paramName, ThingDef parentDef)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (input.Contains("~"))
+                {
+                    string[] parts = input.Split('~');
+                    if (parts.Length == 2 && 
+                        int.TryParse(parts[0].Trim(), out int min) && 
+                        int.TryParse(parts[1].Trim(), out int max))
+                    {
+                        minVal = min;
+                        maxVal = max;
+                        return;
+                    }
+                    Log.Warning($"[AMC] Invalid {paramName} range format '{input}' for {parentDef?.defName}. Using default {defaultVal}");
+                }
+                else if (int.TryParse(input.Trim(), out int val))
+                {
+                    minVal = maxVal = val;
+                    return;
+                }
+                else
+                {
+                    Log.Warning($"[AMC] Invalid {paramName} value '{input}' for {parentDef?.defName}. Using default {defaultVal}");
+                }
+            }
+            minVal = maxVal = defaultVal;
         }
     }
 }

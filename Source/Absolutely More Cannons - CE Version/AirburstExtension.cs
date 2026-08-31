@@ -33,6 +33,7 @@ namespace AbsolutelyMoreCannons
 
         /// <summary>
         /// Detection radius (in cells/meters) for Flak (Proximity) mode.
+        /// Only triggers near active (non-downed) enemies.
         /// </summary>
         public float proximityRadius = 4.0f;
     }

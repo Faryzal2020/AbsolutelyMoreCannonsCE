@@ -293,6 +293,18 @@
 						</li>
 					</value>
 				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_30mmGAU8Avenger_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2.1,2.1)</drawSize>
+							<offsets>
+								<li>(4,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
 			
 			    <!-- //////////////////////////////////// -->
 			    <!-- //////////////Howitzers/////////////// -->

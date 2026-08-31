@@ -1,0 +1,356 @@
+/* ==========================================================================
+   AMC-CE Web Wiki - Turret Grid & Card Component Styles
+   ========================================================================== */
+
+/* Responsive Grid Layout */
+.turret-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Turret Card Shell */
+.turret-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+}
+
+.turret-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-elevated);
+}
+
+/* The footer button is the card's keyboard entry point, so surface its focus
+   on the whole card. */
+.turret-card:focus-within {
+    border-color: var(--accent-blue);
+    box-shadow: var(--shadow-elevated);
+}
+
+/* Top Full-Width Hero Thumbnail Frame - Flat Solid Light Background */
+.card-hero-thumb {
+    width: 100%;
+    height: 160px;
+    background: var(--bg-inset);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.card-hero-thumb .card-thumb-img {
+    max-width: 88%;
+    max-height: 88%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.15));
+    transition: transform var(--transition-fast);
+}
+
+.turret-card:hover .card-hero-thumb .card-thumb-img {
+    transform: scale(1.06);
+}
+
+.card-hero-thumb .placeholder-thumb {
+    width: 100%;
+    height: 100%;
+}
+
+/* Card Header Bar (Title & Subtitle) - Flat Solid */
+.card-header-bar {
+    padding: 1rem 1.25rem 0.5rem;
+    background: var(--bg-surface);
+}
+
+.card-title-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.2rem;
+    color: var(--text-primary);
+}
+
+.card-subtitle-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.category-tag {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.sub-divider {
+    color: var(--border-strong);
+}
+
+/* Card Badges Section */
+.card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.4rem 1.25rem 0.65rem;
+    background: var(--bg-surface);
+}
+
+/* Direct vs Indirect Range Comparison Panel - Inset Depth Level 2 */
+.card-range-panel {
+    background: var(--bg-inset-deep);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.6rem 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.card-range-panel.dual-mode {
+    justify-content: space-between;
+}
+
+.card-range-panel.single-mode {
+    justify-content: space-between;
+}
+
+.range-mode-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.range-mode-col.indirect {
+    text-align: right;
+}
+
+.range-mode-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-medium);
+    margin: 0 0.75rem;
+}
+
+.range-mode-tag {
+    font-size: 0.675rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.range-val {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Core Stats Grid - Inset Depth Level 1 */
+.card-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-inset);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.675rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.stat-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 0.05rem;
+}
+
+.stat-value.highlight {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+/* Ammo & Damage Summary Box - Inset Depth Level 2 */
+.card-ammo-box {
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-inset-deep);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+}
+
+.ammo-box-header {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+}
+
+.ammo-box-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.card-ammo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.775rem;
+    background: var(--bg-surface);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+}
+
+.ammo-row-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+}
+
+.ammo-row-val {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.ammo-row-val strong {
+    color: var(--accent-amber);
+    font-weight: 700;
+}
+
+.ammo-row-val small {
+    color: var(--text-muted);
+    margin-left: 0.2rem;
+}
+
+.ammo-more-count {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 0.15rem;
+    font-style: italic;
+}
+
+/* Specialized Features Highlight Box - Inset Depth Level 1 */
+.card-specialized-box {
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-inset);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    flex: 1;
+}
+
+.specialized-header {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+}
+
+.specialized-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.specialized-item {
+    color: var(--text-secondary);
+    font-size: 0.775rem;
+    line-height: 1.35;
+}
+
+.specialized-item strong {
+    color: var(--text-primary);
+}
+
+.spec-emphasis {
+    color: var(--accent-rose);
+    font-weight: 700;
+}
+
+/* Card Action Footer with Tactile Button */
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-surface);
+    margin-top: auto;
+}
+
+.view-btn {
+    width: 100%;
+    background: var(--bg-control);
+    color: var(--text-primary);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
+    padding: 0.55rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-control);
+}
+
+.view-btn:hover {
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: #1d4ed8;
+    border-bottom-color: #1e40af;
+}
+
+.view-btn:active {
+    transform: translateY(1px);
+    border-bottom-width: 1px;
+}
+
+/* Mobile Responsiveness for Cards */
+@media (max-width: 480px) {
+    .turret-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+

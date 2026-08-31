@@ -7,7 +7,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_406mm2A3_indirect_Base</defName>
 		<label>2A3 Kondensator 2P (indirect)</label>
-    <description>The 2A3 Kondensator 2P was a Soviet experimental nuclear-capable self-propelled howitzer developed during the Cold War. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 700, HP: 5145, Cooldown: 80.0s, Range: 25600, Shelling Range: 24. Ammunition: 406mm W23 (HE, Damage: 3162, Explosion Radius: 50, Secondary Damage: 50, Secondary Damage Type: Thermobaric, Secondary Damage Radius: 100).</description>
+    	<description>The 2A3 Kondensator 2P was a Soviet experimental nuclear-capable self-propelled howitzer developed during the Cold War. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 700, HP: 5145, Cooldown: 80.0s, Range: 25600, Shelling Range: 24. Ammunition: 406mm W23 (HE, Damage: 3162, Explosion Radius: 50, Secondary Damage: 50, Secondary Damage Type: Thermobaric, Secondary Damage Radius: 100).</description>
 		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M406mm2A3</texPath>
@@ -26,9 +26,9 @@
 		</statBases>
 		<costList>
 			<Steel>1700</Steel>
-      <ComponentIndustrial>15</ComponentIndustrial>
+      		<ComponentIndustrial>15</ComponentIndustrial>
 			<Plasteel>60</Plasteel>
-      <ComponentSpacer>4</ComponentSpacer>
+      		<ComponentSpacer>4</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_406mm2A3_indirect_Weapon</turretGunDef>
@@ -111,6 +111,12 @@
 				<ammoSet>AmmoSet_406mm2A3_indirect_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
+				<maxVerticalDeviation>2</maxVerticalDeviation>
+				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 </Defs>
