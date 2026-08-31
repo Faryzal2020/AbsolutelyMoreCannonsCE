@@ -12,14 +12,15 @@
 
 /* Individual Ammo Card */
 .ammo-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-medium);
     border-radius: var(--radius-md);
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
     position: relative;
+    box-shadow: var(--shadow-card);
 }
 
 .ammo-card-header {
@@ -42,7 +43,7 @@
 
 .ammo-class-tag {
     font-size: 0.75rem;
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
     font-weight: 600;
 }
 
@@ -61,31 +62,31 @@
 }
 
 .ap-sharp {
-    background: rgba(244, 63, 94, 0.15);
-    color: var(--accent-rose);
-    border: 1px solid rgba(244, 63, 94, 0.3);
+    background: #fef2f2;
+    color: #9f1239;
+    border: 1px solid #fecdd3;
 }
 
 .ap-blunt {
-    background: rgba(245, 158, 11, 0.15);
-    color: var(--accent-amber);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
 }
 
-/* Damage & Ballistics Box */
+/* Damage & Ballistics Box - Inset Depth Level 1 */
 .ammo-stats-box {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
-    background: var(--bg-surface);
+    background: var(--bg-inset);
     padding: 0.75rem;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
 }
 
-/* Shell Crafting & Recipe Box */
+/* Shell Crafting & Recipe Box - Inset Depth Level 2 */
 .ammo-recipe-box {
-    background: rgba(15, 23, 42, 0.4);
+    background: var(--bg-inset-deep);
     border: 1px solid var(--border-subtle);
     padding: 0.75rem;
     border-radius: var(--radius-sm);
@@ -97,16 +98,19 @@
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
+    letter-spacing: 0.03em;
     margin-bottom: 0.4rem;
 }
 
 /* Comparative Ammo Table */
 .ammo-matrix-wrapper {
     overflow-x: auto;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
+    scrollbar-gutter: stable;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-medium);
     border-radius: var(--radius-md);
     margin-top: 1.5rem;
+    box-shadow: var(--shadow-card);
 }
 
 .ammo-matrix-table {
@@ -117,18 +121,18 @@
 }
 
 .ammo-matrix-table th {
-    background: var(--bg-surface);
+    background: var(--bg-inset);
     color: var(--text-secondary);
     font-family: var(--font-heading);
     font-weight: 600;
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-medium);
     white-space: nowrap;
 }
 
 .ammo-matrix-table td {
     padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--border-subtle);
     color: var(--text-primary);
     white-space: nowrap;
 }
@@ -138,7 +142,7 @@
 }
 
 .ammo-matrix-table tr:hover td {
-    background: rgba(56, 189, 248, 0.04);
+    background: var(--bg-inset-deep);
 }
 
 /* Responsiveness */
@@ -151,3 +155,4 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+

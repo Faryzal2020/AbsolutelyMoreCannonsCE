@@ -6,7 +6,7 @@ let turretsData = [];
 let metadata = {};
 
 /**
- * Fetch and load turrets database from site/data/turrets_data.json
+ * Fetch and load turrets database from data/turrets_data.json
  */
 export async function loadTurretsData() {
     try {
@@ -42,16 +42,42 @@ export function getTurretById(id) {
 }
 
 /**
- * Helper to generate thumbnail HTML frame with image fallback
+ * Escape a value before interpolating it into markup or an attribute.
+ */
+export function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+/**
+ * Thumbnail markup: the image plus a hidden monotone placeholder that the
+ * image's own error handler reveals. The handler touches DOM properties only,
+ * so no nested quoting is needed inside the attribute.
  */
 export function getThumbnailHtml(imageUrl, caliber, title) {
-    if (imageUrl) {
-        return `<img src="${imageUrl}" alt="${title}" class="card-thumb-img" onerror="this.outerHTML='<div class=\\'placeholder-thumb\\'><span class=\\'placeholder-icon\\'>🛡️</span><span class=\\'placeholder-caliber\\'>${caliber}</span></div>'">`;
-    }
-    return `
-        <div class="placeholder-thumb">
-            <span class="placeholder-icon">🎯</span>
-            <span class="placeholder-caliber">${caliber}</span>
+    const placeholder = `
+        <div class="placeholder-thumb"${imageUrl ? ' hidden' : ''}>
+            <span class="placeholder-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path>
+                </svg>
+            </span>
+            <span class="placeholder-caliber">${escapeHtml(caliber)}</span>
         </div>
+    `;
+
+    if (!imageUrl) {
+        return placeholder;
+    }
+
+    return `
+        <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(title)}" class="card-thumb-img"
+             onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+        ${placeholder}
     `;
 }

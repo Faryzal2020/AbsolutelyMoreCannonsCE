@@ -3,45 +3,46 @@
    ========================================================================== */
 
 :root {
-    /* Color Palette - Dark Tactical Theme */
-    --bg-dark: #0b0f19;
-    --bg-surface: #151c2c;
-    --bg-card: #1e293b;
-    --bg-card-hover: #26334d;
-    --bg-elevated: #334155;
-    
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-highlight: rgba(56, 189, 248, 0.3);
-    
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    
-    --accent-cyan: #38bdf8;
-    --accent-blue: #3b82f6;
-    --accent-amber: #f59e0b;
-    --accent-emerald: #10b981;
-    --accent-rose: #f43f5e;
-    --accent-purple: #a855f7;
-    
-    --badge-bg: rgba(56, 189, 248, 0.12);
-    --badge-border: rgba(56, 189, 248, 0.25);
-    
+    /* Surface ladder — each step down the page hierarchy is a darker shade.
+       page < inset-deep < inset < control < surface */
+    --bg-base: #e9eef5;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #fbfcfe;
+    --bg-control: #f3f6fa;
+    --bg-inset: #f6f8fb;
+    --bg-inset-deep: #edf1f7;
+
+    --border-subtle: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --border-strong: #94a3b8;
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #5b6675;
+
+    --accent-blue: #2563eb;
+    --accent-amber: #b45309;
+    --accent-emerald: #059669;
+    --accent-rose: #be123c;
+    --accent-purple: #6d28d9;
+
     /* Typography */
     --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    
+
     /* Layout & Spacing */
     --radius-sm: 6px;
     --radius-md: 10px;
-    --radius-lg: 16px;
+    --radius-lg: 14px;
     --radius-full: 9999px;
-    
-    --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 25px rgba(56, 189, 248, 0.15);
-    
-    --transition-fast: 0.15s ease;
-    --transition-normal: 0.25s ease;
+
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-elevated: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-control: 0 1px 2px rgba(15, 23, 42, 0.04);
+
+    --transition-fast: 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* CSS Reset & Base */
@@ -51,13 +52,17 @@
     padding: 0;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 html {
     font-size: 16px;
     scroll-behavior: smooth;
 }
 
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-base);
     color: var(--text-primary);
     font-family: var(--font-body);
     line-height: 1.5;
@@ -65,6 +70,13 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+}
+
+/* Freeze the page behind the detail dialog, compensating for the scrollbar
+   so the layout does not shift when it disappears. */
+body.modal-open {
+    overflow: hidden;
+    padding-right: var(--scrollbar-gap, 0px);
 }
 
 /* Typography Utilities */
@@ -76,8 +88,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
     text-decoration: none;
+}
+
+/* Single visible focus treatment for every interactive control.
+   :where() keeps specificity at zero so component styles still win. */
+:where(button, select, input, textarea, a[href], [tabindex]):focus-visible {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
 }
 
 /* Main Layout Container */
@@ -94,20 +113,65 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 1.5rem;
     padding: 0.75rem 1.25rem;
     background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-medium);
+    border-bottom: 3px solid var(--border-medium);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+.counter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .counter-text {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .counter-text strong {
-    color: var(--accent-cyan);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Clear-all affordance, revealed only while filters narrow the list */
+.reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--bg-control);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-control);
+}
+
+.reset-btn:hover {
+    background: var(--bg-inset-deep);
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+    border-bottom-color: var(--border-strong);
+}
+
+.reset-btn:active {
+    transform: translateY(1px);
+    border-bottom-width: 1px;
 }
 
 .sort-controls {
@@ -116,21 +180,35 @@ a {
     gap: 0.5rem;
     font-size: 0.875rem;
     color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.sort-controls label {
+    white-space: nowrap;
 }
 
 .sort-controls select {
-    background: var(--bg-card);
+    background: var(--bg-surface);
     color: var(--text-primary);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
     padding: 0.4rem 0.8rem;
     border-radius: var(--radius-sm);
     outline: none;
     font-family: var(--font-body);
+    font-weight: 600;
     cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.sort-controls select:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-card-hover);
 }
 
 .sort-controls select:focus {
-    border-color: var(--accent-cyan);
+    border-color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
 }
 
 /* Badges & Tags */
@@ -138,42 +216,75 @@ a {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.2rem 0.65rem;
-    border-radius: var(--radius-full);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
     font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
 }
 
-.badge-cyan {
-    background: rgba(56, 189, 248, 0.12);
-    color: var(--accent-cyan);
-    border: 1px solid rgba(56, 189, 248, 0.25);
+.badge-blue {
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
 }
 
 .badge-amber {
-    background: rgba(245, 158, 11, 0.12);
-    color: var(--accent-amber);
-    border: 1px solid rgba(245, 158, 11, 0.25);
+    background: #fffbeb;
+    color: #92400e;
+    border: 1px solid #fde68a;
 }
 
 .badge-emerald {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--accent-emerald);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
 }
 
 .badge-purple {
-    background: rgba(168, 85, 247, 0.12);
-    color: var(--accent-purple);
-    border: 1px solid rgba(168, 85, 247, 0.25);
+    background: #f5f3ff;
+    color: #5b21b6;
+    border: 1px solid #ddd6fe;
 }
 
 .badge-rose {
-    background: rgba(244, 63, 94, 0.12);
-    color: var(--accent-rose);
-    border: 1px solid rgba(244, 63, 94, 0.25);
+    background: #fef2f2;
+    color: #9f1239;
+    border: 1px solid #fecdd3;
+}
+
+/* Shared monotone placeholder used by card and modal thumbnails */
+.placeholder-thumb {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    overflow: hidden;
+}
+
+.placeholder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.placeholder-icon svg {
+    width: 44px;
+    height: 44px;
+}
+
+.placeholder-caliber {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin-top: 0.4rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* Empty State */
@@ -181,19 +292,20 @@ a {
     text-align: center;
     padding: 4rem 2rem;
     background: var(--bg-surface);
-    border: 1px dashed var(--border-subtle);
+    border: 2px dashed var(--border-medium);
     border-radius: var(--radius-lg);
     margin-top: 2rem;
 }
 
 .empty-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
 }
 
 .empty-state h3 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
 }
 
 .empty-state p {
@@ -207,14 +319,54 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-dark);
+    background: var(--bg-base);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--bg-elevated);
+    background: var(--border-medium);
     border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-cyan);
+    background: var(--border-strong);
+}
+
+/* Counter bar stacks before the counter and the sort control can collide */
+@media (max-width: 620px) {
+    .stats-counter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+    }
+
+    .counter-group {
+        justify-content: space-between;
+    }
+
+    .sort-controls {
+        justify-content: space-between;
+    }
+
+    .sort-controls select {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .turret-card:hover,
+    .turret-card:hover .card-hero-thumb .card-thumb-img,
+    .modal-backdrop.open .modal-dialog {
+        transform: none;
+    }
 }

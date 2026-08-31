@@ -3,9 +3,11 @@
    ========================================================================== */
 
 /**
- * Render Tab 4: Ammunition Cards & Comparative Matrix Table
+ * Render Tab 4: Ammunition Cards & Comparative Matrix Table.
+ * Ammunition is defined per turret, not per fire mode, so this render is
+ * intentionally mode-independent.
  */
-export function renderAmmoTab(turret, activeModeKey) {
+export function renderAmmoTab(turret) {
     const container = document.getElementById('tab-ammo');
     const ammunitions = turret.ammunition || [];
 
@@ -26,9 +28,7 @@ export function renderAmmoTab(turret, activeModeKey) {
         </div>
 
         <div style="margin-top: 2rem;">
-            <h3 style="font-size: 1.1rem; color: var(--accent-cyan); margin-bottom: 0.75rem; font-family: var(--font-heading);">
-                📊 Comparative Shell Matrix Table
-            </h3>
+            <h3 class="ammo-matrix-title">Comparative Shell Matrix Table</h3>
             ${tableHtml}
         </div>
     `;
@@ -74,7 +74,7 @@ function createAmmoCardHtml(ammo) {
     let guidedHtml = '';
     if (p.guided) {
         guidedHtml = `
-            <div class="data-row"><span class="data-label">Smart Trajectory:</span><span class="data-val" style="color: var(--accent-cyan);">Guided (Accel: ${p.guided.homingAcceleration}, Retarget: ${p.guided.retargetRadius}m)</span></div>
+            <div class="data-row"><span class="data-label">Smart Trajectory:</span><span class="data-val" style="color: var(--accent-blue);">Guided (Accel: ${p.guided.homingAcceleration}, Retarget: ${p.guided.retargetRadius}m)</span></div>
         `;
     }
 
@@ -109,7 +109,7 @@ function createAmmoCardHtml(ammo) {
             <div class="ammo-stats-box">
                 <div class="stat-item">
                     <span class="stat-label">Velocity</span>
-                    <span class="stat-value" style="color: var(--accent-cyan);">${p.speed || 0} m/s</span>
+                    <span class="stat-value" style="color: var(--accent-blue);">${p.speed || 0} m/s</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">Direct Damage</span>
@@ -132,7 +132,7 @@ function createAmmoCardHtml(ammo) {
             </div>
 
             <div class="ammo-recipe-box">
-                <div class="recipe-title">🔨 Crafting Economics (Batch Yield: x${yieldCount})</div>
+                <div class="recipe-title">Crafting Economics (Batch Yield: x${yieldCount})</div>
                 <div style="color: var(--text-secondary); margin-bottom: 0.25rem;">
                     <strong>Work Amount:</strong> ${recipe.workAmount ? recipe.workAmount.toLocaleString() : 'N/A'} ticks
                 </div>
@@ -157,7 +157,7 @@ function createAmmoMatrixTableHtml(ammunitions) {
         return `
             <tr>
                 <td><strong>${ammo.label}</strong></td>
-                <td><span class="badge badge-cyan">${ammo.ammoClass}</span></td>
+                <td><span class="badge badge-blue">${ammo.ammoClass}</span></td>
                 <td>${p.speed || 0} m/s</td>
                 <td><strong>${p.damageAmountBase || 0}</strong> ${p.damageDef || ''}</td>
                 <td><span style="color: var(--accent-rose); font-weight: 600;">${p.armorPenetrationSharp ? p.armorPenetrationSharp + ' mm' : '-'}</span></td>
@@ -170,7 +170,7 @@ function createAmmoMatrixTableHtml(ammunitions) {
     }).join('');
 
     return `
-        <div class="ammo-matrix-wrapper">
+        <div class="ammo-matrix-wrapper" tabindex="0" role="region" aria-label="Comparative shell matrix, scrolls horizontally">
             <table class="ammo-matrix-table">
                 <thead>
                     <tr>

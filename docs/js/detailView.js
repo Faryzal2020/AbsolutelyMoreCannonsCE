@@ -5,13 +5,20 @@
 import { getThumbnailHtml } from './dataLoader.js';
 import { renderAmmoTab } from './ammoView.js';
 
+const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 let currentTurret = null;
 let currentMode = 'direct';
+let lastFocusedElement = null;
 
 /**
  * Open detail modal for selected turret
  */
 export function openDetailModal(turret) {
+    const alreadyOpen = isModalOpen();
+    if (!alreadyOpen) {
+        lastFocusedElement = document.activeElement;
+    }
     currentTurret = turret;
     
     // Default mode setup (Prefer Direct if available, else Indirect)
@@ -24,6 +31,7 @@ export function openDetailModal(turret) {
     const modal = document.getElementById('detail-modal');
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
+    lockBackgroundScroll();
 
     // Render Modal Header & Title
     document.getElementById('modal-title').textContent = turret.label;
@@ -45,6 +53,23 @@ export function openDetailModal(turret) {
 
     // Default to Overview Tab
     setActiveTab('tab-overview');
+
+    // Move focus into the dialog and keep Tab cycling inside it. Deferred by a
+    // task so it lands after the browser's own post-click focus fixup.
+    document.addEventListener('keydown', trapFocus, true);
+    modal.querySelector('.modal-body').scrollTop = 0;
+    setTimeout(() => {
+        if (isModalOpen()) {
+            modal.querySelector('.modal-dialog').focus();
+        }
+    }, 0);
+}
+
+/**
+ * True while the detail dialog is on screen.
+ */
+export function isModalOpen() {
+    return document.getElementById('detail-modal').classList.contains('open');
 }
 
 /**
@@ -52,9 +77,64 @@ export function openDetailModal(turret) {
  */
 export function closeDetailModal() {
     const modal = document.getElementById('detail-modal');
+    if (!modal.classList.contains('open')) {
+        return;
+    }
+
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
     currentTurret = null;
+
+    document.removeEventListener('keydown', trapFocus, true);
+    unlockBackgroundScroll();
+
+    if (lastFocusedElement && document.contains(lastFocusedElement)) {
+        lastFocusedElement.focus();
+    }
+    lastFocusedElement = null;
+}
+
+/**
+ * Prevent the page behind the dialog from scrolling, compensating for the
+ * scrollbar width so the layout does not jump.
+ */
+function lockBackgroundScroll() {
+    const gap = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.setProperty('--scrollbar-gap', `${gap}px`);
+    document.body.classList.add('modal-open');
+}
+
+function unlockBackgroundScroll() {
+    document.body.classList.remove('modal-open');
+    document.body.style.removeProperty('--scrollbar-gap');
+}
+
+/**
+ * Keep Tab / Shift+Tab cycling within the open dialog.
+ */
+function trapFocus(e) {
+    if (e.key !== 'Tab') {
+        return;
+    }
+
+    const dialog = document.querySelector('#detail-modal .modal-dialog');
+    const items = [...dialog.querySelectorAll(FOCUSABLE_SELECTOR)]
+        .filter(el => el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+
+    if (items.length === 0) {
+        return;
+    }
+
+    const first = items[0];
+    const last = items[items.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+    }
 }
 
 /**
@@ -91,7 +171,7 @@ function switchMode(mode) {
     
     // Re-render ballistics & ammo tabs for selected mode
     renderBallisticsTab();
-    renderAmmoTab(currentTurret, currentMode);
+    renderAmmoTab(currentTurret);
 }
 
 /**
@@ -99,9 +179,12 @@ function switchMode(mode) {
  */
 export function setActiveTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === tabId);
+        const selected = btn.dataset.tab === tabId;
+        btn.classList.toggle('active', selected);
+        btn.setAttribute('aria-selected', String(selected));
+        btn.tabIndex = selected ? 0 : -1;
     });
-    
+
     document.querySelectorAll('.tab-panel').forEach(panel => {
         panel.classList.toggle('active', panel.id === tabId);
     });
@@ -114,7 +197,7 @@ function renderAllTabs() {
     renderOverviewTab();
     renderBallisticsTab();
     renderSpecializedTab();
-    renderAmmoTab(currentTurret, currentMode);
+    renderAmmoTab(currentTurret);
 }
 
 /* --------------------------------------------------------------------------
@@ -138,14 +221,14 @@ function renderOverviewTab() {
 
     container.innerHTML = `
         <div class="detail-card" style="margin-bottom: 1.25rem;">
-            <div class="detail-card-title">📖 Description & Overview</div>
+            <div class="detail-card-title">Description & Overview</div>
             <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.925rem;">${t.description || 'No detailed description available.'}</p>
         </div>
 
         <div class="detail-grid">
             <div class="detail-card">
-                <div class="detail-card-title">🛠️ Physical & Building Specs</div>
-                <div class="data-row"><span class="data-label">Max HP:</span><span class="data-val" style="color: var(--accent-cyan);">${c.maxHitPoints} HP</span></div>
+                <div class="detail-card-title">Physical & Building Specs</div>
+                <div class="data-row"><span class="data-label">Max HP:</span><span class="data-val" style="color: var(--accent-blue);">${c.maxHitPoints} HP</span></div>
                 <div class="data-row"><span class="data-label">Work to Build:</span><span class="data-val">${c.workToBuild.toLocaleString()} ticks</span></div>
                 <div class="data-row"><span class="data-label">Mass:</span><span class="data-val">${c.mass} kg</span></div>
                 <div class="data-row"><span class="data-label">Footprint Size:</span><span class="data-val">${c.size[0]} x ${c.size[1]} cells</span></div>
@@ -155,7 +238,7 @@ function renderOverviewTab() {
             </div>
 
             <div class="detail-card">
-                <div class="detail-card-title">🧪 Research & Material Costs</div>
+                <div class="detail-card-title">Research & Material Costs</div>
                 <div style="margin-bottom: 1rem;">
                     <span class="data-label" style="display: block; margin-bottom: 0.4rem; font-size: 0.8rem;">Research Prerequisites:</span>
                     <div>${researchHtml}</div>
@@ -192,10 +275,10 @@ function renderBallisticsTab() {
     container.innerHTML = `
         <div class="detail-grid">
             <div class="detail-card">
-                <div class="detail-card-title">🎯 Fire Control & Timing (${currentMode.toUpperCase()} MODE)</div>
+                <div class="detail-card-title">Fire Control & Timing (${currentMode.toUpperCase()} MODE)</div>
                 <div class="data-row"><span class="data-label">Warmup / Aiming Time:</span><span class="data-val">${verb.warmupTime || 0} seconds</span></div>
                 <div class="data-row"><span class="data-label">Turret Cooldown:</span><span class="data-val">${modeData.turretCooldown || 0} seconds</span></div>
-                <div class="data-row"><span class="data-label">Effective Range:</span><span class="data-val" style="color: var(--accent-cyan);">${rangeStr}</span></div>
+                <div class="data-row"><span class="data-label">Effective Range:</span><span class="data-val" style="color: var(--accent-blue);">${rangeStr}</span></div>
                 <div class="data-row"><span class="data-label">Magazine Size:</span><span class="data-val">${modeData.magazineSize || 'N/A'} rounds</span></div>
                 <div class="data-row"><span class="data-label">Reload Duration:</span><span class="data-val">${modeData.reloadTime || 0} seconds</span></div>
                 <div class="data-row"><span class="data-label">Burst Shot Count:</span><span class="data-val">${verb.burstShotCount || 1} shots</span></div>
@@ -204,7 +287,7 @@ function renderBallisticsTab() {
             </div>
 
             <div class="detail-card">
-                <div class="detail-card-title">📐 Accuracy, Dispersion & Optics</div>
+                <div class="detail-card-title">Accuracy, Dispersion & Optics</div>
                 <div class="data-row"><span class="data-label">Sights Efficiency:</span><span class="data-val">${(modeData.sightsEfficiency * 100).toFixed(0)}%</span></div>
                 <div class="data-row"><span class="data-label">Shot Spread:</span><span class="data-val">${modeData.shotSpread}</span></div>
                 <div class="data-row"><span class="data-label">Sway Factor:</span><span class="data-val">${modeData.swayFactor}</span></div>
@@ -229,8 +312,8 @@ function renderSpecializedTab() {
     // 1. Enclosed Turret Protection
     if (spec.enclosed) {
         panels.push(`
-            <div class="specialized-panel">
-                <div class="specialized-panel-header">🛡️ Armored Enclosure & Pawn Protection</div>
+            <div class="specialized-panel" style="border-left-color: var(--accent-emerald);">
+                <div class="specialized-panel-header">Armored Enclosure & Pawn Protection</div>
                 <div class="detail-grid" style="margin-bottom: 0;">
                     <div class="data-row"><span class="data-label">Bullet Protection:</span><span class="data-val" style="color: var(--accent-emerald);">${spec.enclosed.bulletProtection}%</span></div>
                     <div class="data-row"><span class="data-label">Explosive Protection:</span><span class="data-val" style="color: var(--accent-emerald);">${spec.enclosed.explosiveProtection}%</span></div>
@@ -244,11 +327,11 @@ function renderSpecializedTab() {
     // 2. CIWS Air Defense
     if (spec.ciws) {
         panels.push(`
-            <div class="specialized-panel" style="border-color: rgba(244, 63, 94, 0.4);">
-                <div class="specialized-panel-header" style="color: var(--accent-rose);">🎯 CIWS Air Defense & Interception System</div>
+            <div class="specialized-panel" style="border-left-color: var(--accent-rose);">
+                <div class="specialized-panel-header">CIWS Air Defense & Interception System</div>
                 <div class="detail-grid" style="margin-bottom: 0;">
                     <div class="data-row"><span class="data-label">Air Defense Capability:</span><span class="data-val" style="color: var(--accent-rose);">Active Anti-Projectile & Drop Pod Interceptor</span></div>
-                    <div class="data-row"><span class="data-label">Interception Range:</span><span class="data-val" style="color: var(--accent-cyan);">${spec.ciws.interceptionRange} cells</span></div>
+                    <div class="data-row"><span class="data-label">Interception Range:</span><span class="data-val" style="color: var(--accent-blue);">${spec.ciws.interceptionRange} cells</span></div>
                     <div class="data-row"><span class="data-label">Interception Burst Count:</span><span class="data-val">${spec.ciws.burstCount} rounds</span></div>
                     <div class="data-row"><span class="data-label">Interception Firing Speed:</span><span class="data-val">${spec.ciws.ticksBetweenShots} tick/shot</span></div>
                 </div>
@@ -261,8 +344,8 @@ function renderSpecializedTab() {
         const burstsStr = (spec.variableRpm.selectableBurstCounts || []).join(' / ') || 'Standard';
         const rpmsStr = (spec.variableRpm.maxRPMs || []).join(' / ') || 'Dynamic XML Governed';
         panels.push(`
-            <div class="specialized-panel">
-                <div class="specialized-panel-header">⚡ Rotary Drive & Variable Fire Control</div>
+            <div class="specialized-panel" style="border-left-color: var(--accent-amber);">
+                <div class="specialized-panel-header">Rotary Drive & Variable Fire Control</div>
                 <div class="detail-grid" style="margin-bottom: 0;">
                     <div class="data-row"><span class="data-label">Selectable Burst Sizes:</span><span class="data-val" style="color: var(--accent-amber);">${burstsStr} rounds</span></div>
                     <div class="data-row"><span class="data-label">Selectable RPM Tiers:</span><span class="data-val">${rpmsStr} RPM</span></div>
@@ -277,8 +360,8 @@ function renderSpecializedTab() {
         const clamp = spec.clamping || {};
         const rot = spec.nonSnapRotation || {};
         panels.push(`
-            <div class="specialized-panel">
-                <div class="specialized-panel-header">🧭 Turret Clamping & Rotation Constraints</div>
+            <div class="specialized-panel" style="border-left-color: var(--accent-purple);">
+                <div class="specialized-panel-header">Turret Clamping & Rotation Constraints</div>
                 <div class="detail-grid" style="margin-bottom: 0;">
                     <div class="data-row"><span class="data-label">Min Elevation Angle:</span><span class="data-val">${clamp.minElevationAngle || 0}°</span></div>
                     <div class="data-row"><span class="data-label">Max Vertical Deviation:</span><span class="data-val">${clamp.maxVerticalDeviation || 0}°</span></div>
@@ -293,8 +376,8 @@ function renderSpecializedTab() {
     if (spec.ammoPreservation) {
         const ap = spec.ammoPreservation;
         panels.push(`
-            <div class="specialized-panel">
-                <div class="specialized-panel-header">🔄 Smart Autoloader & Targeting Discipline</div>
+            <div class="specialized-panel" style="border-left-color: var(--accent-blue);">
+                <div class="specialized-panel-header">Smart Autoloader & Targeting Discipline</div>
                 <div class="detail-grid" style="margin-bottom: 0;">
                     <div class="data-row"><span class="data-label">Ammo Retention:</span><span class="data-val" style="color: var(--accent-emerald);">${ap.preserveAmmo ? 'Active (Retains unfired rounds when target dies)' : 'Disabled'}</span></div>
                     <div class="data-row"><span class="data-label">Shots per Target Cycle:</span><span class="data-val">${ap.shotsPerTarget || 'Standard'}</span></div>

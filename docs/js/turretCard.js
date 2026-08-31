@@ -2,7 +2,7 @@
    AMC-CE Web Wiki - Turret Card Renderer Component
    ========================================================================== */
 
-import { getThumbnailHtml } from './dataLoader.js';
+import { getThumbnailHtml, escapeHtml } from './dataLoader.js';
 
 /**
  * Creates HTML element for a Turret Card
@@ -19,16 +19,15 @@ export function createTurretCard(turret, onSelectCard) {
     // Feature Badges HTML
     const badgesHtml = turret.badges && turret.badges.length > 0
         ? turret.badges.map(b => getBadgePillHtml(b)).join('')
-        : `<span class="badge badge-cyan">Standard Turret</span>`;
+        : `<span class="badge badge-blue">Standard Turret</span>`;
 
     // Fire Modes & Range Comparison
     const rangePanelHtml = getRangePanelHtml(turret);
 
     // Core Specs Reference
     const activeMode = turret.modes.direct || turret.modes.indirect || {};
-    const verb = activeMode.verb || {};
 
-    const cooldownStr = `${activeMode.turretCooldown || verb.warmupTime || 0}s`;
+    const cooldownStr = `${activeMode.turretCooldown ?? 0}s`;
     const hpStr = `${turret.common.maxHitPoints}`;
     const workStr = `${turret.common.workToBuild.toLocaleString()}`;
     const magSizeStr = activeMode.magazineSize ? `${activeMode.magazineSize}` : 'N/A';
@@ -41,6 +40,8 @@ export function createTurretCard(turret, onSelectCard) {
     // Specialized Highlights
     const specHighlights = getSpecializedHighlights(turret);
 
+    const safeLabel = escapeHtml(turret.label);
+
     card.innerHTML = `
         <!-- Full-Width Hero Thumbnail Top Bar -->
         <div class="card-hero-thumb">
@@ -50,11 +51,11 @@ export function createTurretCard(turret, onSelectCard) {
         <!-- Card Title & Meta Header -->
         <header class="card-header-bar">
             <div class="card-title-group">
-                <h3 class="card-title" title="${turret.label}">${turret.label}</h3>
+                <h3 class="card-title" title="${safeLabel}">${safeLabel}</h3>
                 <div class="card-subtitle-bar">
-                    <span class="category-tag">${turret.category}</span>
-                    <span class="sub-divider">•</span>
-                    <span class="badge badge-amber">${turret.caliber}</span>
+                    <span class="category-tag">${escapeHtml(turret.category)}</span>
+                    <span class="sub-divider" aria-hidden="true">&bull;</span>
+                    <span class="badge badge-amber">${escapeHtml(turret.caliber)}</span>
                 </div>
             </div>
         </header>
@@ -77,7 +78,7 @@ export function createTurretCard(turret, onSelectCard) {
                 <span class="stat-label">Work</span>
                 <span class="stat-value">${workStr}</span>
             </div>
-                <div class="stat-item">
+            <div class="stat-item">
                 <span class="stat-label">Power</span>
                 <span class="stat-value">${powerStr}</span>
             </div>
@@ -101,7 +102,7 @@ export function createTurretCard(turret, onSelectCard) {
         <!-- Specialized Mechanics Highlights -->
         ${specHighlights ? `
             <div class="card-specialized-box">
-                <div class="specialized-header">⚙️ Specialized Systems</div>
+                <div class="specialized-header">Specialized Systems</div>
                 <ul class="specialized-list">
                     ${specHighlights}
                 </ul>
@@ -110,9 +111,10 @@ export function createTurretCard(turret, onSelectCard) {
 
         <!-- Action Footer -->
         <footer class="card-footer">
-            <button class="view-btn" data-action="open-detail">
-                <span>View Specs & Shell Matrix</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="view-btn" data-action="open-detail"
+                    aria-label="View full specifications for ${safeLabel}">
+                <span>View Specs &amp; Shell Matrix</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -120,13 +122,27 @@ export function createTurretCard(turret, onSelectCard) {
         </footer>
     `;
 
-    // Click Listeners
-    card.querySelector('[data-action="open-detail"]').addEventListener('click', (e) => {
-        e.stopPropagation();
-        onSelectCard(turret);
+    // Whole-card click is a mouse convenience; the footer button stays the
+    // single keyboard/assistive-tech entry point.
+    let pointerOrigin = null;
+
+    card.addEventListener('pointerdown', (e) => {
+        pointerOrigin = { x: e.clientX, y: e.clientY };
     });
 
-    card.addEventListener('click', () => {
+    card.addEventListener('click', (e) => {
+        // Ignore drags: selecting stat text must not open the modal.
+        if (pointerOrigin && e.clientX !== 0) {
+            const moved = Math.hypot(e.clientX - pointerOrigin.x, e.clientY - pointerOrigin.y);
+            pointerOrigin = null;
+            if (moved > 4) return;
+        }
+
+        const selection = window.getSelection();
+        if (selection && !selection.isCollapsed && card.contains(selection.anchorNode)) {
+            return;
+        }
+
         onSelectCard(turret);
     });
 
@@ -162,20 +178,20 @@ function getRangePanelHtml(turret) {
                 </div>
             </div>
         `;
-    } else {
-        const active = direct || indirect;
-        const verb = active?.verb || {};
-        const min = verb.minRange || 0;
-        const max = verb.range || 0;
-        const modeLabel = direct ? 'Direct Range' : 'Indirect Range';
-
-        return `
-            <div class="card-range-panel single-mode">
-                <span class="range-mode-tag">${modeLabel}</span>
-                <span class="range-val">${min > 0 ? min + ' - ' : ''}${max} cells</span>
-            </div>
-        `;
     }
+
+    const active = direct || indirect;
+    const verb = active?.verb || {};
+    const min = verb.minRange || 0;
+    const max = verb.range || 0;
+    const modeLabel = direct ? 'Direct Range' : 'Indirect Range';
+
+    return `
+        <div class="card-range-panel single-mode">
+            <span class="range-mode-tag">${modeLabel}</span>
+            <span class="range-val">${min > 0 ? min + ' - ' : ''}${max} cells</span>
+        </div>
+    `;
 }
 
 /**
@@ -194,13 +210,14 @@ function getAmmoSummaryHtml(ammunitions) {
         const radius = p.explosionRadius ? `R: ${p.explosionRadius}m` : null;
 
         const extraInfo = [ap, radius].filter(Boolean).join(' | ');
+        const safeAmmoLabel = escapeHtml(ammo.label);
 
         return `
             <div class="card-ammo-row">
-                <span class="ammo-row-label" title="${ammo.label}">${ammo.label}</span>
+                <span class="ammo-row-label" title="${safeAmmoLabel}">${safeAmmoLabel}</span>
                 <span class="ammo-row-val">
-                    <strong>${damage}</strong> ${damageDef}
-                    ${extraInfo ? `<small>(${extraInfo})</small>` : ''}
+                    <strong>${damage}</strong> ${escapeHtml(damageDef)}
+                    ${extraInfo ? `<small>(${escapeHtml(extraInfo)})</small>` : ''}
                 </span>
             </div>
         `;
@@ -210,7 +227,7 @@ function getAmmoSummaryHtml(ammunitions) {
 
     return `
         <div class="card-ammo-box">
-            <div class="ammo-box-header">💣 Compatible Ammo & Damage Overview</div>
+            <div class="ammo-box-header">Compatible Ammo &amp; Damage</div>
             <div class="ammo-box-list">
                 ${rows}
                 ${remaining}
@@ -225,23 +242,21 @@ function getAmmoSummaryHtml(ammunitions) {
 function getBadgePillHtml(badge) {
     switch (badge) {
         case 'Dual Mode':
-            return `<span class="badge badge-purple">🔄 Dual Mode</span>`;
+            return `<span class="badge badge-purple">Dual Mode</span>`;
         case 'Enclosed Protection':
-            return `<span class="badge badge-emerald">🛡️ Enclosed</span>`;
+            return `<span class="badge badge-emerald">Enclosed</span>`;
         case 'CIWS Air Defense':
-            return `<span class="badge badge-rose">🎯 CIWS</span>`;
+            return `<span class="badge badge-rose">CIWS</span>`;
         case 'Variable RPM':
-            return `<span class="badge badge-amber">⚡ Variable RPM</span>`;
-        case 'Turret Clamping':
-            return `<span class="badge badge-cyan">🧭 Clamping</span>`;
+            return `<span class="badge badge-amber">Variable RPM</span>`;
         case 'Smart Autoloader':
-            return `<span class="badge badge-purple">🔄 Autoloader</span>`;
+            return `<span class="badge badge-purple">Autoloader</span>`;
         case 'Cross-Map Shelling':
-            return `<span class="badge badge-rose">🌐 Shelling</span>`;
+            return `<span class="badge badge-rose">Shelling</span>`;
         case 'Airburst / Flak':
-            return `<span class="badge badge-amber">💥 Airburst</span>`;
+            return `<span class="badge badge-amber">Airburst</span>`;
         default:
-            return `<span class="badge badge-cyan">${badge}</span>`;
+            return `<span class="badge badge-blue">${escapeHtml(badge)}</span>`;
     }
 }
 
@@ -254,7 +269,7 @@ function getSpecializedHighlights(turret) {
 
     if (spec.shellingProps) {
         const range = spec.shellingProps.range || 0;
-        items.push(`<li class="specialized-item"><strong>Cross-Map Bombardment:</strong> Shelling range up to <span style="color: var(--accent-rose); font-weight:700;">${range} map tiles</span></li>`);
+        items.push(`<li class="specialized-item"><strong>Cross-Map Bombardment:</strong> Shelling range up to <span class="spec-emphasis">${range} map tiles</span></li>`);
     }
 
     if (spec.enclosed) {
@@ -270,7 +285,7 @@ function getSpecializedHighlights(turret) {
     }
 
     if (spec.clamping) {
-        items.push(`<li class="specialized-item"><strong>Turret Clamping:</strong> Elevation [${spec.clamping.minElevationAngle}°], Max Dev [${spec.clamping.maxRotationDeviation}°]</li>`);
+        items.push(`<li class="specialized-item"><strong>Turret Clamping:</strong> Elevation [${spec.clamping.minElevationAngle}&deg;], Max Dev [${spec.clamping.maxRotationDeviation}&deg;]</li>`);
     }
 
     return items.join('');

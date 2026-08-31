@@ -11,8 +11,8 @@
 
 /* Turret Card Shell */
 .turret-card {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    border: 1px solid var(--border-medium);
     border-radius: var(--radius-lg);
     overflow: hidden;
     display: flex;
@@ -23,16 +23,23 @@
 }
 
 .turret-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--border-highlight);
-    box-shadow: var(--shadow-glow);
+    transform: translateY(-3px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-elevated);
 }
 
-/* Top Full-Width Hero Thumbnail Frame */
+/* The footer button is the card's keyboard entry point, so surface its focus
+   on the whole card. */
+.turret-card:focus-within {
+    border-color: var(--accent-blue);
+    box-shadow: var(--shadow-elevated);
+}
+
+/* Top Full-Width Hero Thumbnail Frame - Flat Solid Light Background */
 .card-hero-thumb {
     width: 100%;
     height: 160px;
-    background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+    background: var(--bg-inset);
     border-bottom: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
@@ -43,41 +50,26 @@
 }
 
 .card-hero-thumb .card-thumb-img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 88%;
+    max-height: 88%;
     object-fit: contain;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+    filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.15));
     transition: transform var(--transition-fast);
 }
 
 .turret-card:hover .card-hero-thumb .card-thumb-img {
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
 
 .card-hero-thumb .placeholder-thumb {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100%;
 }
 
-.card-hero-thumb .placeholder-icon {
-    font-size: 2.2rem;
-}
-
-.card-hero-thumb .placeholder-caliber {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--accent-cyan);
-    margin-top: 0.3rem;
-}
-
-/* Card Header Bar (Title & Subtitle) */
+/* Card Header Bar (Title & Subtitle) - Flat Solid */
 .card-header-bar {
-    padding: 1rem 1.25rem 0.6rem;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    padding: 1rem 1.25rem 0.5rem;
+    background: var(--bg-surface);
 }
 
 .card-title-group {
@@ -86,12 +78,13 @@
 }
 
 .card-title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     line-height: 1.25;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.2rem;
+    color: var(--text-primary);
 }
 
 .card-subtitle-bar {
@@ -103,12 +96,12 @@
 }
 
 .category-tag {
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
     font-weight: 600;
 }
 
 .sub-divider {
-    color: var(--text-muted);
+    color: var(--border-strong);
 }
 
 /* Card Badges Section */
@@ -116,16 +109,16 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    padding: 0.4rem 1.25rem 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 0.4rem 1.25rem 0.65rem;
+    background: var(--bg-surface);
 }
 
-/* Direct vs Indirect Range Comparison Panel */
+/* Direct vs Indirect Range Comparison Panel - Inset Depth Level 2 */
 .card-range-panel {
-    background: rgba(15, 23, 42, 0.7);
+    background: var(--bg-inset-deep);
     border-top: 1px solid var(--border-subtle);
     border-bottom: 1px solid var(--border-subtle);
-    padding: 0.65rem 1.25rem;
+    padding: 0.6rem 1.25rem;
     display: flex;
     align-items: center;
 }
@@ -151,7 +144,7 @@
 .range-mode-divider {
     width: 1px;
     height: 24px;
-    background: var(--border-subtle);
+    background: var(--border-medium);
     margin: 0 0.75rem;
 }
 
@@ -164,18 +157,18 @@
 }
 
 .range-val {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 700;
-    color: var(--accent-cyan);
+    color: var(--text-primary);
 }
 
-/* Core Stats Grid */
+/* Core Stats Grid - Inset Depth Level 1 */
 .card-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.6rem 0.5rem;
-    padding: 0.85rem 1.25rem;
-    background: var(--bg-card);
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-inset);
     border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -193,20 +186,21 @@
 }
 
 .stat-value {
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-top: 0.05rem;
 }
 
 .stat-value.highlight {
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
+    font-weight: 700;
 }
 
-/* Ammo & Damage Summary Box */
+/* Ammo & Damage Summary Box - Inset Depth Level 2 */
 .card-ammo-box {
     padding: 0.75rem 1.25rem;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--bg-inset-deep);
     border-bottom: 1px solid var(--border-subtle);
     font-size: 0.8rem;
 }
@@ -214,7 +208,7 @@
 .ammo-box-header {
     font-size: 0.725rem;
     font-weight: 700;
-    color: var(--accent-cyan);
+    color: var(--accent-blue);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-bottom: 0.4rem;
@@ -231,10 +225,10 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.775rem;
-    background: rgba(0, 0, 0, 0.2);
-    padding: 0.25rem 0.5rem;
+    background: var(--bg-surface);
+    padding: 0.3rem 0.6rem;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
 }
 
 .ammo-row-label {
@@ -254,10 +248,11 @@
 
 .ammo-row-val strong {
     color: var(--accent-amber);
+    font-weight: 700;
 }
 
 .ammo-row-val small {
-    color: var(--accent-cyan);
+    color: var(--text-muted);
     margin-left: 0.2rem;
 }
 
@@ -269,10 +264,10 @@
     font-style: italic;
 }
 
-/* Specialized Features Highlight Box */
+/* Specialized Features Highlight Box - Inset Depth Level 1 */
 .card-specialized-box {
     padding: 0.75rem 1.25rem;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--bg-inset);
     border-bottom: 1px solid var(--border-subtle);
     font-size: 0.8rem;
     flex: 1;
@@ -281,7 +276,7 @@
 .specialized-header {
     font-size: 0.725rem;
     font-weight: 700;
-    color: var(--accent-amber);
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: 0.35rem;
@@ -304,7 +299,12 @@
     color: var(--text-primary);
 }
 
-/* Card Action Footer */
+.spec-emphasis {
+    color: var(--accent-rose);
+    font-weight: 700;
+}
+
+/* Card Action Footer with Tactile Button */
 .card-footer {
     padding: 0.75rem 1.25rem;
     background: var(--bg-surface);
@@ -313,9 +313,10 @@
 
 .view-btn {
     width: 100%;
-    background: rgba(56, 189, 248, 0.1);
-    color: var(--accent-cyan);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: var(--bg-control);
+    color: var(--text-primary);
+    border: 1px solid var(--border-medium);
+    border-bottom: 2.5px solid var(--border-medium);
     padding: 0.55rem;
     border-radius: var(--radius-sm);
     font-family: var(--font-body);
@@ -327,12 +328,19 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    box-shadow: var(--shadow-control);
 }
 
 .view-btn:hover {
-    background: var(--accent-cyan);
-    color: #000;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+    background: var(--accent-blue);
+    color: #ffffff;
+    border-color: #1d4ed8;
+    border-bottom-color: #1e40af;
+}
+
+.view-btn:active {
+    transform: translateY(1px);
+    border-bottom-width: 1px;
 }
 
 /* Mobile Responsiveness for Cards */
@@ -345,3 +353,4 @@
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
