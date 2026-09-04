@@ -475,7 +475,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(7.5,0)</li>
+								<li>(6.2,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -585,7 +585,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(5,0)</li>
+								<li>(4.2,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -612,6 +612,19 @@
 							<drawSize>(5,5)</drawSize>
 							<offsets>
 								<li>(4.7,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+			
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_76mmOtomelaraC_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2,5)</drawSize>
+							<offsets>
+								<li>(2.7,0)</li>
 							</offsets>
 						</li>
 					</value>

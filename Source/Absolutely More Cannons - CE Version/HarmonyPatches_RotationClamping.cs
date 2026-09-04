@@ -108,30 +108,50 @@ namespace AbsolutelyMoreCannons
                     catch { }
                 }
 
-                // === ROTATION CLAMPING ===
+                // === ROTATION CLAMPING (BARREL ORIENTATION CLAMP BEFORE MECHANICAL SPREAD) ===
                 FieldInfo shotRotationField = verbType.GetField("shotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo lastShotRotationField = verbType.GetField("lastShotRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo rotationDegreesField = verbType.GetField("rotationDegrees", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
                 if (clampingExt.HasRotationClamping && shotRotationField != null && !float.IsNaN(turretBaseRotation))
                 {
                     float shotRotation = (float)shotRotationField.GetValue(__instance);
 
+                    // Isolate pure barrel rotation (Target Heading + Sway + Recoil) before mechanical shot spread
+                    float pureBarrelRotation = shotRotation;
+                    float spreadX = 0f;
+
+                    if (lastShotRotationField != null && rotationDegreesField != null)
+                    {
+                        float lastRot = (float)lastShotRotationField.GetValue(__instance);
+                        float rotDeg = (float)rotationDegreesField.GetValue(__instance);
+                        pureBarrelRotation = lastRot + rotDeg;
+
+                        // Calculate mechanical spread X component (difference between total shotRotation and pure barrel rotation)
+                        spreadX = Mathf.Repeat((shotRotation - pureBarrelRotation) + 180f, 360f) - 180f;
+                    }
+
                     // CRITICAL NON-NEGOTIABLE ARCHITECTURAL RULE: DO NOT ALTER THIS MATH OR CONVERT TO DeltaAngle!
                     // CE's shotRotation uses a sign-inverted coordinate space relative to RimWorld turret base:
-                    // 1. Raw signed deviation MUST be calculated as: (shotRotation + turretBaseRotation)
+                    // 1. Raw signed deviation MUST be calculated as: (pureBarrelRotation + turretBaseRotation)
                     // 2. Re-converting back to CE space MUST be calculated as: (deviation - turretBaseRotation)
                     float clampAngle = clampingExt.EffectiveMaxRotationDeviation;
-                    float deviation = shotRotation + turretBaseRotation;
+                    float deviation = pureBarrelRotation + turretBaseRotation;
                     deviation = Mathf.Repeat(deviation + 180f, 360f) - 180f;
-                    float originalDeviation = deviation;
                     deviation = Mathf.Clamp(deviation, -clampAngle, clampAngle);
-                    float clampedShotRotation = deviation - turretBaseRotation;
-                    clampedShotRotation = Mathf.Repeat(clampedShotRotation + 180f, 360f) - 180f;
+                    float clampedBarrelRotation = deviation - turretBaseRotation;
+                    clampedBarrelRotation = Mathf.Repeat(clampedBarrelRotation + 180f, 360f) - 180f;
 
-                    shotRotationField.SetValue(__instance, clampedShotRotation);
+                    // Re-apply mechanical shot spread ON TOP of the clamped barrel orientation
+                    float finalShotRotation = Mathf.Repeat((clampedBarrelRotation + spreadX) + 180f, 360f) - 180f;
+
+                    shotRotationField.SetValue(__instance, finalShotRotation);
                 }
 
-                // === ELEVATION CLAMPING & TELEMETRY ===
+                // === ELEVATION CLAMPING (BARREL ORIENTATION CLAMP BEFORE MECHANICAL SPREAD) ===
                 FieldInfo shotAngleField = verbType.GetField("shotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                 FieldInfo lastShotAngleField = verbType.GetField("lastShotAngle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                FieldInfo angleRadiansField = verbType.GetField("angleRadians", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
                 float shotAngle = 0f;
                 float baseBallisticAngle = 0f;
@@ -151,12 +171,25 @@ namespace AbsolutelyMoreCannons
 
                     if (clampingExt.HasVerticalClamping && hasBaseAngle)
                     {
+                        // Isolate pure barrel angle (Ballistic + Sway + Recoil) before mechanical shot spread
+                        float pureBarrelAngle = shotAngle;
+                        float vertSpreadRad = 0f;
+
+                        if (angleRadiansField != null)
+                        {
+                            pureBarrelAngle = (float)angleRadiansField.GetValue(__instance);
+                            vertSpreadRad = shotAngle - pureBarrelAngle;
+                        }
+
                         float clampAngle = clampingExt.EffectiveMaxVerticalDeviation;
                         float clampAngleRad = clampAngle * Mathf.Deg2Rad;
 
-                        float originalDeviationRad = shotAngle - baseBallisticAngle;
+                        float originalDeviationRad = pureBarrelAngle - baseBallisticAngle;
                         float clampedDeviationRad = Mathf.Clamp(originalDeviationRad, -clampAngleRad, clampAngleRad);
-                        clampedAngle = baseBallisticAngle + clampedDeviationRad;
+                        float clampedBarrelAngle = baseBallisticAngle + clampedDeviationRad;
+
+                        // Re-apply vertical mechanical spread ON TOP of the clamped barrel orientation
+                        clampedAngle = clampedBarrelAngle + vertSpreadRad;
 
                         shotAngleField.SetValue(__instance, clampedAngle);
                     }

@@ -229,6 +229,29 @@
 			</li>
 		</comps>
 		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<!-- Spawn casing 1.2 cells forward along the barrel centerline -->
+				<CasingOffset>(0, 1.2)</CasingOffset>
+				<!-- -90° turns default right ejection (+90°) into straight forward ejection (0°) -->
+				<CasingAngleOffset>-90</CasingAngleOffset>
+				<!-- Enable advanced velocity, angle spread, and flight lifetime options -->
+				<AdvancedCasingVariables>true</AdvancedCasingVariables>
+				
+				<!-- Angle scatter cone around straight forward (-95° to -85°) -->
+				<CasingAngleOffsetRange>-95~-85</CasingAngleOffsetRange>
+				
+				<!-- Launch velocity (cells/sec) leaving the ejection chute -->
+				<CasingSpeedOverrideRange>1.2~1.8</CasingSpeedOverrideRange>
+				
+				<!-- Airborne flight time in seconds before touching the ground -->
+				<CasingLifeTimeOverrideRange>0.3~0.5</CasingLifeTimeOverrideRange>
+				
+				<!-- Random position jitter at the chute exit -->
+				<CasingOffsetRandomRange>(0.1, 0.1)</CasingOffsetRandomRange>
+				
+				<!-- Random visual spin/rotation jitter for the casing sprite -->
+				<CasingRotationRandomRange>15</CasingRotationRandomRange>
+			</li>
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
@@ -299,13 +322,13 @@
 				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleParticleCount>3</muzzleParticleCount>
 				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
-				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<muzzleOffset>(0, 0, 1.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>10</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>15~25</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
-				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
 				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
 				
 				<!-- Heat Smoke -->
@@ -315,22 +338,25 @@
 				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 0.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
 
 				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
-				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
-				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.2</heatEmissionSpacing> <!-- distance between points in cells -->
 				
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
 				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
 				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.6</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 		</comps>
     	<size>(5,5)</size>
@@ -351,11 +377,51 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelGraphic>
+					<texPath>Things/Building/M76mmOtomelaraC_Barrel_Indirect</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<underBarrelGraphic>
+					<texPath>Things/Building/M76mmOtomelaraC_UnderBarrel_Indirect</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</underBarrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<recoilAnimation>
+					<maxDistance>0.3</maxDistance>
+					<recoilDuration>10</recoilDuration>
+					<returnDuration>10</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>3</projectileSpawnOffset>
+					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>30</flashSize>
+					<flashBrightness>2.0</flashBrightness>
+					<flashOffset>-5</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
 				<selectableBurstCounts>
-				<li>1</li>
-				<li>3</li>
-				<li>6</li>
-			</selectableBurstCounts>
+					<li>1</li>
+					<li>3</li>
+					<li>6</li>
+				</selectableBurstCounts>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>
@@ -430,6 +496,29 @@
 			</li>
 		</comps>
 		<modExtensions>
+			<li Class="CombatExtended.GunDrawExtension">
+				<!-- Spawn casing 1.2 cells forward along the barrel centerline -->
+				<CasingOffset>(0, 1.2)</CasingOffset>
+				<!-- -90° turns default right ejection (+90°) into straight forward ejection (0°) -->
+				<CasingAngleOffset>-90</CasingAngleOffset>
+				<!-- Enable advanced velocity, angle spread, and flight lifetime options -->
+				<AdvancedCasingVariables>true</AdvancedCasingVariables>
+				
+				<!-- Angle scatter cone around straight forward (-95° to -85°) -->
+				<CasingAngleOffsetRange>-5~5</CasingAngleOffsetRange>
+				
+				<!-- Launch velocity (cells/sec) leaving the ejection chute -->
+				<CasingSpeedOverrideRange>1.2~1.8</CasingSpeedOverrideRange>
+				
+				<!-- Airborne flight time in seconds before touching the ground -->
+				<CasingLifeTimeOverrideRange>0.8~1.0</CasingLifeTimeOverrideRange>
+				
+				<!-- Random position jitter at the chute exit -->
+				<CasingOffsetRandomRange>(0.1, 0.1)</CasingOffsetRandomRange>
+				
+				<!-- Random visual spin/rotation jitter for the casing sprite -->
+				<CasingRotationRandomRange>15</CasingRotationRandomRange>
+			</li>
 			<li Class="AbsolutelyMoreCannons.TurretChargeBoostExtension">
 				<chargeOffset>1</chargeOffset>
 			</li>
