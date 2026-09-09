@@ -70,7 +70,7 @@
 	<ThingDef Name="Base100mmModel1953Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>1.0</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
@@ -86,7 +86,6 @@
 		<graphicData>
 			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<drawSize>0.8</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>
@@ -112,7 +111,7 @@
 	<ThingDef Name="Base100mmModel1953IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>1.0</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<speed>0</speed>
@@ -136,7 +135,6 @@
 		<graphicData>
 			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<drawSize>0.8</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
             <soundExplode>MortarBomb_Explode</soundExplode>

@@ -151,7 +151,7 @@
 					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>30</flashSize>
+					<flashSize>25</flashSize>
 					<flashBrightness>2.0</flashBrightness>
 					<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
@@ -311,7 +311,7 @@
 				<alternateDef>Turret_76mmOtomelaraC_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
 				<transferViewOrigin>true</transferViewOrigin>
@@ -377,6 +377,11 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<selectableBurstCounts>
+					<li>1</li>
+					<li>3</li>
+					<li>6</li>
+				</selectableBurstCounts>
 				<barrelGraphic>
 					<texPath>Things/Building/M76mmOtomelaraC_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -400,11 +405,11 @@
 				</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
-					<projectileSpawnOffset>3</projectileSpawnOffset>
+					<projectileSpawnOffset>2.5</projectileSpawnOffset>
 					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>30</flashSize>
+					<flashSize>25</flashSize>
 					<flashBrightness>2.0</flashBrightness>
 					<flashOffset>-5</flashOffset>  <!-- Offset from barrel tip -->
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
@@ -417,11 +422,6 @@
 						</points>
 					</flashIntensityCurve>
 				</firingAnimation>
-				<selectableBurstCounts>
-					<li>1</li>
-					<li>3</li>
-					<li>6</li>
-				</selectableBurstCounts>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>

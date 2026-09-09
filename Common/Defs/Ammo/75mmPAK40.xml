@@ -81,7 +81,7 @@
 	<ThingDef Name="Base75mmPAK40Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>0.7</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
@@ -96,7 +96,7 @@
 		<defName>Bullet_75mmPAK40_APHE</defName>
 		<label>75mm Pzgr 39 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -124,7 +124,7 @@
 		<label>75mm Sprgr. 34 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

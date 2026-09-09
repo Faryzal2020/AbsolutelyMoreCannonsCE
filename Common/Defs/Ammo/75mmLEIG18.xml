@@ -71,7 +71,7 @@
 	<ThingDef Name="Base75mmLEIG18Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>0.7</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
@@ -87,7 +87,7 @@
 		<label>75mm Jgr. 18 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -115,7 +115,7 @@
 	<ThingDef Name="Base75mmLEIG18IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>0.7</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<speed>0</speed>
@@ -139,7 +139,7 @@
 		<label>75mm Jgr. 18 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

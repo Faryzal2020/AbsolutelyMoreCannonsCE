@@ -102,11 +102,11 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>60</shockwaveDensity> <!-- number of particles in the ring -->
 				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
-				<shockwaveFadeOutSpeed>0.6</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
@@ -155,7 +155,7 @@
 					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>30</flashSize>
+					<flashSize>27</flashSize>
 					<flashBrightness>2.0</flashBrightness>
 					<flashOffset>-1</flashOffset>  <!-- Offset from barrel tip -->
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
@@ -321,11 +321,11 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>60</shockwaveDensity> <!-- number of particles in the ring -->
 				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
-				<shockwaveFadeOutSpeed>0.6</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
@@ -375,7 +375,7 @@
 					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>16</flashSize>
+					<flashSize>27</flashSize>
 					<flashBrightness>2.0</flashBrightness>
 					<flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->

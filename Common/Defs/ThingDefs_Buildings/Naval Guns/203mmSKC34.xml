@@ -3,15 +3,10 @@
 									
 	<!--=============== 20.3cm SK C/34 ===============-->
 
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_203mmSKC34</defName>
-		<label>20.3cm SK C/34</label>
-	</DesignatorDropdownGroupDef>
-
-	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+	<ThingDef ParentName="AMCTurretMannedBase">
 		<defName>Turret_203mmSKC34_Base</defName>
 		<label>20.3cm SK C/34</label>
-    <description>The 20.3cm SK C/34 was a German heavy cruiser main battery designed for long-range engagements. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 1200, HP: 7105, Cooldown: 12.0s, Range: 7-25000, Rate of Fire: 5 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
+		<description>The 20.3cm SK C/34 was a German heavy cruiser twin main battery designed for long-range engagements. It fires twin-gun salvos, requires reloading after each salvo, and has no indirect fire capability. Power: 800, HP: 7105, Cooldown: 12.0s, Range: 12-33540, Rate of Fire: 5 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
 		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M203mmSKC34</texPath>
@@ -30,39 +25,94 @@
 		</statBases>
 		<costList>
 			<Steel>1500</Steel>
-      <ComponentIndustrial>25</ComponentIndustrial>
+			<ComponentIndustrial>25</ComponentIndustrial>
 			<Plasteel>150</Plasteel>
-      <ComponentSpacer>6</ComponentSpacer>
+			<ComponentSpacer>6</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_203mmSKC34_Weapon</turretGunDef>
-      <turretTopDrawSize>23</turretTopDrawSize>
+			<turretTopDrawSize>23</turretTopDrawSize>
 			<turretBurstCooldownTime>12</turretBurstCooldownTime>
-			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
-		<designatorDropdown>Group_AMC_203mmSKC34</designatorDropdown>
+		<fillPercent>2.0</fillPercent>
 		<comps>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_203mmSKC34_indirect_Base</alternateDef>
-				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 90+ cell range, fires over obstacles</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
+				<swayReduction>0.1</swayReduction>
+				<recoilReduction>0.1</recoilReduction>
+				<spreadReduction>0.1</spreadReduction>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
+			</li>
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>4</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 7)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>40</muzzleVelDuration>
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>2.0~3.0</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>10</heatThreshold>
+				<heatDecayRate>0.34</heatDecayRate>
+				<decayIncrease>0.08</decayIncrease>
+				<heatOffset>(0, 0, 4)</heatOffset>
+				<heatEmissionRate>3.5</heatEmissionRate>
+				<emissionIncrease>0.9</emissionIncrease>
+				<heatParticleSize>0.8</heatParticleSize>
+				<heatEmissionPoints>4</heatEmissionPoints>
+				<heatEmissionSpacing>0.6</heatEmissionSpacing>
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>90</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>(7,7)</size>
+		<size>(7,7)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_203mmSKC34</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+		<interactionCellOffset>(3,0,-4)</interactionCellOffset>
+		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<speed>0.25</speed>
+				<preferedAngleRange>30</preferedAngleRange>
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -72,7 +122,7 @@
 			<texPath>Things/Building/M203mmSKC34_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 20.3cm SK C/34 was a German heavy cruiser main battery designed for long-range engagements. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 1200, HP: 8000, Cooldown: 12.0s, Range: 7-25000, Rate of Fire: 5 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
+		<description>The 20.3cm SK C/34 was a German heavy cruiser twin main battery designed for long-range engagements. It fires twin-gun salvos, requires reloading after each salvo, and has no indirect fire capability. Power: 800, HP: 7105, Cooldown: 12.0s, Range: 12-33540, Rate of Fire: 5 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
@@ -88,18 +138,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_203mmSKC34_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>12</minRange>
+				<minRange>12</minRange>
 				<range>33540</range>
 				<soundCast>Sound_203mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>140</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
 				<burstShotCount>2</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
-		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>
@@ -115,124 +165,6 @@
 				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
-	</ThingDef>
-
-<!-- INDIRECT -->
-	<ThingDef ParentName="AMCArtilleryBase">
-		<defName>Turret_203mmSKC34_indirect_Base</defName>
-		<label>20.3cm SK C/34 (indirect)</label>
-    <description>The 20.3cm SK C/34 was a German heavy cruiser main battery designed for long-range engagements. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 1200, HP: 8000, Cooldown: 12.0s, Range: 7-25000, Rate of Fire: 5 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
-		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
-		<graphicData>
-			<texPath>Things/Building/M203mmSKC34</texPath>
-			<drawSize>(22,22)</drawSize>
-			<shadowData>
-				<volume>(0.27,0.25,0.4)</volume>
-				<offset>(0,0,-0.1)</offset>
-			</shadowData>
-		</graphicData>
-		<uiIconPath>Things/Icons/M203mmSKC34_MenuIcon</uiIconPath>
-		<statBases>
-			<MaxHitPoints>7105</MaxHitPoints>
-			<WorkToBuild>75000</WorkToBuild>
-			<Mass>1</Mass>
-			<Bulk>1</Bulk>
-		</statBases>
-		<costList>
-			<Steel>1500</Steel>
-      <ComponentIndustrial>25</ComponentIndustrial>
-			<Plasteel>150</Plasteel>
-      <ComponentSpacer>6</ComponentSpacer>
-		</costList>
-		<building>
-			<turretGunDef>Turret_203mmSKC34_indirect_Weapon</turretGunDef>
-			<ai_combatDangerous>true</ai_combatDangerous>
-			<turretBurstCooldownTime>12</turretBurstCooldownTime>
-			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>23</turretTopDrawSize>
-		</building>
-		<designatorDropdown>Group_AMC_203mmSKC34</designatorDropdown>
-		<comps>
-			<li Class="CompProperties_Power">
-				<compClass>CompPowerTrader</compClass>
-				<basePowerConsumption>800</basePowerConsumption>
-			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_203mmSKC34_Base</alternateDef>
-				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
-			</li>
-		</comps>
-    <size>(7,7)</size>
-		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-		<researchPrerequisites>
-			<li>Research_203mmSKC34</li>
-		</researchPrerequisites>
-    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
-	</ThingDef>
-	
-	<ThingDef ParentName="BaseArtilleryWeapon">
-		<defName>Turret_203mmSKC34_indirect_Weapon</defName>
-		<label>20.3cm SK C/34 Gun</label>
-		<graphicData>
-			<texPath>Things/Building/M203mmSKC34_Top_Indirect</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-		</graphicData>
-		<description>The 20.3cm SK C/34 was a German heavy cruiser main battery designed for long-range engagements. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 1200, HP: 8000, Cooldown: 12.0s, Range: 7-25000, Rate of Fire: 5 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
-		<statBases>
-			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
-			<RangedWeapon_Cooldown>12</RangedWeapon_Cooldown>
-			<Mass>1</Mass>
-		</statBases>
-		<weaponTags>
-			<li>TurretGun</li>
-			<li>Artillery_BaseDestroyer</li>
-		</weaponTags>
-		<soundInteract>AMC_Large_Reload</soundInteract>
-		<verbs>
-			<li Class="CombatExtended.VerbPropertiesCE">
-				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
-				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
-				<recoilAmount>1.5</recoilAmount>
-				<hasStandardCommand>true</hasStandardCommand>
-				<defaultProjectile>Bullet_203mmSKC34_indirect_HE</defaultProjectile>
-				<warmupTime>0.5</warmupTime>
-        <minRange>90</minRange>
-				<range>33540</range>
-				<soundCast>Sound_203mm</soundCast>
-				<soundCastTail>GunTail_Heavy</soundCastTail>
-				<muzzleFlashScale>140</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
-				<ticksBetweenBurstShots>1</ticksBetweenBurstShots>
-				<burstShotCount>2</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern>
-				<requireLineOfSight>false</requireLineOfSight>
-				<circularError>1</circularError>
-				<indirectFirePenalty>0.125</indirectFirePenalty>
-				<stopBurstWithoutLos>false</stopBurstWithoutLos>
-			</li>
-		</verbs>
-		<comps>
-			<li Class="CombatExtended.CompProperties_Charges">
-				<chargeSpeeds>
-					<li>50</li>
-					<li>75</li>
-					<li>100</li>
-					<li>125</li>
-					<li>150</li>
-				</chargeSpeeds>
-			</li>
-			<li Class="CombatExtended.CompProperties_AmmoUser">
-				<magazineSize>55</magazineSize>
-				<reloadTime>1</reloadTime>
-				<ammoSet>AmmoSet_203mmSKC34_indirect_Shells</ammoSet>
-			</li>
-		</comps>
 	</ThingDef>
 	
 </Defs>

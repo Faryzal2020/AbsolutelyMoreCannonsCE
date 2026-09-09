@@ -76,7 +76,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>3</muzzleParticleCount>
 				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 7)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>20~30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -102,11 +102,11 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 6)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>70</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
-				<shockwaveFadeOutSpeed>0.6</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
@@ -289,7 +289,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>3</muzzleParticleCount>
 				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 1.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 3.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>10</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>15~25</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -315,11 +315,11 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>70</shockwaveDensity> <!-- number of particles in the ring -->
 				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
-				<shockwaveFadeOutSpeed>0.6</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
@@ -337,7 +337,7 @@
 		<modExtensions>
 			<li Class="CombatExtended.NonSnapTurretExtension">
 				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
-				<speed>0.4</speed> 
+				<speed>0.3</speed> 
 				<!-- Angle range (in degrees) preferred for target selection -->
 				<preferedAngleRange>30</preferedAngleRange>
 				<!-- Multiplier for angle weighting in target scoring -->
@@ -346,11 +346,11 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<selectableBurstCounts>
-				<li>1</li>
-				<li>3</li>
-				<li>6</li>
-			</selectableBurstCounts>
+				<selectableBurstCounts>
+					<li>1</li>
+					<li>3</li>
+					<li>6</li>
+				</selectableBurstCounts>
 				<barrelGraphic>
 					<texPath>Things/Building/M120mmTAK120_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -365,22 +365,22 @@
 				<barrelDrawSize>15.0</barrelDrawSize>
 				<drawOnTop>false</drawOnTop>
 				<recoilAnimation>
-				<maxDistance>0.3</maxDistance>
-				<recoilDuration>15</recoilDuration>
-				<returnDuration>30</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>true</useReturnCurve>
-				<affectsRotation>true</affectsRotation>
-			</recoilAnimation>
+					<maxDistance>0.3</maxDistance>
+					<recoilDuration>15</recoilDuration>
+					<returnDuration>30</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>true</useReturnCurve>
+					<affectsRotation>true</affectsRotation>
+				</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
 					<projectileSpawnOffset>2.5</projectileSpawnOffset>
 					<durationTicks>10</durationTicks>  
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  
-					<flashSize>25</flashSize>
+					<flashSize>30</flashSize>
 					<flashBrightness>2.0</flashBrightness>
-					<flashOffset>-8</flashOffset>  
+					<flashOffset>-4</flashOffset>  
 					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
 					<flashIntensityCurve>
 						<points>
@@ -391,6 +391,12 @@
 						</points>
 					</flashIntensityCurve>
 				</firingAnimation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
 			</li>
 		</modExtensions>
 	</ThingDef>

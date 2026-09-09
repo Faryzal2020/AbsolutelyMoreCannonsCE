@@ -80,7 +80,7 @@
 	<ThingDef Name="Base88mmFLAK41Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>0.8</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
@@ -95,7 +95,7 @@
 		<defName>Bullet_88mmFLAK41_APHE</defName>
 		<label>88mm Pzgr 39 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -123,7 +123,7 @@
 		<label>88mm Sprgr. 43 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

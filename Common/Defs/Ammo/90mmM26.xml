@@ -80,7 +80,7 @@
 	<ThingDef Name="Base90mmM26Bullet" ParentName="BaseExplosiveBullet" Abstract="true">
 		<graphicData>
 			<shaderType>TransparentPostLight</shaderType>
-			<drawSize>1.1</drawSize>
+			<drawSize>0.9</drawSize>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
 			<flyOverhead>false</flyOverhead>
@@ -95,7 +95,7 @@
 		<defName>Bullet_90mmM26_APHE</defName>
 		<label>90mm M82 shell (APHE)</label>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/APHE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">
@@ -123,7 +123,7 @@
 		<label>90mm M71 shell (HE)</label>
 		<thingClass>CombatExtended.ProjectileCE_Explosive</thingClass>
 		<graphicData>
-			<texPath>Things/Projectile/MediumShell</texPath>
+			<texPath>Things/Projectile/Cannon/HE</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<projectile Class="CombatExtended.ProjectilePropertiesCE">

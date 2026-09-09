@@ -3,15 +3,10 @@
 									
 	<!--=============== 12.7cm SK C/34 ===============-->
 
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_127mmSKC34</defName>
-		<label>12.7cm SK C/34</label>
-	</DesignatorDropdownGroupDef>
-
-	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
+	<ThingDef ParentName="AMCTurretMannedBase">
 		<defName>Turret_127mmSKC34_Base</defName>
 		<label>12.7cm SK C/34</label>
-    <description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 972, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 972, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
 		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M127mmSKC34</texPath>
@@ -30,34 +25,30 @@
 		</statBases>
 		<costList>
 			<Steel>900</Steel>
-      <ComponentIndustrial>10</ComponentIndustrial>
+			<ComponentIndustrial>10</ComponentIndustrial>
 			<Plasteel>20</Plasteel>
-      <ComponentSpacer>5</ComponentSpacer>
+			<ComponentSpacer>5</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_127mmSKC34_Weapon</turretGunDef>
-      		<turretTopDrawSize>20</turretTopDrawSize>
+			<turretTopDrawSize>20</turretTopDrawSize>
 			<turretBurstCooldownTime>4</turretBurstCooldownTime>
-			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
-		<designatorDropdown>Group_AMC_127mmSKC34</designatorDropdown>
+		<fillPercent>2.0</fillPercent>
 		<comps>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
 			</li>
-      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<!-- Add mode swap component -->
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_127mmSKC34_indirect_Base</alternateDef>
-				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
-			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
 				<swayReduction>0.1</swayReduction>
 				<recoilReduction>0.1</recoilReduction>
 				<spreadReduction>0.1</spreadReduction>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretViewTransfer">
+				<transferViewOrigin>true</transferViewOrigin>
+				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -65,50 +56,56 @@
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 6)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
-				<muzzleVelDuration>40</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 6)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>40</muzzleVelDuration>
 				<directionCone>4</directionCone>
-				<muzzleParticleSize>1~2</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
-				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				<muzzleParticleSize>1~2</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
 				
 				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>20</heatThreshold> <!-- shots required to start emitting heat smoke -->
-				<heatDecayRate>0.48</heatDecayRate> <!-- heat loss per second -->
+				<heatThreshold>20</heatThreshold>
+				<heatDecayRate>0.48</heatDecayRate>
 				<decayIncrease>0.08</decayIncrease>
-
-				<heatOffset>(0, 0, 3)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
-
-				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<heatOffset>(0, 0, 3)</heatOffset>
+				<heatEmissionRate>3.5</heatEmissionRate>
 				<emissionIncrease>0.9</emissionIncrease>
-
-				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
-				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
-				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				<heatParticleSize>0.6</heatParticleSize>
+				<heatEmissionPoints>3</heatEmissionPoints>
+				<heatEmissionSpacing>0.5</heatEmissionSpacing>
 				
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
 				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
-				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveDensity>70</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>3,3</size>
+		<size>3,3</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_127mmSKC34</li>
 		</researchPrerequisites>
-    	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
+		<interactionCellOffset>(1,0,-2)</interactionCellOffset>
 		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<speed>0.4</speed>
+				<preferedAngleRange>30</preferedAngleRange>
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmSKC34_Barrel</texPath>
@@ -129,22 +126,25 @@
 				<firingAnimation>
 					<enabled>true</enabled>
 					<projectileSpawnOffset>5.5</projectileSpawnOffset>
-					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<durationTicks>10</durationTicks>
 					<drawFlash>true</drawFlash>
-					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashColor>(1,0.7,0.3,1)</flashColor>
 					<flashSize>30</flashSize>
 					<flashBrightness>2.0</flashBrightness>
-					<flashOffset>-7</flashOffset>  <!-- Offset from barrel tip -->
-					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashOffset>-7</flashOffset>
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
 					<flashIntensityCurve>
 						<points>
-						<li>(0, 1)</li>      <!-- Full brightness at start -->
-						<li>(0.3, 0.9)</li>  <!-- Still bright -->
-						<li>(0.6, 0.6)</li>  <!-- Fading -->
-						<li>(1, 0)</li>      <!-- Faded out -->
+							<li>(0, 1)</li>
+							<li>(0.3, 0.9)</li>
+							<li>(0.6, 0.6)</li>
+							<li>(1, 0)</li>
 						</points>
 					</flashIntensityCurve>
 				</firingAnimation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -156,7 +156,7 @@
 			<texPath>Things/Building/M127mmSKC34_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
+		<description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
@@ -172,18 +172,18 @@
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmSKC34_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>7</minRange>
+				<minRange>7</minRange>
 				<range>17000</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
-		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+				<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>
@@ -199,165 +199,6 @@
 				<maxRotationDeviation>2</maxRotationDeviation>
 			</li>
 		</modExtensions>
-	</ThingDef>
-
-<!-- INDIRECT -->
-	<ThingDef ParentName="AMCArtilleryBase">
-		<defName>Turret_127mmSKC34_indirect_Base</defName>
-		<label>12.7cm SK C/34 (indirect)</label>
-    <description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
-		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
-		<graphicData>
-			<texPath>Things/Building/M127mmSKC34</texPath>
-			<drawSize>(11,11)</drawSize>
-			<shadowData>
-				<volume>(0.27,0.25,0.4)</volume>
-				<offset>(0,0,-0.1)</offset>
-			</shadowData>
-		</graphicData>
-		<uiIconPath>Things/Icons/M127mmSKC34_MenuIcon</uiIconPath>
-		<statBases>
-			<MaxHitPoints>972</MaxHitPoints>
-			<WorkToBuild>46000</WorkToBuild>
-			<Mass>1</Mass>
-			<Bulk>1</Bulk>
-		</statBases>
-		<costList>
-			<Steel>900</Steel>
-      		<ComponentIndustrial>10</ComponentIndustrial>
-			<Plasteel>20</Plasteel>
-      		<ComponentSpacer>5</ComponentSpacer>
-		</costList>
-		<building>
-			<turretGunDef>Turret_127mmSKC34_indirect_Weapon</turretGunDef>
-			<ai_combatDangerous>true</ai_combatDangerous>
-			<turretBurstCooldownTime>4</turretBurstCooldownTime>
-			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      		<turretTopDrawSize>20</turretTopDrawSize>
-		</building>
-		<designatorDropdown>Group_AMC_127mmSKC34</designatorDropdown>
-		<comps>
-			<li Class="CompProperties_Power">
-				<compClass>CompPowerTrader</compClass>
-				<basePowerConsumption>300</basePowerConsumption>
-			</li>
-      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<!-- Add mode swap component -->
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_127mmSKC34_Base</alternateDef>
-				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
-			</li>
-		</comps>
-    	<size>(3,3)</size>
-		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-		<researchPrerequisites>
-			<li>Research_127mmSKC34</li>
-		</researchPrerequisites>
-    	<interactionCellOffset>(1,0,-2)</interactionCellOffset>
-		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<barrelGraphic>
-					<texPath>Things/Building/M127mmSKC34_Barrel</texPath>
-					<graphicClass>Graphic_Single</graphicClass>
-					<drawSize>(3,3)</drawSize>
-				</barrelGraphic>
-				<barrelOffset>(0,0,0.0)</barrelOffset>
-				<barrelDrawSize>20.0</barrelDrawSize>
-				<drawOnTop>false</drawOnTop>
-				<recoilAnimation>
-					<maxDistance>0.3</maxDistance>
-					<recoilDuration>15</recoilDuration>
-					<returnDuration>30</returnDuration>
-					<useRecoilCurve>true</useRecoilCurve>
-					<useReturnCurve>false</useReturnCurve>
-					<affectsRotation>false</affectsRotation>
-				</recoilAnimation>
-				<firingAnimation>
-					<enabled>true</enabled>
-					<projectileSpawnOffset>5.5</projectileSpawnOffset>
-					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-					<drawFlash>true</drawFlash>
-					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>30</flashSize>
-					<flashBrightness>2.0</flashBrightness>
-					<flashOffset>-7</flashOffset>  <!-- Offset from barrel tip -->
-					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-					<flashIntensityCurve>
-						<points>
-						<li>(0, 1)</li>      <!-- Full brightness at start -->
-						<li>(0.3, 0.9)</li>  <!-- Still bright -->
-						<li>(0.6, 0.6)</li>  <!-- Fading -->
-						<li>(1, 0)</li>      <!-- Faded out -->
-						</points>
-					</flashIntensityCurve>
-				</firingAnimation>
-			</li>
-		</modExtensions>
-	</ThingDef>
-	
-	<ThingDef ParentName="BaseArtilleryWeapon">
-		<defName>Turret_127mmSKC34_indirect_Weapon</defName>
-		<label>12.7cm SK C/34 Gun</label>
-		<graphicData>
-			<texPath>Things/Building/M127mmSKC34_Top_Indirect</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-		</graphicData>
-		<description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
-		<statBases>
-			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
-			<RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
-			<Mass>1</Mass>
-		</statBases>
-		<weaponTags>
-			<li>TurretGun</li>
-			<li>Artillery_BaseDestroyer</li>
-		</weaponTags>
-		<soundInteract>AMC_Large_Reload</soundInteract>
-		<verbs>
-			<li Class="CombatExtended.VerbPropertiesCE">
-				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
-				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
-				<recoilAmount>1.5</recoilAmount>
-				<hasStandardCommand>true</hasStandardCommand>
-				<defaultProjectile>Bullet_127mmSKC34_indirect_HE</defaultProjectile>
-				<warmupTime>0.5</warmupTime>
-        <minRange>60</minRange>
-				<range>17000</range>
-				<soundCast>Sound_Single127mm</soundCast>
-				<soundCastTail>GunTail_Heavy</soundCastTail>
-				<muzzleFlashScale>100</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
-				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
-				<burstShotCount>1</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern>
-				<requireLineOfSight>false</requireLineOfSight>
-				<circularError>1</circularError>
-				<indirectFirePenalty>0.125</indirectFirePenalty>
-				<stopBurstWithoutLos>false</stopBurstWithoutLos>
-			</li>
-		</verbs>
-		<comps>
-			<li Class="CombatExtended.CompProperties_Charges">
-				<chargeSpeeds>
-					<li>50</li>
-					<li>75</li>
-					<li>100</li>
-					<li>125</li>
-					<li>150</li>
-				</chargeSpeeds>
-			</li>
-			<li Class="CombatExtended.CompProperties_AmmoUser">
-				<magazineSize>1</magazineSize>
-				<reloadTime>1</reloadTime>
-				<ammoSet>AmmoSet_127mmSKC34_indirect_Shells</ammoSet>
-			</li>
-		</comps>
 	</ThingDef>
 	
 </Defs>
