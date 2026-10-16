@@ -53,6 +53,34 @@
 				<hidePawnGraphics>true</hidePawnGraphics>
 			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 3)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>30</muzzleVelDuration>
+				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>4</heatThreshold>
+				<heatDecayRate>0.9</heatDecayRate>
+				<decayIncrease>0.12</decayIncrease>
+				<heatOffset>(0, 0, 1.5)</heatOffset>
+				<heatEmissionRate>2</heatEmissionRate>
+				<emissionIncrease>0.4</emissionIncrease>
+				<heatParticleSize>0.6</heatParticleSize>
+				<heatEmissionPoints>3</heatEmissionPoints>
+				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius>
+				<shockwaveDensity>40</shockwaveDensity>
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
+				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_152mmMsta_indirect_Base</alternateDef>
 				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
@@ -207,6 +235,34 @@
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 3)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>30</muzzleVelDuration>
+				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>4</heatThreshold>
+				<heatDecayRate>0.9</heatDecayRate>
+				<decayIncrease>0.12</decayIncrease>
+				<heatOffset>(0, 0, 1.5)</heatOffset>
+				<heatEmissionRate>2</heatEmissionRate>
+				<emissionIncrease>0.4</emissionIncrease>
+				<heatParticleSize>0.6</heatParticleSize>
+				<heatEmissionPoints>3</heatEmissionPoints>
+				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius>
+				<shockwaveDensity>40</shockwaveDensity>
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
+				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+			</li>
 			<!-- Add mode swap component -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_152mmMsta_Base</alternateDef>

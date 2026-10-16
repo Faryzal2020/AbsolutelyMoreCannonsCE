@@ -42,6 +42,35 @@
 		</building>
 		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 3)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>30</muzzleVelDuration>
+				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>4</heatThreshold>
+				<heatDecayRate>0.9</heatDecayRate>
+				<decayIncrease>0.12</decayIncrease>
+				<heatOffset>(0, 0, 1.5)</heatOffset>
+				<heatEmissionRate>2</heatEmissionRate>
+				<emissionIncrease>0.4</emissionIncrease>
+				<heatParticleSize>0.6</heatParticleSize>
+				<heatEmissionPoints>3</heatEmissionPoints>
+				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius>
+				<shockwaveDensity>40</shockwaveDensity>
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
+				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
@@ -70,6 +99,43 @@
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelGraphic>
+				<texPath>Things/Building/M155mmGCT_Barrel</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>18.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>1</barrelAmount>
+			<recoilAnimation>
+				<maxDistance>2</maxDistance>
+				<recoilDuration>30</recoilDuration>
+				<returnDuration>100</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>10</durationTicks>
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>
+				<flashSize>30</flashSize>
+				<flashBrightness>3.0</flashBrightness>
+				<flashOffset>-1</flashOffset>
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>
+					<li>(0.3, 0.9)</li>
+					<li>(0.6, 0.6)</li>
+					<li>(1, 0)</li>
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
     	<li Class="CombatExtended.NonSnapTurretExtension">
     		<speed>0.4</speed>
     		<preferedAngleRange>15</preferedAngleRange>
@@ -159,6 +225,35 @@
 		</building>
 		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>2</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration>
+				<muzzleOffset>(0, 0, 3)</muzzleOffset>
+				<muzzleVelocity>15</muzzleVelocity>
+				<muzzleVelDuration>30</muzzleVelDuration>
+				<muzzleParticleSize>1.5</muzzleParticleSize>
+				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>4</heatThreshold>
+				<heatDecayRate>0.9</heatDecayRate>
+				<decayIncrease>0.12</decayIncrease>
+				<heatOffset>(0, 0, 1.5)</heatOffset>
+				<heatEmissionRate>2</heatEmissionRate>
+				<emissionIncrease>0.4</emissionIncrease>
+				<heatParticleSize>0.6</heatParticleSize>
+				<heatEmissionPoints>3</heatEmissionPoints>
+				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>4</shockwaveRadius>
+				<shockwaveDensity>40</shockwaveDensity>
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
+				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
@@ -177,6 +272,43 @@
 		</researchPrerequisites>
     	<interactionCellOffset>(0,0,-3)</interactionCellOffset>
     	<modExtensions>
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelGraphic>
+				<texPath>Things/Building/M155mmGCT_Barrel_Indirect</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</barrelGraphic>
+			<barrelOffset>(0,0,0.0)</barrelOffset>
+			<barrelDrawSize>18.0</barrelDrawSize>
+			<drawOnTop>false</drawOnTop>
+			<barrelAmount>1</barrelAmount>
+			<recoilAnimation>
+				<maxDistance>1</maxDistance>
+				<recoilDuration>30</recoilDuration>
+				<returnDuration>100</returnDuration>
+				<useRecoilCurve>true</useRecoilCurve>
+				<useReturnCurve>false</useReturnCurve>
+				<affectsRotation>false</affectsRotation>
+			</recoilAnimation>
+			<firingAnimation>
+				<enabled>true</enabled>
+				<durationTicks>10</durationTicks>
+				<drawFlash>true</drawFlash>
+				<flashColor>(1,0.7,0.3,1)</flashColor>
+				<flashSize>35</flashSize>
+				<flashBrightness>3.0</flashBrightness>
+				<flashOffset>-4</flashOffset>
+				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
+				<flashIntensityCurve>
+					<points>
+					<li>(0, 1)</li>
+					<li>(0.3, 0.9)</li>
+					<li>(0.6, 0.6)</li>
+					<li>(1, 0)</li>
+					</points>
+				</flashIntensityCurve>
+			</firingAnimation>
+		</li>
     		<li Class="CombatExtended.NonSnapTurretExtension">
     			<speed>0.4</speed>
     			<preferedAngleRange>15</preferedAngleRange>
