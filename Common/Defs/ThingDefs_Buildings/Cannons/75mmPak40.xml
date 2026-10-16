@@ -6,7 +6,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_75mmPak40_Base</defName>
 		<label>Pak 40</label>
-    <description>The Pak 40 was Germany's primary towed anti-tank gun during WWII, known for its reliability and firepower. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 360, Cooldown: 5.0s, Range: 100, Rate of Fire: 12 rounds per minute. Ammunition types: 75mm Pzgr 39 (AP, Penetration: 138), 75mm Sprgr 34 (HE, Explosion Radius: 3).</description>
+    <description>The Pak 40 was Germany's primary towed anti-tank gun during WWII, known for its reliability and firepower. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 360, Cooldown: 5.0s, Range: 100, Rate of Fire: 12 rounds per minute. Ammunition types: 75mm Pzgr 39 (AP, Penetration: 138), 75mm Sprgr 34 (HE, Explosion Radius: 2).</description>
 		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M75mmPak40</texPath>

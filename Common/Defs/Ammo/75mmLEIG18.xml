@@ -54,7 +54,7 @@
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
 		<statBases>
-			<MarketValue>130.08</MarketValue>
+			<MarketValue>82.0</MarketValue>
 			<Mass>6.5</Mass>
 			<Bulk>5.39</Bulk>
 		</statBases>
@@ -95,15 +95,15 @@
 			<screenShakeFactor>0.4</screenShakeFactor>
 			<speed>56</speed>
 			<damageDef>Bomb</damageDef>
-			<damageAmountBase>328</damageAmountBase>
-			<explosionRadius>4</explosionRadius>
+			<damageAmountBase>120</damageAmountBase>
+			<explosionRadius>2.5</explosionRadius>
 			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
 		</projectile>
 		<comps>
 			<li Class="CombatExtended.CompProperties_Fragments">
 				<fragments>
-					<Fragment_Large>6</Fragment_Large>
-					<Fragment_Small>3</Fragment_Small>
+					<Fragment_Large>8</Fragment_Large>
+					<Fragment_Small>4</Fragment_Small>
 				</fragments>
 				<fragAngleRange>-90~-10</fragAngleRange>
 			</li>
@@ -146,18 +146,18 @@
             <soundExplode>MortarBomb_Explode</soundExplode>
 			<screenShakeFactor>0.4</screenShakeFactor>
 			<damageDef>Bomb</damageDef>
-			<damageAmountBase>328</damageAmountBase>
-			<explosionRadius>4</explosionRadius>
+			<damageAmountBase>120</damageAmountBase>
+			<explosionRadius>2.5</explosionRadius>
 			<applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
 			<shellingProps>
-				<damage>0.26</damage>
+				<damage>0.10</damage>
 			</shellingProps>
 		</projectile>
 		<comps>
 			<li Class="CombatExtended.CompProperties_Fragments">
 				<fragments>
-					<Fragment_Large>6</Fragment_Large>
-					<Fragment_Small>3</Fragment_Small>
+					<Fragment_Large>8</Fragment_Large>
+					<Fragment_Small>4</Fragment_Small>
 				</fragments>
 				<fragAngleRange>-90~-10</fragAngleRange>
 			</li>
@@ -196,7 +196,7 @@
 						<li>FSX</li>
 					</thingDefs>
 				</filter>
-				<count>105</count>
+				<count>20</count>
 			</li>
 		</ingredients>
 		<fixedIngredientFilter>
@@ -209,7 +209,7 @@
 		<products>
 			<Ammo_75mmLEIG18_HE>10</Ammo_75mmLEIG18_HE>
 		</products>
-		<workAmount>56200</workAmount>
+		<workAmount>36000</workAmount>
 	</RecipeDef>
 
 </Defs>

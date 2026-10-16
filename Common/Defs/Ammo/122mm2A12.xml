@@ -15,6 +15,7 @@
 		<label>122 mm 2A12  ammunitions</label>
 		<ammoTypes>
 			<Ammo_122mm2A12_HE>Bullet_122mm2A12_HE</Ammo_122mm2A12_HE>
+			<Ammo_122mm2A12_AB>Bullet_122mm2A12_AB</Ammo_122mm2A12_AB>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -24,6 +25,7 @@
 		<label>122 mm 2A12  ammunitions</label>
 		<ammoTypes>
 			<Ammo_122mm2A12_HE>Bullet_122mm2A12_indirect_HE</Ammo_122mm2A12_HE>
+			<Ammo_122mm2A12_AB>Bullet_122mm2A12_indirect_AB</Ammo_122mm2A12_AB>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -63,6 +65,23 @@
 		<detonateProjectile>Bullet_122mm2A12_HE</detonateProjectile>
 	</ThingDef>
 
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo122mm2A12Base">
+		<defName>Ammo_122mm2A12_AB</defName>
+		<label>122mm OF-462 (Airburst)</label>
+		<graphicData>
+			<texPath>Things/Projectile/122mm2A12HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>240.0</MarketValue>
+			<Mass>29.5</Mass>
+			<Bulk>35.25</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHETF</ammoClass>
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_122mm2A12_AB</detonateProjectile>
+	</ThingDef>
 
 	<!-- ================== Projectiles ================== -->
 
@@ -109,6 +128,55 @@
 	</ThingDef>
 
 
+
+	<ThingDef ParentName="Base122mm2A12Bullet">
+		<defName>Bullet_122mm2A12_AB</defName>
+		<label>122mm OF-462 shell (Airburst)</label>
+		<thingClass>AbsolutelyMoreCannons.ProjectileCE_Airburst</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
+			<speed>134</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>0</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<aimHeightOffset>1.4</aimHeightOffset>
+		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
+				<fragments>
+					<li>
+						<thingDef>Airburst_Fragment</thingDef>
+						<count>30</count>
+						<explosionRadius>1</explosionRadius>
+					</li>
+					<li>
+						<thingDef>Fragment_Small</thingDef>
+						<count>30</count>
+					</li>
+				</fragments>
+				<fragAngleRange>-20~-1</fragAngleRange>
+				<fragXZAngleRange>-30~30</fragXZAngleRange>
+				<useEllipticalCone>true</useEllipticalCone>
+				<usePolarDiskSampling>true</usePolarDiskSampling>
+				<airburstSound>Explosion_Bomb</airburstSound>
+				<airburstFlashEffect>AMC_MuzzleFlashLight</airburstFlashEffect>
+				<airburstFlashScale>10.0</airburstFlashScale>
+				<airburstSmokeScale>1.0</airburstSmokeScale>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.AirburstExtension">
+				<armingTicks>12</armingTicks>
+				<type>Flak</type>
+				<proximityRadius>5</proximityRadius>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
 	<!-- ================== Indirect ================== -->
 	<ThingDef Name="Base122mm2A12IndirectBullet" ParentName="BaseExplosiveBullet" Abstract="true">
@@ -163,6 +231,55 @@
 		</comps>
 	</ThingDef>
 
+	<ThingDef ParentName="Base122mm2A12IndirectBullet">
+		<defName>Bullet_122mm2A12_indirect_AB</defName>
+		<label>122mm OF-462 shell (Airburst)</label>
+		<thingClass>AbsolutelyMoreCannons.ProjectileCE_Airburst</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>0</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<shellingProps>
+				<damage>0.15</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
+				<fragments>
+					<li>
+						<thingDef>Airburst_Fragment</thingDef>
+						<count>45</count>
+						<explosionRadius>1</explosionRadius>
+					</li>
+					<li>
+						<thingDef>Fragment_Small</thingDef>
+						<count>30</count>
+					</li>
+				</fragments>
+				<fragAngleRange>-25~25</fragAngleRange>
+				<fragXZAngleRange>-35~35</fragXZAngleRange>
+				<useEllipticalCone>true</useEllipticalCone>
+				<airburstSound>Explosion_Bomb</airburstSound>
+				<airburstFlashEffect>AMC_MuzzleFlashLight</airburstFlashEffect>
+				<airburstFlashScale>15.0</airburstFlashScale>
+				<airburstSmokeScale>1.0</airburstSmokeScale>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.AirburstExtension">
+				<armingTicks>60</armingTicks>
+				<type>Altitude</type>
+				<burstAltitude>15.0</burstAltitude>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
 	<!-- ==================== Recipes ========================== -->
 
 	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
@@ -207,6 +324,50 @@
 			<Ammo_122mm2A12_HE>5</Ammo_122mm2A12_HE>
 		</products>
 		<workAmount>46200</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_122mm2A12_AB</defName>
+		<label>make 122mm OF-462 (Airburst) ammo x5</label>
+		<description>Craft 5 122mm OF-462 (Airburst).</description>
+		<jobString>Making 122mm OF-462 (Airburst).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>302</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>4</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>30</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_122mm2A12_AB>5</Ammo_122mm2A12_AB>
+		</products>
+		<workAmount>50000</workAmount>
 	</RecipeDef>
 
 </Defs>

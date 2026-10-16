@@ -15,6 +15,7 @@
 		<label>152.4mm 2A65 ammunitions</label>
 		<ammoTypes>
 			<Ammo_152mm2A65_HE>Bullet_152mm2A65_HE</Ammo_152mm2A65_HE>
+			<Ammo_152mm2A65_AB>Bullet_152mm2A65_AB</Ammo_152mm2A65_AB>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -24,6 +25,7 @@
 		<label>152.4mm 2A65 ammunitions</label>
 		<ammoTypes>
 			<Ammo_152mm2A65_HE>Bullet_152mm2A65_indirect_HE</Ammo_152mm2A65_HE>
+			<Ammo_152mm2A65_AB>Bullet_152mm2A65_indirect_AB</Ammo_152mm2A65_AB>
 		</ammoTypes>
 		<isMortarAmmoSet>true</isMortarAmmoSet>
 	</CombatExtended.AmmoSetDef>
@@ -63,6 +65,23 @@
 	  	ArmorPiercing, Sabot, IncendiaryAP, ExplosiveAP, IncendiaryFuel, GrenadeHE, GrenadeIncendiary, RocketHEAT, Antigrain, RadiationIonising -->
 		<isMortarAmmo>true</isMortarAmmo>
 		<detonateProjectile>Bullet_152mm2A65_HE</detonateProjectile>
+	</ThingDef>
+
+	<ThingDef Class="CombatExtended.AmmoDef" ParentName="Ammo152mm2A65Base">
+		<defName>Ammo_152mm2A65_AB</defName>
+		<label>152mm OF-540 (Airburst)</label>
+		<graphicData>
+			<texPath>Things/Projectile/152mm2A65HE</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<statBases>
+			<MarketValue>380.0</MarketValue>
+			<Mass>43.0</Mass>
+			<Bulk>35.39</Bulk>
+		</statBases>
+		<ammoClass>GrenadeHETF</ammoClass>
+		<isMortarAmmo>true</isMortarAmmo>
+		<detonateProjectile>Bullet_152mm2A65_AB</detonateProjectile>
 	</ThingDef>
 
 	<!-- ================== Projectiles ================== -->
@@ -107,6 +126,55 @@
 				<fragAngleRange>-90~-10</fragAngleRange>
 			</li>
 		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="Base152mm2A65Bullet">
+		<defName>Bullet_152mm2A65_AB</defName>
+		<label>152mm OF-540 shell (Airburst)</label>
+		<thingClass>AbsolutelyMoreCannons.ProjectileCE_Airburst</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
+			<speed>130</speed>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>0</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<aimHeightOffset>1.4</aimHeightOffset>
+		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
+				<fragments>
+					<li>
+						<thingDef>Airburst_Fragment</thingDef>
+						<count>40</count>
+						<explosionRadius>1</explosionRadius>
+					</li>
+					<li>
+						<thingDef>Fragment_Small</thingDef>
+						<count>40</count>
+					</li>
+				</fragments>
+				<fragAngleRange>-20~-1</fragAngleRange>
+				<fragXZAngleRange>-30~30</fragXZAngleRange>
+				<useEllipticalCone>true</useEllipticalCone>
+				<usePolarDiskSampling>true</usePolarDiskSampling>
+				<airburstSound>Explosion_Bomb</airburstSound>
+				<airburstFlashEffect>AMC_MuzzleFlashLight</airburstFlashEffect>
+				<airburstFlashScale>10.0</airburstFlashScale>
+				<airburstSmokeScale>1.0</airburstSmokeScale>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.AirburstExtension">
+				<armingTicks>12</armingTicks>
+				<type>Flak</type>
+				<proximityRadius>5</proximityRadius>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<!-- ================== Indirect ================== -->
@@ -162,6 +230,55 @@
 		</comps>
 	</ThingDef>
 
+	<ThingDef ParentName="Base152mm2A65IndirectBullet">
+		<defName>Bullet_152mm2A65_indirect_AB</defName>
+		<label>152mm OF-540 shell (Airburst)</label>
+		<thingClass>AbsolutelyMoreCannons.ProjectileCE_Airburst</thingClass>
+		<graphicData>
+			<texPath>Things/Projectile/LargeShell</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+		</graphicData>
+		<projectile Class="CombatExtended.ProjectilePropertiesCE">
+			<soundExplode>MortarBomb_Explode</soundExplode>
+			<screenShakeFactor>0.4</screenShakeFactor>
+			<damageDef>Bomb</damageDef>
+			<damageAmountBase>0</damageAmountBase>
+			<explosionRadius>0</explosionRadius>
+			<shellingProps>
+				<damage>0.22</damage>
+			</shellingProps>
+		</projectile>
+		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_AirburstFragments">
+				<fragments>
+					<li>
+						<thingDef>Airburst_Fragment</thingDef>
+						<count>60</count>
+						<explosionRadius>1</explosionRadius>
+					</li>
+					<li>
+						<thingDef>Fragment_Small</thingDef>
+						<count>40</count>
+					</li>
+				</fragments>
+				<fragAngleRange>-25~25</fragAngleRange>
+				<fragXZAngleRange>-35~35</fragXZAngleRange>
+				<useEllipticalCone>true</useEllipticalCone>
+				<airburstSound>Explosion_Bomb</airburstSound>
+				<airburstFlashEffect>AMC_MuzzleFlashLight</airburstFlashEffect>
+				<airburstFlashScale>15.0</airburstFlashScale>
+				<airburstSmokeScale>1.0</airburstSmokeScale>
+			</li>
+		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.AirburstExtension">
+				<armingTicks>60</armingTicks>
+				<type>Altitude</type>
+				<burstAltitude>15.0</burstAltitude>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
 	<!-- ==================== Recipes ========================== -->
 
 	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
@@ -206,6 +323,50 @@
 			<Ammo_152mm2A65_HE>1</Ammo_152mm2A65_HE>
 		</products>
 		<workAmount>14600</workAmount>
+	</RecipeDef>
+
+	<RecipeDef ParentName="AdvancedAmmoRecipeBase">
+		<defName>MakeAmmo_152mm2A65_AB</defName>
+		<label>make 152mm OF-540 (Airburst) ammo x1</label>
+		<description>Craft 1 152mm OF-540 (Airburst).</description>
+		<jobString>Making 152mm OF-540 (Airburst).</jobString>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Steel</li>
+					</thingDefs>
+				</filter>
+				<count>88</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>2</count>
+			</li>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>FSX</li>
+					</thingDefs>
+				</filter>
+				<count>11</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Steel</li>
+				<li>ComponentIndustrial</li>
+				<li>FSX</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Ammo_152mm2A65_AB>1</Ammo_152mm2A65_AB>
+		</products>
+		<workAmount>16000</workAmount>
 	</RecipeDef>
 
 </Defs>

@@ -11,7 +11,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_152mmMsta_Base</defName>
 		<label>2S19 Msta</label>
-    <description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+    <description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M152mmMsta</texPath>
@@ -113,6 +113,11 @@
 		  </flashIntensityCurve>
         </firingAnimation>
       </li>
+      <li Class="CombatExtended.NonSnapTurretExtension">
+      	<speed>0.35</speed>
+      	<preferedAngleRange>15</preferedAngleRange>
+      	<minAngleWeight>0.1</minAngleWeight>
+      </li>
     </modExtensions>
 	</ThingDef>
 	
@@ -123,9 +128,9 @@
 			<texPath>Things/Building/M152mmMsta_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+		<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>2</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
 			<SwayFactor>0.4</SwayFactor>
 			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
@@ -165,7 +170,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_152mmMsta_indirect_Base</defName>
 		<label>2S19 Msta (indirect)</label>
-    	<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+    	<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>5</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M152mmMsta</texPath>
@@ -253,6 +258,11 @@
 				</flashIntensityCurve>
 			</firingAnimation>
 		</li>
+		<li Class="CombatExtended.NonSnapTurretExtension">
+			<speed>0.35</speed>
+			<preferedAngleRange>15</preferedAngleRange>
+			<minAngleWeight>0.1</minAngleWeight>
+		</li>
     </modExtensions>
 	</ThingDef>
 	
@@ -263,11 +273,11 @@
 			<texPath>Things/Building/M152mmMsta_Top_Indirect</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2500, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+		<description>The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>2</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<SwayFactor>0.4</SwayFactor>
 			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -296,8 +306,8 @@
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 				<requireLineOfSight>false</requireLineOfSight>
-				<circularError>1</circularError>
-				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<circularError>0.5</circularError>
+				<indirectFirePenalty>0.075</indirectFirePenalty>
 				<stopBurstWithoutLos>false</stopBurstWithoutLos>
 			</li>
 		</verbs>

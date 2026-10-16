@@ -47,6 +47,12 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>
+				<explosiveProtection>0.8</explosiveProtection>
+				<temperatureProtection>0.5</temperatureProtection>
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_127mmMark16_indirect_Base</alternateDef>
@@ -259,6 +265,12 @@
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>
+				<explosiveProtection>0.8</explosiveProtection>
+				<temperatureProtection>0.5</temperatureProtection>
+				<hidePawnGraphics>true</hidePawnGraphics>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">

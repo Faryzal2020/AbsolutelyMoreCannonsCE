@@ -62,6 +62,13 @@
 			<li>Research_600mmKarlGerat</li>
 		</researchPrerequisites>
     <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.08</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -161,6 +168,13 @@
 			<li>Research_600mmKarlGerat</li>
 		</researchPrerequisites>
     <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.08</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

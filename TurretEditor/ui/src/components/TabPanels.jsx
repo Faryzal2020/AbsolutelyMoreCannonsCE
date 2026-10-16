@@ -181,6 +181,31 @@ export function CompsTab({ draft, set, dirty, allTurrets }) {
         )}
       </Section>
 
+      <Section title="Non-Snap Rotation (CombatExtended.NonSnapTurretExtension)" tone="slate">
+        <Toggle label="Traverse at a physical turn rate instead of snapping"
+          checked={draft.nonSnap?.enabled} onChange={(v) => set('nonSnap.enabled', v)} />
+        {draft.nonSnap?.enabled && (
+          <div className="grid" style={{ marginTop: 8 }}>
+            {f('nonSnap.speed', 'Turn Speed (deg/tick)', {
+              type: 'number', step: '0.05',
+              hint: `${(Number(draft.nonSnap?.speed) || 0) * 60}°/s. Also the alignment tolerance: the burst starts once the target is within this many degrees.`,
+            })}
+            {f('nonSnap.preferedAngleRange', 'Preferred Angle Range (deg)', {
+              type: 'number', step: '1',
+              hint: 'Targets inside this sector all score as if dead ahead; outside it the score falls off as 1/angle. Leave empty for a smooth 1/angle preference.',
+            })}
+            {f('nonSnap.minAngleWeight', 'Min Angle Weight', {
+              type: 'number', step: '0.01',
+              hint: 'Angle floor and in-sector divisor (default 0.1). Lower = in-sector targets dominate more strongly.',
+            })}
+            {f('nonSnap.angleWeightMultiplier', 'Angle Weight Multiplier', {
+              type: 'number', step: '0.1',
+              hint: 'Scales every candidate equally, so it has no effect on target choice in current CE. Kept for XML compatibility.',
+            })}
+          </div>
+        )}
+      </Section>
+
       <Section title="Accuracy Override" tone="peach">
         <Toggle label="Accuracy override comp (CompProperties_AccuracyOverride)"
           checked={draft.comps.accuracy.enabled} onChange={(v) => set('comps.accuracy.enabled', v)} />

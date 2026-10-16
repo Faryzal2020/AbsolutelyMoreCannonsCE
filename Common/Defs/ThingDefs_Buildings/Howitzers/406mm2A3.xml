@@ -49,6 +49,13 @@
 			<li>Research_406mm2A3</li>
 		</researchPrerequisites>
     <interactionCellOffset>(2,0,-4)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.1</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

@@ -187,7 +187,7 @@
 			</thingDefs>
 		</fixedIngredientFilter>
 		<products>
-			<Ammo_57mmOQF_AP>10</Ammo_57mmOQF_AP>
+			<Ammo_57mmOQF_APDS>10</Ammo_57mmOQF_APDS>
 		</products>
 		<workAmount>20000</workAmount>
 	</RecipeDef>

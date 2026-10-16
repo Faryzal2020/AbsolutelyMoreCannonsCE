@@ -11,7 +11,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_152mmAkatsiya_Base</defName>
 		<label>2S3 Akatsiya</label>
-    <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 1280, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+    <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M152mmAkatsiya</texPath>
@@ -36,7 +36,7 @@
 		<building>
 			<turretGunDef>Turret_152mmAkatsiya_Weapon</turretGunDef>
       <turretTopDrawSize>14</turretTopDrawSize>
-			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
 		<designatorDropdown>Group_AMC_152mmAkatsiya</designatorDropdown>
@@ -68,6 +68,13 @@
 			<li>Research_152mmAkatsiya</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.35</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -77,12 +84,12 @@
 			<texPath>Things/Building/M152mmAkatsiya_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 2000, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>1.5</SightsEfficiency>
 			<ShotSpread>0.02</ShotSpread>
 			<SwayFactor>0.1</SwayFactor>
-			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
@@ -119,7 +126,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_152mmAkatsiya_indirect_Base</defName>
 		<label>2S3 Akatsiya (indirect)</label>
-    <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 2000, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+    <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M152mmAkatsiya</texPath>
@@ -144,7 +151,7 @@
 		<building>
 			<turretGunDef>Turret_152mmAkatsiya_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
-			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
       <turretTopDrawSize>14</turretTopDrawSize>
 		</building>
@@ -167,6 +174,13 @@
 			<li>Research_152mmAkatsiya</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.35</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">
@@ -176,12 +190,12 @@
 			<texPath>Things/Building/M152mmAkatsiya_Top_Indirect</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 2000, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).</description>
+		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>1.5</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
-			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<weaponTags>
@@ -209,8 +223,8 @@
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 				<requireLineOfSight>false</requireLineOfSight>
-				<circularError>1</circularError>
-				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<circularError>0.6</circularError>
+				<indirectFirePenalty>0.09</indirectFirePenalty>
 				<stopBurstWithoutLos>false</stopBurstWithoutLos>
 			</li>
 		</verbs>

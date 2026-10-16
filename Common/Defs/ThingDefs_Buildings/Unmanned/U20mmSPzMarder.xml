@@ -11,7 +11,7 @@
 	<ThingDef ParentName="AMCTurretAutoBase"> 
 		<defName>Turret_U20mmSPzMarder_Base</defName>
 		<label>Auto Spz Marder (Auto)</label>
-    <description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 546, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
+    <description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 475, Cooldown: 1.0s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
 		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/U20mmSPzMarder</texPath>
@@ -91,7 +91,7 @@
 			<texPath>Things/Building/U20mmSPzMarder_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 1100, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
+		<description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 475, Cooldown: 1.0s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
 		<statBases>
 			<SightsEfficiency>2.9</SightsEfficiency>
 			<ShotSpread>0.02</ShotSpread>

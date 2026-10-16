@@ -1,5 +1,5 @@
 {
-  "generatedAt": "31/08/2026",
+  "generatedAt": "2026-08-28",
   "totalTurrets": 45,
   "turrets": [
     {
@@ -1731,15 +1731,11 @@
           "bulk": 7.53,
           "imageUrl": "images/extracted/Ammo_57mmOQF_AP.png",
           "recipe": {
-            "workAmount": 20000.0,
+            "workAmount": 9360.0,
             "ingredients": [
               {
                 "item": "Steel",
-                "count": 20.0
-              },
-              {
-                "item": "Plasteel",
-                "count": 35.0
+                "count": 78.0
               }
             ],
             "products": {
@@ -1772,7 +1768,22 @@
           "mass": 2.33,
           "bulk": 7.53,
           "imageUrl": "images/extracted/Ammo_57mmOQF_APDS.png",
-          "recipe": null,
+          "recipe": {
+            "workAmount": 20000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 20.0
+              },
+              {
+                "item": "Plasteel",
+                "count": 35.0
+              }
+            ],
+            "products": {
+              "Ammo_57mmOQF_APDS": 10
+            }
+          },
           "projectile": {
             "defName": "Bullet_57mmOQF_APDS",
             "thingClass": "",
@@ -2543,7 +2554,7 @@
       "id": "Turret_75mmPak40",
       "defName": "Turret_75mmPak40_Base",
       "label": "Pak 40",
-      "description": "The Pak 40 was Germany's primary towed anti-tank gun during WWII, known for its reliability and firepower. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 360, Cooldown: 5.0s, Range: 100, Rate of Fire: 12 rounds per minute. Ammunition types: 75mm Pzgr 39 (AP, Penetration: 138), 75mm Sprgr 34 (HE, Explosion Radius: 3).",
+      "description": "The Pak 40 was Germany's primary towed anti-tank gun during WWII, known for its reliability and firepower. It requires reloading after each shot and has no indirect fire capability. Power: None, HP: 360, Cooldown: 5.0s, Range: 100, Rate of Fire: 12 rounds per minute. Ammunition types: 75mm Pzgr 39 (AP, Penetration: 138), 75mm Sprgr 34 (HE, Explosion Radius: 2).",
       "category": "Cannons",
       "caliber": "75mm",
       "imageUrl": "images/extracted/Turret_75mmPak40_Base.png",
@@ -3245,7 +3256,7 @@
       "id": "Turret_150mmSIG33",
       "defName": "Turret_150mmSIG33_Base",
       "label": "15 cm sIG 33",
-      "description": "The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 495, Cooldown: 30.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 479, Explosion Radius: 5.0).",
+      "description": "The 15 cm sIG 33 was Germany's primary heavy infantry gun during World War II. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: None, HP: 495, Reload: 15.0s, Range: 4700, Shelling Range: 6. Ammunition: 150mm IGr 33 (HE, Damage: 386, Explosion Radius: 4.5).",
       "category": "Howitzers",
       "caliber": "150mm",
       "imageUrl": "images/extracted/Turret_150mmSIG33_Base.png",
@@ -3284,7 +3295,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.3,
+          "turnSpeedDegreesPerSec": 18.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -3355,12 +3370,12 @@
           "label": "150mm IGr 33 (HE)",
           "description": "Ammunitions for 15cm L11 weapon type",
           "ammoClass": "GrenadeHE",
-          "marketValue": 357.9,
+          "marketValue": 349.0,
           "mass": 38.0,
           "bulk": 36.8,
           "imageUrl": "images/extracted/Ammo_150mmSIG33_HE.png",
           "recipe": {
-            "workAmount": 15000.0,
+            "workAmount": 14600.0,
             "ingredients": [
               {
                 "item": "Steel",
@@ -3372,7 +3387,7 @@
               },
               {
                 "item": "FSX",
-                "count": 17.0
+                "count": 13.0
               }
             ],
             "products": {
@@ -3384,10 +3399,10 @@
             "thingClass": "CombatExtended.ProjectileCE_Explosive",
             "speed": 61.0,
             "damageDef": "Bomb",
-            "damageAmountBase": 479.0,
+            "damageAmountBase": 386.0,
             "armorPenetrationSharp": 0.0,
             "armorPenetrationBlunt": 0.0,
-            "explosionRadius": 5.0,
+            "explosionRadius": 4.5,
             "screenShakeFactor": 0.5,
             "secondaryExplosive": null,
             "fragments": {
@@ -3398,7 +3413,7 @@
                 },
                 {
                   "type": "Fragment_Small",
-                  "count": 6
+                  "count": 4
                 }
               ],
               "fragAngleRange": "-90~-10"
@@ -3408,7 +3423,7 @@
             "shellingProps": {
               "range": 6.0,
               "tilesPerTick": 0.15,
-              "damage": 0.39916666666666667
+              "damage": 0.316
             }
           }
         }
@@ -3464,7 +3479,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -3475,9 +3494,9 @@
       "modes": {
         "direct": {
           "gunDefName": "Turret_155mmGCT_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 2.0,
           "shotSpread": 0.01,
-          "swayFactor": 0.9,
+          "swayFactor": 0.4,
           "cooldown": 9.0,
           "magazineSize": 42,
           "reloadTime": 1.0,
@@ -3500,7 +3519,7 @@
         },
         "indirect": {
           "gunDefName": "Turret_155mmGCT_indirect_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 2.0,
           "shotSpread": 0.02,
           "swayFactor": 0.1,
           "cooldown": 9.0,
@@ -3522,8 +3541,8 @@
             "ticksBetweenBurstShots": 300,
             "calculatedRPM": 36.0,
             "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
+            "circularError": 0.5,
+            "indirectFirePenalty": 0.075,
             "requireLineOfSight": false
           },
           "ciws": null,
@@ -3637,7 +3656,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.1,
+          "turnSpeedDegreesPerSec": 6.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -3755,7 +3778,7 @@
       "id": "Turret_122mmGvozdika",
       "defName": "Turret_122mmGvozdika_Base",
       "label": "2S1 Gvozdika",
-      "description": "The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 720, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).",
+      "description": "The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).",
       "category": "Howitzers",
       "caliber": "122mm",
       "imageUrl": "images/extracted/Turret_122mmGvozdika_Base.png",
@@ -3766,7 +3789,8 @@
       "badges": [
         "Dual Mode",
         "Enclosed Protection",
-        "Cross-Map Shelling"
+        "Cross-Map Shelling",
+        "Airburst / Flak"
       ],
       "common": {
         "maxHitPoints": 720.0,
@@ -3800,7 +3824,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -3811,10 +3839,10 @@
       "modes": {
         "direct": {
           "gunDefName": "Turret_122mmGvozdika_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 1.5,
           "shotSpread": 0.02,
           "swayFactor": 0.1,
-          "cooldown": 15.0,
+          "cooldown": 10.0,
           "magazineSize": 40,
           "reloadTime": 5.0,
           "chargeSpeeds": [],
@@ -3832,14 +3860,14 @@
             "requireLineOfSight": true
           },
           "ciws": null,
-          "turretCooldown": 15.0
+          "turretCooldown": 10.0
         },
         "indirect": {
           "gunDefName": "Turret_122mmGvozdika_indirect_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 1.5,
           "shotSpread": 0.01,
-          "swayFactor": 0.9,
-          "cooldown": 15.0,
+          "swayFactor": 0.5,
+          "cooldown": 10.0,
           "magazineSize": 40,
           "reloadTime": 5.0,
           "chargeSpeeds": [
@@ -3858,12 +3886,12 @@
             "ticksBetweenBurstShots": 0,
             "calculatedRPM": 0,
             "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
+            "circularError": 0.6,
+            "indirectFirePenalty": 0.09,
             "requireLineOfSight": false
           },
           "ciws": null,
-          "turretCooldown": 15.0
+          "turretCooldown": 10.0
         }
       },
       "ammunition": [
@@ -3928,6 +3956,73 @@
               "damage": 0.217
             }
           }
+        },
+        {
+          "defName": "Ammo_122mm2A12_AB",
+          "label": "122mm OF-462 (Airburst)",
+          "description": "Ammunitions for 122 mm 2A12  weapon type",
+          "ammoClass": "GrenadeHETF",
+          "marketValue": 240.0,
+          "mass": 29.5,
+          "bulk": 35.25,
+          "imageUrl": "images/extracted/Ammo_122mm2A12_AB.png",
+          "recipe": {
+            "workAmount": 50000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 302.0
+              },
+              {
+                "item": "ComponentIndustrial",
+                "count": 4.0
+              },
+              {
+                "item": "FSX",
+                "count": 30.0
+              }
+            ],
+            "products": {
+              "Ammo_122mm2A12_AB": 5
+            }
+          },
+          "projectile": {
+            "defName": "Bullet_122mm2A12_AB",
+            "thingClass": "AbsolutelyMoreCannons.ProjectileCE_Airburst",
+            "speed": 134.0,
+            "damageDef": "Bomb",
+            "damageAmountBase": 0.0,
+            "armorPenetrationSharp": 0.0,
+            "armorPenetrationBlunt": 0.0,
+            "explosionRadius": 0.0,
+            "screenShakeFactor": 0.4,
+            "secondaryExplosive": null,
+            "fragments": null,
+            "airburst": {
+              "subFragments": [
+                {
+                  "type": "Airburst_Fragment",
+                  "count": 45
+                },
+                {
+                  "type": "Fragment_Small",
+                  "count": 30
+                }
+              ],
+              "fragAngleRange": "-25~25",
+              "fragXZAngleRange": "-35~35",
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
+            },
+            "guided": null,
+            "shellingProps": {
+              "range": 18.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.15
+            }
+          }
         }
       ]
     },
@@ -3935,7 +4030,7 @@
       "id": "Turret_152mmMsta",
       "defName": "Turret_152mmMsta_Base",
       "label": "2S19 Msta",
-      "description": "The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).",
+      "description": "The 2S19 Msta was a Soviet self-propelled howitzer introduced in the late 1980s to replace earlier models. It has an indirect fire variant, features an internal magazine of 50 rounds, and is capable of settlement bombardment. Power: 500, HP: 2625, Cooldown: 9.0s, Range: 24700, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).",
       "category": "Howitzers",
       "caliber": "152mm",
       "imageUrl": "images/extracted/Turret_152mmMsta_Base.png",
@@ -3947,7 +4042,8 @@
         "Dual Mode",
         "Enclosed Protection",
         "Variable RPM",
-        "Cross-Map Shelling"
+        "Cross-Map Shelling",
+        "Airburst / Flak"
       ],
       "common": {
         "maxHitPoints": 2625.0,
@@ -3986,7 +4082,11 @@
         },
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.35,
+          "turnSpeedDegreesPerSec": 21.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -3997,7 +4097,7 @@
       "modes": {
         "direct": {
           "gunDefName": "Turret_152mmMsta_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 2.0,
           "shotSpread": 0.01,
           "swayFactor": 0.4,
           "cooldown": 9.0,
@@ -4022,9 +4122,9 @@
         },
         "indirect": {
           "gunDefName": "Turret_152mmMsta_indirect_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 2.0,
           "shotSpread": 0.01,
-          "swayFactor": 0.9,
+          "swayFactor": 0.4,
           "cooldown": 9.0,
           "magazineSize": 50,
           "reloadTime": 2.0,
@@ -4044,8 +4144,8 @@
             "ticksBetweenBurstShots": 0,
             "calculatedRPM": 0,
             "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
+            "circularError": 0.5,
+            "indirectFirePenalty": 0.075,
             "requireLineOfSight": false
           },
           "ciws": null,
@@ -4114,6 +4214,73 @@
               "damage": 0.31581818181818183
             }
           }
+        },
+        {
+          "defName": "Ammo_152mm2A65_AB",
+          "label": "152mm OF-540 (Airburst)",
+          "description": "Ammunitions for 152.4mm 2A65 weapon type",
+          "ammoClass": "GrenadeHETF",
+          "marketValue": 380.0,
+          "mass": 43.0,
+          "bulk": 35.39,
+          "imageUrl": "images/extracted/Ammo_152mm2A65_AB.png",
+          "recipe": {
+            "workAmount": 16000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 88.0
+              },
+              {
+                "item": "ComponentIndustrial",
+                "count": 2.0
+              },
+              {
+                "item": "FSX",
+                "count": 11.0
+              }
+            ],
+            "products": {
+              "Ammo_152mm2A65_AB": 1
+            }
+          },
+          "projectile": {
+            "defName": "Bullet_152mm2A65_AB",
+            "thingClass": "AbsolutelyMoreCannons.ProjectileCE_Airburst",
+            "speed": 130.0,
+            "damageDef": "Bomb",
+            "damageAmountBase": 0.0,
+            "armorPenetrationSharp": 0.0,
+            "armorPenetrationBlunt": 0.0,
+            "explosionRadius": 0.0,
+            "screenShakeFactor": 0.4,
+            "secondaryExplosive": null,
+            "fragments": null,
+            "airburst": {
+              "subFragments": [
+                {
+                  "type": "Airburst_Fragment",
+                  "count": 60
+                },
+                {
+                  "type": "Fragment_Small",
+                  "count": 40
+                }
+              ],
+              "fragAngleRange": "-25~25",
+              "fragXZAngleRange": "-35~35",
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
+            },
+            "guided": null,
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.22
+            }
+          }
         }
       ]
     },
@@ -4121,7 +4288,7 @@
       "id": "Turret_152mmAkatsiya",
       "defName": "Turret_152mmAkatsiya_Base",
       "label": "2S3 Akatsiya",
-      "description": "The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 450, HP: 1280, Cooldown: 15.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5).",
+      "description": "The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).",
       "category": "Howitzers",
       "caliber": "152mm",
       "imageUrl": "images/extracted/Turret_152mmAkatsiya_Base.png",
@@ -4132,7 +4299,8 @@
       "badges": [
         "Dual Mode",
         "Enclosed Protection",
-        "Cross-Map Shelling"
+        "Cross-Map Shelling",
+        "Airburst / Flak"
       ],
       "common": {
         "maxHitPoints": 1280.0,
@@ -4166,7 +4334,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.35,
+          "turnSpeedDegreesPerSec": 21.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -4177,10 +4349,10 @@
       "modes": {
         "direct": {
           "gunDefName": "Turret_152mmAkatsiya_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 1.5,
           "shotSpread": 0.02,
           "swayFactor": 0.1,
-          "cooldown": 15.0,
+          "cooldown": 10.0,
           "magazineSize": 46,
           "reloadTime": 5.0,
           "chargeSpeeds": [],
@@ -4198,14 +4370,14 @@
             "requireLineOfSight": true
           },
           "ciws": null,
-          "turretCooldown": 15.0
+          "turretCooldown": 10.0
         },
         "indirect": {
           "gunDefName": "Turret_152mmAkatsiya_indirect_Weapon",
-          "sightsEfficiency": 1.0,
+          "sightsEfficiency": 1.5,
           "shotSpread": 0.01,
-          "swayFactor": 0.9,
-          "cooldown": 15.0,
+          "swayFactor": 0.5,
+          "cooldown": 10.0,
           "magazineSize": 46,
           "reloadTime": 5.0,
           "chargeSpeeds": [
@@ -4224,12 +4396,12 @@
             "ticksBetweenBurstShots": 0,
             "calculatedRPM": 0,
             "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
+            "circularError": 0.6,
+            "indirectFirePenalty": 0.09,
             "requireLineOfSight": false
           },
           "ciws": null,
-          "turretCooldown": 15.0
+          "turretCooldown": 10.0
         }
       },
       "ammunition": [
@@ -4294,6 +4466,73 @@
               "damage": 0.31581818181818183
             }
           }
+        },
+        {
+          "defName": "Ammo_152mm2A65_AB",
+          "label": "152mm OF-540 (Airburst)",
+          "description": "Ammunitions for 152.4mm 2A65 weapon type",
+          "ammoClass": "GrenadeHETF",
+          "marketValue": 380.0,
+          "mass": 43.0,
+          "bulk": 35.39,
+          "imageUrl": "images/extracted/Ammo_152mm2A65_AB.png",
+          "recipe": {
+            "workAmount": 16000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 88.0
+              },
+              {
+                "item": "ComponentIndustrial",
+                "count": 2.0
+              },
+              {
+                "item": "FSX",
+                "count": 11.0
+              }
+            ],
+            "products": {
+              "Ammo_152mm2A65_AB": 1
+            }
+          },
+          "projectile": {
+            "defName": "Bullet_152mm2A65_AB",
+            "thingClass": "AbsolutelyMoreCannons.ProjectileCE_Airburst",
+            "speed": 130.0,
+            "damageDef": "Bomb",
+            "damageAmountBase": 0.0,
+            "armorPenetrationSharp": 0.0,
+            "armorPenetrationBlunt": 0.0,
+            "explosionRadius": 0.0,
+            "screenShakeFactor": 0.4,
+            "secondaryExplosive": null,
+            "fragments": null,
+            "airburst": {
+              "subFragments": [
+                {
+                  "type": "Airburst_Fragment",
+                  "count": 60
+                },
+                {
+                  "type": "Fragment_Small",
+                  "count": 40
+                }
+              ],
+              "fragAngleRange": "-25~25",
+              "fragXZAngleRange": "-35~35",
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
+            },
+            "guided": null,
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.22
+            }
+          }
         }
       ]
     },
@@ -4301,7 +4540,7 @@
       "id": "Turret_75mmLEIG18",
       "defName": "Turret_75mmLEIG18_Base",
       "label": "7.5 cm le.IG 18",
-      "description": "The 7.5 cm le.IG 18 was a German infantry support howitzer introduced in the 1930s. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 315, Cooldown: 6.0s, Range: 3550, Shelling Range: 6. Ammunition: 75mm Jgr. 18 (HE, Damage: 328, Explosion Radius: 4.0).",
+      "description": "The 7.5 cm le.IG 18 was a German infantry support howitzer introduced in the 1930s. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: None, HP: 315, Reload: 6.0s, Range: 3550, Shelling Range: 6. Ammunition: 75mm Jgr. 18 (HE, Damage: 120, Explosion Radius: 2.5).",
       "category": "Howitzers",
       "caliber": "75mm",
       "imageUrl": "images/extracted/Turret_75mmLEIG18_Base.png",
@@ -4339,7 +4578,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.5,
+          "turnSpeedDegreesPerSec": 30.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -4410,12 +4653,12 @@
           "label": "75mm Jgr. 18 (HE)",
           "description": "Ammunitions for 7.5cm L11.2 weapon type",
           "ammoClass": "GrenadeHE",
-          "marketValue": 130.08,
+          "marketValue": 82.0,
           "mass": 6.5,
           "bulk": 5.39,
           "imageUrl": "images/extracted/Ammo_75mmLEIG18_HE.png",
           "recipe": {
-            "workAmount": 56200.0,
+            "workAmount": 36000.0,
             "ingredients": [
               {
                 "item": "Steel",
@@ -4427,7 +4670,7 @@
               },
               {
                 "item": "FSX",
-                "count": 105.0
+                "count": 20.0
               }
             ],
             "products": {
@@ -4439,21 +4682,21 @@
             "thingClass": "CombatExtended.ProjectileCE_Explosive",
             "speed": 56.0,
             "damageDef": "Bomb",
-            "damageAmountBase": 328.0,
+            "damageAmountBase": 120.0,
             "armorPenetrationSharp": 0.0,
             "armorPenetrationBlunt": 0.0,
-            "explosionRadius": 4.0,
+            "explosionRadius": 2.5,
             "screenShakeFactor": 0.4,
             "secondaryExplosive": null,
             "fragments": {
               "fragmentList": [
                 {
                   "type": "Fragment_Large",
-                  "count": 6
+                  "count": 8
                 },
                 {
                   "type": "Fragment_Small",
-                  "count": 3
+                  "count": 4
                 }
               ],
               "fragAngleRange": "-90~-10"
@@ -4463,7 +4706,7 @@
             "shellingProps": {
               "range": 6.0,
               "tilesPerTick": 0.1,
-              "damage": 0.26
+              "damage": 0.1
             }
           }
         }
@@ -4512,7 +4755,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.15,
+          "turnSpeedDegreesPerSec": 9.0,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -4685,7 +4932,11 @@
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.08,
+          "turnSpeedDegreesPerSec": 4.8,
+          "preferredAngleRange": 15.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -4891,6 +5142,7 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
         "Variable RPM",
         "Smart Autoloader",
         "Cross-Map Shelling"
@@ -4918,7 +5170,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
@@ -4929,7 +5186,11 @@
         "ammoPreservation": {
           "enableMidBurstTracking": true
         },
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -5064,7 +5325,7 @@
       "id": "Turret_127mmTypeC",
       "defName": "Turret_127mmTypeC_Base",
       "label": "12.7cm 3rd Year Type C",
-      "description": "The 12.7cm 3rd Year Type C was a Japanese naval gun mounted on destroyers and light cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 1440, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.",
+      "description": "The 12.7cm 3rd Year Type C was a Japanese naval twin gun mounted on destroyers and cruisers. It fires twin-gun salvos, has an indirect fire variant, and is capable of settlement bombardment. Power: 400, HP: 1440, Cooldown: 12.0s, Range: 7-14800, Rate of Fire: 10 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.",
       "category": "Naval Guns",
       "caliber": "127mm",
       "imageUrl": "images/extracted/Turret_127mmTypeC_Base.png",
@@ -5074,6 +5335,9 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
+        "Variable RPM",
+        "Smart Autoloader",
         "Cross-Map Shelling"
       ],
       "common": {
@@ -5082,8 +5346,8 @@
         "mass": 1.0,
         "bulk": 1.0,
         "size": [
-          4,
-          4
+          6,
+          6
         ],
         "basePowerConsumption": 400.0,
         "constructionSkillPrerequisite": 6,
@@ -5099,12 +5363,28 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
-        "variableRpm": null,
+        "variableRpm": {
+          "maxRPMs": [],
+          "selectableBurstCounts": [],
+          "spinDownTime": 0.0
+        },
         "clamping": null,
-        "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "ammoPreservation": {
+          "preserveAmmo": true,
+          "enableMidBurstTracking": true
+        },
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.35,
+          "turnSpeedDegreesPerSec": 21.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -5118,7 +5398,7 @@
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 13.6,
+          "cooldown": 12.0,
           "magazineSize": 80,
           "reloadTime": 1.0,
           "chargeSpeeds": [],
@@ -5136,14 +5416,14 @@
             "requireLineOfSight": true
           },
           "ciws": null,
-          "turretCooldown": 13.6
+          "turretCooldown": 12.0
         },
         "indirect": {
           "gunDefName": "Turret_127mmTypeC_indirect_Weapon",
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 13.6,
+          "cooldown": 12.0,
           "magazineSize": 80,
           "reloadTime": 1.0,
           "chargeSpeeds": [
@@ -5156,7 +5436,7 @@
           "verb": {
             "verbClass": "CombatExtended.Verb_ShootMortarCE",
             "warmupTime": 0.5,
-            "minRange": 50.0,
+            "minRange": 25.0,
             "range": 14800.0,
             "burstShotCount": 2,
             "ticksBetweenBurstShots": 1,
@@ -5167,7 +5447,7 @@
             "requireLineOfSight": false
           },
           "ciws": null,
-          "turretCooldown": 13.6
+          "turretCooldown": 12.0
         }
       },
       "ammunition": [
@@ -5239,18 +5519,16 @@
       "id": "Turret_127mmSKC34",
       "defName": "Turret_127mmSKC34_Base",
       "label": "12.7cm SK C/34",
-      "description": "The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 300, HP: 972, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.",
+      "description": "The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 972, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.",
       "category": "Naval Guns",
       "caliber": "127mm",
       "imageUrl": "images/extracted/Turret_127mmSKC34_Base.png",
       "fireModes": [
-        "Direct",
-        "Indirect"
+        "Direct"
       ],
       "badges": [
-        "Dual Mode",
-        "Variable RPM",
-        "Cross-Map Shelling"
+        "Enclosed Protection",
+        "Variable RPM"
       ],
       "common": {
         "maxHitPoints": 972.0,
@@ -5275,7 +5553,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
@@ -5284,13 +5567,14 @@
         },
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
-        "shellingProps": {
-          "range": 18.0,
-          "tilesPerTick": 0.15
-        }
+        "shellingProps": null
       },
       "modes": {
         "direct": {
@@ -5318,37 +5602,7 @@
           "ciws": null,
           "turretCooldown": 4.0
         },
-        "indirect": {
-          "gunDefName": "Turret_127mmSKC34_indirect_Weapon",
-          "sightsEfficiency": 4.0,
-          "shotSpread": 0.01,
-          "swayFactor": 0.2,
-          "cooldown": 4.0,
-          "magazineSize": 1,
-          "reloadTime": 1.0,
-          "chargeSpeeds": [
-            50.0,
-            75.0,
-            100.0,
-            125.0,
-            150.0
-          ],
-          "verb": {
-            "verbClass": "CombatExtended.Verb_ShootMortarCE",
-            "warmupTime": 0.5,
-            "minRange": 60.0,
-            "range": 17000.0,
-            "burstShotCount": 1,
-            "ticksBetweenBurstShots": 0,
-            "calculatedRPM": 0,
-            "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
-            "requireLineOfSight": false
-          },
-          "ciws": null,
-          "turretCooldown": 4.0
-        }
+        "indirect": null
       },
       "ammunition": [
         {
@@ -5406,11 +5660,7 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 18.0,
-              "tilesPerTick": 0.15,
-              "damage": 0.15
-            }
+            "shellingProps": null
           }
         }
       ]
@@ -5429,7 +5679,9 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
         "Variable RPM",
+        "Smart Autoloader",
         "Cross-Map Shelling"
       ],
       "common": {
@@ -5455,7 +5707,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
@@ -5467,8 +5724,14 @@
           "spinDownTime": 0.0
         },
         "clamping": null,
-        "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "ammoPreservation": {
+          "preserveAmmo": true
+        },
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -5653,17 +5916,15 @@
       "id": "Turret_150mmKC36",
       "defName": "Turret_150mmKC36_Base",
       "label": "15cm Tbts KC/36",
-      "description": "The 15cm Tbts KC/36 was a German WWII destroyer gun designed for shore bombardment and naval warfare. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 2240, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 4.0m explosion radius.",
+      "description": "The 15cm Tbts KC/36 was a German WWII destroyer gun designed for shore bombardment and naval warfare. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 2240, Cooldown: 8.0s, Range: 8-23000, Rate of Fire: 7 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 4.0m explosion radius.",
       "category": "Naval Guns",
       "caliber": "150mm",
       "imageUrl": "images/extracted/Turret_150mmKC36_Base.png",
       "fireModes": [
-        "Direct",
-        "Indirect"
+        "Direct"
       ],
       "badges": [
-        "Dual Mode",
-        "Cross-Map Shelling"
+        "Enclosed Protection"
       ],
       "common": {
         "maxHitPoints": 2240.0,
@@ -5688,18 +5949,24 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": null,
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.35,
+          "turnSpeedDegreesPerSec": 21.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
-        "shellingProps": {
-          "range": 24.0,
-          "tilesPerTick": 0.15
-        }
+        "shellingProps": null
       },
       "modes": {
         "direct": {
@@ -5727,37 +5994,7 @@
           "ciws": null,
           "turretCooldown": 8.0
         },
-        "indirect": {
-          "gunDefName": "Turret_150mmKC36_indirect_Weapon",
-          "sightsEfficiency": 4.0,
-          "shotSpread": 0.01,
-          "swayFactor": 0.2,
-          "cooldown": 8.0,
-          "magazineSize": 1,
-          "reloadTime": 1.0,
-          "chargeSpeeds": [
-            50.0,
-            75.0,
-            100.0,
-            125.0,
-            150.0
-          ],
-          "verb": {
-            "verbClass": "CombatExtended.Verb_ShootMortarCE",
-            "warmupTime": 0.5,
-            "minRange": 60.0,
-            "range": 23000.0,
-            "burstShotCount": 1,
-            "ticksBetweenBurstShots": 0,
-            "calculatedRPM": 0,
-            "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
-            "requireLineOfSight": false
-          },
-          "ciws": null,
-          "turretCooldown": 8.0
-        }
+        "indirect": null
       },
       "ammunition": [
         {
@@ -5815,11 +6052,7 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 24.0,
-              "tilesPerTick": 0.15,
-              "damage": 0.24
-            }
+            "shellingProps": null
           }
         },
         {
@@ -5861,11 +6094,7 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 24.0,
-              "tilesPerTick": 0.15,
-              "damage": 1.0
-            }
+            "shellingProps": null
           }
         }
       ]
@@ -5874,17 +6103,17 @@
       "id": "Turret_150mmKC36T",
       "defName": "Turret_150mmKC36T_Base",
       "label": "15cm Tbts KC/36T",
-      "description": "The 15cm Tbts KC/36T was an experimental German turret with an armor-piercing upgrade for anti-ship combat. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 3500, Cooldown: 6.0s, Range: 7-20000, Rate of Fire: 10 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 300 penetration.",
+      "description": "The 15cm Tbts KC/36T was a German WWII twin destroyer turret designed for anti-ship combat. It fires twin-gun salvos, requires reloading after each salvo, and has no indirect fire capability. Power: 500, HP: 3500, Cooldown: 8.0s, Range: 8-23000, Rate of Fire: 10 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 4.0m explosion radius and AP shell with 300 penetration.",
       "category": "Naval Guns",
       "caliber": "150mm",
       "imageUrl": "images/extracted/Turret_150mmKC36T_Base.png",
       "fireModes": [
-        "Direct",
-        "Indirect"
+        "Direct"
       ],
       "badges": [
-        "Dual Mode",
-        "Cross-Map Shelling"
+        "Enclosed Protection",
+        "Variable RPM",
+        "Smart Autoloader"
       ],
       "common": {
         "maxHitPoints": 3500.0,
@@ -5892,8 +6121,8 @@
         "mass": 1.0,
         "bulk": 1.0,
         "size": [
-          5,
-          5
+          6,
+          6
         ],
         "basePowerConsumption": 500.0,
         "constructionSkillPrerequisite": 7,
@@ -5909,18 +6138,31 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
-        "variableRpm": null,
+        "variableRpm": {
+          "maxRPMs": [],
+          "selectableBurstCounts": [],
+          "spinDownTime": 0.0
+        },
         "clamping": null,
-        "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "ammoPreservation": {
+          "preserveAmmo": true,
+          "enableMidBurstTracking": true
+        },
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.3,
+          "turnSpeedDegreesPerSec": 18.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
-        "shellingProps": {
-          "range": 24.0,
-          "tilesPerTick": 0.15
-        }
+        "shellingProps": null
       },
       "modes": {
         "direct": {
@@ -5929,7 +6171,7 @@
           "shotSpread": 0.01,
           "swayFactor": 0.2,
           "cooldown": 8.0,
-          "magazineSize": 120,
+          "magazineSize": 2,
           "reloadTime": 1.0,
           "chargeSpeeds": [],
           "verb": {
@@ -5948,37 +6190,7 @@
           "ciws": null,
           "turretCooldown": 8.0
         },
-        "indirect": {
-          "gunDefName": "Turret_150mmKC36T_indirect_Weapon",
-          "sightsEfficiency": 4.0,
-          "shotSpread": 0.01,
-          "swayFactor": 0.2,
-          "cooldown": 8.0,
-          "magazineSize": 120,
-          "reloadTime": 1.0,
-          "chargeSpeeds": [
-            50.0,
-            75.0,
-            100.0,
-            125.0,
-            150.0
-          ],
-          "verb": {
-            "verbClass": "CombatExtended.Verb_ShootMortarCE",
-            "warmupTime": 0.5,
-            "minRange": 70.0,
-            "range": 23000.0,
-            "burstShotCount": 2,
-            "ticksBetweenBurstShots": 1,
-            "calculatedRPM": 7200.0,
-            "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
-            "requireLineOfSight": false
-          },
-          "ciws": null,
-          "turretCooldown": 8.0
-        }
+        "indirect": null
       },
       "ammunition": [
         {
@@ -6036,11 +6248,7 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 24.0,
-              "tilesPerTick": 0.15,
-              "damage": 0.24
-            }
+            "shellingProps": null
           }
         },
         {
@@ -6082,11 +6290,7 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 24.0,
-              "tilesPerTick": 0.15,
-              "damage": 1.0
-            }
+            "shellingProps": null
           }
         }
       ]
@@ -6095,17 +6299,16 @@
       "id": "Turret_203mmSKC34",
       "defName": "Turret_203mmSKC34_Base",
       "label": "20.3cm SK C/34",
-      "description": "The 20.3cm SK C/34 was a German heavy cruiser main battery designed for long-range engagements. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 1200, HP: 7105, Cooldown: 12.0s, Range: 7-25000, Rate of Fire: 5 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.",
+      "description": "The 20.3cm SK C/34 was a German heavy cruiser twin main battery designed for long-range engagements. It fires twin-gun salvos, requires reloading after each salvo, and has no indirect fire capability. Power: 800, HP: 7105, Cooldown: 12.0s, Range: 12-33540, Rate of Fire: 5 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.",
       "category": "Naval Guns",
       "caliber": "203mm",
       "imageUrl": "images/extracted/Turret_203mmSKC34_Base.png",
       "fireModes": [
-        "Direct",
-        "Indirect"
+        "Direct"
       ],
       "badges": [
-        "Dual Mode",
-        "Cross-Map Shelling",
+        "Enclosed Protection",
+        "Smart Autoloader",
         "Airburst / Flak"
       ],
       "common": {
@@ -6131,18 +6334,27 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": null,
         "clamping": null,
-        "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "ammoPreservation": {
+          "preserveAmmo": true,
+          "enableMidBurstTracking": true
+        },
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.25,
+          "turnSpeedDegreesPerSec": 15.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
-        "shellingProps": {
-          "range": 36.0,
-          "tilesPerTick": 0.15
-        }
+        "shellingProps": null
       },
       "modes": {
         "direct": {
@@ -6170,37 +6382,7 @@
           "ciws": null,
           "turretCooldown": 12.0
         },
-        "indirect": {
-          "gunDefName": "Turret_203mmSKC34_indirect_Weapon",
-          "sightsEfficiency": 4.0,
-          "shotSpread": 0.01,
-          "swayFactor": 0.2,
-          "cooldown": 12.0,
-          "magazineSize": 55,
-          "reloadTime": 1.0,
-          "chargeSpeeds": [
-            50.0,
-            75.0,
-            100.0,
-            125.0,
-            150.0
-          ],
-          "verb": {
-            "verbClass": "CombatExtended.Verb_ShootMortarCE",
-            "warmupTime": 0.5,
-            "minRange": 90.0,
-            "range": 33540.0,
-            "burstShotCount": 2,
-            "ticksBetweenBurstShots": 1,
-            "calculatedRPM": 7200.0,
-            "recoilAmount": 1.5,
-            "circularError": 1.0,
-            "indirectFirePenalty": 0.125,
-            "requireLineOfSight": false
-          },
-          "ciws": null,
-          "turretCooldown": 12.0
-        }
+        "indirect": null
       },
       "ammunition": [
         {
@@ -6258,11 +6440,7 @@
             },
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 36.0,
-              "tilesPerTick": 0.15,
-              "damage": 0.41
-            }
+            "shellingProps": null
           }
         },
         {
@@ -6304,11 +6482,7 @@
             "fragments": null,
             "airburst": null,
             "guided": null,
-            "shellingProps": {
-              "range": 36.0,
-              "tilesPerTick": 0.15,
-              "damage": 1.0
-            }
+            "shellingProps": null
           }
         },
         {
@@ -6356,26 +6530,22 @@
               "subFragments": [
                 {
                   "type": "Airburst_Fragment_Large",
-                  "count": 70
+                  "count": 40
                 },
                 {
                   "type": "Fragment_Small",
-                  "count": 30
+                  "count": 40
                 }
               ],
-              "fragAngleRange": "-25~25",
+              "fragAngleRange": "-20~-1",
               "fragXZAngleRange": "-35~35",
-              "type": "Altitude",
-              "armingTicks": 60,
-              "proximityRadius": 0.0,
-              "burstAltitude": 15.0
+              "type": "Flak",
+              "armingTicks": 12,
+              "proximityRadius": 6.0,
+              "burstAltitude": 0.0
             },
             "guided": null,
-            "shellingProps": {
-              "range": 36.0,
-              "tilesPerTick": 0.15,
-              "damage": 0.41
-            }
+            "shellingProps": null
           }
         }
       ]
@@ -6384,7 +6554,7 @@
       "id": "Turret_127mmMark16",
       "defName": "Turret_127mmMark16_Base",
       "label": "5\"/54 (12.7 cm) Mark 16",
-      "description": "The 5\"/54 (12.7 cm) Mark 16 was a US dual-purpose naval gun designed for destroyers and cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 1792, Cooldown: 4.0s, Range: 7-19000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 4s. Ammunition: HE shell with 3.5m explosion radius.",
+      "description": "The 5\"/54 (12.7 cm) Mark 16 was a US dual-purpose naval gun designed for destroyers and cruisers. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 500, HP: 1792, Cooldown: 3.5s, Range: 8-23700, Rate of Fire: 17 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius.",
       "category": "Naval Guns",
       "caliber": "127mm",
       "imageUrl": "images/extracted/Turret_127mmMark16_Base.png",
@@ -6394,6 +6564,7 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
         "Variable RPM",
         "Cross-Map Shelling"
       ],
@@ -6420,7 +6591,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
@@ -6429,7 +6605,11 @@
         },
         "clamping": null,
         "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.4,
+          "turnSpeedDegreesPerSec": 24.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -6443,14 +6623,14 @@
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 4.0,
+          "cooldown": 3.5,
           "magazineSize": 50,
           "reloadTime": 1.0,
           "chargeSpeeds": [],
           "verb": {
             "verbClass": "CombatExtended.Verb_ShootCE",
             "warmupTime": 0.5,
-            "minRange": 10.0,
+            "minRange": 8.0,
             "range": 23700.0,
             "burstShotCount": 1,
             "ticksBetweenBurstShots": 0,
@@ -6461,14 +6641,14 @@
             "requireLineOfSight": true
           },
           "ciws": null,
-          "turretCooldown": 3.3
+          "turretCooldown": 3.5
         },
         "indirect": {
           "gunDefName": "Turret_127mmMark16_indirect_Weapon",
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 4.0,
+          "cooldown": 3.5,
           "magazineSize": 50,
           "reloadTime": 1.0,
           "chargeSpeeds": [
@@ -6492,7 +6672,7 @@
             "requireLineOfSight": false
           },
           "ciws": null,
-          "turretCooldown": 3.3
+          "turretCooldown": 3.5
         }
       },
       "ammunition": [
@@ -6624,6 +6804,7 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
         "Variable RPM",
         "Smart Autoloader",
         "Cross-Map Shelling",
@@ -6652,7 +6833,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
@@ -6990,7 +7176,7 @@
       "id": "Turret_127mmOtobredaC",
       "defName": "Turret_127mmOtobredaC_Base",
       "label": "Otobreda 127/54C",
-      "description": "The Otobreda 127/54C was an Italian naval gun developed for rapid-fire against surface and shore targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 1440, Cooldown: 5.0s, Range: 7-22000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: AP shell with 150 penetration.",
+      "description": "The Otobreda 127/54C was an Italian rapid-fire naval gun developed for surface combat and shore bombardment. Equipped with an automatic drum autoloader, it features selectable burst fire, an indirect fire variant, and is capable of settlement bombardment. Power: 700, HP: 1440, Cooldown: 2.0s, Range: 7-30000, Rate of Fire: 45 rounds per minute, Aimed Burst: 3, Reload Time: 1s. Ammunition: AP shell with 150 penetration and HE shell with 3.5m explosion radius.",
       "category": "Naval Guns",
       "caliber": "127mm",
       "imageUrl": "images/turrets/127mmOtobredaC.png",
@@ -7000,7 +7186,9 @@
       ],
       "badges": [
         "Dual Mode",
+        "Enclosed Protection",
         "Variable RPM",
+        "Smart Autoloader",
         "Cross-Map Shelling"
       ],
       "common": {
@@ -7026,16 +7214,32 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": null,
         "variableRpm": {
           "maxRPMs": [],
-          "selectableBurstCounts": [],
+          "selectableBurstCounts": [
+            1,
+            3,
+            6
+          ],
           "spinDownTime": 0.0
         },
         "clamping": null,
-        "ammoPreservation": null,
-        "nonSnapRotation": null,
+        "ammoPreservation": {
+          "preserveAmmo": true,
+          "enableMidBurstTracking": true
+        },
+        "nonSnapRotation": {
+          "turnSpeedDegreesPerTick": 0.5,
+          "turnSpeedDegreesPerSec": 30.0,
+          "preferredAngleRange": 30.0
+        },
         "airburst": null,
         "guided": null,
         "shellingProps": {
@@ -7049,7 +7253,7 @@
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 1.5,
+          "cooldown": 2.0,
           "magazineSize": 85,
           "reloadTime": 1.0,
           "chargeSpeeds": [],
@@ -7058,23 +7262,23 @@
             "warmupTime": 0.5,
             "minRange": 7.0,
             "range": 30000.0,
-            "burstShotCount": 1,
-            "ticksBetweenBurstShots": 0,
-            "calculatedRPM": 0,
+            "burstShotCount": 3,
+            "ticksBetweenBurstShots": 40,
+            "calculatedRPM": 270.0,
             "recoilAmount": 0.2,
             "circularError": 0.0,
             "indirectFirePenalty": 0.0,
             "requireLineOfSight": true
           },
           "ciws": null,
-          "turretCooldown": 1.5
+          "turretCooldown": 2.0
         },
         "indirect": {
           "gunDefName": "Turret_127mmOtobredaC_indirect_Weapon",
           "sightsEfficiency": 4.0,
           "shotSpread": 0.01,
           "swayFactor": 0.2,
-          "cooldown": 1.5,
+          "cooldown": 2.0,
           "magazineSize": 85,
           "reloadTime": 1.0,
           "chargeSpeeds": [
@@ -7089,16 +7293,16 @@
             "warmupTime": 0.5,
             "minRange": 25.0,
             "range": 30000.0,
-            "burstShotCount": 1,
-            "ticksBetweenBurstShots": 0,
-            "calculatedRPM": 0,
+            "burstShotCount": 3,
+            "ticksBetweenBurstShots": 40,
+            "calculatedRPM": 270.0,
             "recoilAmount": 0.0,
             "circularError": 1.0,
             "indirectFirePenalty": 0.125,
             "requireLineOfSight": false
           },
           "ciws": null,
-          "turretCooldown": 1.5
+          "turretCooldown": 2.0
         }
       },
       "ammunition": [
@@ -7228,6 +7432,7 @@
         "Direct"
       ],
       "badges": [
+        "Enclosed Protection",
         "CIWS Air Defense",
         "Variable RPM",
         "Smart Autoloader"
@@ -7255,7 +7460,12 @@
         }
       },
       "specialized": {
-        "enclosed": null,
+        "enclosed": {
+          "bulletProtection": 100.0,
+          "explosiveProtection": 80.0,
+          "temperatureProtection": 50.0,
+          "hidePawnGraphics": true
+        },
         "ciws": {
           "isCIWS": true,
           "interceptionRange": 75.0,
@@ -7459,7 +7669,8 @@
       "badges": [
         "Dual Mode",
         "Variable RPM",
-        "Cross-Map Shelling"
+        "Cross-Map Shelling",
+        "Airburst / Flak"
       ],
       "common": {
         "maxHitPoints": 3020.0,
@@ -7621,6 +7832,73 @@
               "range": 24.0,
               "tilesPerTick": 0.15,
               "damage": 0.31581818181818183
+            }
+          }
+        },
+        {
+          "defName": "Ammo_152mm2A65_AB",
+          "label": "152mm OF-540 (Airburst)",
+          "description": "Ammunitions for 152.4mm 2A65 weapon type",
+          "ammoClass": "GrenadeHETF",
+          "marketValue": 380.0,
+          "mass": 43.0,
+          "bulk": 35.39,
+          "imageUrl": "images/extracted/Ammo_152mm2A65_AB.png",
+          "recipe": {
+            "workAmount": 16000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 88.0
+              },
+              {
+                "item": "ComponentIndustrial",
+                "count": 2.0
+              },
+              {
+                "item": "FSX",
+                "count": 11.0
+              }
+            ],
+            "products": {
+              "Ammo_152mm2A65_AB": 1
+            }
+          },
+          "projectile": {
+            "defName": "Bullet_152mm2A65_AB",
+            "thingClass": "AbsolutelyMoreCannons.ProjectileCE_Airburst",
+            "speed": 130.0,
+            "damageDef": "Bomb",
+            "damageAmountBase": 0.0,
+            "armorPenetrationSharp": 0.0,
+            "armorPenetrationBlunt": 0.0,
+            "explosionRadius": 0.0,
+            "screenShakeFactor": 0.4,
+            "secondaryExplosive": null,
+            "fragments": null,
+            "airburst": {
+              "subFragments": [
+                {
+                  "type": "Airburst_Fragment",
+                  "count": 60
+                },
+                {
+                  "type": "Fragment_Small",
+                  "count": 40
+                }
+              ],
+              "fragAngleRange": "-25~25",
+              "fragXZAngleRange": "-35~35",
+              "type": "Altitude",
+              "armingTicks": 60,
+              "proximityRadius": 0.0,
+              "burstAltitude": 15.0
+            },
+            "guided": null,
+            "shellingProps": {
+              "range": 24.0,
+              "tilesPerTick": 0.15,
+              "damage": 0.22
             }
           }
         }
@@ -7948,15 +8226,11 @@
           "bulk": 7.53,
           "imageUrl": "images/extracted/Ammo_57mmOQF_AP.png",
           "recipe": {
-            "workAmount": 20000.0,
+            "workAmount": 9360.0,
             "ingredients": [
               {
                 "item": "Steel",
-                "count": 20.0
-              },
-              {
-                "item": "Plasteel",
-                "count": 35.0
+                "count": 78.0
               }
             ],
             "products": {
@@ -7989,7 +8263,22 @@
           "mass": 2.33,
           "bulk": 7.53,
           "imageUrl": "images/extracted/Ammo_57mmOQF_APDS.png",
-          "recipe": null,
+          "recipe": {
+            "workAmount": 20000.0,
+            "ingredients": [
+              {
+                "item": "Steel",
+                "count": 20.0
+              },
+              {
+                "item": "Plasteel",
+                "count": 35.0
+              }
+            ],
+            "products": {
+              "Ammo_57mmOQF_APDS": 10
+            }
+          },
           "projectile": {
             "defName": "Bullet_57mmOQF_APDS",
             "thingClass": "",
@@ -8195,7 +8484,7 @@
       "id": "Turret_U20mmFlak38",
       "defName": "Turret_U20mmFlak38_Base",
       "label": "Auto Flak 38 (Unmanned)",
-      "description": "The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8x20 rounds) and requires 200 power to operate. Power: 200, HP: 390, Cooldown: 0.4s, Range: 70, Rate of Fire: 450 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.",
+      "description": "The Auto Flak 38 is a German WWII 20mm anti-aircraft cannon upgraded with an automatic fire control system for unmanned operation. It has an internal magazine (Mag Size: 8x20 rounds) and requires 200 power to operate. Power: 200, HP: 340, Cooldown: 0.4s, Range: 70, Rate of Fire: 450 rounds per minute. Ammunition: AP (Penetration 36). Not capable of settlement bombardment.",
       "category": "Unmanned",
       "caliber": "20mm",
       "imageUrl": "images/extracted/Turret_U20mmFlak38_Base.png",
@@ -8323,7 +8612,7 @@
       "id": "Turret_U20mmSPzMarder",
       "defName": "Turret_U20mmSPzMarder_Base",
       "label": "Auto Spz Marder (Auto)",
-      "description": "The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 546, Cooldown: 1.5s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.",
+      "description": "The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 475, Cooldown: 1.0s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.",
       "category": "Unmanned",
       "caliber": "20mm",
       "imageUrl": "images/extracted/Turret_U20mmSPzMarder_Base.png",

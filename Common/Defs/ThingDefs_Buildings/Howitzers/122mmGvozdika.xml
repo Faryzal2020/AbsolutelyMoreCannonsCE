@@ -11,7 +11,7 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_122mmGvozdika_Base</defName>
 		<label>2S1 Gvozdika</label>
-    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 720, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M122mmGvozdika</texPath>
@@ -36,7 +36,7 @@
 		<building>
 			<turretGunDef>Turret_122mmGvozdika_Weapon</turretGunDef>
       <turretTopDrawSize>13</turretTopDrawSize>
-			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
 		<designatorDropdown>Group_AMC_122mmGvozdika</designatorDropdown>
@@ -68,6 +68,13 @@
 			<li>Research_122mmGvozdika</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.4</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
@@ -77,12 +84,12 @@
 			<texPath>Things/Building/M122mmGvozdika_Top</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>1.5</SightsEfficiency>
 			<ShotSpread>0.02</ShotSpread>
 			<SwayFactor>0.1</SwayFactor>
-			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
@@ -119,7 +126,7 @@
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_122mmGvozdika_indirect_Base</defName>
 		<label>2S1 Gvozdika (indirect)</label>
-    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+    <description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M122mmGvozdika</texPath>
@@ -144,7 +151,7 @@
 		<building>
 			<turretGunDef>Turret_122mmGvozdika_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
-			<turretBurstCooldownTime>15</turretBurstCooldownTime>
+			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
       <turretTopDrawSize>13</turretTopDrawSize>
 		</building>
@@ -167,6 +174,13 @@
 			<li>Research_122mmGvozdika</li>
 		</researchPrerequisites>
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <modExtensions>
+    	<li Class="CombatExtended.NonSnapTurretExtension">
+    		<speed>0.4</speed>
+    		<preferedAngleRange>15</preferedAngleRange>
+    		<minAngleWeight>0.1</minAngleWeight>
+    	</li>
+    </modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">
@@ -176,12 +190,12 @@
 			<texPath>Things/Building/M122mmGvozdika_Top_Indirect</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 400, HP: 2000, Cooldown: 15.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5).</description>
+		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
+			<SightsEfficiency>1.5</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
-			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
+			<SwayFactor>0.5</SwayFactor>
+			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<weaponTags>
@@ -209,8 +223,8 @@
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
 				<requireLineOfSight>false</requireLineOfSight>
-				<circularError>1</circularError>
-				<indirectFirePenalty>0.125</indirectFirePenalty>
+				<circularError>0.6</circularError>
+				<indirectFirePenalty>0.09</indirectFirePenalty>
 				<stopBurstWithoutLos>false</stopBurstWithoutLos>
 			</li>
 		</verbs>
