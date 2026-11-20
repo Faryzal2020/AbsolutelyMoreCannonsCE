@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <JobDef>
+    <defName>AMC_Job_HaulToAmmoCapacitor</defName>
+    <driverClass>AbsolutelyMoreCannons.JobDriver_HaulToAmmoCapacitor</driverClass>
+    <reportString>Hauling TargetB to TargetA capacitor.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>AMC_WorkGiver_HaulToAmmoCapacitor</defName>
+    <label>fill ammo fabricator capacitor</label>
+    <giverClass>AbsolutelyMoreCannons.WorkGiver_HaulToAmmoCapacitor</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>78</priorityInType>
+    <verb>fill capacitor of</verb>
+    <gerund>filling capacitor of</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <JobDef>
+    <defName>AMC_Job_UpgradeAmmoCapacitor</defName>
+    <driverClass>AbsolutelyMoreCannons.JobDriver_UpgradeAmmoCapacitor</driverClass>
+    <reportString>Upgrading TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>AMC_WorkGiver_UpgradeAmmoCapacitor</defName>
+    <label>upgrade ammo fabricator</label>
+    <giverClass>AbsolutelyMoreCannons.WorkGiver_UpgradeAmmoCapacitor</giverClass>
+    <workType>Crafting</workType>
+    <priorityInType>95</priorityInType>
+    <verb>upgrade</verb>
+    <gerund>upgrading</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

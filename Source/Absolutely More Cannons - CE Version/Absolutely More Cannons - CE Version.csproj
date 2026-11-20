@@ -20,12 +20,6 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- RimWorld and Unity references via NuGet -->
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" GeneratePathProperty="true" />
-    <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
-  </ItemGroup>
-
   <PropertyGroup>
     <!-- Try to auto-detect RimWorld path from common locations -->
     <RimWorldPath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\RimWorld')">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
@@ -34,6 +28,13 @@
     <RimWorldPath Condition="Exists('E:\SteamLibrary\steamapps\common\RimWorld')">E:\SteamLibrary\steamapps\common\RimWorld</RimWorldPath>
     <RimWorldPath Condition="'$(RimWorldPath)' == '' AND Exists('$(HOME)\.steam\steam\steamapps\common\RimWorld')">$(HOME)/.steam/steam/steamapps/common/RimWorld</RimWorldPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- RimWorld and Unity references via NuGet -->
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" GeneratePathProperty="true" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
 
   <ItemGroup>
     <!-- Combat Extended reference - checks multiple possible locations -->

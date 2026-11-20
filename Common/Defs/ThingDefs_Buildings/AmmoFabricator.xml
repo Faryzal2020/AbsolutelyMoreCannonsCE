@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>AMC_AmmoFabricator</defName>
+    <label>AMC Automated Ammo Fabricator</label>
+    <description>An automated mid-to-end-game ammunition manufacturing plant equipped with high-capacity internal material capacitors. Colonists haul raw projectile and fuel materials directly into its internal reservoir, allowing the machine to autonomously fabricate ammunition of any caliber according to programmed crafting tickets without cluttering surrounding tiles.</description>
+    <thingClass>Building</thingClass>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Building/cncmachine</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4.5,2.25)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <constructEffect>ConstructMetal</constructEffect>
+    <costList>
+      <Steel>500</Steel>
+      <Plasteel>10</Plasteel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.7</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>4000</WorkToBuild>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <size>(4,2)</size>
+    <passability>PassThroughOnly</passability>
+    <pathCost>70</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <inspectorTabs>
+      <li>AbsolutelyMoreCannons.ITab_AmmoCapacitor</li>
+      <li>AbsolutelyMoreCannons.ITab_AmmoCapacitorUpgrades</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Glower">
+        <glowRadius>5</glowRadius>
+        <glowColor>(73,123,138,0)</glowColor>
+      </li>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="AbsolutelyMoreCannons.CompProperties_AmmoCapacitor">
+        <workSpeedFactor>4.0</workSpeedFactor>
+        <outputCellOffset>(0,0,-1)</outputCellOffset>
+        <defaultStepSize>75</defaultStepSize>
+        <baseMaxStorage>3000</baseMaxStorage>
+        <materials>
+          <!-- Projectile Materials (Base unit: 1 Steel = 1.0) -->
+          <li>
+            <thingDef>Steel</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>1.0</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+          <li>
+            <thingDef>Plasteel</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>4.0</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+          <li>
+            <thingDef>Uranium</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>3.0</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+          <li>
+            <thingDef>ComponentIndustrial</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>15.0</equivalenceValue>
+            <canSubstitute>false</canSubstitute>
+          </li>
+          <li>
+            <thingDef>ComponentSpacer</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>75.0</equivalenceValue>
+            <canSubstitute>false</canSubstitute>
+          </li>
+          <li>
+            <thingDef>Shell_AntigrainWarhead</thingDef>
+            <category>Projectile</category>
+            <equivalenceValue>0</equivalenceValue>
+            <canSubstitute>false</canSubstitute>
+          </li>
+
+          <!-- Fuel Materials (Base unit: 1 FSX = 1.0) -->
+          <li>
+            <thingDef>FSX</thingDef>
+            <category>Fuel</category>
+            <equivalenceValue>1.0</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+          <li>
+            <thingDef>Chemfuel</thingDef>
+            <category>Fuel</category>
+            <equivalenceValue>0.25</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+          <li>
+            <thingDef>Prometheum</thingDef>
+            <category>Fuel</category>
+            <equivalenceValue>1.0</equivalenceValue>
+            <canSubstitute>true</canSubstitute>
+          </li>
+        </materials>
+
+        <!-- 4 Upgrade Levels configurable via XML -->
+        <upgradeLevels>
+          <li>
+            <label>High-Torque Servo Drives</label>
+            <speedMultiplier>1.25</speedMultiplier>
+            <storageMultiplier>1.20</storageMultiplier>
+            <rebateChance>0.05</rebateChance>
+            <materialRebatePercent>0.10</materialRebatePercent>
+            <workAmount>2000</workAmount>
+            <minCraftingSkill>6</minCraftingSkill>
+            <costList>
+              <ComponentIndustrial>5</ComponentIndustrial>
+            </costList>
+          </li>
+          <li>
+            <label>Automated Scrap Reclamation</label>
+            <speedMultiplier>1.50</speedMultiplier>
+            <storageMultiplier>1.40</storageMultiplier>
+            <rebateChance>0.10</rebateChance>
+            <materialRebatePercent>0.15</materialRebatePercent>
+            <workAmount>3500</workAmount>
+            <minCraftingSkill>8</minCraftingSkill>
+            <costList>
+              <ComponentIndustrial>10</ComponentIndustrial>
+              <Steel>200</Steel>
+            </costList>
+          </li>
+          <li>
+            <label>Precision Plasteel Press</label>
+            <speedMultiplier>2.00</speedMultiplier>
+            <storageMultiplier>1.70</storageMultiplier>
+            <rebateChance>0.15</rebateChance>
+            <materialRebatePercent>0.20</materialRebatePercent>
+            <workAmount>5000</workAmount>
+            <minCraftingSkill>10</minCraftingSkill>
+            <costList>
+              <ComponentIndustrial>15</ComponentIndustrial>
+              <Plasteel>100</Plasteel>
+              <ComponentSpacer>2</ComponentSpacer>
+            </costList>
+          </li>
+          <li>
+            <label>Hyper-Parallel Assembly Core</label>
+            <speedMultiplier>2.75</speedMultiplier>
+            <storageMultiplier>2.00</storageMultiplier>
+            <rebateChance>0.25</rebateChance>
+            <materialRebatePercent>0.25</materialRebatePercent>
+            <workAmount>7500</workAmount>
+            <minCraftingSkill>12</minCraftingSkill>
+            <costList>
+              <Plasteel>250</Plasteel>
+              <ComponentSpacer>6</ComponentSpacer>
+            </costList>
+          </li>
+        </upgradeLevels>
+      </li>
+    </comps>
+    <tradeability>Buyable</tradeability>
+    <building>
+      <heatPerTickWhileWorking>0.2</heatPerTickWhileWorking>
+    </building>
+    <researchPrerequisites>
+      <li>Machining</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

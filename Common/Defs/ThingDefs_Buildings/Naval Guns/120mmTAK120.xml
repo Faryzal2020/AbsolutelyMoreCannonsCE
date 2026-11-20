@@ -53,12 +53,7 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
-				<bulletProtection>1.0</bulletProtection>
-				<explosiveProtection>0.8</explosiveProtection>
-				<temperatureProtection>0.5</temperatureProtection>
-				<hidePawnGraphics>true</hidePawnGraphics>
-			</li>
+
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
@@ -130,7 +125,7 @@
 		<modExtensions>
 			<li Class="CombatExtended.NonSnapTurretExtension">
 				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
-				<speed>0.4</speed> 
+				<speed>0.3</speed> 
 				<!-- Angle range (in degrees) preferred for target selection -->
 				<preferedAngleRange>30</preferedAngleRange>
 				<!-- Multiplier for angle weighting in target scoring -->
@@ -281,12 +276,7 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
-				<bulletProtection>1.0</bulletProtection>
-				<explosiveProtection>0.8</explosiveProtection>
-				<temperatureProtection>0.5</temperatureProtection>
-				<hidePawnGraphics>true</hidePawnGraphics>
-			</li>
+
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
@@ -311,7 +301,7 @@
 				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>2</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatThreshold>15</heatThreshold> <!-- shots required to start emitting heat smoke -->
 				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- ==================== BASE FABRICATOR MODULE ITEM ==================== -->
+  <ThingDef Name="AMC_FabricatorModuleBase" ParentName="ResourceBase" Abstract="True">
+    <techLevel>Industrial</techLevel>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+    </statBases>
+    <tradeTags>
+      <li>ExoticMisc</li>
+      <li>ComponentIndustrial</li>
+    </tradeTags>
+    <thingCategories>
+      <li>AMCMaterials</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ==================== CANNON FOCUS MOD (MEDIUM CALIBER 20mm~130mm) ==================== -->
+  <ThingDef ParentName="AMC_FabricatorModuleBase">
+    <defName>AMC_Module_CannonFocus</defName>
+    <label>Cannon Focus Mod</label>
+    <description>A specialized rotary tooling die and ballistic calibration module for the Automated Ammo Fabricator. Optimizes the assembly line for medium-caliber shells (20mm to 130mm), increasing their crafting speed by +50%, while reducing crafting speed for all other ammunition calibers by -20%.</description>
+    <graphicData>
+      <texPath>Things/Item/FCS/FCS_Advanced</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <statBases>
+      <MarketValue>450</MarketValue>
+      <Mass>2.5</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="AbsolutelyMoreCannons.FabricatorModuleExtension">
+        <targetCaliberTier>Medium</targetCaliberTier>
+        <minCaliberMm>20</minCaliberMm>
+        <maxCaliberMm>130</maxCaliberMm>
+        <matchedSpeedMultiplier>1.5</matchedSpeedMultiplier>
+        <otherSpeedMultiplier>0.8</otherSpeedMultiplier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>AMC_Make_Module_CannonFocus</defName>
+    <label>make Cannon Focus Mod</label>
+    <description>Craft a Cannon Focus Mod for the Automated Ammo Fabricator.</description>
+    <jobString>Crafting Cannon Focus Mod.</jobString>
+    <workAmount>5000</workAmount>
+    <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Machining</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>75</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>15</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>ComponentIndustrial</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AMC_Module_CannonFocus>1</AMC_Module_CannonFocus>
+    </products>
+    <recipeUsers>
+      <li>FabricationBench</li>
+      <li>TableMachining</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- ==================== SPACE OPTIMIZER MOD (+50% CAPACITOR STORAGE) ==================== -->
+  <ThingDef ParentName="AMC_FabricatorModuleBase">
+    <defName>AMC_Module_SpaceOptimizer</defName>
+    <label>Space Optimizer Mod</label>
+    <description>A high-density magnetic hopper and automated material compaction module for the Automated Ammo Fabricator. Expands total internal material capacitor storage capacity by +50%.</description>
+    <graphicData>
+      <texPath>Things/Item/FCS/FCS_Basic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <statBases>
+      <MarketValue>450</MarketValue>
+      <Mass>2.5</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="AbsolutelyMoreCannons.FabricatorModuleExtension">
+        <matchedSpeedMultiplier>1.0</matchedSpeedMultiplier>
+        <otherSpeedMultiplier>1.0</otherSpeedMultiplier>
+        <storageMultiplier>1.50</storageMultiplier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>AMC_Make_Module_SpaceOptimizer</defName>
+    <label>make Space Optimizer Mod</label>
+    <description>Craft a Space Optimizer Mod for the Automated Ammo Fabricator.</description>
+    <jobString>Crafting Space Optimizer Mod.</jobString>
+    <workAmount>5000</workAmount>
+    <workSpeedStat>WorkSpeedGlobal</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <researchPrerequisite>Machining</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </filter>
+        <count>100</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>ComponentIndustrial</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+        <li>Plasteel</li>
+        <li>ComponentIndustrial</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <AMC_Module_SpaceOptimizer>1</AMC_Module_SpaceOptimizer>
+    </products>
+    <recipeUsers>
+      <li>FabricationBench</li>
+      <li>TableMachining</li>
+      <li>CNCmachine</li>
+      <li MayRequire="AMandRP10.ND">ArtilleryMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>
