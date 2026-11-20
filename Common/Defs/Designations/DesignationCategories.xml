@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
   <DesignationCategoryDef>
     <defName>AMC</defName>
     <label>AMC Turrets</label>
-    <description>Absolutely More Cannons</description>
+    <description>Absolutely More Cannons 2</description>
     <order>15</order>
     <specialDesignatorClasses>
       <li>Designator_Cancel</li>

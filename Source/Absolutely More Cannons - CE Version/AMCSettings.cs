@@ -203,7 +203,7 @@ namespace AbsolutelyMoreCannons
             // === HEADER ===
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(listing.GetRect(40f), "Absolutely More Cannons - Mod Settings");
+            Widgets.Label(listing.GetRect(40f), "Absolutely More Cannons 2 - Mod Settings");
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
             listing.Gap();

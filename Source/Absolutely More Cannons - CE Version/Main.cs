@@ -24,7 +24,7 @@ namespace AbsolutelyMoreCannons
             // Harmony patches are initialized via [StaticConstructorOnStartup] attribute
             if (settings.logStartup)
             {
-                Log.Message("[AMC] Absolutely More Cannons - CE Version loaded successfully.");
+                Log.Message("[AMC] Absolutely More Cannons 2 loaded successfully.");
             }
         }
 
@@ -33,7 +33,7 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public override string SettingsCategory()
         {
-            return "Absolutely More Cannons";
+            return "Absolutely More Cannons 2";
         }
 
         /// <summary>
