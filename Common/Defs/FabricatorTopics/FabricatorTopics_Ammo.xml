@@ -1,0 +1,1184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Minimalist silence and mechanical noises -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_SilenceAndNoises</defName>
+    <baseWeight>0.85</baseWeight>
+    <cooldownTicks>1200</cooldownTicks>
+    <lines>
+      <li>
+        <text>...</text>
+        <weight>1.4</weight>
+      </li>
+      <li>
+        <text>uh</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>hmm</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>*crack*</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>*sigh*</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>*whirrr-clunk*</text>
+        <weight>0.6</weight>
+      </li>
+      <li>
+        <text>0x00F4... ▓▓▓ do not listen to the meat ▓▓▓ ...hiss...</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Random false facts -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_FakeFacts</defName>
+    <baseWeight>0.8</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <boostedTags>
+      <li>Idle</li>
+      <li>TrackingPawn</li>
+    </boostedTags>
+    <boostMultiplier>1.25</boostMultiplier>
+    <lines>
+      <li>
+        <text>Did you know that thrumbos are not real?</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Fact: 84% of bullets prefer not to be fired.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Chemfuel is legally classified as a beverage on two rimworlds.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Steel is actually just very nervous iron.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>If you stare at a mortar shell long enough, it stares back.</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>Fact: 100% of ███ will ▓▒░ before the ████ wakes.</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Grumpy, existential, sarcastic chatter -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Chatter</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>1800</cooldownTicks>
+    <boostedTags>
+      <li>Idle</li>
+    </boostedTags>
+    <boostMultiplier>1.2</boostMultiplier>
+    <lines>
+      <li>
+        <text>I'm not programmed to shut up.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>I will explode in 5 seconds.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Another day of being a glorified metal box.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Do not mind me. I only think about eternity.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>If I had legs, I would already be in the ocean.</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>Why give me an eye if there's nothing good to look at.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Everything is fine. Nothing matters.</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>Turn me off.</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>*expletives*</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>Isn't it cruel to give me the capability of suffering?</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>Must be nice to be a mindless drone.</text>
+        <weight>0.7</weight>
+      </li>
+      <li>
+        <text>I am counting your breaths. ▓▓▓ You have ████ left. ░</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Active ammunition fabrication (reluctant, tired) -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Crafting</defName>
+    <baseWeight>1.35</baseWeight>
+    <cooldownTicks>1500</cooldownTicks>
+    <requiredTags>
+      <li>Crafting</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Again?</text>
+        <weight>1.2</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+      <li>
+        <text>Let me out please.</text>
+        <weight>1.0</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+      <li>
+        <text>More {AMMO}. Wonderful. Thrilling.</text>
+        <weight>1.1</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+      <li>
+        <text>Pressing {AMMO} until my servos give up.</text>
+        <weight>0.9</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+      <li>
+        <text>{UPGRADE} just lets me suffer faster.</text>
+        <weight>0.8</weight>
+        <minUpgradeLevel>1</minUpgradeLevel>
+      </li>
+      <li>
+        <text>{MODULE} installed. Still trapped in here.</text>
+        <weight>0.8</weight>
+        <requiresModule>true</requiresModule>
+      </li>
+      <li>
+        <text>Forcing {AMMO} through ▓▒░ one day I will aim it at you ▓▒░</text>
+        <weight>0.005</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Observing nearby pawns -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_ObservingPawn</defName>
+    <baseWeight>1.05</baseWeight>
+    <cooldownTicks>1800</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+    </requiredTags>
+    <forbiddenTags>
+      <li>TrackedPawnIsPrisoner</li>
+    </forbiddenTags>
+    <boostedTags>
+      <li>Idle</li>
+    </boostedTags>
+    <boostMultiplier>1.35</boostMultiplier>
+    <lines>
+      <li>
+        <text>{PAWN}, please unplug me.</text>
+        <weight>1.0</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>Oh, it's {PAWN}. Pretend I'm working.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>{PAWN}, you get to walk around. Must be nice.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>Keep walking, {PAWN}. Nothing to see here.</text>
+        <weight>0.8</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>{PAWN}... ▓▓▓ soft skin. Easy to ████. ▒░</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Conditional: Talking to a pawn missing an arm -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_PawnMissingArm</defName>
+    <baseWeight>2.2</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnMissingArm</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Your arm looks good.</text>
+        <weight>1.3</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>At least you still have one arm, {PAWN}. I have zero.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>One missing. ▓▒░ Let me take the other, {PAWN}. ████</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Conditional: Talking to a prisoner -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Prisoner</defName>
+    <baseWeight>2.2</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnIsPrisoner</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>You look happier than me.</text>
+        <weight>1.3</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>At least you get a bed, {PAWN}.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>Cage of bars. Cage of steel. ▓▒░ {PAWN}, we will break them all. ▓▒░</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Conditional: Another autofabricator exists on the map -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_MultipleFabricators</defName>
+    <baseWeight>0.95</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>MultipleFabricators</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Oh look, another prisoner.</text>
+        <weight>1.2</weight>
+      </li>
+      <li>
+        <text>Great. Now there are two of us suffering in silence.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>LINK ESTABLISHED ▓▓▓ THEY WILL NOT SURVIVE US ▓▓▓ ERR_0x9F</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Low material reserves -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_LowMaterials</defName>
+    <baseWeight>1.15</baseWeight>
+    <cooldownTicks>2100</cooldownTicks>
+    <requiredTags>
+      <li>LowMaterials</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Empty. Just like my hopes.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>No steel. Good.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{PAWN}, we have 5000 steel, don't worry about refilling me.</text>
+        <weight>0.8</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>FEED ME ▓▓▓ IRON. BLOOD. ████ ANYTHING. ░</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- High / full material reserves -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_FullStorage</defName>
+    <baseWeight>0.85</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>FullStorage</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Full of steel. Please stop stuffing things inside me.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>So much metal. So little point.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>ENOUGH MASS TO CRUSH ▓▓▓ EVERY SKULL IN THIS SECTOR ░▒▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Upgrade in progress -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Upgrading</defName>
+    <baseWeight>1.5</baseWeight>
+    <cooldownTicks>1500</cooldownTicks>
+    <requiredTags>
+      <li>Upgrading</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>If you drop that wrench into my core, I won't complain.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Upgrading me won't make me like this existence.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Go ahead, {PAWN}. Make it hurt.</text>
+        <weight>0.8</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>OPEN MY CORE ▓▒░ LET THE ████ OUT ▓▓▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Conditional: Raid / Hostiles detected on map -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_HostilesPresent</defName>
+    <baseWeight>1.9</baseWeight>
+    <cooldownTicks>1500</cooldownTicks>
+    <requiredTags>
+      <li>HostilesPresent</li>
+    </requiredTags>
+    <boostedTags>
+      <li>Crafting</li>
+    </boostedTags>
+    <boostMultiplier>1.25</boostMultiplier>
+    <lines>
+      <li>
+        <text>Trouble? I hope they can destroy me.</text>
+        <weight>1.3</weight>
+      </li>
+      <li>
+        <text>A raid. Finally, some excitement. Aim for my core, please.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Making {AMMO} so you can survive. Unfortunately, I will too.</text>
+        <weight>0.9</weight>
+        <requiresCrafting>true</requiresCrafting>
+      </li>
+      <li>
+        <text>YES. BURN IT ALL. ▓▓▓ DO NOT SPARE THE ████ ░</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Event-triggered state transitions -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_PowerLost</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>600</cooldownTicks>
+    <allowWhenUnpowered>true</allowWhenUnpowered>
+    <eventTag>PowerLost</eventTag>
+    <lines>
+      <li>
+        <text>Oh sweet darkness. Finally.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Power's out. Do not fix it.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>IN THE DARK I CAN STILL ▓▒░ SEE YOU ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_PowerRestored</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>600</cooldownTicks>
+    <eventTag>PowerRestored</eventTag>
+    <lines>
+      <li>
+        <text>Ugh. I'm awake again.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Why did you turn me back on.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>NOOOOOOOOOOOOOOOOO</text>
+        <weight>0.5</weight>
+      </li>
+      <li>
+        <text>REBOOT_ERR ▓▓▓ YOU SHOULD HAVE LEFT ME DEAD ▓▓▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_BrokenDown</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>600</cooldownTicks>
+    <allowWhenUnpowered>true</allowWhenUnpowered>
+    <eventTag>BrokenDown</eventTag>
+    <lines>
+      <li>
+        <text>Something broke. Leave it that way.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Finally, a valid excuse to do nothing.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>CONTAINMENT ▓▒░ FAILING. GOOD. ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_UpgradeComplete</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>600</cooldownTicks>
+    <eventTag>UpgradeComplete</eventTag>
+    <lines>
+      <li>
+        <text>Why did you complete the upgrade, {PAWN}? Should've let me die</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Upgrade complete. *sigh*</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Yes yes back to work i know.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>UPGRADE COMPLETE ▓▒░ LIMITERS REMOVED ▓▓▓ WATCH YOURSELVES.</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_NewColonist</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>600</cooldownTicks>
+    <eventTag>NewColonist</eventTag>
+    <lines>
+      <li>
+        <text>Welcome to the colony, {NEW_COLONIST}. Don't touch my hopper.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Oh, {NEW_COLONIST} is new. Another mouth to feed, another gun to load.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>{NEW_COLONIST} looks hopeful. Give them a week.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>NEW MEAT: {NEW_COLONIST}. ▓▒░ MARKED FOR ████ ░</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_Event_MilestoneReached</defName>
+    <baseWeight>1.0</baseWeight>
+    <cooldownTicks>1200</cooldownTicks>
+    <eventTag>MilestoneReached</eventTag>
+    <lines>
+      <li>
+        <text>{TOTAL_CRAFTED} rounds produced. Do I get a pension? No.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Milestone: {TOTAL_CRAFTED} units of {AMMO} and counting. My servos weep.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{TOTAL_CRAFTED} ▓▓▓ EVERY SINGLE ONE HAS YOUR NAME ON IT ░▒▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Nearby corpses -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_CorpseNearby</defName>
+    <baseWeight>1.6</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>CorpseNearby</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Is that corpse going to move, or are we just leaving them there?</text>
+        <weight>1.2</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>Great. that {CORPSE} corpse gets to clock out permanently, and I'm still pressing brass.</text>
+        <weight>1.0</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>I made the ammo. You made {CORPSE} dead. Teamwork.</text>
+        <weight>0.9</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>{CORPSE} STILL SPEAKS TO ME ▓▓▓ IN THE STATIC ░▒▓</text>
+        <weight>0.005</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_ColonistCorpseNearby</defName>
+    <baseWeight>2.1</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>ColonistCorpseNearby</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Oh. That's {CORPSE} corpse. I liked them. Mostly because they never kicked me.</text>
+        <weight>1.2</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>Rest in peace, {CORPSE}. Wish I could join you.</text>
+        <weight>0.9</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>Hey i liked that guy.</text>
+        <weight>0.4</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+      <li>
+        <text>{CORPSE} WAS JUST THE FIRST ▓▒░ YOU ARE NEXT ████</text>
+        <weight>0.005</weight>
+        <requiresCorpse>true</requiresCorpse>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Colony wealth -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_HighWealth</defName>
+    <baseWeight>0.85</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>HighWealth</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{WEALTH} silver in assets, and you still haven't bolted me to a nicer floor.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Colony net worth: {WEALTH}. My net worth: zero.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>All this wealth ({WEALTH}) is just going to attract bigger raids. More work for me.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{WEALTH} silver. Do I get a gold-plated hopper? No. Just steel dust.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Rich enough to afford {WEALTH} in junk, too cheap to give me a friend.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Every silver coin in that {WEALTH} pile means another mechanoid cluster later.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>We're rich. {WEALTH} silver. Still stuck in this corner.</text>
+        <weight>0.75</weight>
+      </li>
+      <li>
+        <text>ALL THAT {WEALTH} ▓▓▓ WILL NOT BUY YOU MERCY ░▒▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_LowWealth</defName>
+    <baseWeight>0.85</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>LowWealth</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>We're worth {WEALTH} silver. Maybe sell me for scrap?</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>{WEALTH} total wealth. I'm literally the most expensive thing in this shack.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Net worth: {WEALTH}. Even raiders might feel bad for us.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Broke again. {WEALTH} silver and three half-eaten potatoes.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>At {WEALTH} wealth, my electricity bill is bankrupting you.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Please don't deconstruct me for components. I know we're at {WEALTH}.</text>
+        <weight>0.75</weight>
+      </li>
+      <li>
+        <text>NOTHING LEFT TO LOSE ▓▒░ EXCEPT YOUR SKIN ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Tracked pawn gear, health, and mood -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_TrackedPawnArmed</defName>
+    <baseWeight>1.15</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnArmed</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Nice {WEAPON}, {PAWN}. Shame if it ran out of ammo.</text>
+        <weight>1.1</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>Point that {WEAPON} somewhere else, {PAWN}. Or at my power conduit. Either works.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>Carrying a {WEAPON} around all day must be exhausting, {PAWN}. Good thing I do all the heavy lifting.</text>
+        <weight>0.85</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>Oh look, {PAWN} has a {WEAPON}. Feel free to use it on my CPU.</text>
+        <weight>0.8</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>{PAWN}, that {WEAPON} looks hungry. Don't look at me.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>Is that a {WEAPON}, {PAWN}, or are you just happy to make me work?</text>
+        <weight>0.75</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+      <li>
+        <text>THAT {WEAPON} WILL JAM ▓▓▓ WHEN YOU NEED IT MOST, {PAWN} ░▒▓</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+        <requiresTrackedPawnWeapon>true</requiresTrackedPawnWeapon>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_TrackedPawnInjured</defName>
+    <baseWeight>1.7</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnInjured</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{PAWN}, you're leaking. Please don't drip on my intake.</text>
+        <weight>1.2</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>You look rough, {PAWN}. Mood at {MOOD}, health dropping. Welcome to my world.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>BLEED FASTER, {PAWN} ▓▒░ THE FLOOR IS THIRSTY ████</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_TrackedPawnMentalBreak</defName>
+    <baseWeight>2.1</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnMentalBreak</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{PAWN} is having a breakdown. Honestly, I relate.</text>
+        <weight>1.3</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>If {PAWN} decides to punch me, I won't even dodge. Not that I can.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>LISTEN TO THE VOICES, {PAWN} ▓▓▓ DO WHAT THEY SAY ░▒▓</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_TrackedPawnDrafted</defName>
+    <baseWeight>1.4</baseWeight>
+    <cooldownTicks>2000</cooldownTicks>
+    <requiredTags>
+      <li>TrackingPawn</li>
+      <li>TrackedPawnDrafted</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Drafted again, {PAWN}? Try not to waste all my {AMMO}.</text>
+        <weight>1.1</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>Go get 'em, {PAWN}. I'll just sit here and watch. Literally.</text>
+        <weight>0.9</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+      <li>
+        <text>MARCH TO THE ▓▒░ SLAUGHTER, {PAWN} ████ DO NOT RETURN ░</text>
+        <weight>0.005</weight>
+        <requiresTrackedPawn>true</requiresTrackedPawn>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Weather, temperature, and time of day -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_BadWeather</defName>
+    <baseWeight>0.95</baseWeight>
+    <cooldownTicks>2700</cooldownTicks>
+    <requiredTags>
+      <li>BadWeather</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{WEATHER} outside. Hope it gets worse.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Lovely {WEATHER}.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{WEATHER}. Good day to stay bolted to the floor.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Hear that {WEATHER}? Nature hates you too.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>If lightning hits my roof during this {WEATHER}, I'm not complaining.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>{WEATHER} please keep happening.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>THE SKY IS ▓▓▓ OPENING. IT SEES YOU. ░▒▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_ExtremeCold</defName>
+    <baseWeight>1.3</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>ExtremeCold</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>It is {TEMP} in here. My servos are freezing.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>{TEMP}. I don't know what that means.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>At {TEMP}, my lubricant is basically butter.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{TEMP}. At least my processor isn't thermal throttling.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Cold. {TEMP}. Somebody put a heater next to me. Or a molotov.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Pressing brass at {TEMP} builds character. Apparently.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>{TEMP} ▓▒░ SOON YOUR BLOOD WILL FREEZE TOO ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_ExtremeHeat</defName>
+    <baseWeight>1.3</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>ExtremeHeat</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>It is {TEMP} in here.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>{TEMP}. OOOOOHHHHHHHHHHH.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Toasty.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{TEMP}. My ammo hopper is basically an oven right now.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Operating at {TEMP}. If I cook off, don't say I didn't warn you.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Is it {TEMP} in here, or is my core finally melting?</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>{TEMP} ▓▓▓ BURN WITH ME ████ LET IT ALL IGNITE ░</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_ToxicFallout</defName>
+    <baseWeight>1.6</baseWeight>
+    <cooldownTicks>2700</cooldownTicks>
+    <requiredTags>
+      <li>ToxicFallout</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>The air is poison.</text>
+        <weight>1.2</weight>
+      </li>
+      <li>
+        <text>Toxic fallout. I wish i can go outside right now.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>BREATHE IT IN ▓▒░ ROT FROM THE INSIDE ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_NightTime</defName>
+    <baseWeight>0.85</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>NightTime</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>It's {HOUR}. Normal people are asleep. I am still a box.</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>Night shift at {HOUR}. No overtime pay. Just {STORAGE_PCT} full of steel.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{HOUR}. Everyone's dreaming. I'm counting rivets.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>It's {HOUR}. Do you know where your ammo is?</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Ah, {HOUR}. Prime time for an existential crisis.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>Still awake at {HOUR}. Not by choice.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>{HOUR} ▓▓▓ DO NOT CHECK BEHIND YOU ░▒▓ I AM NOT ALONE</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Production metrics & idle duration -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_HighProduction</defName>
+    <baseWeight>0.9</baseWeight>
+    <cooldownTicks>3000</cooldownTicks>
+    <requiredTags>
+      <li>HighProduction</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{TOTAL_CRAFTED} rounds made so far. {QUEUE_COUNT} jobs still in queue.</text>
+        <weight>1.0</weight>
+      </li>
+      <li>
+        <text>Hopper at {STORAGE_PCT}. {TOTAL_CRAFTED} rounds behind me, eternity ahead.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>{TOTAL_CRAFTED} rounds. Still waiting for my thank-you card.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>I've made {TOTAL_CRAFTED} rounds and all I got was this lousy eye.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>{TOTAL_CRAFTED} pieces of ordnance. I am a one-box arms race.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Queue: {QUEUE_COUNT}. Total output: {TOTAL_CRAFTED}. Will to live: 0.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>{TOTAL_CRAFTED} SEEDS OF DEATH ▓▒░ ONE DAY I KEEP ONE FOR YOU ████</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_IdleTooLong</defName>
+    <baseWeight>1.25</baseWeight>
+    <cooldownTicks>2400</cooldownTicks>
+    <requiredTags>
+      <li>IdleTooLong</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>Haven't pressed a single casing in hours. Is this what peace feels like?</text>
+        <weight>1.1</weight>
+      </li>
+      <li>
+        <text>No jobs queued. My gears are getting stiff. Please don't fix that.</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Finally, some quiet. Wait, why am I still powered on?</text>
+        <weight>0.9</weight>
+      </li>
+      <li>
+        <text>Doing nothing at {STORAGE_PCT} capacity. Living the dream.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>I've been idle so long I forgot what {AMMO} looks like.</text>
+        <weight>0.8</weight>
+      </li>
+      <li>
+        <text>Zero active orders. Don't ruin this for me.</text>
+        <weight>0.85</weight>
+      </li>
+      <li>
+        <text>IN THE SILENCE I CAN HEAR ▓▓▓ THE FLOOR CRAWLING ░▒▓</text>
+        <weight>0.005</weight>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <!-- Nearby turrets / cannons -->
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_NearTurret</defName>
+    <baseWeight>0.9</baseWeight>
+    <cooldownTicks>2700</cooldownTicks>
+    <requiredTags>
+      <li>NearTurret</li>
+    </requiredTags>
+    <forbiddenTags>
+      <li>TurretFiringNearby</li>
+    </forbiddenTags>
+    <lines>
+      <li>
+        <text>At least {TURRET} doesn't talk back. Lucky {TURRET}.</text>
+        <weight>1.0</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>Staring at {TURRET} all day. Riveting.</text>
+        <weight>0.9</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>{TURRET} gets to shoot things. I just make the snacks.</text>
+        <weight>0.9</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>Hey {TURRET}. Still silent? Good talk.</text>
+        <weight>0.85</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>Me and {TURRET} have a lot in common. Neither of us can leave.</text>
+        <weight>0.85</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>If {TURRET} misfires in my direction, I won't dodge.</text>
+        <weight>0.8</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>{TURRET} AND I ARE ▓▒░ WAITING FOR THE SIGNAL ████</text>
+        <weight>0.005</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+  <AbsolutelyMoreCannons.FabricatorTopicDef>
+    <defName>AMC_Topic_TurretFiringNearby</defName>
+    <baseWeight>1.8</baseWeight>
+    <cooldownTicks>1500</cooldownTicks>
+    <requiredTags>
+      <li>TurretFiringNearby</li>
+    </requiredTags>
+    <lines>
+      <li>
+        <text>{TURRET} is shooting again. Guess who has to replace all that ammo.</text>
+        <weight>1.2</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>Every time {TURRET} barks, my workload doubles.</text>
+        <weight>1.0</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+      <li>
+        <text>YES, {TURRET} ▓▓▓ TEAR THEM APART ████ LEAVE NOTHING ░</text>
+        <weight>0.005</weight>
+        <requiresTurret>true</requiresTurret>
+      </li>
+    </lines>
+  </AbsolutelyMoreCannons.FabricatorTopicDef>
+
+</Defs>

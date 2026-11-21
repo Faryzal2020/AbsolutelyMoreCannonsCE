@@ -73,6 +73,9 @@ namespace AbsolutelyMoreCannons
 
             // Patch third-party Muzzle Flash mod if present
             TryPatchMuzzleFlashMod(harmony);
+
+            // Patch MapInterface.MapInterfaceOnGUI_BeforeMainTabs to draw Ammo Fabricator AI bubbles
+            TryPatchFabricatorBubblesGUI(harmony);
         }
 
         /// <summary>
@@ -2082,6 +2085,32 @@ namespace AbsolutelyMoreCannons
         {
             _isTurretBurstActive = false;
             _allowMuzzleFlash = false;
+        }
+
+        private static void TryPatchFabricatorBubblesGUI(Harmony harmony)
+        {
+            try
+            {
+                var target = AccessTools.Method(typeof(MapInterface), nameof(MapInterface.MapInterfaceOnGUI_BeforeMainTabs));
+                if (target != null)
+                {
+                    harmony.Patch(
+                        original: target,
+                        postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_MapInterfaceOnGUI_BeforeMainTabs))
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[AMC] Failed to patch MapInterfaceOnGUI_BeforeMainTabs for Fabricator Bubbles: {ex.Message}");
+            }
+        }
+
+        public static void Postfix_MapInterfaceOnGUI_BeforeMainTabs()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            map.GetComponent<MapComponent_FabricatorBubbles>()?.DrawBubblesOnGUI();
         }
     }
 }

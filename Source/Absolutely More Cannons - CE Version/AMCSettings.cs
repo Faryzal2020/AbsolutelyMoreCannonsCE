@@ -43,6 +43,11 @@ namespace AbsolutelyMoreCannons
         public float spreadReductionPercent = 0f;  // 0% = full spread, 100% = no spread
         public bool showAccuracyOverrideInspect = true; // Show per-turret accuracy overrides in inspect panel
 
+        // === Ammo Fabricator AI Bubbles ===
+        public bool enableFabricatorBubbles = true;
+        public bool syncWithInteractionBubbles = true;
+        public float fabricatorBubbleFrequencyMultiplier = 1.0f;
+
         // === Turret Component Logging ===
         private bool _logTurretBarrel = false;
         private bool _logTurretModeSwap = false;
@@ -111,6 +116,9 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref recoilReductionPercent, "recoilReductionPercent", 0f);
             Scribe_Values.Look(ref spreadReductionPercent, "spreadReductionPercent", 0f);
             Scribe_Values.Look(ref showAccuracyOverrideInspect, "showAccuracyOverrideInspect", true);
+            Scribe_Values.Look(ref enableFabricatorBubbles, "enableFabricatorBubbles", true);
+            Scribe_Values.Look(ref syncWithInteractionBubbles, "syncWithInteractionBubbles", true);
+            Scribe_Values.Look(ref fabricatorBubbleFrequencyMultiplier, "fabricatorBubbleFrequencyMultiplier", 1.0f);
 
             // Turret Component Logging
             Scribe_Values.Look(ref _logTurretBarrel, "logTurretBarrel", false);
@@ -260,6 +268,29 @@ namespace AbsolutelyMoreCannons
                 ref showAccuracyOverrideInspect,
                 "Display per-turret accuracy override values when selecting turrets"
             );
+
+            listing.Gap(12);
+
+            // === AMMO FABRICATOR AI BUBBLES ===
+            Widgets.Label(listing.GetRect(30f), "═══ Ammo Fabricator AI Bubbles ═══");
+            listing.Gap(4);
+            listing.CheckboxLabeled(
+                "Enable Fabricator Thought Bubbles",
+                ref enableFabricatorBubbles,
+                "Show situational AI thought bubbles above the Automated Ammo Fabricator"
+            );
+            if (enableFabricatorBubbles)
+            {
+                listing.CheckboxLabeled(
+                    "Sync with Interaction Bubbles Toggle",
+                    ref syncWithInteractionBubbles,
+                    "Hide fabricator bubbles when Jaxe's Interaction Bubbles is toggled off"
+                );
+                Rect freqLabelRect = listing.GetRect(Text.LineHeight);
+                Widgets.Label(freqLabelRect, $"Bubble Frequency Multiplier: {fabricatorBubbleFrequencyMultiplier:F2}x");
+                Rect freqSliderRect = listing.GetRect(22f);
+                fabricatorBubbleFrequencyMultiplier = Widgets.HorizontalSlider(freqSliderRect, fabricatorBubbleFrequencyMultiplier, 0.25f, 3.0f, true);
+            }
 
             listing.Gap(16);
 

@@ -126,4 +126,22 @@
     <researchViewY>0.5</researchViewY>
     <tab>AMC_General</tab>
   </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>AMC_AmmoFabricator</defName>
+    <label>automated ammo fabricator</label>
+    <description>Allows you to construct an AI-assisted automated ammunition fabricator capable of storing bulk materials and continuously manufacturing cannon ammunition.</description>
+    <baseCost>2500</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Fabrication</li>
+    </prerequisites>
+    <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+    <requiredResearchFacilities>
+      <li>MultiAnalyzer</li>
+    </requiredResearchFacilities>
+    <researchViewX>6</researchViewX>
+    <researchViewY>0</researchViewY>
+    <tab>AMC_General</tab>
+  </ResearchProjectDef>
 </Defs>

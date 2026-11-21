@@ -81,6 +81,21 @@ namespace AbsolutelyMoreCannons
         private CompFlickable flickComp;
         private CompBreakdownable breakdownComp;
 
+        /// <summary>
+        /// True during ticks where the fabricator is actively advancing work on a crafting ticket.
+        /// </summary>
+        public bool IsCraftingNow { get; private set; }
+
+        /// <summary>
+        /// Cumulative number of ammunition items produced by this fabricator.
+        /// </summary>
+        public int totalAmmoCrafted = 0;
+
+        /// <summary>
+        /// The ticket currently being crafted on this tick, if any.
+        /// </summary>
+        public AmmoCraftTicket ActiveTicket { get; private set; }
+
         private static List<RecipeDef> cachedAmmoRecipes;
         private static List<ThingDef> cachedModuleDefs;
 
@@ -807,6 +822,8 @@ namespace AbsolutelyMoreCannons
         public override void CompTick()
         {
             base.CompTick();
+            IsCraftingNow = false;
+            ActiveTicket = null;
 
             if (!IsPoweredAndActive) return;
             // Machine stops autonomous crafting while waiting for upgrade materials or upgrade work
@@ -834,6 +851,8 @@ namespace AbsolutelyMoreCannons
 
                 // Advance work progress on this active ticket (accounting for upgrade level & module multipliers)
                 ticket.workProgress += GetEffectiveWorkSpeed(ticket.ProducedAmmoDef);
+                IsCraftingNow = true;
+                ActiveTicket = ticket;
 
                 // Push heat if building defines heatPerTickWhileWorking
                 if (parent.def.building != null && parent.def.building.heatPerTickWhileWorking > 0f && parent.IsHashIntervalTick(60))
@@ -867,6 +886,7 @@ namespace AbsolutelyMoreCannons
                     if (prod.thingDef != null && prod.count > 0)
                     {
                         DropMaterialOut(prod.thingDef, prod.count);
+                        totalAmmoCrafted += prod.count;
                     }
                 }
             }
@@ -985,6 +1005,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref uiStepSize, "uiStepSize", 75);
             Scribe_Values.Look(ref upgradeLevel, "upgradeLevel", 0);
             Scribe_Values.Look(ref isUpgrading, "isUpgrading", false);
+            Scribe_Values.Look(ref totalAmmoCrafted, "totalAmmoCrafted", 0);
             Scribe_Collections.Look(ref upgradeDeliveredAmounts, "upgradeDeliveredAmounts", LookMode.Def, LookMode.Value);
             Scribe_Values.Look(ref upgradeWorkDone, "upgradeWorkDone", 0f);
             Scribe_Deep.Look(ref moduleContainer, "moduleContainer", this);

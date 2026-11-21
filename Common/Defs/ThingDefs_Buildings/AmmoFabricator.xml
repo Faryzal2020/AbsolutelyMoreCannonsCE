@@ -4,13 +4,15 @@
   <ThingDef ParentName="BuildingBase">
     <defName>AMC_AmmoFabricator</defName>
     <label>AMC Automated Ammo Fabricator</label>
-    <description>An automated mid-to-end-game ammunition manufacturing plant equipped with high-capacity internal material capacitors. Colonists haul raw projectile and fuel materials directly into its internal reservoir, allowing the machine to autonomously fabricate ammunition of any caliber according to programmed crafting tickets without cluttering surrounding tiles.</description>
+    <description>An automated ammunition manufacturing plant equipped with high-capacity internal material capacitors and unnecessarily intelligent AI.</description>
     <thingClass>Building</thingClass>
     <tickerType>Normal</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/cncmachine</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(4.5,2.25)</drawSize>
+      <texPath>Things/Building/AUTOFABRICATOR</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(8,8)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>
@@ -19,30 +21,33 @@
       </damageData>
     </graphicData>
     <castEdgeShadows>true</castEdgeShadows>
-    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
     <constructEffect>ConstructMetal</constructEffect>
     <costList>
       <Steel>500</Steel>
-      <Plasteel>10</Plasteel>
-      <ComponentIndustrial>5</ComponentIndustrial>
+      <Plasteel>100</Plasteel>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <ComponentSpacer>4</ComponentSpacer>
+      <AIPersonaCore>1</AIPersonaCore>
     </costList>
     <altitudeLayer>Building</altitudeLayer>
-    <fillPercent>0.7</fillPercent>
+    <fillPercent>0.85</fillPercent>
     <useHitPoints>True</useHitPoints>
     <statBases>
-      <WorkToBuild>4000</WorkToBuild>
-      <MaxHitPoints>500</MaxHitPoints>
-      <Flammability>0.5</Flammability>
+      <WorkToBuild>12000</WorkToBuild>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0.2</Flammability>
     </statBases>
-    <size>(4,2)</size>
+    <size>(7,4)</size>
+    <rotatable>false</rotatable>
     <passability>PassThroughOnly</passability>
     <pathCost>70</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
-    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <interactionCellOffset>(2,0,-2)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
     <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
     <designationCategory>Production</designationCategory>
-    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
     <inspectorTabs>
       <li>AbsolutelyMoreCannons.ITab_AmmoCapacitor</li>
       <li>AbsolutelyMoreCannons.ITab_AmmoCapacitorUpgrades</li>
@@ -51,7 +56,7 @@
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
         <shortCircuitInRain>true</shortCircuitInRain>
-        <basePowerConsumption>400</basePowerConsumption>
+        <basePowerConsumption>1200</basePowerConsumption>
       </li>
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Glower">
@@ -59,9 +64,73 @@
         <glowColor>(73,123,138,0)</glowColor>
       </li>
       <li Class="CompProperties_Breakdownable"/>
+      <li Class="AbsolutelyMoreCannons.CompProperties_FabricatorEye">
+        <eyeball>
+          <texPath>Things/Building/AUTOFABRICATOR_EYEBALL</texPath>
+          <scale>(0.08125,0.08125)</scale>
+          <offset>(0.913,0,-1.813)</offset>
+        </eyeball>
+        <eyeballOff>
+          <texPath>Things/Building/AUTOFABRICATOR_EYE_OFF</texPath>
+          <scale>(0.08125,0.08125)</scale>
+          <offset>(0.913,0,-1.813)</offset>
+        </eyeballOff>
+        <cover>
+          <texPath>Things/Building/AUTOFABRICATOR_COVER</texPath>
+          <scale>(1,1)</scale>
+          <offset>(0,0,0)</offset>
+        </cover>
+        <glow>
+          <texPath>Things/Building/AUTOFABRICATOR_GLOW</texPath>
+          <scale>(0.2708,0.2688)</scale>
+          <offset>(0.913,0,-1.813)</offset>
+          <useGlowShader>true</useGlowShader>
+        </glow>
+        <topOff>
+          <texPath>Things/Building/AUTOFABRICATOR_TOP_OFF</texPath>
+          <scale>(1,1)</scale>
+          <offset>(0,0,0)</offset>
+        </topOff>
+        <topOn>
+          <texPath>Things/Building/AUTOFABRICATOR_TOP_ON</texPath>
+          <scale>(1,1)</scale>
+          <offset>(0,0,0)</offset>
+        </topOn>
+        <maxOffsetLeft>0.15</maxOffsetLeft>
+        <maxOffsetRight>0.15</maxOffsetRight>
+        <maxOffsetDown>0.50</maxOffsetDown>
+        <maxOffsetUp>0.50</maxOffsetUp>
+        <detectRadius>10</detectRadius>
+        <onlyTrackInFront>true</onlyTrackInFront>
+        <frontZMargin>1.0</frontZMargin>
+        <trackSpeed>0.2</trackSpeed>
+        <idleSpeed>0.20</idleSpeed>
+        <idleHoldTicksMin>300</idleHoldTicksMin>
+        <idleHoldTicksMax>600</idleHoldTicksMax>
+        <trackSaccadeMagnitude>(0.04,0.09)</trackSaccadeMagnitude>
+        <trackSaccadeIntervalMin>45</trackSaccadeIntervalMin>
+        <trackSaccadeIntervalMax>180</trackSaccadeIntervalMax>
+        <idleSaccadeMagnitude>(0.08,0.18)</idleSaccadeMagnitude>
+        <idleSaccadeIntervalMin>45</idleSaccadeIntervalMin>
+        <idleSaccadeIntervalMax>150</idleSaccadeIntervalMax>
+        <ignorePawnCheckIntervalMin>300</ignorePawnCheckIntervalMin>
+        <ignorePawnCheckIntervalMax>600</ignorePawnCheckIntervalMax>
+        <ignorePawnChance>0.35</ignorePawnChance>
+        <ignorePawnDurationMin>300</ignorePawnDurationMin>
+        <ignorePawnDurationMax>600</ignorePawnDurationMax>
+      </li>
+      <li Class="AbsolutelyMoreCannons.CompProperties_FabricatorThoughts">
+        <minIntervalTicks>720</minIntervalTicks>
+        <maxIntervalTicks>1680</maxIntervalTicks>
+        <bubbleDurationTicks>300</bubbleDurationTicks>
+        <eventCooldownTicks>300</eventCooldownTicks>
+        <bubbleWorldOffset>(0, 0, 0.95)</bubbleWorldOffset>
+        <lowMaterialRatio>0.15</lowMaterialRatio>
+        <fullStorageRatio>0.85</fullStorageRatio>
+      </li>
       <li Class="AbsolutelyMoreCannons.CompProperties_AmmoCapacitor">
         <workSpeedFactor>4.0</workSpeedFactor>
-        <outputCellOffset>(0,0,-1)</outputCellOffset>
+        <outputCellOffset>(-2,0,-2)</outputCellOffset>
         <defaultStepSize>75</defaultStepSize>
         <baseMaxStorage>3000</baseMaxStorage>
         <materials>
@@ -183,10 +252,10 @@
     </comps>
     <tradeability>Buyable</tradeability>
     <building>
-      <heatPerTickWhileWorking>0.2</heatPerTickWhileWorking>
+      <heatPerTickWhileWorking>0.3</heatPerTickWhileWorking>
     </building>
     <researchPrerequisites>
-      <li>Machining</li>
+      <li>AMC_AmmoFabricator</li>
     </researchPrerequisites>
     <placeWorkers>
       <li>PlaceWorker_PreventInteractionSpotOverlap</li>
