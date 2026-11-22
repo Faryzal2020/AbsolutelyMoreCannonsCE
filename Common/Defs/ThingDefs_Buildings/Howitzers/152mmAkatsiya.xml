@@ -11,11 +11,12 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_152mmAkatsiya_Base</defName>
 		<label>2S3 Akatsiya</label>
-    <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
+    	<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
-			<texPath>Things/Building/M152mmAkatsiya</texPath>
-			<drawSize>(14,14)</drawSize>
+			<texPath>Things/Building/4x4Base/M152mmAkatsiya</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(6,6)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -30,12 +31,12 @@
 		</statBases>
 		<costList>
 			<Steel>600</Steel>
-      <ComponentIndustrial>8</ComponentIndustrial>
+      		<ComponentIndustrial>8</ComponentIndustrial>
 			<Plasteel>5</Plasteel>
 		</costList>
 		<building>
 			<turretGunDef>Turret_152mmAkatsiya_Weapon</turretGunDef>
-      <turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>13</turretTopDrawSize>
 			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
@@ -96,7 +97,7 @@
 		<researchPrerequisites>
 			<li>Research_152mmAkatsiya</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
 			<barrelGraphic>
@@ -195,8 +196,9 @@
     <description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
-			<texPath>Things/Building/M152mmAkatsiya</texPath>
-			<drawSize>(14,14)</drawSize>
+			<texPath>Things/Building/4x4Base/M152mmAkatsiya</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(6,6)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -219,7 +221,7 @@
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>10</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>13</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_152mmAkatsiya</designatorDropdown>
 		<comps>
@@ -263,56 +265,56 @@
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 		</comps>
-    <size>(4,4)</size>
+    	<size>(4,4)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_152mmAkatsiya</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
-    <modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
-			<barrelGraphic>
-				<texPath>Things/Building/M152mmAkatsiya_Barrel_Indirect</texPath>
-				<graphicClass>Graphic_Single</graphicClass>
-				<drawSize>(3,3)</drawSize>
-			</barrelGraphic>
-			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>14.0</barrelDrawSize>
-			<drawOnTop>false</drawOnTop>
-			<barrelAmount>1</barrelAmount>
-			<recoilAnimation>
-				<maxDistance>1</maxDistance>
-				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
-			</recoilAnimation>
-			<firingAnimation>
-				<enabled>true</enabled>
-				<durationTicks>10</durationTicks>
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>
-				<flashSize>35</flashSize>
-				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-4</flashOffset>
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>
-					<li>(0.3, 0.9)</li>
-					<li>(0.6, 0.6)</li>
-					<li>(1, 0)</li>
-					</points>
-				</flashIntensityCurve>
-			</firingAnimation>
-		</li>
-    	<li Class="CombatExtended.NonSnapTurretExtension">
-    		<speed>0.35</speed>
-    		<preferedAngleRange>15</preferedAngleRange>
-    		<minAngleWeight>0.1</minAngleWeight>
-    	</li>
-    </modExtensions>
+    	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+				<barrelGraphic>
+					<texPath>Things/Building/M152mmAkatsiya_Barrel_Indirect</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<barrelAmount>1</barrelAmount>
+				<recoilAnimation>
+					<maxDistance>1</maxDistance>
+					<recoilDuration>30</recoilDuration>
+					<returnDuration>100</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<durationTicks>10</durationTicks>
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>
+					<flashSize>35</flashSize>
+					<flashBrightness>3.0</flashBrightness>
+					<flashOffset>-4</flashOffset>
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>
+						<li>(0.3, 0.9)</li>
+						<li>(0.6, 0.6)</li>
+						<li>(1, 0)</li>
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<speed>0.35</speed>
+				<preferedAngleRange>15</preferedAngleRange>
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">

@@ -14,8 +14,9 @@
     <description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 1720, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
-			<texPath>Things/Building/M155mmGCT</texPath>
-			<drawSize>(17,17)</drawSize>
+			<texPath>Things/Building/5x5Base/M155mmGCT</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(7,7)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -92,7 +93,7 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>4,4</size>
+    	<size>5,5</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_155mmGCT</li>
@@ -110,9 +111,9 @@
 			<drawOnTop>false</drawOnTop>
 			<barrelAmount>1</barrelAmount>
 			<recoilAnimation>
-				<maxDistance>2</maxDistance>
+				<maxDistance>1</maxDistance>
 				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
+				<returnDuration>35</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
@@ -162,7 +163,7 @@
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.5</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_155mmGCT_HE</defaultProjectile>
@@ -196,8 +197,9 @@
     	<description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 1720, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
-			<texPath>Things/Building/M155mmGCT</texPath>
-			<drawSize>(17,17)</drawSize>
+			<texPath>Things/Building/5x5Base/M155mmGCT</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(7,7)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -265,7 +267,7 @@
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 		</comps>
-    	<size>(4,4)</size>
+    	<size>(5,5)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_155mmGCT</li>
@@ -283,9 +285,9 @@
 			<drawOnTop>false</drawOnTop>
 			<barrelAmount>1</barrelAmount>
 			<recoilAnimation>
-				<maxDistance>1</maxDistance>
+				<maxDistance>0.6</maxDistance>
 				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
+				<returnDuration>35</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
@@ -341,7 +343,7 @@
 			<li Class="CombatExtended.VerbPropertiesCE">
 				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
 				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.5</recoilAmount>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_155mmGCT_indirect_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
