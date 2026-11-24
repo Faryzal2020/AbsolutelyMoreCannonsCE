@@ -1545,6 +1545,8 @@ namespace AbsolutelyMoreCannons
                         // This ensures the barrel appears on top
                         barrelComp.DrawBarrelNow();
                     }
+
+                TurretStatusOverlayDrawer.DrawStatusOverlays(turret);
                 }
             }
             catch (Exception ex)

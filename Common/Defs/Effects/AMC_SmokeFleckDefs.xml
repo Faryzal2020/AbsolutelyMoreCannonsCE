@@ -48,4 +48,22 @@
         <fadeOutTime>4.5</fadeOutTime>
         <growthRate>0.012</growthRate>
     </FleckDef>
+
+    <!-- Airburst Main Detonation Smoke: Lingers at airborne explosion then slowly fades -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_AirburstSmoke</defName>
+        <fadeInTime>0.08</fadeInTime>
+        <solidTime>1.6</solidTime>
+        <fadeOutTime>2.8</fadeOutTime>
+        <growthRate>0.06</growthRate>
+    </FleckDef>
+
+    <!-- Airburst Shrapnel Ground Impact Smoke: Lingers with the wind before slowly fading out -->
+    <FleckDef ParentName="AMC_SmokeBase">
+        <defName>AMC_ShrapnelSmoke</defName>
+        <fadeInTime>0.08</fadeInTime>
+        <solidTime>1.4</solidTime>
+        <fadeOutTime>2.5</fadeOutTime>
+        <growthRate>0.05</growthRate>
+    </FleckDef>
 </Defs>

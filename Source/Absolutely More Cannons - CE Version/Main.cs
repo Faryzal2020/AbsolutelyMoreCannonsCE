@@ -15,9 +15,11 @@ namespace AbsolutelyMoreCannons
     public class TurretBarrelAnimationMod : Mod
     {
         public static AMCSettings settings;
+        public static ModContentPack ModContent { get; private set; }
 
         public TurretBarrelAnimationMod(ModContentPack content) : base(content)
         {
+            ModContent = content;
             // Initialize settings
             settings = GetSettings<AMCSettings>();
             

@@ -15,7 +15,7 @@
 		<constructionSkillPrerequisite>7</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/U20mmSPzMarder</texPath>
-			<drawSize>(13,13)</drawSize>
+			<drawSize>(6,6)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -45,25 +45,47 @@
 		</building>
 		<designatorDropdown>Group_AMC_U20mmSPzMarder</designatorDropdown>
 		<comps>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
-				<muzzleEnabled>true</muzzleEnabled>
-				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>1</muzzleParticleCount>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleParticleSize>1~2</muzzleParticleSize>
-				<heatEnabled>true</heatEnabled>
-				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>40</heatThreshold>
-				<heatDecayRate>0.6</heatDecayRate>
-				<heatEmissionRate>1</heatEmissionRate>
-				<shockwaveEnabled>false</shockwaveEnabled>
-			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>300</basePowerConsumption>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+
+      		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<!-- Smoke Effects -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>1</muzzleParticleCount>
+				<muzzleSpawnDuration>-20</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 2.8)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>1~2.5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>100</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.6</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.1</decayIncrease>
+
+				<heatOffset>(0, 0, 0.2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>1</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.5</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>false</shockwaveEnabled>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
 				<maxExplosiveRadius>5.5</maxExplosiveRadius>
 				<maxDamage>160</maxDamage>
@@ -75,21 +97,81 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>2,2</size>
+    	<size>3,3</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_U20mmSPzMarder</li>
 		</researchPrerequisites>
 		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<barrelHeight>1.15</barrelHeight>
-				<selectableBurstCounts>
-				<li>3</li>
-				<li>8</li>
-				<li>16</li>
-			</selectableBurstCounts>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>2.1</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
 			</li>
-	</modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2</barrelHeight>
+				<controlMode>MachineActuated</controlMode>
+				<actuatorStrength>2.0</actuatorStrength>
+				<turretHeadWeight>2.0</turretHeadWeight>
+				<barrelGraphic>
+					<texPath>Things/Building/U20mmSPzMarder_Barrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<underBarrelGraphic>
+					<texPath>Things/Building/U20mmSPzMarder_UnderBarrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</underBarrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<barrelAmount>1</barrelAmount>
+				<selectableBurstCounts>
+					<li>6</li>
+					<li>10</li>
+					<li>15</li>
+				</selectableBurstCounts>
+				<recoilAnimation>
+					<maxDistance>0.2</maxDistance>
+					<recoilDuration>1</recoilDuration>
+					<returnDuration>2</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>2</projectileSpawnOffset>
+					<durationTicks>4</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>10</flashSize>
+					<flashBrightness>1</flashBrightness>
+					<flashOffset>-4.2</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
 </ThingDef>
 	
 	<ThingDef ParentName="BaseWeaponTurret">

@@ -142,14 +142,14 @@ namespace AbsolutelyMoreCannons
             Vector3 screenDrawPos = DrawPos;
             MoteMaker.MakeStaticMote(screenDrawPos, Map, CE_ThingDefOf.Mote_BigExplode, 1.8f);
 
-            // Throw Airburst Fragments
+            // Throw Airburst Fragments (using 3D ExactPosition for fragment ballistics and 2D DrawPos for screenspace explosion visuals)
             Vector3 explodePos = ExactPosition;
-            ThrowAirburstFragments(explodePos);
+            ThrowAirburstFragments(explodePos, screenDrawPos);
 
             Destroy();
         }
 
-        private void ThrowAirburstFragments(Vector3 pos)
+        private void ThrowAirburstFragments(Vector3 pos, Vector3 screenPos)
         {
             Vector3 flightVec = ExactPosition - LastPos;
 
@@ -157,7 +157,7 @@ namespace AbsolutelyMoreCannons
             var airburstFragComp = this.TryGetComp<CompAirburstFragments>();
             if (airburstFragComp != null)
             {
-                airburstFragComp.Throw(pos, Map, launcher, flightVec, shotRotation);
+                airburstFragComp.Throw(pos, Map, launcher, flightVec, shotRotation, 1f, screenPos);
                 return;
             }
 

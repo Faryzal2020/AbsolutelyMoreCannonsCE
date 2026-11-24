@@ -57,6 +57,27 @@ namespace AbsolutelyMoreCannons
         /// Current wind direction in degrees (for motes to access)
         /// </summary>
         public float WindDirection => windDirection;
+
+        /// <summary>
+        /// Computes wind velocity vector (in cells/second) at the given map position,
+        /// accounting for indoor/roofed cells and current map wind speed.
+        /// </summary>
+        public Vector3 GetWindVelocityAt(Vector3 position)
+        {
+            float angle = windDirection + Rand.Range(-6f, 6f);
+            float speed = Mathf.Clamp(map.windManager.WindSpeed, LOW_WIND, HIGH_WIND);
+
+            IntVec3 cell = position.ToIntVec3();
+            if (cell.InBounds(map) && map.roofGrid != null && map.roofGrid.Roofed(cell))
+            {
+                speed = INDOOR_SPEED;
+                angle = INDOOR_ANGLE + Rand.Range(-5f, 5f);
+            }
+
+            speed += Rand.Range(0.02f, 0.20f);
+            float angleRad = angle * Mathf.Deg2Rad;
+            return new Vector3(Mathf.Sin(angleRad), 0f, Mathf.Cos(angleRad)) * speed;
+        }
         /// <summary>
         /// Register a turret smoker component
         /// </summary>

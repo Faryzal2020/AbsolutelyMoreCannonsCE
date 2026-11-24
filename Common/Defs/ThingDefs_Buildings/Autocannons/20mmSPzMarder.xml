@@ -6,11 +6,11 @@
 	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
 		<defName>Turret_20mmSPzMarder_Base</defName>
 		<label>SPz Marder</label>
-    <description>Use ammo set:20x139mm HE-T \nThe German SPz Marder IFV mounts a rapid-firing 20mm Rheinmetall autocannon for infantry support. It has a large 1250-round magazine and is incapable of settlement bombardment. Power: 100, HP: 475, Cooldown: 1.5s, Range: 3-70, Rate of Fire: 720 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
+    	<description>Use ammo set:20x139mm HE-T \nThe German SPz Marder IFV mounts a rapid-firing 20mm Rheinmetall autocannon for infantry support. It has a large 1250-round magazine and is incapable of settlement bombardment. Power: 100, HP: 475, Cooldown: 1.5s, Range: 3-70, Rate of Fire: 720 rounds per minute, Aimed Burst: 4, Reload Time: 5s.</description>
 		<constructionSkillPrerequisite>4</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M20mmSPzMarder</texPath>
-			<drawSize>(13,13)</drawSize>
+			<drawSize>(6,6)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -26,12 +26,12 @@
 		<costList>
 			<Steel>250</Steel>
 			<Plasteel>2</Plasteel>
-      <ComponentIndustrial>8</ComponentIndustrial>
-      <ComponentSpacer>1</ComponentSpacer>
+			<ComponentIndustrial>8</ComponentIndustrial>
+			<ComponentSpacer>1</ComponentSpacer>
 		</costList>
 		<building>
 			<turretGunDef>Turret_20mmSPzMarder_Weapon</turretGunDef>
-      <turretTopDrawSize>14</turretTopDrawSize>
+      		<turretTopDrawSize>14</turretTopDrawSize>
 			<turretBurstCooldownTime>1.5</turretBurstCooldownTime>
 		</building>
 		<comps>
@@ -91,62 +91,82 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    <size>2,2</size>
+    	<size>4,4</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_20mmSPzMarder</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
-    <modExtensions>
-      <li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-        <barrelHeight>1.2</barrelHeight>
-        <barrelGraphic>
-          <texPath>Things/Building/M20mmSPzMarder_Barrel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-          <drawSize>(3,3)</drawSize>
-        </barrelGraphic>
-        <underBarrelGraphic>
-          <texPath>Things/Building/M20mmSPzMarder_UnderBarrel</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
-          <drawSize>(3,3)</drawSize>
-        </underBarrelGraphic>
-        <barrelOffset>(0,0,0.0)</barrelOffset>
-        <barrelDrawSize>14.0</barrelDrawSize>
-        <drawOnTop>false</drawOnTop>
-        <barrelAmount>1</barrelAmount>
-		<selectableBurstCounts>
-			<li>6</li>
-			<li>10</li>
-			<li>15</li>
-		</selectableBurstCounts>
-        <recoilAnimation>
-          <maxDistance>0.2</maxDistance>
-          <recoilDuration>1</recoilDuration>
-          <returnDuration>2</returnDuration>
-          <useRecoilCurve>true</useRecoilCurve>
-          <useReturnCurve>false</useReturnCurve>
-          <affectsRotation>false</affectsRotation>
-        </recoilAnimation>
-        <firingAnimation>
-          <enabled>true</enabled>
-          <durationTicks>4</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-		  <drawFlash>true</drawFlash>
-		  <flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-		  <flashSize>10</flashSize>
-		  <flashBrightness>1</flashBrightness>
-		  <flashOffset>-4.2</flashOffset>  <!-- Offset from barrel tip -->
-		  <muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-		  <flashIntensityCurve>
-			<points>
-			<li>(0, 1)</li>      <!-- Full brightness at start -->
-			<li>(0.3, 0.9)</li>  <!-- Still bright -->
-			<li>(0.6, 0.6)</li>  <!-- Fading -->
-			<li>(1, 0)</li>      <!-- Faded out -->
-			</points>
-		  </flashIntensityCurve>
-        </firingAnimation>
-      </li>
-    </modExtensions>
+    	<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>1.8</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2</barrelHeight>
+				<controlMode>MachineActuated</controlMode>
+				<actuatorStrength>2.0</actuatorStrength>
+				<turretHeadWeight>2.0</turretHeadWeight>
+				<barrelGraphic>
+					<texPath>Things/Building/M20mmSPzMarder_Barrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<underBarrelGraphic>
+					<texPath>Things/Building/M20mmSPzMarder_UnderBarrel</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>(3,3)</drawSize>
+				</underBarrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>14.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<barrelAmount>1</barrelAmount>
+				<selectableBurstCounts>
+					<li>6</li>
+					<li>10</li>
+					<li>15</li>
+				</selectableBurstCounts>
+				<recoilAnimation>
+					<maxDistance>0.2</maxDistance>
+					<recoilDuration>1</recoilDuration>
+					<returnDuration>2</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>2</projectileSpawnOffset>
+					<durationTicks>4</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>10</flashSize>
+					<flashBrightness>1</flashBrightness>
+					<flashOffset>-4.2</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseTurretGun">
