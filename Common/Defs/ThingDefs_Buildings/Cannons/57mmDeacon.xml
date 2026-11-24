@@ -82,6 +82,12 @@
 				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>5.0</maxExplosiveRadius>
+				<maxDamage>160</maxDamage>
+				<minPenForCookOff>14</minPenForCookOff>
+				<highPenForCookOff>45</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -95,6 +101,7 @@
     	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.45</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M57mmDeacon_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -144,15 +151,15 @@
 		<description>Use ammo set:57mm Shot Mk.8 \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
 			<SightsEfficiency>3</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.5</SwayFactor>
+			<ShotSpread>0.08</ShotSpread>
+			<SwayFactor>0.22</SwayFactor>
 			<RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_57mmOQF_AP</defaultProjectile>
@@ -186,6 +193,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.25</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.25</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

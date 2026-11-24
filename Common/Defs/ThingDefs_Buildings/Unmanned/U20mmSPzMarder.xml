@@ -27,7 +27,8 @@
 			<WorkToBuild>7500</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
-      <AimingAccuracy>0.95</AimingAccuracy>
+      <AimingAccuracy>1.05</AimingAccuracy>
+      <ShootingAccuracyTurret>2.8</ShootingAccuracyTurret>
 		</statBases>
 		<costList>
       <Steel>300</Steel>
@@ -63,6 +64,12 @@
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>5.5</maxExplosiveRadius>
+				<maxDamage>160</maxDamage>
+				<minPenForCookOff>12</minPenForCookOff>
+				<highPenForCookOff>40</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -75,6 +82,7 @@
 		</researchPrerequisites>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>1.15</barrelHeight>
 				<selectableBurstCounts>
 				<li>3</li>
 				<li>8</li>
@@ -93,9 +101,9 @@
 		</graphicData>
 		<description>The Auto Spz Marder is a West German IFV turret converted into an automated weapon station. It has an internal magazine (Mag Size: 1250) and requires 300 power to operate. Power: 300, HP: 475, Cooldown: 1.0s, Range: 80, Rate of Fire: 40 rounds per minute. Ammunition: HE (Explosion Radius 1.0), AP (Penetration 57). Not capable of settlement bombardment.</description>
 		<statBases>
-			<SightsEfficiency>2.9</SightsEfficiency>
-			<ShotSpread>0.02</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>4</SightsEfficiency>
+			<ShotSpread>0.12</ShotSpread>
+			<SwayFactor>0.12</SwayFactor>
 			<RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
       		<NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
 			<Mass>1</Mass>
@@ -103,7 +111,7 @@
 		<soundInteract>AMC_Small_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1</recoilAmount>
+				<recoilAmount>0.10</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_20x139mm_HE</defaultProjectile>
@@ -135,6 +143,11 @@
 			<li Class="CombatExtended.GunDrawExtension">
 				<CasingOffset>0,-1</CasingOffset>
 				<CasingAngleOffset>90</CasingAngleOffset>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.10</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.50</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

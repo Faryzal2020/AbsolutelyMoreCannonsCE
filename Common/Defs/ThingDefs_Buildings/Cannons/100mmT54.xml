@@ -87,6 +87,12 @@
 				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.0</maxExplosiveRadius>
+				<maxDamage>260</maxDamage>
+				<minPenForCookOff>20</minPenForCookOff>
+				<highPenForCookOff>65</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -100,6 +106,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.6</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M100mmT54_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -149,21 +156,21 @@
 		<description>Use ammo set:100mm BR-412D \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
 			<SightsEfficiency>5</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<ShotSpread>0.05</ShotSpread>
+			<SwayFactor>0.14</SwayFactor>
 			<RangedWeapon_Cooldown>7.1</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1</recoilAmount>
+				<recoilAmount>0.30</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_100mmBS3_APHE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
         <minRange>8</minRange>
-				<range>100</range>
+				<range>110</range>
 				<soundCast>Sound_Russian100mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>70</muzzleFlashScale>
@@ -191,6 +198,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.15</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

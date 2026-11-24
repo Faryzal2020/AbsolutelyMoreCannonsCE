@@ -72,6 +72,12 @@
 				<shockwaveOffset>(0, 0, 3)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>3</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>5.5</maxExplosiveRadius>
+				<maxDamage>175</maxDamage>
+				<minPenForCookOff>12</minPenForCookOff>
+				<highPenForCookOff>40</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -85,6 +91,7 @@
 		<interactionCellOffset>(1,0,-1)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.25</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M37mmFlakM42_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

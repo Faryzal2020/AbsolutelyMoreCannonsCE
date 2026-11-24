@@ -123,6 +123,33 @@ namespace AbsolutelyMoreCannons
         /// Alias for maxRotationDeviation.
         /// </summary>
         public float maxHorizontalDeviation = -1f;
+
+        /// <summary>
+        /// Defines whether the turret is machine-actuated (terminal/powered servo, zero pawn skill effect on recoil)
+        /// or direct mechanical control (hand-cranked/manual mount, pawn skill affects recoil management).
+        /// Default AutoDetect infers MachineActuated when the turret uses power, FCS, or NonSnapTurretExtension.
+        /// </summary>
+        public TurretControlMode controlMode = TurretControlMode.AutoDetect;
+
+        /// <summary>
+        /// Strength of the turret mount's actuators/bracing (default 1.0, or <= 0 to use automatic defaults).
+        /// Controls how fast the initial firing jolt stabilizes into steady-state equilibrium and how strongly the actuator accelerates/decelerates turret traverse.
+        /// </summary>
+        public float actuatorStrength = -1f;
+
+        /// <summary>
+        /// Rotational inertia / weight of the turret head and barrel assembly (default <= 0 uses automatic footprint weight).
+        /// Higher values make the turret take longer to accelerate up to NonSnapTurretExtension.speed and require earlier braking to decelerate onto a target.
+        /// Angular acceleration per tick = BaseTraverseAccel * (actuatorStrength / turretHeadWeight).
+        /// </summary>
+        public float turretHeadWeight = -1f;
+
+        /// <summary>
+        /// Custom vertical barrel height (shot height in vertical cells / meters) from which projectiles are launched and line-of-sight is evaluated.
+        /// Overrides Combat Extended's default fillPercent * 0.85f shotHeight calculation when set > 0.
+        /// Default -1f falls back to CE's default shotHeight calculation.
+        /// </summary>
+        public float barrelHeight = -1f;
     }
 
     /// <summary>

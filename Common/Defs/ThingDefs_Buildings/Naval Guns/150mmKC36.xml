@@ -114,6 +114,9 @@
 			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
 				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.2</barrelHeight>
+			</li>
 		</modExtensions>
 	</ThingDef>
 	
@@ -127,21 +130,21 @@
 		<description>The 15cm Tbts KC/36 was a German WWII destroyer gun designed for shore bombardment and naval warfare. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 6000, Cooldown: 8.0s, Range: 8-23000, Rate of Fire: 7 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 4.0m explosion radius.</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<ShotSpread>0.07</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_150mmKC36_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>8</minRange>
-				<range>23000</range>
+				<range>220</range>
 				<soundCast>Sound_Naval150mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>120</muzzleFlashScale>
@@ -165,6 +168,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.15</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

@@ -58,6 +58,17 @@ namespace AbsolutelyMoreCannons
                 // If retargeting successfully locked onto a non-downed target, continue firing
                 if (retargeted && __instance.CurrentTarget.Pawn != null && !__instance.CurrentTarget.Pawn.Downed)
                 {
+                    if (caster is Building_Turret retargTurret)
+                    {
+                        System.Reflection.FieldInfo turretTargetField = HarmonyPatches.GetCurrentTargetField(retargTurret.GetType());
+                        if (turretTargetField != null)
+                        {
+                            turretTargetField.SetValue(retargTurret, __instance.CurrentTarget);
+                        }
+
+                        retargTurret.Map?.GetComponent<MapComponent_TurretTargetingOverlay>()
+                            ?.NotifyPreserveAmmoRetarget(retargTurret, target, __instance.CurrentTarget);
+                    }
                     return true;
                 }
 
@@ -68,6 +79,11 @@ namespace AbsolutelyMoreCannons
                     if (settings != null && settings.logTurretTarget)
                     {
                         AMCLogger.LogTurretTarget($"[Preserve Ammo] {caster.LabelCap} @ {caster.Position} aborted shot on downed target ({__instance.CurrentTarget.Pawn.LabelCap})");
+                    }
+                    if (caster is Building_Turret preserveTurret && preserveTurret.Map != null)
+                    {
+                        preserveTurret.Map.GetComponent<MapComponent_TurretTargetingOverlay>()
+                            ?.NotifyPreserveAmmoAbort(preserveTurret, __instance, __instance.CurrentTarget);
                     }
                     __result = false;
                     return false; // Skip original TryCastShot, stopping the burst

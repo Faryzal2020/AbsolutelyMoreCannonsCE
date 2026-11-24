@@ -286,6 +286,9 @@ namespace AbsolutelyMoreCannons
                     }
                 }
 
+                // Patch ShotHeight and CollisionVertical.CalculateHeightRange for custom per-turret barrel height
+                TryPatchCEBarrelHeight(harmony);
+
                 // Patch burst completion to trigger recoil
                 var burstCompleteMethod = AccessTools.Method(ceTurretType, "BurstComplete");
                 if (burstCompleteMethod != null)
@@ -1125,27 +1128,31 @@ namespace AbsolutelyMoreCannons
                 float turretBaseRotation = float.NaN;
                 if (caster is Building_Turret building_turret)
                 {
-                    try
+                    turretBaseRotation = TurretTrackingUtility.GetAuthoritativeBarrelRotation(building_turret);
+                    if (float.IsNaN(turretBaseRotation))
                     {
-                        // Try toget the turret top
-                        var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        if (topField != null)
+                        try
                         {
-                            var top = topField.GetValue(building_turret);
-                            if (top != null)
+                            // Try to get the turret top
+                            var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                            if (topField != null)
                             {
-                                // Get CurRotation property
-                                var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                                if (curRotationProp != null)
+                                var top = topField.GetValue(building_turret);
+                                if (top != null)
                                 {
-                                    turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                    // Get CurRotation property
+                                    var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                                    if (curRotationProp != null)
+                                    {
+                                        turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch
-                    {
-                        // Ignore errors - we'll just not have turret rotation
+                        catch
+                        {
+                            // Ignore errors - we'll just not have turret rotation
+                        }
                     }
                 }
 
@@ -1177,10 +1184,23 @@ namespace AbsolutelyMoreCannons
 
                     // Get shot height
                     float shotHeight = 0.85f; // Default turret height
+                    PropertyInfo shotHeightProp = verbType.GetProperty("ShotHeight", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
                     FieldInfo shotHeightField = verbType.GetField("shotHeight", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (shotHeightField != null)
+                    if (shotHeightProp != null)
+                    {
+                        shotHeight = (float)shotHeightProp.GetValue(__instance);
+                    }
+                    else if (shotHeightField != null)
                     {
                         shotHeight = (float)shotHeightField.GetValue(__instance);
+                    }
+                    else
+                    {
+                        float customHeight = CompTurretBarrel.GetCustomBarrelHeight(caster, equipment);
+                        if (customHeight > 0f)
+                        {
+                            shotHeight = customHeight;
+                        }
                     }
 
                     // Get shot speed
@@ -1692,6 +1712,104 @@ namespace AbsolutelyMoreCannons
                       Log.Warning($"Turret Barrel Animation: Error in Postfix_Verb_ShotsPerBurstFor: {ex.Message}");
                   }
              }
+        }
+
+        /// <summary>
+        /// Patches CombatExtended's ShotHeight property getters and CollisionVertical.CalculateHeightRange
+        /// so turrets with a custom barrelHeight in TurretBarrelExtension launch projectiles and trace LoS from their configured barrel height.
+        /// </summary>
+        private static void TryPatchCEBarrelHeight(Harmony harmony)
+        {
+            try
+            {
+                var launchVerbType = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
+                if (launchVerbType != null)
+                {
+                    var launchShotHeightGetter = AccessTools.DeclaredPropertyGetter(launchVerbType, "ShotHeight");
+                    if (launchShotHeightGetter != null)
+                    {
+                        SafePatchPostfix(harmony, launchShotHeightGetter, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShotHeight)));
+                    }
+                }
+
+                var shootVerbType = AccessTools.TypeByName("CombatExtended.Verb_ShootCE");
+                if (shootVerbType != null)
+                {
+                    var shootShotHeightGetter = AccessTools.DeclaredPropertyGetter(shootVerbType, "ShotHeight");
+                    if (shootShotHeightGetter != null)
+                    {
+                        SafePatchPostfix(harmony, shootShotHeightGetter, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_Verb_ShotHeight)));
+                    }
+                }
+
+                var collisionVertType = AccessTools.TypeByName("CombatExtended.CollisionVertical");
+                if (collisionVertType != null)
+                {
+                    var calcHeightRangeMethod = AccessTools.DeclaredMethod(collisionVertType, "CalculateHeightRange");
+                    if (calcHeightRangeMethod != null)
+                    {
+                        SafePatchPostfix(harmony, calcHeightRangeMethod, new HarmonyMethod(typeof(HarmonyPatches), nameof(Postfix_CollisionVertical_CalculateHeightRange)));
+                    }
+                }
+
+                if (TurretBarrelAnimationMod.settings?.logStartup ?? false)
+                {
+                    Log.Message("[AMC] Patched CombatExtended ShotHeight and CollisionVertical.CalculateHeightRange for per-turret barrelHeight.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[AMC] Error patching CE barrel height: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Postfix for Verb_LaunchProjectileCE.ShotHeight and Verb_ShootCE.ShotHeight to apply custom barrelHeight.
+        /// </summary>
+        public static void Postfix_Verb_ShotHeight(Verb __instance, ref float __result)
+        {
+            try
+            {
+                if (__instance?.caster == null) return;
+                float customHeight = CompTurretBarrel.GetCustomBarrelHeight(__instance.caster, __instance.EquipmentSource);
+                if (customHeight > 0f)
+                {
+                    __result = customHeight;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!CompTurretBarrel.loggedTypes.Contains("Verb_ShotHeight_Error"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("Verb_ShotHeight_Error");
+                    Log.Warning($"[AMC] Error in Postfix_Verb_ShotHeight: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Postfix for CollisionVertical.CalculateHeightRange(Thing thing, ref FloatRange heightRange, ref float shotHeight)
+        /// so any direct queries to new CollisionVertical(turret).shotHeight also use the configured barrelHeight.
+        /// </summary>
+        public static void Postfix_CollisionVertical_CalculateHeightRange(Thing thing, ref float shotHeight)
+        {
+            try
+            {
+                if (thing == null) return;
+                float customHeight = CompTurretBarrel.GetCustomBarrelHeight(thing);
+                if (customHeight > 0f)
+                {
+                    shotHeight = customHeight;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!CompTurretBarrel.loggedTypes.Contains("CollisionVertical_ShotHeight_Error"))
+                {
+                    CompTurretBarrel.loggedTypes.Add("CollisionVertical_ShotHeight_Error");
+                    Log.Warning($"[AMC] Error in Postfix_CollisionVertical_CalculateHeightRange: {ex.Message}");
+                }
+            }
         }
 
         /// <summary>

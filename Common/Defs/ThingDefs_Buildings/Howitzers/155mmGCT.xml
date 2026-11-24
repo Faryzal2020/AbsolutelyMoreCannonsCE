@@ -44,33 +44,45 @@
 		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<muzzleParticleCount>4</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 7)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>20~30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<heatThreshold>12</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 7)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 6.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -88,6 +100,12 @@
 				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.0</maxExplosiveRadius>
+				<maxDamage>380</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -101,6 +119,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>2.1</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M155mmGCT_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -154,28 +173,28 @@
 		</graphicData>
 		<description>The 155mm GCT AUF1 was a French self-propelled howitzer developed for rapid indirect fire missions. It has an indirect fire variant, features an internal magazine of 42 rounds, and is capable of settlement bombardment. Power: 500, HP: 1720, Cooldown: 9.0s, Range: 23500, Shelling Range: 24. Ammunition: 155mm M795 (HE, Damage: 549, Explosion Radius: 5.5).</description>
 		<statBases>
-			<SightsEfficiency>2</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.4</SwayFactor>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.25</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>0.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_155mmGCT_HE</defaultProjectile>
-				<warmupTime>0.5</warmupTime>
-        <minRange>7</minRange>
-				<range>23500</range>
+				<warmupTime>2</warmupTime>
+        		<minRange>7</minRange>
+				<range>250</range>
 				<soundCast>Sound_155mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>22</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>300</ticksBetweenBurstShots>
 				<burstShotCount>3</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
@@ -188,6 +207,9 @@
 				<ammoSet>AmmoSet_155mmGCT_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension" />
+		</modExtensions>
 	</ThingDef>
 
 <!-- INDIRECT -->
@@ -227,44 +249,68 @@
 		</building>
 		<designatorDropdown>Group_AMC_155mmGCT</designatorDropdown>
 		<comps>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
-				<muzzleEnabled>true</muzzleEnabled>
-				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
-				<heatEnabled>true</heatEnabled>
-				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
-				<shockwaveEnabled>true</shockwaveEnabled>
-				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
-			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<bulletProtection>1.0</bulletProtection>     <!-- 100% immunity to bullets -->
+				<explosiveProtection>0.8</explosiveProtection>  <!-- 80% reduced explosive/bomb damage -->
+				<temperatureProtection>0.5</temperatureProtection> <!-- Safe even inside burning/freezing rooms -->
+				<hidePawnGraphics>true</hidePawnGraphics>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>4</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 3.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>10~15</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>12</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 3.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_155mmGCT_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.0</maxExplosiveRadius>
+				<maxDamage>380</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
 			</li>
 		</comps>
     	<size>(5,5)</size>
@@ -275,6 +321,7 @@
     	<interactionCellOffset>(0,0,-3)</interactionCellOffset>
     	<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>2.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M155mmGCT_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

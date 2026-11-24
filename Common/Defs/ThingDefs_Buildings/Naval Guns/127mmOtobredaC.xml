@@ -103,6 +103,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.5</maxExplosiveRadius>
+				<maxDamage>400</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -122,6 +130,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.4</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmOtobredaC_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -181,22 +190,22 @@
 		</graphicData>
 		<description>The Otobreda 127/54C was an Italian rapid-fire naval gun developed for surface combat and shore bombardment. Equipped with an automatic drum autoloader, it features selectable burst fire, an indirect fire variant, and is capable of settlement bombardment. Power: 700, HP: 1440, Cooldown: 2.0s, Range: 7-30000, Rate of Fire: 45 rounds per minute, Aimed Burst: 3, Reload Time: 1s. Ammunition: AP shell with 150 penetration and HE shell with 3.5m explosion radius.</description>
 		<statBases>
-			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>6</SightsEfficiency>
+			<ShotSpread>0.05</ShotSpread>
+			<SwayFactor>0.10</SwayFactor>
 			<RangedWeapon_Cooldown>2.0</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>0.2</recoilAmount>
+				<recoilAmount>0.18</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmMark16_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>7</minRange>
-				<range>30000</range>
+				<range>220</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -225,6 +234,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.05</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.35</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -326,6 +340,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.5</maxExplosiveRadius>
+				<maxDamage>400</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -341,6 +363,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.7</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmOtobredaC_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>

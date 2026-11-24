@@ -89,23 +89,27 @@ namespace AbsolutelyMoreCannons
                 Building_Turret building_turret = caster as Building_Turret ?? (caster.ParentHolder as Building_Turret);
                 if (building_turret != null)
                 {
-                    try
+                    turretBaseRotation = TurretTrackingUtility.GetAuthoritativeBarrelRotation(building_turret);
+                    if (float.IsNaN(turretBaseRotation))
                     {
-                        var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                        if (topField != null)
+                        try
                         {
-                            var top = topField.GetValue(building_turret);
-                            if (top != null)
+                            var topField = building_turret.GetType().GetField("top", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                            if (topField != null)
                             {
-                                var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                                if (curRotationProp != null)
+                                var top = topField.GetValue(building_turret);
+                                if (top != null)
                                 {
-                                    turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                    var curRotationProp = top.GetType().GetProperty("CurRotation", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                                    if (curRotationProp != null)
+                                    {
+                                        turretBaseRotation = (float)curRotationProp.GetValue(top);
+                                    }
                                 }
                             }
                         }
+                        catch { }
                     }
-                    catch { }
                 }
 
                 // === ROTATION CLAMPING (BARREL ORIENTATION CLAMP BEFORE MECHANICAL SPREAD) ===

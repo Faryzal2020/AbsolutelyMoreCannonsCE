@@ -94,6 +94,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>11.5</maxExplosiveRadius>
+				<maxDamage>520</maxDamage>
+				<minPenForCookOff>30</minPenForCookOff>
+				<highPenForCookOff>90</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.50</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -118,6 +126,9 @@
 			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
 				<enableMidBurstTracking>true</enableMidBurstTracking>
 			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.8</barrelHeight>
+			</li>
 		</modExtensions>
 	</ThingDef>
 	
@@ -130,22 +141,22 @@
 		</graphicData>
 		<description>The 20.3cm SK C/34 was a German heavy cruiser twin main battery designed for long-range engagements. It fires twin-gun salvos, requires reloading after each salvo, and has no indirect fire capability. Power: 800, HP: 7105, Cooldown: 12.0s, Range: 12-33540, Rate of Fire: 5 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 5.0m explosion radius and AP shell with 290 penetration.</description>
 		<statBases>
-			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>4.5</SightsEfficiency>
+			<ShotSpread>0.08</ShotSpread>
+			<SwayFactor>0.16</SwayFactor>
 			<RangedWeapon_Cooldown>12</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.22</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_203mmSKC34_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>12</minRange>
-				<range>33540</range>
+				<range>250</range>
 				<soundCast>Sound_203mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>140</muzzleFlashScale>
@@ -169,6 +180,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.10</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

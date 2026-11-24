@@ -111,6 +111,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>8.5</maxExplosiveRadius>
+				<maxDamage>340</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -134,6 +142,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>2.3</barrelHeight>
 			<selectableBurstCounts>
 				<li>1</li>
 				<li>3</li>
@@ -187,22 +196,22 @@
 		</graphicData>
 		<description>The 12cm/46 TAK120 was a Swedish naval gun designed for coastal defense and surface action. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 350, HP: 6000, Cooldown: 5.0s, Range: 7-17000, Rate of Fire: 12 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.5m explosion radius and AP shell with 190 penetration.</description>
 		<statBases>
-			<SightsEfficiency>5</SightsEfficiency>
-			<ShotSpread>0.005</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>5.5</SightsEfficiency>
+			<ShotSpread>0.06</ShotSpread>
+			<SwayFactor>0.12</SwayFactor>
 			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>0.2</recoilAmount>
+				<recoilAmount>0.15</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_120mmTAK120_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>8</minRange>
-				<range>18000</range>
+				<range>200</range>
 				<soundCast>Sound_120mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -231,6 +240,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.10</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.50</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -329,6 +343,14 @@
 				<transferViewOrigin>true</transferViewOrigin>
 				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>8.5</maxExplosiveRadius>
+				<maxDamage>340</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
     	<size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -348,6 +370,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.6</barrelHeight>
 				<selectableBurstCounts>
 					<li>1</li>
 					<li>3</li>

@@ -90,6 +90,7 @@
      	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M128mmPak44_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -144,15 +145,15 @@
 		<description>Use ammo set:128mm Pzgr. \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.5</SwayFactor>
+			<ShotSpread>0.05</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>15</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>2</recoilAmount>
+				<recoilAmount>0.40</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_128mmPAK44_APHE</defaultProjectile>
@@ -186,6 +187,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.15</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

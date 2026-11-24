@@ -86,6 +86,12 @@
 				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>8.0</maxExplosiveRadius>
+				<maxDamage>320</maxDamage>
+				<minPenForCookOff>15</minPenForCookOff>
+				<highPenForCookOff>50</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -99,6 +105,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>1.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M122mmGvozdika_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -152,22 +159,22 @@
 		</graphicData>
 		<description>The 2S1 Gvozdika was a Soviet self-propelled howitzer developed in the 1970s for mobile artillery support. It has an indirect fire variant, features an internal magazine of 40 rounds, and is capable of settlement bombardment. Power: 200, HP: 720, Cooldown: 10.0s, Range: 15300, Shelling Range: 18. Ammunition: 122mm OF-462 (HE, Damage: 279, Explosion Radius: 3.5), 122mm OF-462 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1.5</SightsEfficiency>
-			<ShotSpread>0.02</ShotSpread>
-			<SwayFactor>0.1</SwayFactor>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.25</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_122mm2A12_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
         <minRange>6</minRange>
-				<range>15300</range>
+				<range>250</range>
 				<soundCast>Sound_122mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -186,6 +193,9 @@
 				<ammoSet>AmmoSet_122mm2A12_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension" />
+		</modExtensions>
 	</ThingDef>
 
 <!-- INDIRECT -->
@@ -262,6 +272,12 @@
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>8.0</maxExplosiveRadius>
+				<maxDamage>320</maxDamage>
+				<minPenForCookOff>15</minPenForCookOff>
+				<highPenForCookOff>50</highPenForCookOff>
+			</li>
 		</comps>
     <size>(3,3)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -271,6 +287,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>1.8</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M122mmGvozdika_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

@@ -68,12 +68,12 @@
         <eyeball>
           <texPath>Things/Building/AUTOFABRICATOR_EYEBALL</texPath>
           <scale>(0.08125,0.08125)</scale>
-          <offset>(0.913,0,-1.813)</offset>
+          <offset>(1.142,0,-2.267)</offset>
         </eyeball>
         <eyeballOff>
           <texPath>Things/Building/AUTOFABRICATOR_EYE_OFF</texPath>
           <scale>(0.08125,0.08125)</scale>
-          <offset>(0.913,0,-1.813)</offset>
+          <offset>(1.142,0,-2.267)</offset>
         </eyeballOff>
         <cover>
           <texPath>Things/Building/AUTOFABRICATOR_COVER</texPath>
@@ -83,7 +83,7 @@
         <glow>
           <texPath>Things/Building/AUTOFABRICATOR_GLOW</texPath>
           <scale>(0.2708,0.2688)</scale>
-          <offset>(0.913,0,-1.813)</offset>
+          <offset>(1.142,0,-2.267)</offset>
           <useGlowShader>true</useGlowShader>
         </glow>
         <topOff>

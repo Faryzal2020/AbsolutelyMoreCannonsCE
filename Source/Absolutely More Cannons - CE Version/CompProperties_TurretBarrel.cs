@@ -138,6 +138,14 @@ namespace AbsolutelyMoreCannons
                 extension.maxElevationDeviation = maxElevationDeviation;
             if (maxHorizontalDeviation >= 0f)
                 extension.maxHorizontalDeviation = maxHorizontalDeviation;
+            if (controlMode != TurretControlMode.AutoDetect)
+                extension.controlMode = controlMode;
+            if (actuatorStrength > 0f)
+                extension.actuatorStrength = actuatorStrength;
+            if (turretHeadWeight > 0f)
+                extension.turretHeadWeight = turretHeadWeight;
+            if (barrelHeight > 0f)
+                extension.barrelHeight = barrelHeight;
 
             return extension;
         }
@@ -146,5 +154,9 @@ namespace AbsolutelyMoreCannons
         public float maxRotationDeviation = -1f;
         public float maxElevationDeviation = -1f;
         public float maxHorizontalDeviation = -1f;
+        public TurretControlMode controlMode = TurretControlMode.AutoDetect;
+        public float actuatorStrength = -1f;
+        public float turretHeadWeight = -1f;
+        public float barrelHeight = -1f;
     }
 }

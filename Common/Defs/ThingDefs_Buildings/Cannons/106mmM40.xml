@@ -75,6 +75,12 @@
 				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.1</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>4.8</maxExplosiveRadius>
+				<maxDamage>175</maxDamage>
+				<minPenForCookOff>10</minPenForCookOff>
+				<highPenForCookOff>35</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -88,6 +94,7 @@
     	<interactionCellOffset>(0,0,-1)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>0.95</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M106mmM40_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -136,9 +143,9 @@
 		</graphicData>
 		<description>Use ammo set:106mm M344 \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
-			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.5</SwayFactor>
+			<SightsEfficiency>3.5</SightsEfficiency>
+			<ShotSpread>0.12</ShotSpread>
+			<SwayFactor>0.20</SwayFactor>
 			<RangedWeapon_Cooldown>5</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -179,6 +186,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.15</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

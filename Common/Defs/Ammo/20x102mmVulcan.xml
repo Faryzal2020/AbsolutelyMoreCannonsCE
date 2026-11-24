@@ -80,6 +80,14 @@
 				</li>
 			</secondaryDamage>
 		</projectile>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>false</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<ThingDef ParentName="Base20x102mmNATOBullet">

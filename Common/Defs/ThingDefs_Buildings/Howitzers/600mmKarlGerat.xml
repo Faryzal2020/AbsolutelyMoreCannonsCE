@@ -93,6 +93,7 @@
     <interactionCellOffset>(3,0,-4)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>2.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M600mmKarlGerat_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -265,6 +266,7 @@
     <interactionCellOffset>(3,0,-4)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>3.0</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M600mmKarlGerat_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

@@ -113,6 +113,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>1.85</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmSKC34_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -165,21 +166,21 @@
 		<description>The 12.7cm SK C/34 was developed as a German naval gun for destroyers during WWII. It requires reloading after each shot and has no indirect fire capability. Power: 300, HP: 5500, Cooldown: 4.0s, Range: 7-17000, Rate of Fire: 15 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<ShotSpread>0.07</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>4</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmSKC34_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>7</minRange>
-				<range>17000</range>
+				<range>190</range>
 				<soundCast>Sound_Single127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -203,6 +204,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.15</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

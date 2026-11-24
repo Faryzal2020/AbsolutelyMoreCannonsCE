@@ -105,6 +105,14 @@
 				<shockwaveOffset>(0, 0, 4.5)</shockwaveOffset>
 				<shockwaveParticleSize>1.5</shockwaveParticleSize>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.5</maxExplosiveRadius>
+				<maxDamage>390</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -124,6 +132,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.3</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmTypeC_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -182,21 +191,21 @@
 		<description>The 12.7cm 3rd Year Type C was a Japanese naval twin gun mounted on destroyers and cruisers. It fires twin-gun salvos, has an indirect fire variant, and is capable of settlement bombardment. Power: 400, HP: 1440, Cooldown: 12.0s, Range: 7-14800, Rate of Fire: 10 rounds per minute, Aimed Burst: 2, Reload Time: 1s. Ammunition: HE shell with 3.0m explosion radius.</description>
 		<statBases>
 			<SightsEfficiency>4</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<ShotSpread>0.10</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>12.0</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.20</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_127mmTypeC_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
 				<minRange>7</minRange>
-				<range>14800</range>
+				<range>180</range>
 				<soundCast>Sound_Double127mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>100</muzzleFlashScale>
@@ -220,6 +229,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.15</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -326,6 +340,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.5</maxExplosiveRadius>
+				<maxDamage>390</maxDamage>
+				<minPenForCookOff>22</minPenForCookOff>
+				<highPenForCookOff>70</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<size>(6,6)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -341,6 +363,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.6</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmTypeC_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>

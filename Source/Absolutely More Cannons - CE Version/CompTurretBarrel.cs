@@ -319,6 +319,63 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
+        /// Resolves the custom barrel shot height (in vertical cells) for a given turret or weapon caster.
+        /// Returns <= 0f if no custom barrelHeight is configured.
+        /// </summary>
+        public static float GetCustomBarrelHeight(Thing caster, Thing equipment = null)
+        {
+            if (caster != null)
+            {
+                var barrelComp = caster.TryGetComp<CompTurretBarrel>();
+                if (barrelComp?.Extension != null && barrelComp.Extension.barrelHeight > 0f)
+                {
+                    return barrelComp.Extension.barrelHeight;
+                }
+
+                var ext = caster.def?.GetModExtension<TurretBarrelExtension>();
+                if (ext != null && ext.barrelHeight > 0f)
+                {
+                    return ext.barrelHeight;
+                }
+
+                if (caster.ParentHolder is Thing parentThing)
+                {
+                    var parentComp = parentThing.TryGetComp<CompTurretBarrel>();
+                    if (parentComp?.Extension != null && parentComp.Extension.barrelHeight > 0f)
+                    {
+                        return parentComp.Extension.barrelHeight;
+                    }
+
+                    var parentExt = parentThing.def?.GetModExtension<TurretBarrelExtension>();
+                    if (parentExt != null && parentExt.barrelHeight > 0f)
+                    {
+                        return parentExt.barrelHeight;
+                    }
+                }
+            }
+
+            if (equipment != null)
+            {
+                var eqExt = equipment.def?.GetModExtension<TurretBarrelExtension>();
+                if (eqExt != null && eqExt.barrelHeight > 0f)
+                {
+                    return eqExt.barrelHeight;
+                }
+            }
+
+            if (caster is Building_TurretGun btg && btg.gun != null)
+            {
+                var gunExt = btg.gun.def?.GetModExtension<TurretBarrelExtension>();
+                if (gunExt != null && gunExt.barrelHeight > 0f)
+                {
+                    return gunExt.barrelHeight;
+                }
+            }
+
+            return -1f;
+        }
+
+        /// <summary>
         /// Initialize the component.
         /// Note: Graphics initialization is deferred to PostSpawnSetup or first draw
         /// to avoid loading graphics off the main thread during save loading.
@@ -1048,8 +1105,20 @@ namespace AbsolutelyMoreCannons
                     }
                 }
                 
+                // 0. For NonSnap CE turrets, always read the authoritative physical NonSnapTurretRot first
+                // so the barrel graphic, muzzle flash, and smoke never read a transiently snapped top.curRotationInt.
+                if (Turret is Building_Turret buildingTurret)
+                {
+                    float authRot = TurretTrackingUtility.GetAuthoritativeBarrelRotation(buildingTurret);
+                    if (!float.IsNaN(authRot))
+                    {
+                        rotation = authRot;
+                        gotTurretTopRotation = true;
+                    }
+                }
+
                 // Try to get turret top rotation - works with both vanilla and CE turrets
-                if (CETurretTop != null)
+                if (!gotTurretTopRotation && CETurretTop != null)
                 {
                     // 1. Try curRotationInt field FIRST (private field on Verse.TurretTop)
                     // This reflects the actual graphic rotation of the turret top and prevents

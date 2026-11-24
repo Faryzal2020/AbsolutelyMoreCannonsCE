@@ -147,6 +147,14 @@
 				<fragAngleRange>0~10</fragAngleRange>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>true</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<ThingDef ParentName="Base203mmSKC34Bullet">
@@ -273,6 +281,14 @@
 				<fragAngleRange>0~10</fragAngleRange>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>true</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<ThingDef ParentName="Base203mmSKC34IndirectBullet">

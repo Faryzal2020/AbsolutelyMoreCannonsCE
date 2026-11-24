@@ -89,6 +89,7 @@
     	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
     	<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>1.2</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M150mmSIG33_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -257,6 +258,7 @@
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>1.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M150mmSIG33_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

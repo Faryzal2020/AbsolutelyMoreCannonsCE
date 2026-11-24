@@ -107,6 +107,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.5</maxExplosiveRadius>
+				<maxDamage>280</maxDamage>
+				<minPenForCookOff>18</minPenForCookOff>
+				<highPenForCookOff>60</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -130,6 +138,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.0</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M76mmOtomelaraC_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
@@ -189,22 +198,22 @@
 		</graphicData>
 		<description>The OTO Melara 76/62C was an Italian rapid-fire naval gun designed for multi-role surface and air targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 200, HP: 5000, Cooldown: 2.5s, Range: 7-14000, Rate of Fire: 24 rounds per minute, Aimed Burst: 1, Reload Time: 1s. Ammunition: HE shell with 2.5m explosion radius and AP shell with 60 penetration.</description>
 		<statBases>
-			<SightsEfficiency>5</SightsEfficiency>
-			<ShotSpread>0.005</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>6</SightsEfficiency>
+			<ShotSpread>0.04</ShotSpread>
+			<SwayFactor>0.10</SwayFactor>
 			<RangedWeapon_Cooldown>2</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.15</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_76mmOtomelaraC_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
         <minRange>7</minRange>
-				<range>16000</range>
+				<range>160</range>
 				<soundCast>Sound_76mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>50</muzzleFlashScale>
@@ -256,6 +265,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.05</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.35</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>
@@ -360,6 +374,14 @@
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
 				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.5</maxExplosiveRadius>
+				<maxDamage>280</maxDamage>
+				<minPenForCookOff>18</minPenForCookOff>
+				<highPenForCookOff>60</highPenForCookOff>
+				<hasBaseAmmoRack>true</hasBaseAmmoRack>
+				<hitPointsPercentThreshold>0.55</hitPointsPercentThreshold>
+			</li>
 		</comps>
     	<size>(5,5)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -379,6 +401,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.3</barrelHeight>
 				<selectableBurstCounts>
 					<li>1</li>
 					<li>3</li>

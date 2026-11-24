@@ -10,7 +10,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M30mmGAU8Avenger</texPath>
-			<drawSize>(10,10)</drawSize>
+			<drawSize>(11,11)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -40,12 +40,6 @@
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
-				<bulletProtection>1.0</bulletProtection>
-				<explosiveProtection>0.8</explosiveProtection>
-				<temperatureProtection>0.5</temperatureProtection>
-				<hidePawnGraphics>true</hidePawnGraphics>
-			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel"/>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -65,10 +59,10 @@
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
 				<heatThreshold>200</heatThreshold> <!-- shots required to start emitting heat smoke -->
-				<heatDecayRate>3.0</heatDecayRate> <!-- heat loss per second -->
-				<decayIncrease>0.6</decayIncrease>
+				<heatDecayRate>2.0</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.3</decayIncrease>
 
-				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 1.7)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>2</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>4</emissionIncrease>
@@ -90,6 +84,12 @@
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretPreserveAmmo" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSprayDiscipline" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.5</maxExplosiveRadius>
+				<maxDamage>260</maxDamage>
+				<minPenForCookOff>15</minPenForCookOff>
+				<highPenForCookOff>50</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -125,6 +125,10 @@
 				<allowToggle>true</allowToggle>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>3</barrelHeight>
+				<controlMode>MachineActuated</controlMode>
+				<actuatorStrength>2.0</actuatorStrength>
+				<turretHeadWeight>8.0</turretHeadWeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M30mmGAU8Avenger_Barrel</texPath>
 					<graphicClass>Graphic_Random</graphicClass>
@@ -189,9 +193,9 @@
 		</graphicData>
 		<description>Use ammo set:30x173mm NATO \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
-			<SightsEfficiency>3.5</SightsEfficiency>
-			<ShotSpread>0.29</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.25</ShotSpread>
+			<SwayFactor>0.12</SwayFactor>
 			<RangedWeapon_Cooldown>0.4</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
@@ -295,6 +299,21 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretRecoilExtension">
+				<controlMode>MachineActuated</controlMode>
+				<actuatorStrength>2.0</actuatorStrength>
+				<turretHeadWeight>8.0</turretHeadWeight>
+				<initialJoltMultiplier>1.2</initialJoltMultiplier>
+				<baseSettleShots>8</baseSettleShots>
+				<steadyStateVibration>0.20</steadyStateVibration>
+				<verticalVibrationRatio>0.45</verticalVibrationRatio>
+				<angularSmoothing>0.68</angularSmoothing>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.05</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.35</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

@@ -15,7 +15,7 @@
 		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/U152mmMsta</texPath>
-			<drawSize>(22,22)</drawSize>
+			<drawSize>(20,20)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -27,7 +27,8 @@
 			<WorkToBuild>56250</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
-      <AimingAccuracy>0.95</AimingAccuracy>
+      <AimingAccuracy>1.00</AimingAccuracy>
+      <ShootingAccuracyTurret>2.5</ShootingAccuracyTurret>
 		</statBases>
 		<costList>
       <Steel>1000</Steel>
@@ -38,7 +39,7 @@
 		<building>
 			<turretGunDef>Turret_U152mmMsta_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
-      <turretTopDrawSize>21</turretTopDrawSize>
+      		<turretTopDrawSize>20</turretTopDrawSize>
 			<turretBurstCooldownTime>9</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
 		</building>
@@ -56,11 +57,57 @@
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
-			<swayReduction>0.8</swayReduction>
-			<recoilReduction>0.8</recoilReduction>
-			<spreadReduction>0.8</spreadReduction>
-		</li>
+				<swayReduction>0.8</swayReduction>
+				<recoilReduction>0.8</recoilReduction>
+				<spreadReduction>0.8</spreadReduction>
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>4</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 7.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>20~30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>12</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 7)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 6.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
+			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>10.0</maxExplosiveRadius>
+				<maxDamage>440</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -73,18 +120,19 @@
 		</researchPrerequisites>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+        <barrelHeight>2.1</barrelHeight>
         <barrelGraphic>
           <texPath>Things/Building/U152mmMsta_Barrel</texPath>
           <graphicClass>Graphic_Single</graphicClass>
           <drawSize>(3,3)</drawSize>
         </barrelGraphic>
         <barrelOffset>(0,0,0.0)</barrelOffset>
-        <barrelDrawSize>21.0</barrelDrawSize>
+        <barrelDrawSize>20.0</barrelDrawSize>
         <drawOnTop>false</drawOnTop>
         <recoilAnimation>
-          <maxDistance>2</maxDistance>
+          <maxDistance>1</maxDistance>
           <recoilDuration>30</recoilDuration>
-          <returnDuration>100</returnDuration>
+          <returnDuration>35</returnDuration>
           <useRecoilCurve>true</useRecoilCurve>
           <useReturnCurve>false</useReturnCurve>
           <affectsRotation>false</affectsRotation>
@@ -108,6 +156,11 @@
 		  </flashIntensityCurve>
         </firingAnimation>
       </li>
+      <li Class="CombatExtended.NonSnapTurretExtension">
+      	<speed>0.35</speed>
+      	<preferedAngleRange>15</preferedAngleRange>
+      	<minAngleWeight>0.1</minAngleWeight>
+      </li>
     </modExtensions>
 	</ThingDef>
 	
@@ -120,30 +173,33 @@
 		</graphicData>
 		<description>The Auto 2S19 Msta is a Soviet 152mm self-propelled howitzer refitted as an unmanned artillery turret. It has an internal magazine (Mag Size: 100), indirect fire capability, and requires 800 power to operate. Power: 800, HP: 2600, Cooldown: 9.0s, Range: 24700, Indirect Range: 20-24700, Rate of Fire: 6 rounds per minute. Ammunition: HE (Explosion Radius 4.5). Capable of settlement bombardment.</description>
 		<statBases>
-			<SightsEfficiency>2.9</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.4</SwayFactor>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.20</ShotSpread>
+			<SwayFactor>0.15</SwayFactor>
 			<RangedWeapon_Cooldown>9</RangedWeapon_Cooldown>
-      <NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
+      		<NightVisionEfficiency_Weapon>1</NightVisionEfficiency_Weapon>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Reload</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_152mm2A65_HE</defaultProjectile>
-				<warmupTime>3.0500000000000003</warmupTime>
-        <minRange>7</minRange>
-				<range>120</range>
+				<warmupTime>2</warmupTime>
+        		<minRange>7</minRange>
+				<range>250</range>
 				<soundCast>Sound_152mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
-				<muzzleFlashScale>120</muzzleFlashScale>
+				<muzzleFlashScale>22</muzzleFlashScale>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
-		    <ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
+		    	<ignorePartialLoSBlocker>true</ignorePartialLoSBlocker>
 			</li>
 		</verbs>
 		<comps>
@@ -152,11 +208,18 @@
 				<reloadTime>0.5</reloadTime>
 				<ammoSet>AmmoSet_152mm2A65_Shells</ammoSet>
 			</li>
-      <li Class="CombatExtended.CompProperties_FireModes">
-        <aiUseBurstMode>FALSE</aiUseBurstMode>
-        <aiAimMode>AimedShot</aiAimMode>
-      </li>
+			<li Class="CombatExtended.CompProperties_FireModes">
+				<aiUseBurstMode>FALSE</aiUseBurstMode>
+				<aiAimMode>AimedShot</aiAimMode>
+			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.15</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.75</darkPenaltyMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 <!-- INDIRECT -->
@@ -167,7 +230,7 @@
 		<constructionSkillPrerequisite>8</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/U152mmMsta</texPath>
-			<drawSize>(22,22)</drawSize>
+			<drawSize>(20,20)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -179,8 +242,8 @@
 			<WorkToBuild>56250</WorkToBuild>
 			<Mass>1</Mass>
 			<Bulk>1</Bulk>
-      <AimingAccuracy>1</AimingAccuracy>
-      <ShootingAccuracyTurret>1.5</ShootingAccuracyTurret>
+      		<AimingAccuracy>1</AimingAccuracy>
+      		<ShootingAccuracyTurret>1.5</ShootingAccuracyTurret>
 		</statBases>
 		<costList>
       <Steel>1000</Steel>
@@ -195,7 +258,7 @@
 			<turretGunDef>Turret_U152mmMsta_indirect_Weapon</turretGunDef>
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>9</turretBurstCooldownTime>
-      <turretTopDrawSize>21</turretTopDrawSize>
+      		<turretTopDrawSize>20</turretTopDrawSize>
 		</building>
 		<designatorDropdown>Group_AMC_U152mmMsta</designatorDropdown>
 		<comps>
@@ -204,7 +267,46 @@
 				<basePowerConsumption>800</basePowerConsumption>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
+				<muzzleEnabled>true</muzzleEnabled>
+				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
+				<muzzleParticleCount>4</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 4)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>10~15</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~4</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
+				<heatEnabled>true</heatEnabled>
+				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
+				<heatThreshold>12</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
+				<shockwaveEnabled>true</shockwaveEnabled>
+				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
+				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 3.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
 				<alternateDef>Turret_U152mmMsta_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
@@ -212,50 +314,62 @@
 				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretFCS" />
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>10.0</maxExplosiveRadius>
+				<maxDamage>440</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
+			</li>
 		</comps>
-    <size>5,5</size>
+    	<size>5,5</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_U152mmMsta</li>
 		</researchPrerequisites>
-    <modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<barrelGraphic>
-			<texPath>Things/Building/U152mmMsta_Barrel_Indirect</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-			<drawSize>(3,3)</drawSize>
-			</barrelGraphic>
-			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>21.0</barrelDrawSize>
-			<drawOnTop>false</drawOnTop>
-			<recoilAnimation>
-				<maxDistance>1</maxDistance>
-				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
-			</recoilAnimation>
-			<firingAnimation>
-				<enabled>true</enabled>
-				<durationTicks>10</durationTicks>  
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  
-				<flashSize>35</flashSize>
-				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-4</flashOffset>  
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>      
-					<li>(0.3, 0.9)</li>  
-					<li>(0.6, 0.6)</li>  
-					<li>(1, 0)</li>      
-					</points>
-				</flashIntensityCurve>
-			</firingAnimation>
-		</li>
-    </modExtensions>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>2.5</barrelHeight>
+				<barrelGraphic>
+				<texPath>Things/Building/U152mmMsta_Barrel_Indirect</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+				</barrelGraphic>
+				<barrelOffset>(0,0,0.0)</barrelOffset>
+				<barrelDrawSize>20.0</barrelDrawSize>
+				<drawOnTop>false</drawOnTop>
+				<recoilAnimation>
+					<maxDistance>0.6</maxDistance>
+					<recoilDuration>30</recoilDuration>
+					<returnDuration>35</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
+				</recoilAnimation>
+				<firingAnimation>
+					<enabled>true</enabled>
+					<durationTicks>10</durationTicks>  
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  
+					<flashSize>35</flashSize>
+					<flashBrightness>3.0</flashBrightness>
+					<flashOffset>-4</flashOffset>  
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      
+						<li>(0.3, 0.9)</li>  
+						<li>(0.6, 0.6)</li>  
+						<li>(1, 0)</li>      
+						</points>
+					</flashIntensityCurve>
+				</firingAnimation>
+			</li>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<speed>0.35</speed>
+				<preferedAngleRange>15</preferedAngleRange>
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+		</modExtensions>
 	</ThingDef>
 	
 	<ThingDef ParentName="BaseArtilleryWeapon">
@@ -306,13 +420,11 @@
 		<comps>
 			<li Class="CombatExtended.CompProperties_Charges">
 				<chargeSpeeds>
-					<li>30</li>
-					<li>40</li>
 					<li>50</li>
-					<li>60</li>
-					<li>70</li>
-					<li>80</li>
-					<li>90</li>
+					<li>75</li>
+					<li>100</li>
+					<li>125</li>
+					<li>150</li>
 				</chargeSpeeds>
 			</li>
 			<li Class="CombatExtended.CompProperties_AmmoUser">

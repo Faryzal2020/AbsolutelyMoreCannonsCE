@@ -87,6 +87,12 @@
 				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 25+ cell range, fires over obstacles</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.0</maxExplosiveRadius>
+				<maxDamage>380</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -100,6 +106,7 @@
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>1.75</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M152mmAkatsiya_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -153,22 +160,22 @@
 		</graphicData>
 		<description>The 2S3 Akatsiya was a Soviet self-propelled howitzer designed to provide heavy indirect fire support. It has an indirect fire variant, features an internal magazine of 46 rounds, and is capable of settlement bombardment. Power: 200, HP: 1280, Cooldown: 10.0s, Range: 18500, Shelling Range: 24. Ammunition: 152mm OF-540 (HE, Damage: 386, Explosion Radius: 4.5), 152mm OF-540 (Airburst, fragmentation, anti-infantry).</description>
 		<statBases>
-			<SightsEfficiency>1.5</SightsEfficiency>
-			<ShotSpread>0.02</ShotSpread>
-			<SwayFactor>0.1</SwayFactor>
+			<SightsEfficiency>5</SightsEfficiency>
+			<ShotSpread>0.25</ShotSpread>
+			<SwayFactor>0.18</SwayFactor>
 			<RangedWeapon_Cooldown>10</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1.5</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_152mm2A65_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
         <minRange>6</minRange>
-				<range>18500</range>
+				<range>250</range>
 				<soundCast>Sound_152mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>22</muzzleFlashScale>
@@ -187,6 +194,9 @@
 				<ammoSet>AmmoSet_152mm2A65_Shells</ammoSet>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension" />
+		</modExtensions>
 	</ThingDef>
 
 <!-- INDIRECT -->
@@ -264,6 +274,12 @@
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
 				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>9.0</maxExplosiveRadius>
+				<maxDamage>380</maxDamage>
+				<minPenForCookOff>16</minPenForCookOff>
+				<highPenForCookOff>55</highPenForCookOff>
+			</li>
 		</comps>
     	<size>(4,4)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
@@ -273,6 +289,7 @@
     	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+				<barrelHeight>2.1</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M152mmAkatsiya_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>

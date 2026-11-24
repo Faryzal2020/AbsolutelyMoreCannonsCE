@@ -96,15 +96,9 @@ namespace AbsolutelyMoreCannons
         {
             try
             {
-                if (parent != null)
+                if (parent is CombatExtended.Building_TurretGunCE ceTurret && ceTurret.NonSnap)
                 {
-                    var nonSnapField = parent.GetType().GetField("NonSnapTurretRot", 
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (nonSnapField != null)
-                    {
-                        nonSnapField.SetValue(parent, rimWorldAngle);
-                        Log.Message($"[CompDelayedRotation] Set NonSnapTurretRot on {parent.def.defName} to {rimWorldAngle:F1}°");
-                    }
+                    TurretTrackingUtility.SyncTurretRotationFields(ceTurret, rimWorldAngle);
                 }
 
                 object turretTop = GetTurretTop();

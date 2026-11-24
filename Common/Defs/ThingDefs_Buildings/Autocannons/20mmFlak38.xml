@@ -70,6 +70,12 @@
 				<transferViewOrigin>true</transferViewOrigin>
 				<ignoreSelfOcclusion>true</ignoreSelfOcclusion>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>3.5</maxExplosiveRadius>
+				<maxDamage>90</maxDamage>
+				<minPenForCookOff>10</minPenForCookOff>
+				<highPenForCookOff>35</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -83,6 +89,7 @@
     <interactionCellOffset>(1,0,-1)</interactionCellOffset>
     <modExtensions>
       <li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+        <barrelHeight>1.1</barrelHeight>
         <barrelGraphic>
           <texPath>Things/Building/M20mmFlak38_Barrel</texPath>
           <graphicClass>Graphic_Single</graphicClass>

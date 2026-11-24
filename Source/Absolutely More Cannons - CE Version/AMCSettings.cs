@@ -42,6 +42,8 @@ namespace AbsolutelyMoreCannons
         public float recoilReductionPercent = 0f;  // 0% = full recoil, 100% = no recoil
         public float spreadReductionPercent = 0f;  // 0% = full spread, 100% = no spread
         public bool showAccuracyOverrideInspect = true; // Show per-turret accuracy overrides in inspect panel
+        public bool showBallisticsOverlay = true; // Show live on-screen turret ballistics telemetry overlay
+        public bool showTargetingOverlay = true; // Show live on-screen selected turret targeting HUD
 
         // === Ammo Fabricator AI Bubbles ===
         public bool enableFabricatorBubbles = true;
@@ -116,6 +118,8 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref recoilReductionPercent, "recoilReductionPercent", 0f);
             Scribe_Values.Look(ref spreadReductionPercent, "spreadReductionPercent", 0f);
             Scribe_Values.Look(ref showAccuracyOverrideInspect, "showAccuracyOverrideInspect", true);
+            Scribe_Values.Look(ref showBallisticsOverlay, "showBallisticsOverlay", true);
+            Scribe_Values.Look(ref showTargetingOverlay, "showTargetingOverlay", true);
             Scribe_Values.Look(ref enableFabricatorBubbles, "enableFabricatorBubbles", true);
             Scribe_Values.Look(ref syncWithInteractionBubbles, "syncWithInteractionBubbles", true);
             Scribe_Values.Look(ref fabricatorBubbleFrequencyMultiplier, "fabricatorBubbleFrequencyMultiplier", 1.0f);
@@ -267,6 +271,22 @@ namespace AbsolutelyMoreCannons
                 "Show Accuracy Override Info (inspect panel)",
                 ref showAccuracyOverrideInspect,
                 "Display per-turret accuracy override values when selecting turrets"
+            );
+
+            listing.Gap(6);
+
+            listing.CheckboxLabeled(
+                "Show Live Turret Ballistics Viewer (on-screen)",
+                ref showBallisticsOverlay,
+                "Display a live HUD breakdown of barrel height, pitch, yaw, 100% accuracy vector, and deviation contributors whenever a turret fires"
+            );
+
+            listing.Gap(6);
+
+            listing.CheckboxLabeled(
+                "Show Live Turret Targeting Viewer (on-screen)",
+                ref showTargetingOverlay,
+                "Display a live HUD below Ballistics HUD monitoring the selected turret's firing stage, timers, targets, burst counts, ammo, and spray discipline"
             );
 
             listing.Gap(12);

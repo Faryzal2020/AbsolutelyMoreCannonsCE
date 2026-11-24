@@ -166,6 +166,14 @@
 				<fragAngleRange>0~10</fragAngleRange>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>false</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<ThingDef ParentName="Base76mmOtomelaraCBullet">
@@ -276,6 +284,14 @@
 				<fragAngleRange>0~10</fragAngleRange>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>false</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<!-- ================== Indirect ================== -->
@@ -327,6 +343,14 @@
 				</fragments>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>false</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<ThingDef ParentName="Base76mmOtomelaraCIndirectBullet">
@@ -437,6 +461,14 @@
 				</fragments>
 			</li>
 		</comps>
+		<modExtensions>
+			<li Class="AbsolutelyMoreCannons.ImpactGroundDecalExtension">
+				<spawnCrater>false</spawnCrater>
+				<spawnSoot>true</spawnSoot>
+				<craterScaleMultiplier>0.8</craterScaleMultiplier>
+				<sootScaleMultiplier>1.0</sootScaleMultiplier>
+			</li>
+		</modExtensions>
 	</ThingDef>
 
 	<!-- ==================== Recipes ========================== -->

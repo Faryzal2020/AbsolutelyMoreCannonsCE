@@ -8,6 +8,30 @@ using Verse;
 
 namespace AbsolutelyMoreCannons
 {
+    public struct SprayConeDiagReport
+    {
+        public bool HasValidReference;
+        public float ReferenceAngle;
+        public string ReferenceSource;
+        public float ConeThresholdDegrees;
+
+        public int StandingHostilesInRange;
+        public int ValidInConeCount;
+
+        public Pawn ClosestInCone;
+        public float ClosestInConeDist;
+        public float ClosestInConeAngleDelta;
+
+        public Pawn NearestOutsideCone;
+        public float NearestOutsideConeDist;
+        public float NearestOutsideConeAngleDelta;
+
+        public int BlockedByLoSInConeCount;
+        public Pawn NearestBlockedLoSInCone;
+        public float NearestBlockedLoSDist;
+        public float NearestBlockedLoSAngleDelta;
+    }
+
     public class CompTurretSprayDiscipline : ThingComp
     {
         public bool sprayDisciplineEnabled = true;
@@ -88,7 +112,7 @@ namespace AbsolutelyMoreCannons
 
             // Determine reference aiming angle
             float currentAimAngle;
-            if (currentTarget.IsValid)
+            if (currentTarget.IsValid && currentTarget.Cell.IsValid)
             {
                 currentAimAngle = (currentTarget.Cell - parent.Position).AngleFlat;
             }
@@ -110,7 +134,9 @@ namespace AbsolutelyMoreCannons
             Pawn bestCandidate = null;
 
             Thing currentTargetThing = currentTarget.Thing;
-            bool currentTargetInvalidOrDowned = currentTargetThing == null || 
+            bool currentTargetInvalidOrDowned = currentTargetThing == null ||
+                                                !currentTargetThing.Spawned ||
+                                                currentTargetThing.Destroyed ||
                                                 (currentTargetThing is Pawn p && (p.Dead || p.Downed));
 
             foreach (var pawn in mapPawns)
@@ -151,24 +177,49 @@ namespace AbsolutelyMoreCannons
 
         public bool HasAnyConeTarget(Verb verb, LocalTargetInfo currentTarget)
         {
+            var report = EvaluateCone(verb, currentTarget);
+            return report.ValidInConeCount > 0;
+        }
+
+        public SprayConeDiagReport EvaluateCone(Verb verb, LocalTargetInfo currentTarget)
+        {
+            var report = new SprayConeDiagReport
+            {
+                HasValidReference = false,
+                ReferenceAngle = 0f,
+                ReferenceSource = "None",
+                ConeThresholdDegrees = CycleConeDegrees,
+                StandingHostilesInRange = 0,
+                ValidInConeCount = 0,
+                ClosestInCone = null,
+                ClosestInConeDist = float.MaxValue,
+                ClosestInConeAngleDelta = 0f,
+                NearestOutsideCone = null,
+                NearestOutsideConeDist = float.MaxValue,
+                NearestOutsideConeAngleDelta = 0f,
+                BlockedByLoSInConeCount = 0,
+                NearestBlockedLoSInCone = null,
+                NearestBlockedLoSDist = float.MaxValue,
+                NearestBlockedLoSAngleDelta = 0f
+            };
+
             if (parent == null || !parent.Spawned || parent.Map == null || verb == null)
             {
-                return false;
+                return report;
             }
 
-            var mapPawns = parent.Map.mapPawns.AllPawnsSpawned;
-            if (mapPawns == null || mapPawns.Count == 0)
-            {
-                return false;
-            }
-
-            float minRange = verb.verbProps.minRange;
-            float maxRange = verb.verbProps.range;
+            float minRange = verb.verbProps != null ? verb.verbProps.minRange : 0f;
+            float maxRange = verb.verbProps != null ? verb.verbProps.range : 9999f;
 
             float currentAimAngle;
-            if (currentTarget.IsValid)
+            if (currentTarget.IsValid && currentTarget.Cell.IsValid)
             {
                 currentAimAngle = (currentTarget.Cell - parent.Position).AngleFlat;
+                string targName = currentTarget.HasThing && currentTarget.Thing != null
+                    ? currentTarget.Thing.LabelShortCap
+                    : $"Cell {currentTarget.Cell}";
+                report.ReferenceSource = $"{targName} ({currentAimAngle:F1} deg)";
+                report.HasValidReference = true;
             }
             else
             {
@@ -176,11 +227,22 @@ namespace AbsolutelyMoreCannons
                 if (barrelComp != null)
                 {
                     currentAimAngle = barrelComp.GetCurrentBarrelRotation();
+                    report.ReferenceSource = $"Barrel ({currentAimAngle:F1} deg)";
                 }
                 else
                 {
                     currentAimAngle = parent.Rotation.AsAngle;
+                    report.ReferenceSource = $"TurretRot ({currentAimAngle:F1} deg)";
                 }
+                report.HasValidReference = true;
+            }
+
+            report.ReferenceAngle = currentAimAngle;
+
+            var mapPawns = parent.Map.mapPawns?.AllPawnsSpawned;
+            if (mapPawns == null || mapPawns.Count == 0)
+            {
+                return report;
             }
 
             float coneMaxDelta = CycleConeDegrees;
@@ -193,17 +255,46 @@ namespace AbsolutelyMoreCannons
                 float dist = (pawn.Position - parent.Position).LengthHorizontal;
                 if (dist < minRange || dist > maxRange) continue;
 
+                report.StandingHostilesInRange++;
+
                 float candidateAngle = (pawn.Position - parent.Position).AngleFlat;
                 float angleDelta = Mathf.Abs(Mathf.DeltaAngle(currentAimAngle, candidateAngle));
-                if (angleDelta > coneMaxDelta) continue;
 
-                if (verb.CanHitTarget(pawn))
+                if (angleDelta <= coneMaxDelta)
                 {
-                    return true;
+                    if (verb.CanHitTarget(pawn))
+                    {
+                        report.ValidInConeCount++;
+                        if (dist < report.ClosestInConeDist)
+                        {
+                            report.ClosestInCone = pawn;
+                            report.ClosestInConeDist = dist;
+                            report.ClosestInConeAngleDelta = angleDelta;
+                        }
+                    }
+                    else
+                    {
+                        report.BlockedByLoSInConeCount++;
+                        if (dist < report.NearestBlockedLoSDist)
+                        {
+                            report.NearestBlockedLoSInCone = pawn;
+                            report.NearestBlockedLoSDist = dist;
+                            report.NearestBlockedLoSAngleDelta = angleDelta;
+                        }
+                    }
+                }
+                else
+                {
+                    if (dist < report.NearestOutsideConeDist)
+                    {
+                        report.NearestOutsideCone = pawn;
+                        report.NearestOutsideConeDist = dist;
+                        report.NearestOutsideConeAngleDelta = angleDelta;
+                    }
                 }
             }
 
-            return false;
+            return report;
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()

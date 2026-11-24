@@ -88,6 +88,12 @@
 				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.5</maxExplosiveRadius>
+				<maxDamage>290</maxDamage>
+				<minPenForCookOff>20</minPenForCookOff>
+				<highPenForCookOff>65</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -101,6 +107,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.65</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M105mmLeo1A5_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -149,16 +156,16 @@
 		</graphicData>
 		<description>Use ammo set:105mm DM23 \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
-			<SightsEfficiency>5</SightsEfficiency>
-			<ShotSpread>0.005</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>6</SightsEfficiency>
+			<ShotSpread>0.03</ShotSpread>
+			<SwayFactor>0.10</SwayFactor>
 			<RangedWeapon_Cooldown>6.5</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1</recoilAmount>
+				<recoilAmount>0.25</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_105mmL7A3_APFSDS</defaultProjectile>
@@ -192,6 +199,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.05</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>0.35</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

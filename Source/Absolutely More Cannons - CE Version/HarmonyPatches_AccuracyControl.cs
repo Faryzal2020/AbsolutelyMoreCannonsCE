@@ -33,6 +33,15 @@ namespace AbsolutelyMoreCannons
             TryPatchShotFiredMethod(harmony);
         }
         
+        [ThreadStatic]
+        private static float preSwayRot;
+        [ThreadStatic]
+        private static float preSwayAng;
+        [ThreadStatic]
+        private static float preRecoilRot;
+        [ThreadStatic]
+        private static float preRecoilAng;
+
         private static void TryPatchSwayMethod(Harmony harmony)
         {
             try
@@ -49,7 +58,8 @@ namespace AbsolutelyMoreCannons
                 {
                     harmony.Patch(
                         original: swayMethod,
-                        postfix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Postfix_GetSwayVec))
+                        prefix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Prefix_GetSwayVec)) { priority = Priority.High },
+                        postfix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Postfix_GetSwayVec)) { priority = Priority.High }
                     );
                 }
             }
@@ -71,7 +81,8 @@ namespace AbsolutelyMoreCannons
                 {
                     harmony.Patch(
                         original: recoilMethod,
-                        postfix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Postfix_GetRecoilVec))
+                        prefix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Prefix_GetRecoilVec)) { priority = Priority.VeryHigh },
+                        postfix: new HarmonyMethod(typeof(HarmonyPatches_AccuracyControl), nameof(Postfix_GetRecoilVec)) { priority = Priority.High }
                     );
                 }
             }
@@ -271,33 +282,38 @@ namespace AbsolutelyMoreCannons
             {
                 if (__instance == null || __instance.caster == null || __result == null) return;
 
-                var fcsComp = GetFCSCompFromCaster(__instance.caster);
-                if (fcsComp != null && fcsComp.ActiveStats != null)
+                Thing caster = __instance.caster;
+                var fcsComp = GetFCSCompFromCaster(caster);
+                var accComp = caster.TryGetComp<Comp_AccuracyOverride>();
+                bool isTurret = caster is Building_Turret || (caster.ParentHolder is Building_Turret);
+
+                if (fcsComp == null && accComp == null && !isTurret) return;
+
+                float spreadReductionPercent = GetSpreadReductionForVerb(__instance);
+                float swayReductionPercent = GetSwayReductionForVerb(__instance);
+
+                FieldInfo spreadField = AccessTools.Field(__result.GetType(), "spreadDegrees");
+                FieldInfo swayField = AccessTools.Field(__result.GetType(), "swayDegrees");
+
+                if (spreadField != null && spreadReductionPercent > 0f)
                 {
-                    float spreadMult = fcsComp.ActiveStats.spreadMultiplier;
-                    float swayMult = fcsComp.ActiveStats.swayMultiplier;
+                    float origSpread = (float)spreadField.GetValue(__result);
+                    float spreadMult = Mathf.Max(0f, 1.0f - (spreadReductionPercent / 100f));
+                    float newSpread = origSpread * spreadMult;
+                    spreadField.SetValue(__result, newSpread);
 
-                    FieldInfo spreadField = AccessTools.Field(__result.GetType(), "spreadDegrees");
-                    FieldInfo swayField = AccessTools.Field(__result.GetType(), "swayDegrees");
-
-                    if (spreadField != null)
+                    if (fcsComp != null && fcsComp.ActiveStats != null)
                     {
-                        float origSpread = (float)spreadField.GetValue(__result);
-                        if (spreadMult >= 0f && spreadMult != 1.0f)
-                        {
-                            float newSpread = origSpread * spreadMult;
-                            spreadField.SetValue(__result, newSpread);
-
-                            string fcsLabel = fcsComp.LoadedFCSItem?.def?.label ?? "FCS";
-                            AMCLogger.LogFCS($"ACCURACY REPORT | Shooter: {__instance.caster.LabelCap} | FCS Installed: '{fcsLabel}' | FCS Spread Mult: {spreadMult:F2} | Base Spread: {origSpread:F3}° -> FCS Spread: {newSpread:F3}° ({(1f - spreadMult) * 100f:F1}% reduction)");
-                        }
+                        string fcsLabel = fcsComp.LoadedFCSItem?.def?.label ?? "FCS";
+                        AMCLogger.LogFCS($"ACCURACY REPORT | Shooter: {caster.LabelCap} | FCS Installed: '{fcsLabel}' | Spread Mult: {spreadMult:F2} | Base Spread: {origSpread:F3}° -> Final Spread: {newSpread:F3}° ({spreadReductionPercent:F1}% reduction)");
                     }
+                }
 
-                    if (swayField != null && swayMult >= 0f && swayMult != 1.0f)
-                    {
-                        float origSway = (float)swayField.GetValue(__result);
-                        swayField.SetValue(__result, origSway * swayMult);
-                    }
+                if (swayField != null && swayReductionPercent > 0f)
+                {
+                    float origSway = (float)swayField.GetValue(__result);
+                    float swayMult = Mathf.Max(0f, 1.0f - (swayReductionPercent / 100f));
+                    swayField.SetValue(__result, origSway * swayMult);
                 }
             }
             catch (Exception ex)
@@ -325,6 +341,12 @@ namespace AbsolutelyMoreCannons
             }
         }
         
+        public static void Prefix_GetSwayVec(float rotation, float angle)
+        {
+            preSwayRot = rotation;
+            preSwayAng = angle;
+        }
+
         public static void Postfix_GetSwayVec(object __instance, ref float rotation, ref float angle)
         {
             try
@@ -332,14 +354,22 @@ namespace AbsolutelyMoreCannons
                 float reductionPercent = GetSwayReductionForVerb(__instance);
                 if (reductionPercent <= 0f) return;
                 
-                float scale = 1.0f - (reductionPercent / 100f);
-                rotation *= scale;
-                angle *= scale;
+                float scale = Mathf.Max(0f, 1.0f - (reductionPercent / 100f));
+                float dRot = rotation - preSwayRot;
+                float dAng = angle - preSwayAng;
+                rotation = preSwayRot + dRot * scale;
+                angle = preSwayAng + dAng * scale;
             }
             catch (Exception ex)
             {
                 Log.Error($"[AMC] Error in Postfix_GetSwayVec: {ex}");
             }
+        }
+
+        public static void Prefix_GetRecoilVec(float rotation, float angle)
+        {
+            preRecoilRot = rotation;
+            preRecoilAng = angle;
         }
         
         public static void Postfix_GetRecoilVec(object __instance, ref float rotation, ref float angle)
@@ -349,9 +379,11 @@ namespace AbsolutelyMoreCannons
                 float reductionPercent = GetRecoilReductionForVerb(__instance);
                 if (reductionPercent <= 0f) return;
                 
-                float scale = 1.0f - (reductionPercent / 100f);
-                rotation *= scale;
-                angle *= scale;
+                float scale = Mathf.Max(0f, 1.0f - (reductionPercent / 100f));
+                float dRot = rotation - preRecoilRot;
+                float dAng = angle - preRecoilAng;
+                rotation = preRecoilRot + dRot * scale;
+                angle = preRecoilAng + dAng * scale;
             }
             catch (Exception ex)
             {
@@ -368,9 +400,10 @@ namespace AbsolutelyMoreCannons
 
             var fcsComp = GetFCSCompFromCaster(caster);
             var comp = caster.TryGetComp<Comp_AccuracyOverride>();
+            bool isTurret = caster is Building_Turret || (caster.ParentHolder is Building_Turret);
 
-            // If neither FCS nor AccuracyOverride is configured on this caster, return 0% reduction
-            if (fcsComp == null && comp == null) return 0f;
+            // Apply only to turrets or things with FCS / AccuracyOverride
+            if (fcsComp == null && comp == null && !isTurret) return 0f;
 
             float baseReduction = 0f;
             float fcsMultiplier = 1.0f;
@@ -400,9 +433,10 @@ namespace AbsolutelyMoreCannons
 
             var fcsComp = GetFCSCompFromCaster(caster);
             var comp = caster.TryGetComp<Comp_AccuracyOverride>();
+            bool isTurret = caster is Building_Turret || (caster.ParentHolder is Building_Turret);
 
-            // If neither FCS nor AccuracyOverride is configured on this caster, return 0% reduction
-            if (fcsComp == null && comp == null) return 0f;
+            // Apply only to turrets or things with FCS / AccuracyOverride
+            if (fcsComp == null && comp == null && !isTurret) return 0f;
 
             float baseReduction = 0f;
             float fcsMultiplier = 1.0f;
@@ -420,6 +454,38 @@ namespace AbsolutelyMoreCannons
             {
                 var settings = TurretBarrelAnimationMod.settings;
                 baseReduction = (settings != null) ? settings.recoilReductionPercent : 0f;
+            }
+
+            return 100f - ((100f - baseReduction) * fcsMultiplier);
+        }
+
+        private static float GetSpreadReductionForVerb(object verbInstance)
+        {
+            Thing caster = GetCasterFromVerb(verbInstance);
+            if (caster == null) return 0f;
+
+            var fcsComp = GetFCSCompFromCaster(caster);
+            var comp = caster.TryGetComp<Comp_AccuracyOverride>();
+            bool isTurret = caster is Building_Turret || (caster.ParentHolder is Building_Turret);
+
+            if (fcsComp == null && comp == null && !isTurret) return 0f;
+
+            float baseReduction = 0f;
+            float fcsMultiplier = 1.0f;
+
+            if (fcsComp != null && fcsComp.ActiveStats != null)
+            {
+                fcsMultiplier = fcsComp.ActiveStats.spreadMultiplier;
+            }
+
+            if (comp != null)
+            {
+                baseReduction = comp.GetSpreadReduction();
+            }
+            else
+            {
+                var settings = TurretBarrelAnimationMod.settings;
+                baseReduction = (settings != null) ? settings.spreadReductionPercent : 0f;
             }
 
             return 100f - ((100f - baseReduction) * fcsMultiplier);

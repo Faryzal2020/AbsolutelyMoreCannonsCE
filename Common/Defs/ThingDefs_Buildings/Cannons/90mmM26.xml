@@ -87,6 +87,12 @@
 				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>7.0</maxExplosiveRadius>
+				<maxDamage>250</maxDamage>
+				<minPenForCookOff>18</minPenForCookOff>
+				<highPenForCookOff>60</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -100,6 +106,7 @@
     <interactionCellOffset>(0,0,-3)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.5</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M90mmM26_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -148,22 +155,22 @@
 		</graphicData>
 		<description>Use ammo set:90mm M82 \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
-			<SightsEfficiency>5</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.2</SwayFactor>
+			<SightsEfficiency>4.5</SightsEfficiency>
+			<ShotSpread>0.06</ShotSpread>
+			<SwayFactor>0.16</SwayFactor>
 			<RangedWeapon_Cooldown>8</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>
 		<soundInteract>AMC_Large_Interact</soundInteract>
 		<verbs>
 			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>1</recoilAmount>
+				<recoilAmount>0.30</recoilAmount>
 				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_90mmM26_APHE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
         <minRange>6</minRange>
-				<range>100</range>
+				<range>105</range>
 				<soundCast>Sound_M26</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>50</muzzleFlashScale>
@@ -191,6 +198,11 @@
 			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
 				<maxVerticalDeviation>2</maxVerticalDeviation>
 				<maxRotationDeviation>2</maxRotationDeviation>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">
+				<pitchDarkGlowThreshold>0.20</pitchDarkGlowThreshold>
+				<litPenaltyMultiplier>0.10</litPenaltyMultiplier>
+				<darkPenaltyMultiplier>1</darkPenaltyMultiplier>
 			</li>
 		</modExtensions>
 	</ThingDef>

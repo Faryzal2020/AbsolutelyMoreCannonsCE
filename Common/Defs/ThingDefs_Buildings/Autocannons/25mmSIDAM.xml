@@ -79,6 +79,12 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>false</shockwaveEnabled>
 			</li>
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
+				<maxExplosiveRadius>5.5</maxExplosiveRadius>
+				<maxDamage>170</maxDamage>
+				<minPenForCookOff>12</minPenForCookOff>
+				<highPenForCookOff>40</highPenForCookOff>
+			</li>
 		</comps>
 		<placeWorkers>
 			<li>PlaceWorker_TurretTop</li>
@@ -92,6 +98,7 @@
 		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
 		<modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+			<barrelHeight>1.2</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M25mmSIDAM_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

@@ -80,6 +80,7 @@
     <interactionCellOffset>(2,0,-4)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+			<barrelHeight>2.8</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M406mm2A3_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
