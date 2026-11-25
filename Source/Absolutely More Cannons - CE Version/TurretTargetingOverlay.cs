@@ -1203,7 +1203,9 @@ namespace AbsolutelyMoreCannons
             }
 
             DrawLine(ref y, inner, $"  Preserve Ammo   : {preserveStr} | Barrel Angle: {barrelStr}", new Color(0.75f, 0.8f, 0.85f));
-            DrawLine(ref y, inner, $"  FCS             : {fcsStr}", new Color(0.75f, 0.8f, 0.85f));
+            var prioComp = turret.TryGetComp<CompTurretPrioritizeClosest>();
+            string prioStr = prioComp != null ? prioComp.GetStatusSummary(turret) : "N/A";
+            DrawLine(ref y, inner, $"  Prioritize Close: {prioStr} | FCS: {fcsStr}", new Color(0.75f, 0.85f, 0.92f));
 
             y += 3f;
             Widgets.DrawLineHorizontal(inner.x, y, inner.width);

@@ -171,6 +171,10 @@ namespace AbsolutelyMoreCannons
                     Log.Message($"[TurretModeSwap] Extracted loaded FCS: {loadedFCSItem?.def?.defName ?? "None"}");
                 }
             }
+
+            // Get Prioritize Closest & Preserve Ammo states before destroying old turret
+            bool? savedPrioritizeClosest = parent.TryGetComp<CompTurretPrioritizeClosest>()?.prioritizeClosestEnabled;
+            bool? savedPreserveAmmo = parent.TryGetComp<CompTurretPreserveAmmo>()?.preserveAmmo;
             
             // Destroy current turret (no resources)
             Log.Message($"[TurretModeSwap] Destroying old turret...");
@@ -231,6 +235,24 @@ namespace AbsolutelyMoreCannons
             if (wasSelected)
             {
                 Find.Selector.Select(newTurret);
+            }
+
+            // Restore Prioritize Closest & Preserve Ammo toggle states
+            if (savedPrioritizeClosest.HasValue)
+            {
+                var newPrioComp = newTurret.TryGetComp<CompTurretPrioritizeClosest>();
+                if (newPrioComp != null && !newPrioComp.IsLockedBySprayDiscipline)
+                {
+                    newPrioComp.prioritizeClosestEnabled = savedPrioritizeClosest.Value;
+                }
+            }
+            if (savedPreserveAmmo.HasValue)
+            {
+                var newPresComp = newTurret.TryGetComp<CompTurretPreserveAmmo>();
+                if (newPresComp != null)
+                {
+                    newPresComp.preserveAmmo = savedPreserveAmmo.Value;
+                }
             }
             
             // Force power connection & state immediately if it was powered

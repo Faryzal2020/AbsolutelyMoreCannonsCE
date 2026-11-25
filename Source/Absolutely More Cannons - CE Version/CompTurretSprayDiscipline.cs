@@ -61,6 +61,11 @@ namespace AbsolutelyMoreCannons
                 }
                 initialized = true;
             }
+
+            if (sprayDisciplineEnabled)
+            {
+                parent?.TryGetComp<CompTurretPrioritizeClosest>()?.Notify_SprayDisciplineEnabled();
+            }
         }
 
         public override void PostExposeData()
@@ -327,6 +332,10 @@ namespace AbsolutelyMoreCannons
                 toggleAction = () =>
                 {
                     sprayDisciplineEnabled = !sprayDisciplineEnabled;
+                    if (sprayDisciplineEnabled)
+                    {
+                        parent?.TryGetComp<CompTurretPrioritizeClosest>()?.Notify_SprayDisciplineEnabled();
+                    }
                     var settings = TurretBarrelAnimationMod.settings;
                     if (settings != null && settings.logTurretTarget)
                     {

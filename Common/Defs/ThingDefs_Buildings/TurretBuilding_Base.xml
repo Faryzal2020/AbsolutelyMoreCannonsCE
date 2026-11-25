@@ -66,6 +66,15 @@
     </damageMultipliers>
     <comps>
       <li Class="CompProperties_Forbiddable"/>
+      <li Class="AbsolutelyMoreCannons.CompProperties_TurretPrioritizeClosest">
+        <defaultPrioritizeClosest>true</defaultPrioritizeClosest>
+        <commitmentSeconds>4.0</commitmentSeconds>
+        <visionConeDegrees>45.0</visionConeDegrees>
+        <coneExpandDegreesPerSecond>10.0</coneExpandDegreesPerSecond>
+        <traverseTimeWeight>8.0</traverseTimeWeight>
+        <minSwitchAdvantageTiles>3.0</minSwitchAdvantageTiles>
+        <allowToggle>true</allowToggle>
+      </li>
     </comps>
     <tickerType>Normal</tickerType>
     <passability>PassThroughOnly</passability>
@@ -156,6 +165,15 @@
       <li Class="CompProperties_Forbiddable"/>
       <li Class="CompProperties_Mannable">
         <manWorkType>Violent</manWorkType>
+      </li>
+      <li Class="AbsolutelyMoreCannons.CompProperties_TurretPrioritizeClosest">
+        <defaultPrioritizeClosest>true</defaultPrioritizeClosest>
+        <commitmentSeconds>4.0</commitmentSeconds>
+        <visionConeDegrees>45.0</visionConeDegrees>
+        <coneExpandDegreesPerSecond>10.0</coneExpandDegreesPerSecond>
+        <traverseTimeWeight>8.0</traverseTimeWeight>
+        <minSwitchAdvantageTiles>3.0</minSwitchAdvantageTiles>
+        <allowToggle>true</allowToggle>
       </li>
     </comps>
     <statBases>
