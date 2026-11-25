@@ -90,8 +90,25 @@
 		</researchPrerequisites>
 		<interactionCellOffset>(1,0,-1)</interactionCellOffset>
 		<modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<barrelHeight>1.25</barrelHeight>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>1.5</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
+				<barrelHeight>1.7</barrelHeight>
+				<turretHeadWeight>2.0</turretHeadWeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M37mmFlakM42_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

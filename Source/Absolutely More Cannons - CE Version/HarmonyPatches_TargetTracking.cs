@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using CombatExtended;
@@ -284,6 +285,116 @@ namespace AbsolutelyMoreCannons
                     __result = false;
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Harmony patch for Verb_LaunchProjectileCE.ShiftTarget.
+    /// 1. Prefix: CE only computes estimatedTargDist when numShotsFired == 0, which leaves range estimation
+    ///    frozen at the first shot's distance when tracking a moving target or retargeting mid-burst.
+    ///    Refreshes estimatedTargDist on subsequent burst shots when mid-burst tracking is enabled.
+    /// 2. Postfix: CE computes lastShotAngle from caster.TrueCenter() on line 565 BEFORE line 583 adds
+    ///    IncrementBarrelCount() (which includes projectileSpawnOffset, e.g. 5.5 cells forward on the GAU-8).
+    ///    When a turret has both an elevated barrelHeight (e.g. 3.0) and a forward projectileSpawnOffset,
+    ///    launching from the forward muzzle with the shallower center-to-target pitch shifts the trajectory
+    ///    past the target by projectileSpawnOffset cells (flying over close targets). Recomputes the ballistic
+    ///    pitch from the actual muzzle sourceLoc to newTargetLoc.
+    /// </summary>
+    [HarmonyPatch(
+        typeof(Verb_LaunchProjectileCE),
+        nameof(Verb_LaunchProjectileCE.ShiftTarget),
+        new[] { typeof(ShiftVecReport), typeof(Vector3), typeof(float), typeof(bool), typeof(bool) },
+        new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
+    public static class Patch_Verb_LaunchProjectileCE_ShiftTarget_MidBurstRangeEstimate
+    {
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, float> estimatedTargDistRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("estimatedTargDist");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, int> numShotsFiredRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, int>("numShotsFired");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, Vector2> sourceLocRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, Vector2>("sourceLoc");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, Vector2> newTargetLocRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, Vector2>("newTargetLoc");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, float> lastShotAngleRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("lastShotAngle");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, float> angleRadiansRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("angleRadians");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, float> shotAngleRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("shotAngle");
+
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, float> distanceRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("distance");
+
+        private static readonly Func<Verb_LaunchProjectileCE, float> getShotSpeed =
+            (Func<Verb_LaunchProjectileCE, float>)Delegate.CreateDelegate(
+                typeof(Func<Verb_LaunchProjectileCE, float>),
+                AccessTools.PropertyGetter(typeof(Verb_LaunchProjectileCE), "ShotSpeed"),
+                throwOnBindFailure: false)
+            ?? (v => v.Projectile?.projectile?.speed ?? 100f);
+
+        private static readonly Func<Verb_LaunchProjectileCE, bool> getLockRotationAndAngle =
+            (Func<Verb_LaunchProjectileCE, bool>)Delegate.CreateDelegate(
+                typeof(Func<Verb_LaunchProjectileCE, bool>),
+                AccessTools.PropertyGetter(typeof(Verb_LaunchProjectileCE), "LockRotationAndAngle"));
+
+        [HarmonyPrefix]
+        [HarmonyPriority(Priority.First)]
+        public static void Prefix(Verb_LaunchProjectileCE __instance, ShiftVecReport report, bool calculateMechanicalOnly)
+        {
+            if (calculateMechanicalOnly || __instance == null || report == null || __instance.caster == null)
+                return;
+
+            if (numShotsFiredRef(__instance) > 0 && TurretTrackingUtility.CanTrackMidBurst(__instance.caster))
+            {
+                estimatedTargDistRef(__instance) = report.GetRandDist();
+            }
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPriority(Priority.First + 100)]
+        public static void Postfix(Verb_LaunchProjectileCE __instance, float targetHeight, bool calculateMechanicalOnly)
+        {
+            if (calculateMechanicalOnly || __instance == null || __instance.caster == null)
+                return;
+
+            var pprops = __instance.projectilePropsCE;
+            if (pprops?.TrajectoryWorker == null)
+                return;
+
+            Vector3 u = __instance.caster.TrueCenter();
+            Vector2 sourceLoc = sourceLocRef(__instance);
+            if ((sourceLoc - new Vector2(u.x, u.z)).sqrMagnitude <= 0.0001f)
+                return;
+
+            Vector2 newTargetLoc = newTargetLocRef(__instance);
+            float oldLastShotAngle = lastShotAngleRef(__instance);
+            float oldAngleRadians = angleRadiansRef(__instance);
+            float oldShotAngle = shotAngleRef(__instance);
+
+            float swayAndRecoilRad = oldAngleRadians - oldLastShotAngle;
+            float spreadRad = oldShotAngle - oldAngleRadians;
+
+            if (!getLockRotationAndAngle(__instance))
+            {
+                float shotHeight = __instance.ShotHeight;
+                Vector3 muzzlePos = new Vector3(sourceLoc.x, shotHeight, sourceLoc.y);
+                Vector3 targetPos = new Vector3(newTargetLoc.x, targetHeight, newTargetLoc.y);
+                float speed = pprops.speed;
+                try { speed = getShotSpeed(__instance); } catch { }
+
+                lastShotAngleRef(__instance) = pprops.TrajectoryWorker.ShotAngle(pprops, muzzlePos, targetPos, speed);
+            }
+
+            float updatedAngleRadians = swayAndRecoilRad + lastShotAngleRef(__instance);
+            angleRadiansRef(__instance) = updatedAngleRadians;
+            shotAngleRef(__instance) = updatedAngleRadians + spreadRad;
+            distanceRef(__instance) = (newTargetLoc - sourceLoc).magnitude;
         }
     }
 

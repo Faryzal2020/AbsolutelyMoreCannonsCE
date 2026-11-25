@@ -105,7 +105,7 @@
 		<modExtensions>
 			<li Class="CombatExtended.NonSnapTurretExtension">
 				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
-				<speed>2.1</speed> 
+				<speed>2.4</speed> 
 				<!-- Angle range (in degrees) preferred for target selection -->
 				<preferedAngleRange>30</preferedAngleRange>
 				<!-- Multiplier for angle weighting in target scoring -->

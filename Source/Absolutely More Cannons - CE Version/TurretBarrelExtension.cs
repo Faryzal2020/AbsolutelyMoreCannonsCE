@@ -337,6 +337,18 @@ namespace AbsolutelyMoreCannons
         public float maxRPM = 3000f;
 
         /// <summary>
+        /// Whether the barrel starts spinning up during turret warmup/target alignment (true for Vulcan-style pre-spin)
+        /// or waits until the burst actually begins firing (false for Avenger-style instant burst spin).
+        /// </summary>
+        public bool preSpinOnWarmup = true;
+
+        /// <summary>
+        /// Optional seconds to accelerate from zero to max RPM (RPMBased mode only).
+        /// If <= 0, defaults to the weapon verb's warmupTime.
+        /// </summary>
+        public float spinupTime = -1f;
+
+        /// <summary>
         /// Seconds to decelerate from max RPM to zero (RPMBased mode only).
         /// </summary>
         public float spindownTime = 2.0f;
@@ -353,14 +365,24 @@ namespace AbsolutelyMoreCannons
         public int barrelCount = 6;
 
         /// <summary>
-        /// SoundDef name for spin-up sound (RPMBased mode only, optional).
+        /// SoundDef name for spin-up sound played when barrel begins spinning (RPMBased mode only, optional).
         /// </summary>
         public string spinUpSound = null;
 
         /// <summary>
-        /// SoundDef name for spin-down sound (RPMBased mode only, optional).
+        /// SoundDef name for spin-down sound played when barrel decelerates after firing a burst (RPMBased mode only, optional).
         /// </summary>
         public string spinDownSound = null;
+
+        /// <summary>
+        /// SoundDef name for looping dry-spin sound played when barrel is spinning at max configured RPM but not firing (RPMBased mode only, optional).
+        /// </summary>
+        public string drySpinLoopSound = null;
+
+        /// <summary>
+        /// SoundDef name for dry spin-down sound played when barrel spins down without having fired a single bullet after spin-up (RPMBased mode only, optional).
+        /// </summary>
+        public string drySpinDownSound = null;
     }
 
     /// <summary>
@@ -437,12 +459,28 @@ namespace AbsolutelyMoreCannons
         public string muzzleFlashEffect = null;
 
         /// <summary>
+        /// Optional SoundDef name played at the start of a firing burst (e.g. GAU-8 Avenger StartBurst).
+        /// </summary>
+        public string startBurstSound = null;
+
+        /// <summary>
+        /// Number of ticks after startBurstSound before burstSound (BurstLoop) begins playing.
+        /// If the burst ends before this delay elapses, startBurstSound is cut off and endBurstSound plays immediately.
+        /// </summary>
+        public int burstLoopDelayTicks = 0;
+
+        /// <summary>
         /// Optional SoundDef name for sustained burst firing sound.
-        /// This creates a looping sound that plays for the entire burst duration.
+        /// This creates a looping sound that plays for the burst duration (immediately, or after burstLoopDelayTicks).
         /// Separate from the per-shot soundCast in the weapon verb.
         /// Leave empty/null to use only the per-shot sound.
         /// </summary>
         public string burstSound = null;
+
+        /// <summary>
+        /// Optional SoundDef name played whenever the firing burst finishes or is cut off early (e.g. GAU-8 Avenger EndBurst).
+        /// </summary>
+        public string endBurstSound = null;
 
         /// <summary>
         /// Optional offset (in tiles) to move the projectile spawn location forward along the aiming direction.

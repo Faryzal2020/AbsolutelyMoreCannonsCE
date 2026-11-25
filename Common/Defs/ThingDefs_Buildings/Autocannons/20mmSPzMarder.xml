@@ -91,16 +91,16 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>4,4</size>
+    	<size>3,3</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_20mmSPzMarder</li>
 		</researchPrerequisites>
-    	<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 			<li Class="CombatExtended.NonSnapTurretExtension">
 				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
-				<speed>1.8</speed> 
+				<speed>2.2</speed> 
 				<!-- Angle range (in degrees) preferred for target selection -->
 				<preferedAngleRange>30</preferedAngleRange>
 				<!-- Multiplier for angle weighting in target scoring -->

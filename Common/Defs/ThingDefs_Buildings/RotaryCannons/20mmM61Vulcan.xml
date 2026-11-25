@@ -10,7 +10,7 @@
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M20mmM61Vulcan</texPath>
-			<drawSize>(10,10)</drawSize>
+			<drawSize>(7,7)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -95,7 +95,7 @@
 			<li>PlaceWorker_TurretTop</li>
 			<li>PlaceWorker_ShowTurretRadius</li>
 		</placeWorkers>
-    	<size>3,3</size>
+    	<size>4,4</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_20mmM61Vulcan</li>
@@ -153,10 +153,13 @@
 				<spinningAnimation>
 					<enabled>true</enabled>
 					<animationMode>RPMBased</animationMode>
+					<preSpinOnWarmup>true</preSpinOnWarmup>
 					<spindownTime>1.5</spindownTime>
 					<frameCount>4</frameCount>
 					<spinUpSound>AMC_Vulcan_SpinUp</spinUpSound>
 					<spinDownSound>AMC_Vulcan_SpinDown</spinDownSound>
+					<drySpinLoopSound>AMC_Vulcan_DrySpinLoop</drySpinLoopSound>
+					<drySpinDownSound>AMC_Vulcan_DrySpinDown</drySpinDownSound>
 				</spinningAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>

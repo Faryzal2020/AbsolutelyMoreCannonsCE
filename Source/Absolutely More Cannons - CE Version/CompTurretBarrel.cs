@@ -54,7 +54,11 @@ namespace AbsolutelyMoreCannons
         private float warmupTime = 0f;
         private SoundDef spinUpSoundDef = null;
         private SoundDef spinDownSoundDef = null;
+        private SoundDef drySpinLoopSoundDef = null;
+        private SoundDef drySpinDownSoundDef = null;
+        private Sustainer drySpinLoopSustainer = null;
         private bool isCyclingMode = false;
+        private bool hasFiredThisSpinCycle = false;
 
         private int firingTicksRemaining = 0;
 
@@ -87,9 +91,13 @@ namespace AbsolutelyMoreCannons
         private int selectedRPMIndex = 0;
         private int selectedBurstCountIndex = 0;
 
-        // Burst sound sustainer
-        private Sustainer burstSoundSustainer = null;
+        // Burst audio sequence & sustainers
+        private SoundDef startBurstSoundDef = null;
         private SoundDef burstSoundDef = null;
+        private SoundDef endBurstSoundDef = null;
+        private Sustainer burstSoundSustainer = null;
+        private bool isFiringBurst = false;
+        private int burstLoopDelayTicksRemaining = 0;
 
         /// <summary>
         /// Gets the turret this component is attached to.
@@ -474,20 +482,12 @@ namespace AbsolutelyMoreCannons
                 
                 if (!isCyclingMode)
                 {
-                    // RPMBased mode: initialize state and load sounds
-                    spinningState = SpinningState.Idle;
-                    currentRPM = 0f;
+                    if (!respawningAfterLoad)
+                    {
+                        spinningState = SpinningState.Idle;
+                        currentRPM = 0f;
+                    }
                     warmupTime = GetWarmupTimeFromVerb();
-                    
-                    // Load sound definitions
-                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinUpSound))
-                    {
-                        spinUpSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinUpSound);
-                    }
-                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinDownSound))
-                    {
-                        spinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinDownSound);
-                    }
                 }
                 else
                 {
@@ -496,17 +496,47 @@ namespace AbsolutelyMoreCannons
                 }
             }
 
-            // Load burst sound for firing animation
-            if (Extension.firingAnimation != null && !string.IsNullOrEmpty(Extension.firingAnimation.burstSound))
+            InitializeSoundDefs();
+        }
+
+        /// <summary>
+        /// Resolves all configured SoundDefs for spinning and firing audio systems.
+        /// </summary>
+        private void InitializeSoundDefs()
+        {
+            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled && !isCyclingMode)
             {
-                burstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.burstSound);
-                if (burstSoundDef != null)
+                if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinUpSound))
                 {
-                    //Log.Message($"[Burst Sound DEBUG] Loaded burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                    spinUpSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinUpSound);
                 }
-                else
+                if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinDownSound))
                 {
-                    //Log.Warning($"[Burst Sound DEBUG] Failed to load burst sound def '{Extension.firingAnimation.burstSound}' for {parent.def.defName}");
+                    spinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinDownSound);
+                }
+                if (!string.IsNullOrEmpty(Extension.spinningAnimation.drySpinLoopSound))
+                {
+                    drySpinLoopSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.drySpinLoopSound);
+                }
+                if (!string.IsNullOrEmpty(Extension.spinningAnimation.drySpinDownSound))
+                {
+                    drySpinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.drySpinDownSound);
+                }
+            }
+
+            if (Extension.firingAnimation != null)
+            {
+                if (!string.IsNullOrEmpty(Extension.firingAnimation.startBurstSound))
+                {
+                    startBurstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.startBurstSound);
+                }
+                if (!string.IsNullOrEmpty(Extension.firingAnimation.burstSound))
+                {
+                    burstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.burstSound);
+                }
+                if (!string.IsNullOrEmpty(Extension.firingAnimation.endBurstSound))
+                {
+                    endBurstSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.firingAnimation.endBurstSound);
                 }
             }
         }
@@ -518,6 +548,15 @@ namespace AbsolutelyMoreCannons
         {
             base.PostDeSpawn(map);
             StopBurstSound();
+            StopDrySpinLoopSound();
+            StopOneShotSound(spinUpSoundDef);
+            StopOneShotSound(spinDownSoundDef);
+            StopOneShotSound(drySpinDownSoundDef);
+            StopOneShotSound(startBurstSoundDef);
+            StopOneShotSound(endBurstSoundDef);
+            isFiringBurst = false;
+            burstLoopDelayTicksRemaining = 0;
+            hasFiredThisSpinCycle = false;
         }
 
         /// <summary>
@@ -527,18 +566,54 @@ namespace AbsolutelyMoreCannons
         {
             base.CompTick();
 
-            // Safety check: stop burst sound if turret is no longer active but sound is still playing
-            if (burstSoundSustainer != null && !CheckTurretIsActive())
+            if (isFiringBurst)
             {
-                StopBurstSound();
-                
-                // Also force spin-down if still spinning
+                if (CheckTurretIsActive() && IsTurretVerbBursting())
+                {
+                    StopDrySpinLoopSound();
+
+                    if (burstLoopDelayTicksRemaining > 0)
+                    {
+                        burstLoopDelayTicksRemaining--;
+                        if (burstLoopDelayTicksRemaining <= 0)
+                        {
+                            // Stop StartBurst one-shot as BurstLoop takes over to prevent overlap
+                            StopOneShotSound(startBurstSoundDef);
+                            StartBurstLoopSustainer();
+                        }
+                    }
+                }
+                else
+                {
+                    // Burst ended or was interrupted without OnBurstComplete being called yet
+                    OnBurstComplete();
+                }
+            }
+            else
+            {
+                if (burstSoundSustainer != null)
+                {
+                    StopBurstSound();
+                }
+
+                // Manage pre-spin warmup and dry-spin interruption lifecycle
                 if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled && !isCyclingMode)
                 {
-                    if (spinningState == SpinningState.AtSpeed || spinningState == SpinningState.SpinningUp)
+                    bool isWarmingUp = GetTurretWarmupTicksLeft() > 0 && CheckTurretIsActive();
+                    if (isWarmingUp)
                     {
-                        spinningState = SpinningState.SpinningDown;
-                        PlaySpinDownSound();
+                        if (Extension.spinningAnimation.preSpinOnWarmup &&
+                            (spinningState == SpinningState.Idle || spinningState == SpinningState.SpinningDown))
+                        {
+                            OnWarmupStarted();
+                        }
+                    }
+                    else
+                    {
+                        if (spinningState == SpinningState.SpinningUp || spinningState == SpinningState.AtSpeed)
+                        {
+                            BeginSpinDown();
+                        }
                     }
                 }
             }
@@ -769,7 +844,6 @@ namespace AbsolutelyMoreCannons
         public virtual void OnWarmupStarted()
         {
             ResetShotAccumulator();
-            //Log.Message($"[Barrel Animation DEBUG] OnWarmupStarted called for {parent.def.defName}");
             
             if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
             {
@@ -778,14 +852,17 @@ namespace AbsolutelyMoreCannons
                     // Cycling mode: start rotation immediately
                     currentRPM = GetMaxRPM();
                 }
-                else
+                else if (Extension.spinningAnimation.preSpinOnWarmup)
                 {
-                    // RPMBased mode: transition to SpinningUp state
+                    // RPMBased mode with pre-spin on warmup (e.g. Vulcan): transition to SpinningUp state
                     if (spinningState == SpinningState.Idle || spinningState == SpinningState.SpinningDown)
                     {
+                        hasFiredThisSpinCycle = false;
                         spinningState = SpinningState.SpinningUp;
+                        StopDrySpinLoopSound();
+                        StopOneShotSound(spinDownSoundDef);
+                        StopOneShotSound(drySpinDownSoundDef);
                         PlaySpinUpSound();
-                        //Log.Message($"[Barrel Animation DEBUG] Started spin-up for {parent.def.defName}");
                     }
                 }
             }
@@ -797,20 +874,8 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public virtual void OnWarmupComplete()
         {
-            //Log.Message($"[Barrel Animation DEBUG] OnWarmupComplete called for {parent.def.defName}");
-            
-            if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
-            {
-                if (!isCyclingMode)
-                {
-                    // RPMBased mode: transition to AtSpeed state
-                    // Always transition to AtSpeed if not cycling mode and spinning animation is enabled
-                    spinningState = SpinningState.AtSpeed;
-                    currentRPM = GetMaxRPM();
-                    //Log.Message($"[Barrel Animation DEBUG] Reached full speed for {parent.def.defName}");
-                }
-                // Cycling mode: rotation already at maxRPM, no action needed
-            }
+            // Note: Actual transition to firing state and AtSpeed is handled in TriggerFiring()
+            // when a projectile is actually fired, so aborted 0-shot bursts preserve dry-spin state.
         }
 
         /// <summary>
@@ -819,6 +884,8 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public virtual void OnWarmupInterrupted()
         {
+            EndBurstAudioSequence();
+
             if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
             {
                 if (isCyclingMode)
@@ -831,14 +898,10 @@ namespace AbsolutelyMoreCannons
                     // RPMBased mode: transition to SpinningDown state
                     if (spinningState == SpinningState.SpinningUp || spinningState == SpinningState.AtSpeed)
                     {
-                        spinningState = SpinningState.SpinningDown;
-                        PlaySpinDownSound();
+                        BeginSpinDown();
                     }
                 }
             }
-            
-            // Stop burst sound if playing (when operator leaves or dies mid-burst)
-            StopBurstSound();
         }
 
         /// <summary>
@@ -862,9 +925,25 @@ namespace AbsolutelyMoreCannons
         public void TriggerFiring()
         {
             try
-        {
-            if (Extension.firingAnimation != null && Extension.firingAnimation.enabled)
             {
+                hasFiredThisSpinCycle = true;
+                StopOneShotSound(spinUpSoundDef);
+                StopOneShotSound(spinDownSoundDef);
+                StopOneShotSound(drySpinDownSoundDef);
+                StopDrySpinLoopSound();
+
+                // Ensure barrel is at full speed when firing starts (for both pre-spin and instant-burst rotary systems)
+                if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+                {
+                    currentRPM = GetMaxRPM();
+                    if (!isCyclingMode)
+                    {
+                        spinningState = SpinningState.AtSpeed;
+                    }
+                }
+
+                if (Extension.firingAnimation != null && Extension.firingAnimation.enabled)
+                {
                     int barrelCount = Mathf.Max(1, Extension.barrelAmount);
                     
                     // Ensure per-barrel array is initialized
@@ -877,23 +956,15 @@ namespace AbsolutelyMoreCannons
                         barrelFiringRotation = new float[barrelCount];
                     }
 
-                    // Start burst sound sustainer if not already playing
-                    if (burstSoundDef != null && burstSoundSustainer == null)
+                    // Start burst audio sequence on first shot of burst
+                    if (!isFiringBurst)
                     {
-                        //Log.Message($"[Burst Sound DEBUG] Attempting to start burst sound for {parent.def.defName}");
-                        burstSoundSustainer = burstSoundDef.TrySpawnSustainer(SoundInfo.InMap(parent));
-                        if (burstSoundSustainer != null)
-                        {
-                            //Log.Message($"[Burst Sound DEBUG] Successfully started burst sound sustainer for {parent.def.defName}");
-                        }
-                        else
-                        {
-                            //Log.Warning($"[Burst Sound DEBUG] Failed to start burst sound sustainer for {parent.def.defName}");
-                        }
+                        isFiringBurst = true;
+                        StartBurstAudioSequence();
                     }
-                    else if (burstSoundDef == null)
+                    else if (burstLoopDelayTicksRemaining <= 0 && burstSoundDef != null && burstSoundSustainer == null)
                     {
-                        //Log.Warning($"[Burst Sound DEBUG] burstSoundDef is null, cannot start sound for {parent.def.defName}");
+                        StartBurstLoopSustainer();
                     }
 
                     float shotRotation = GetCurrentBarrelRotation();
@@ -949,24 +1020,14 @@ namespace AbsolutelyMoreCannons
                     }
                     
                     // Legacy support: keep old firingTicksRemaining for backwards compatibility
-                firingTicksRemaining = Extension.firingAnimation.durationTicks;
+                    firingTicksRemaining = Extension.firingAnimation.durationTicks;
                     
                     // Debug: Log firing trigger
                     string triggerDebugKey = $"TRIGGER_{parent.def.defName}";
                     if (!loggedTypes.Contains(triggerDebugKey))
                     {
                         loggedTypes.Add(triggerDebugKey);
-                        //Log.Message($"[Barrel Flash Debug] TriggerFiring() called for {parent.def.defName}. " +
-                            //  $"barrelAmount: {barrelCount}, sequentialFiring: {Extension.sequentialFiring}, " +
-                            //  $"drawFlash: {Extension.firingAnimation.drawFlash}, " +
-                            //  $"muzzleFlashEffect: {Extension.firingAnimation.muzzleFlashEffect ?? "null"}");
                     }
-                }
-
-                // Handle Cycling mode: start rotation when firing begins
-                if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled && isCyclingMode)
-                {
-                    currentRPM = GetMaxRPM();
                 }
             }
             catch (Exception ex)
@@ -977,12 +1038,12 @@ namespace AbsolutelyMoreCannons
 
         /// <summary>
         /// Called when turret burst completes.
-        /// Handles spinning animation state transitions for RPMBased mode.
+        /// Handles spinning animation state transitions for RPMBased mode and end-of-burst audio.
         /// </summary>
         public virtual void OnBurstComplete()
         {
-            //Log.Message($"[Barrel Animation DEBUG] OnBurstComplete called for {parent.def.defName}, current state: {spinningState}");
-            
+            EndBurstAudioSequence();
+
             if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
             {
                 if (!isCyclingMode)
@@ -990,16 +1051,14 @@ namespace AbsolutelyMoreCannons
                     // RPMBased mode: ALWAYS spin down after burst completes
                     if (spinningState == SpinningState.AtSpeed || spinningState == SpinningState.SpinningUp)
                     {
-                        spinningState = SpinningState.SpinningDown;
-                        PlaySpinDownSound();
-                        //Log.Message($"[Barrel Animation DEBUG] Started spin-down for {parent.def.defName}");
+                        BeginSpinDown();
                     }
                 }
-                // Cycling mode: rotation stops automatically when firing stops (handled in UpdateCyclingMode)
+                else
+                {
+                    currentRPM = 0f;
+                }
             }
-
-            // Stop burst sound sustainer
-            StopBurstSound();
         }
 
         /// <summary>
@@ -1555,6 +1614,11 @@ namespace AbsolutelyMoreCannons
                     {
                         currentRPM = GetMaxRPM();
                         spinningState = SpinningState.AtSpeed;
+                        if (!isFiringBurst)
+                        {
+                            StopOneShotSound(spinUpSoundDef);
+                            StartDrySpinLoopSound();
+                        }
                     }
                     
                     // Advance frame during spin-up (uses full frames)
@@ -1566,6 +1630,15 @@ namespace AbsolutelyMoreCannons
                     break;
 
                 case SpinningState.AtSpeed:
+                    if (!isFiringBurst)
+                    {
+                        StartDrySpinLoopSound();
+                    }
+                    else
+                    {
+                        StopDrySpinLoopSound();
+                    }
+
                     // Maintain max RPM and use 2-frame animation
                     // At max speed, only cycle between frame 0 and frame (frameCount/2)
                     int halfFrame = Extension.spinningAnimation.frameCount / 2;
@@ -1589,6 +1662,7 @@ namespace AbsolutelyMoreCannons
                     break;
 
                 case SpinningState.SpinningDown:
+                    StopDrySpinLoopSound();
                     // Decelerate toward zero RPM
                     float deceleration = GetDecelerationPerTick();
                     currentRPM -= deceleration;
@@ -1611,6 +1685,7 @@ namespace AbsolutelyMoreCannons
                     break;
 
                 case SpinningState.Idle:
+                    StopDrySpinLoopSound();
                     // No animation, frame stays at 0
                     currentRPM = 0f;
                     currentSpinFrame = 0f;
@@ -1725,18 +1800,25 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
-        /// Calculate acceleration per tick from warmupTime (RPMBased mode only).
+        /// Calculate acceleration per tick from spinupTime or warmupTime (RPMBased mode only).
         /// </summary>
         private float GetAccelerationPerTick()
         {
-            if (warmupTime <= 0f)
+            float effectiveSpinupTime = (Extension.spinningAnimation != null && Extension.spinningAnimation.spinupTime > 0f)
+                ? Extension.spinningAnimation.spinupTime
+                : warmupTime;
+
+            if (effectiveSpinupTime <= 0f)
+            {
                 warmupTime = GetWarmupTimeFromVerb();
+                effectiveSpinupTime = warmupTime;
+            }
             
-            if (warmupTime <= 0f)
+            if (effectiveSpinupTime <= 0f)
                 return GetMaxRPM() / 30f; // Default 0.5 seconds
             
-            float warmupTicks = warmupTime * 60f;
-            return GetMaxRPM() / warmupTicks;
+            float spinupTicks = effectiveSpinupTime * 60f;
+            return GetMaxRPM() / spinupTicks;
         }
 
         /// <summary>
@@ -1751,8 +1833,46 @@ namespace AbsolutelyMoreCannons
             return GetMaxRPM() / spindownTicks;
         }
 
+        private static readonly System.Reflection.FieldInfo ceWarmupField =
+            HarmonyLib.AccessTools.Field(typeof(CombatExtended.Building_TurretGunCE), "burstWarmupTicksLeft");
+        private static readonly System.Reflection.FieldInfo vanillaWarmupField =
+            HarmonyLib.AccessTools.Field(typeof(Building_TurretGun), "burstWarmupTicksLeft");
+        private static readonly System.Reflection.FieldInfo ceHoldFireField =
+            HarmonyLib.AccessTools.Field(typeof(CombatExtended.Building_TurretGunCE), "holdFire");
+        private static readonly System.Reflection.FieldInfo vanillaHoldFireField =
+            HarmonyLib.AccessTools.Field(typeof(Building_TurretGun), "holdFire");
+
         /// <summary>
-        /// Check if turret has active target (RPMBased mode only).
+        /// Returns the remaining burst warmup ticks on the parent turret, or 0 if not warming up.
+        /// </summary>
+        private int GetTurretWarmupTicksLeft()
+        {
+            if (Turret is CombatExtended.Building_TurretGunCE ceTurret)
+            {
+                return ceWarmupField != null ? (int)ceWarmupField.GetValue(ceTurret) : ceTurret.burstWarmupTicksLeft;
+            }
+            if (Turret is Building_TurretGun vanillaTurret)
+            {
+                return vanillaWarmupField != null ? (int)vanillaWarmupField.GetValue(vanillaTurret) : 0;
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns true if the parent turret's attack verb is currently in VerbState.Bursting.
+        /// </summary>
+        private bool IsTurretVerbBursting()
+        {
+            if (Turret is Building_Turret bt)
+            {
+                var verb = bt.AttackVerb;
+                return verb != null && verb.state == VerbState.Bursting;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if turret has an active valid target.
         /// </summary>
         private bool CheckTurretHasTarget()
         {
@@ -1761,20 +1881,21 @@ namespace AbsolutelyMoreCannons
                 if (Turret == null)
                     return false;
 
-                // Try to get CurrentTarget property
-                var targetProperty = Turret.GetType().GetProperty("CurrentTarget");
+                if (Turret is Building_Turret bt)
+                {
+                    return bt.CurrentTarget.IsValid;
+                }
+
+                // Fallback reflection
+                var targetProperty = Turret.GetType().GetProperty("CurrentTarget")
+                                  ?? Turret.GetType().GetProperty("currentTarget");
                 if (targetProperty != null)
                 {
                     var target = targetProperty.GetValue(Turret);
-                    return target != null && !target.Equals(null);
-                }
-
-                // Try alternative property names
-                var altTargetProperty = Turret.GetType().GetProperty("currentTarget");
-                if (altTargetProperty != null)
-                {
-                    var target = altTargetProperty.GetValue(Turret);
-                    return target != null && !target.Equals(null);
+                    if (target is LocalTargetInfo lti)
+                    {
+                        return lti.IsValid;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1786,27 +1907,37 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
-        /// Check if turret is actively ready to fire (has target AND operator for manned turrets).
+        /// Check if turret is actively ready to fire (has valid target, powered/active, not holding fire, AND operator for manned turrets).
         /// </summary>
         private bool CheckTurretIsActive()
         {
-            if (!CheckTurretHasTarget())
+            if (Turret == null || !parent.Spawned || !CheckTurretHasTarget())
                 return false;
 
-            // For manned turrets, also check if there's an operator
             try
-            {                if (Turret == null)
-                    return false;
+            {
+                if (Turret is CombatExtended.Building_TurretGunCE ceTurret)
+                {
+                    if (!ceTurret.Active)
+                        return false;
+                    if (ceHoldFireField != null && (bool)ceHoldFireField.GetValue(ceTurret))
+                        return false;
+                }
+                else if (Turret is Building_TurretGun vanillaTurret)
+                {
+                    if (!vanillaTurret.Active)
+                        return false;
+                    if (vanillaHoldFireField != null && (bool)vanillaHoldFireField.GetValue(vanillaTurret))
+                        return false;
+                }
 
                 // Check for mannableComp (indicates it's a manned turret)
                 var mannableComp = parent.TryGetComp<CompMannable>();
-                if (mannableComp != null)
+                if (mannableComp != null && !mannableComp.MannedNow)
                 {
-                    // It's a manned turret, check if there's an operator
-                    return mannableComp.MannedNow;
+                    return false;
                 }
 
-                // Not a manned turret (auto turret), just having a target is enough
                 return true;
             }
             catch (Exception ex)
@@ -1817,38 +1948,206 @@ namespace AbsolutelyMoreCannons
         }
 
         /// <summary>
-        /// Play spin-up sound effect (RPMBased mode only).
+        /// Transitions the barrel into SpinningDown and plays either the regular spin-down sound (if a burst was fired)
+        /// or the dry spin-down sound (if no bullets were fired during this spin cycle).
         /// </summary>
-        private void PlaySpinUpSound()
+        private void BeginSpinDown()
         {
-            if (spinUpSoundDef != null && parent?.Map != null)
+            StopOneShotSound(spinUpSoundDef);
+            StopDrySpinLoopSound();
+            spinningState = SpinningState.SpinningDown;
+
+            if (hasFiredThisSpinCycle)
+            {
+                PlaySpinDownSound();
+            }
+            else
+            {
+                PlayDrySpinDownSound();
+            }
+
+            hasFiredThisSpinCycle = false;
+        }
+
+        /// <summary>
+        /// Plays a one-shot sound attached to this turret Thing on the map.
+        /// </summary>
+        private void PlayOneShotSound(SoundDef soundDef)
+        {
+            if (soundDef != null && parent != null && parent.Spawned && parent.Map != null)
             {
                 try
                 {
-                    spinUpSoundDef.PlayOneShot(new TargetInfo(parent.Position, parent.Map, false));
+                    soundDef.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent)));
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[Barrel Animation] Error playing spin-up sound: {ex.Message}");
+                    Log.Warning($"[Barrel Animation] Error playing sound '{soundDef.defName}': {ex.Message}");
                 }
             }
         }
 
         /// <summary>
-        /// Play spin-down sound effect (RPMBased mode only).
+        /// Stops any currently playing one-shot sample of the given SoundDef originating from this turret.
+        /// </summary>
+        private void StopOneShotSound(SoundDef soundDef)
+        {
+            if (soundDef == null || parent == null)
+                return;
+
+            try
+            {
+                var playingOneShots = Find.SoundRoot?.oneShotManager?.PlayingOneShots;
+                if (playingOneShots == null)
+                    return;
+
+                foreach (var sample in playingOneShots)
+                {
+                    if (sample?.subDef?.parentDef == soundDef)
+                    {
+                        var maker = sample.info.Maker;
+                        if (maker.Thing == parent || (parent.Spawned && maker.Map == parent.Map && maker.Cell == parent.Position))
+                        {
+                            sample.source?.Stop();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning($"[Barrel Animation] Error stopping one-shot sound '{soundDef.defName}': {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Play spin-up sound effect (RPMBased mode only).
+        /// </summary>
+        private void PlaySpinUpSound()
+        {
+            PlayOneShotSound(spinUpSoundDef);
+        }
+
+        /// <summary>
+        /// Play spin-down sound effect after firing a burst (RPMBased mode only).
         /// </summary>
         private void PlaySpinDownSound()
         {
-            if (spinDownSoundDef != null && parent?.Map != null)
+            PlayOneShotSound(spinDownSoundDef);
+        }
+
+        /// <summary>
+        /// Play dry spin-down sound effect when spinning down without having fired a single shot (RPMBased mode only).
+        /// Falls back to spinDownSoundDef if drySpinDownSoundDef is not configured.
+        /// </summary>
+        private void PlayDrySpinDownSound()
+        {
+            PlayOneShotSound(drySpinDownSoundDef ?? spinDownSoundDef);
+        }
+
+        /// <summary>
+        /// Starts the dry-spin loop sustainer when the barrel is spinning at max configured RPM without firing.
+        /// </summary>
+        private void StartDrySpinLoopSound()
+        {
+            if (drySpinLoopSoundDef != null && drySpinLoopSustainer == null && parent != null && parent.Spawned && parent.Map != null)
             {
                 try
                 {
-                    spinDownSoundDef.PlayOneShot(new TargetInfo(parent.Position, parent.Map, false));
+                    if (drySpinLoopSoundDef.sustain)
+                    {
+                        drySpinLoopSustainer = drySpinLoopSoundDef.TrySpawnSustainer(SoundInfo.InMap(parent));
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning($"[Barrel Animation] Error playing spin-down sound: {ex.Message}");
+                    Log.Warning($"[Barrel Animation] Error starting dry-spin loop sound: {ex.Message}");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Stops the dry-spin loop sustainer if currently playing.
+        /// </summary>
+        private void StopDrySpinLoopSound()
+        {
+            if (drySpinLoopSustainer != null)
+            {
+                try
+                {
+                    if (!drySpinLoopSustainer.Ended)
+                    {
+                        drySpinLoopSustainer.End();
+                    }
+                }
+                catch { }
+                finally
+                {
+                    drySpinLoopSustainer = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Starts the burst firing audio sequence (either StartBurst -> delayed BurstLoop, or immediate BurstLoop).
+        /// </summary>
+        private void StartBurstAudioSequence()
+        {
+            StopOneShotSound(endBurstSoundDef);
+
+            if (startBurstSoundDef != null)
+            {
+                PlayOneShotSound(startBurstSoundDef);
+                int delayTicks = Extension.firingAnimation != null ? Extension.firingAnimation.burstLoopDelayTicks : 0;
+                if (delayTicks > 0)
+                {
+                    burstLoopDelayTicksRemaining = delayTicks;
+                }
+                else
+                {
+                    burstLoopDelayTicksRemaining = 0;
+                    StartBurstLoopSustainer();
+                }
+            }
+            else
+            {
+                burstLoopDelayTicksRemaining = 0;
+                StartBurstLoopSustainer();
+            }
+        }
+
+        /// <summary>
+        /// Spawns the burst loop sustainer if configured and not already active.
+        /// </summary>
+        private void StartBurstLoopSustainer()
+        {
+            if (burstSoundDef != null && burstSoundSustainer == null && parent != null && parent.Spawned && parent.Map != null)
+            {
+                try
+                {
+                    burstSoundSustainer = burstSoundDef.TrySpawnSustainer(SoundInfo.InMap(parent));
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning($"[Barrel Animation] Error starting burst loop sustainer: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ends the active burst firing audio sequence, cutting off StartBurst / BurstLoop and triggering EndBurst if a burst was active.
+        /// </summary>
+        private void EndBurstAudioSequence()
+        {
+            bool wasFiring = isFiringBurst;
+            isFiringBurst = false;
+            burstLoopDelayTicksRemaining = 0;
+
+            StopOneShotSound(startBurstSoundDef);
+            StopBurstSound();
+
+            if (wasFiring && endBurstSoundDef != null)
+            {
+                PlayOneShotSound(endBurstSoundDef);
             }
         }
 
@@ -1861,22 +2160,18 @@ namespace AbsolutelyMoreCannons
             {
                 try
                 {
-                    //Log.Message($"[Burst Sound DEBUG] Stopping burst sound for {parent.def.defName}");
-                    burstSoundSustainer.End();
-                    //Log.Message($"[Burst Sound DEBUG] Successfully stopped burst sound for {parent.def.defName}");
+                    if (!burstSoundSustainer.Ended)
+                    {
+                        burstSoundSustainer.End();
+                    }
                 }
                 catch
                 {
-                    //Log.Warning($"[Burst Sound DEBUG] Error stopping burst sound: {ex.Message}");
                 }
                 finally
                 {
                     burstSoundSustainer = null;
                 }
-            }
-            else
-            {
-                //Log.Message($"[Burst Sound DEBUG] StopBurstSound called but sustainer is null for {parent.def.defName}");
             }
         }
 
@@ -2416,6 +2711,7 @@ namespace AbsolutelyMoreCannons
             Scribe_Values.Look(ref currentSpinFrame, "currentSpinFrame", 0f);
             Scribe_Values.Look(ref currentRPM, "currentRPM", 0f);
             Scribe_Values.Look(ref spinningState, "spinningState", SpinningState.Idle);
+            Scribe_Values.Look(ref hasFiredThisSpinCycle, "hasFiredThisSpinCycle", false);
             Scribe_Values.Look(ref warmupTime, "warmupTime", 0f);
             Scribe_Values.Look(ref firingTicksRemaining, "firingTicksRemaining", 0);
             Scribe_Values.Look(ref currentSequentialBarrel, "currentSequentialBarrel", 0);
@@ -2470,23 +2766,14 @@ namespace AbsolutelyMoreCannons
                     barrelRecoilDistance = new float[0];
             }
 
-            // Reinitialize spinning animation mode after loading
-            if (Scribe.mode == LoadSaveMode.LoadingVars && Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
+            // Reinitialize spinning animation mode and sound definitions after loading
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
-                isCyclingMode = Extension.spinningAnimation.animationMode == "Cycling";
-                
-                if (!isCyclingMode && (spinUpSoundDef == null || spinDownSoundDef == null))
+                if (Extension.spinningAnimation != null && Extension.spinningAnimation.enabled)
                 {
-                    // Reload sound definitions after loading
-                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinUpSound))
-                    {
-                        spinUpSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinUpSound);
-                    }
-                    if (!string.IsNullOrEmpty(Extension.spinningAnimation.spinDownSound))
-                    {
-                        spinDownSoundDef = DefDatabase<SoundDef>.GetNamedSilentFail(Extension.spinningAnimation.spinDownSound);
-                    }
+                    isCyclingMode = Extension.spinningAnimation.animationMode == "Cycling";
                 }
+                InitializeSoundDefs();
             }
         }
     }

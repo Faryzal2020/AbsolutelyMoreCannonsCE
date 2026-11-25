@@ -92,6 +92,8 @@ namespace AbsolutelyMoreCannons
             AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, float>("estimatedTargDist");
         private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, int> numShotsFiredRef =
             AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, int>("numShotsFired");
+        private static readonly AccessTools.FieldRef<Verb_LaunchProjectileCE, Vector2> sourceLocRef =
+            AccessTools.FieldRefAccess<Verb_LaunchProjectileCE, Vector2>("sourceLoc");
 
         private static readonly Func<Verb_LaunchProjectileCE, float> getShotSpeed =
             (Func<Verb_LaunchProjectileCE, float>)Delegate.CreateDelegate(
@@ -287,6 +289,13 @@ namespace AbsolutelyMoreCannons
             var t = pending.Telemetry;
             var pprops = __instance.projectilePropsCE;
             Vector3 u = __instance.caster.TrueCenter();
+            Vector2 sourceLoc = sourceLocRef(__instance);
+            Vector3 launchOrigin = new Vector3(sourceLoc.x, t.ShotHeight, sourceLoc.y);
+            float muzzleHorizRange = (new Vector2(v.x, v.z) - sourceLoc).magnitude;
+            if ((sourceLoc - new Vector2(u.x, u.z)).sqrMagnitude > 0.0001f)
+            {
+                t.HorizontalRange = muzzleHorizRange;
+            }
 
             t.TargetHeight = targetHeight;
             t.EstimatedTargDist = estimatedTargDistRef(__instance);
@@ -299,7 +308,7 @@ namespace AbsolutelyMoreCannons
             {
                 idealPitchRad = pprops.TrajectoryWorker.ShotAngle(
                     pprops,
-                    u.WithY(t.ShotHeight),
+                    launchOrigin,
                     v.WithY(targetHeight),
                     t.ShotSpeed);
             }
