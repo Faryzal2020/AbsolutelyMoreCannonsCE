@@ -116,7 +116,7 @@
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelHeight>2</barrelHeight>
 				<controlMode>MachineActuated</controlMode>
-				<actuatorStrength>2.0</actuatorStrength>
+				<actuatorStrength>2.5</actuatorStrength>
 				<turretHeadWeight>2.0</turretHeadWeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M25mmSIDAM_Barrel</texPath>

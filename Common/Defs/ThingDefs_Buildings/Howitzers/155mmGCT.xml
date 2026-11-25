@@ -304,7 +304,7 @@
 				<alternateDef>Turret_155mmGCT_Base</alternateDef>
 				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
 				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
+				<gizmoIcon>UI/Buttons/DirectMode</gizmoIcon>
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
 				<maxExplosiveRadius>9.0</maxExplosiveRadius>

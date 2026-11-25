@@ -114,7 +114,7 @@
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelHeight>1.6</barrelHeight>
 				<controlMode>MachineActuated</controlMode>
-				<actuatorStrength>2.0</actuatorStrength>
+				<actuatorStrength>2.5</actuatorStrength>
 				<turretHeadWeight>2.5</turretHeadWeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M30mmFV510_Barrel</texPath>
@@ -169,9 +169,9 @@
 		</graphicData>
 		<description>Use ammo set:30x170mm HE-I \nHas Indirect version:No \nShelling Range:0</description>
 		<statBases>
-			<SightsEfficiency>1.5</SightsEfficiency>
+			<SightsEfficiency>2</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.9</SwayFactor>
+			<SwayFactor>0.45</SwayFactor>
 			<RangedWeapon_Cooldown>1.5</RangedWeapon_Cooldown>
 			<Mass>1</Mass>
 		</statBases>

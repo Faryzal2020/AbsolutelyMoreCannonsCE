@@ -117,8 +117,8 @@
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 				<barrelHeight>2</barrelHeight>
 				<controlMode>MachineActuated</controlMode>
-				<actuatorStrength>2.0</actuatorStrength>
-				<turretHeadWeight>2.0</turretHeadWeight>
+				<actuatorStrength>2.5</actuatorStrength>
+				<turretHeadWeight>1.7</turretHeadWeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M20mmSPzMarder_Barrel</texPath>
 					<graphicClass>Graphic_Single</graphicClass>
