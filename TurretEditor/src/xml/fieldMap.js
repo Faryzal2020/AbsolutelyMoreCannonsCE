@@ -64,6 +64,7 @@ export const FIELDS = [
   f('passability', 'building', [{ tag: 'passability' }], 'string', 'Passability'),
   f('textures.building', 'building', [{ tag: 'graphicData' }, { tag: 'texPath' }], 'string', 'Building Texture Path'),
   f('textures.icon', 'building', [{ tag: 'uiIconPath' }], 'string', 'Menu Icon Path'),
+  f('graphics.drawSize', 'building', [{ tag: 'graphicData' }, { tag: 'drawSize' }], 'string', 'Base Draw Size (x,y)'),
   f('graphics.shadowVolume', 'building', [{ tag: 'graphicData' }, { tag: 'shadowData' }, { tag: 'volume' }], 'string', 'Shadow Volume (x,y,z)'),
   f('graphics.shadowOffset', 'building', [{ tag: 'graphicData' }, { tag: 'shadowData' }, { tag: 'offset' }], 'string', 'Shadow Offset (x,y,z)'),
   f('placeWorkers', 'building', [{ tag: 'placeWorkers' }], 'list', 'Place Workers'),

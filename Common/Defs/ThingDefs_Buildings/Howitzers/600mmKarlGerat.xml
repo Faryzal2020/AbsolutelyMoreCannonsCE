@@ -3,195 +3,15 @@
 									
 	<!--=============== Karl-Gerät 040 ===============-->
 
-	<DesignatorDropdownGroupDef>
-		<defName>Group_AMC_600mmKarlGerat</defName>
-		<label>Karl-Gerät 040</label>
-	</DesignatorDropdownGroupDef>
-
-	<ThingDef ParentName="AMCTurretMannedBase"> <!-- AMCTurretAutoBase -->
-		<defName>Turret_600mmKarlGerat_Base</defName>
-		<label>Karl-Gerät 040</label>
-    <description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 2160, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
-		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
-		<graphicData>
-			<texPath>Things/Building/M600mmKarlGerat</texPath>
-			<drawSize>(12,12)</drawSize>
-			<shadowData>
-				<volume>(0.27,0.25,0.4)</volume>
-				<offset>(0,0,-0.1)</offset>
-			</shadowData>
-		</graphicData>
-		<uiIconPath>Things/Icons/M600mmKarlGerat_MenuIcon</uiIconPath>
-		<statBases>
-			<MaxHitPoints>2160</MaxHitPoints>
-			<WorkToBuild>87500</WorkToBuild>
-			<Mass>1</Mass>
-			<Bulk>1</Bulk>
-		</statBases>
-		<costList>
-			<Steel>1600</Steel>
-      <ComponentIndustrial>10</ComponentIndustrial>
-			<Plasteel>50</Plasteel>
-		</costList>
-		<building>
-			<turretGunDef>Turret_600mmKarlGerat_Weapon</turretGunDef>
-      <turretTopDrawSize>12</turretTopDrawSize>
-			<turretBurstCooldownTime>0</turretBurstCooldownTime>
-			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-		</building>
-		<designatorDropdown>Group_AMC_600mmKarlGerat</designatorDropdown>
-		<comps>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
-				<muzzleEnabled>true</muzzleEnabled>
-				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
-				<heatEnabled>true</heatEnabled>
-				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
-				<shockwaveEnabled>true</shockwaveEnabled>
-				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
-			</li>
-			<li Class="CompProperties_Power">
-				<compClass>CompPowerTrader</compClass>
-				<basePowerConsumption>500</basePowerConsumption>
-			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_600mmKarlGerat_indirect_Base</alternateDef>
-				<gizmoLabel>Switch to Indirect Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into indirect fire mode (artillery arc)\nRequires 40+ cell range, fires over obstacles</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
-			</li>
-		</comps>
-		<placeWorkers>
-			<li>PlaceWorker_TurretTop</li>
-			<li>PlaceWorker_ShowTurretRadius</li>
-		</placeWorkers>
-    <size>6,6</size>
-		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
-		<researchPrerequisites>
-			<li>Research_600mmKarlGerat</li>
-		</researchPrerequisites>
-    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
-    <modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
-			<barrelHeight>2.5</barrelHeight>
-			<barrelGraphic>
-				<texPath>Things/Building/M600mmKarlGerat_Barrel</texPath>
-				<graphicClass>Graphic_Single</graphicClass>
-				<drawSize>(3,3)</drawSize>
-			</barrelGraphic>
-			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>12.0</barrelDrawSize>
-			<drawOnTop>false</drawOnTop>
-			<barrelAmount>1</barrelAmount>
-			<recoilAnimation>
-				<maxDistance>2</maxDistance>
-				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
-			</recoilAnimation>
-			<firingAnimation>
-				<enabled>true</enabled>
-				<durationTicks>10</durationTicks>
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>
-				<flashSize>30</flashSize>
-				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-1</flashOffset>
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>
-					<li>(0.3, 0.9)</li>
-					<li>(0.6, 0.6)</li>
-					<li>(1, 0)</li>
-					</points>
-				</flashIntensityCurve>
-			</firingAnimation>
-		</li>
-    	<li Class="CombatExtended.NonSnapTurretExtension">
-    		<speed>0.08</speed>
-    		<preferedAngleRange>15</preferedAngleRange>
-    		<minAngleWeight>0.1</minAngleWeight>
-    	</li>
-    </modExtensions>
-	</ThingDef>
-	
-	<ThingDef ParentName="BaseTurretGun">
-		<defName>Turret_600mmKarlGerat_Weapon</defName>
-		<label>Karl-Gerät 040 Gun</label>
-		<graphicData>
-			<texPath>Things/Building/M600mmKarlGerat_Top</texPath>
-			<graphicClass>Graphic_Single</graphicClass>
-		</graphicData>
-		<description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
-		<statBases>
-			<SightsEfficiency>1</SightsEfficiency>
-			<ShotSpread>0.01</ShotSpread>
-			<SwayFactor>0.1</SwayFactor>
-			<RangedWeapon_Cooldown>0</RangedWeapon_Cooldown>
-			<Mass>1</Mass>
-		</statBases>
-		<soundInteract>AMC_Large_Reload</soundInteract>
-		<verbs>
-			<li Class="CombatExtended.VerbPropertiesCE">
-				<recoilAmount>2</recoilAmount>
-				<verbClass>CombatExtended.Verb_ShootCE</verbClass>
-				<hasStandardCommand>true</hasStandardCommand>
-				<defaultProjectile>Bullet_600mmKarlGerat_HE</defaultProjectile>
-				<warmupTime>0.5</warmupTime>
-        <minRange>25</minRange>
-				<range>4500</range>
-				<soundCast>Sound_600mm</soundCast>
-				<soundCastTail>GunTail_Heavy</soundCastTail>
-				<muzzleFlashScale>150</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
-				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
-				<burstShotCount>1</burstShotCount>
-				<recoilPattern>Mounted</recoilPattern>
-			</li>
-		</verbs>
-		<comps>
-			<li Class="CombatExtended.CompProperties_AmmoUser">
-				<magazineSize>1</magazineSize>
-				<reloadTime>40</reloadTime>
-				<ammoSet>AmmoSet_600mmKarlGerat_Shells</ammoSet>
-			</li>
-		</comps>
-	</ThingDef>
-
 <!-- INDIRECT -->
 	<ThingDef ParentName="AMCArtilleryBase">
 		<defName>Turret_600mmKarlGerat_indirect_Base</defName>
 		<label>Karl-Gerät 040 (indirect)</label>
-    <description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+    <description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
 		<constructionSkillPrerequisite>6</constructionSkillPrerequisite>
 		<graphicData>
 			<texPath>Things/Building/M600mmKarlGerat</texPath>
-			<drawSize>(12,12)</drawSize>
+			<drawSize>(10,10)</drawSize>
 			<shadowData>
 				<volume>(0.27,0.25,0.4)</volume>
 				<offset>(0,0,-0.1)</offset>
@@ -214,84 +34,95 @@
 			<ai_combatDangerous>true</ai_combatDangerous>
 			<turretBurstCooldownTime>0</turretBurstCooldownTime>
 			<spawnedConceptLearnOpportunity>CE_MortarDirectFire</spawnedConceptLearnOpportunity>
-      <turretTopDrawSize>12</turretTopDrawSize>
+      <turretTopDrawSize>10</turretTopDrawSize>
 		</building>
-		<designatorDropdown>Group_AMC_600mmKarlGerat</designatorDropdown>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<muzzleParticleCount>6</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 3.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>10</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>15~25</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>5</directionCone>
+				<muzzleParticleSize>3~5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<heatThreshold>1</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.1</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 3.2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>4</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>1</emissionIncrease>
+
+				<heatParticleSize>2</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>1</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.3</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+				<shockwaveRadius>6</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>80</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 3.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>
 			</li>
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretModeSwap">
-				<alternateDef>Turret_600mmKarlGerat_Base</alternateDef>
-				<gizmoLabel>Switch to Direct Fire</gizmoLabel>
-				<gizmoDesc>Change this turret into direct fire mode (flat trajectory)\nRequires line of sight, higher accuracy</gizmoDesc>
-				<gizmoIcon>UI/Buttons/ArtyMode</gizmoIcon>
-			</li>
 		</comps>
-    <size>(6,6)</size>
+    <size>(8,8)</size>
 		<terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
 		<researchPrerequisites>
 			<li>Research_600mmKarlGerat</li>
 		</researchPrerequisites>
-    <interactionCellOffset>(3,0,-4)</interactionCellOffset>
+    <interactionCellOffset>(4,0,-3)</interactionCellOffset>
     <modExtensions>
-		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
+		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
 			<barrelHeight>3.0</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M600mmKarlGerat_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
 				<drawSize>(3,3)</drawSize>
 			</barrelGraphic>
+			<underBarrelGraphic>
+				<texPath>Things/Building/M600mmKarlGerat_UnderBarrel_Indirect</texPath>
+				<graphicClass>Graphic_Single</graphicClass>
+				<drawSize>(3,3)</drawSize>
+			</underBarrelGraphic>
 			<barrelOffset>(0,0,0.0)</barrelOffset>
-			<barrelDrawSize>12.0</barrelDrawSize>
+			<barrelDrawSize>10.0</barrelDrawSize>
 			<drawOnTop>false</drawOnTop>
 			<barrelAmount>1</barrelAmount>
 			<recoilAnimation>
-				<maxDistance>1</maxDistance>
-				<recoilDuration>30</recoilDuration>
-				<returnDuration>100</returnDuration>
+				<maxDistance>0.7</maxDistance>
+				<recoilDuration>15</recoilDuration>
+				<returnDuration>120</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>3</projectileSpawnOffset>
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
-				<flashSize>35</flashSize>
-				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-4</flashOffset>
+				<flashSize>4</flashSize>
+				<flashBrightness>4.0</flashBrightness>
+				<flashOffset>-2</flashOffset>
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
 				<flashIntensityCurve>
 					<points>
@@ -318,7 +149,7 @@
 			<texPath>Things/Building/M600mmKarlGerat_Top_Indirect</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 		</graphicData>
-		<description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It has an indirect fire variant, requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
+		<description>The Karl-Gerät 040 was a German super-heavy self-propelled siege mortar designed to destroy fortified targets. It requires reloading after each shot, and is capable of settlement bombardment. Power: 600, HP: 6000, Cooldown: 100.0s, Range: 4500, Shelling Range: 6. Ammunition: 60cm Sch.Btgr (HE, Damage: 3870, Explosion Radius: 16.0).</description>
 		<statBases>
 			<SightsEfficiency>1</SightsEfficiency>
 			<ShotSpread>0.01</ShotSpread>
@@ -335,18 +166,18 @@
 			<li Class="CombatExtended.VerbPropertiesCE">
 				<verbClass>CombatExtended.Verb_ShootMortarCE</verbClass>
 				<forceNormalTimeSpeed>false</forceNormalTimeSpeed>
-				<recoilAmount>2</recoilAmount>
+				<recoilAmount>0.1</recoilAmount>
 				<hasStandardCommand>true</hasStandardCommand>
 				<defaultProjectile>Bullet_600mmKarlGerat_indirect_HE</defaultProjectile>
 				<warmupTime>0.5</warmupTime>
-        <minRange>40</minRange>
+        		<minRange>40</minRange>
 				<range>4500</range>
 				<soundCast>Sound_600mm</soundCast>
 				<soundCastTail>GunTail_Heavy</soundCastTail>
 				<muzzleFlashScale>150</muzzleFlashScale>
-        <targetParams>
-          <canTargetLocations>true</canTargetLocations>
-        </targetParams>
+				<targetParams>
+					<canTargetLocations>true</canTargetLocations>
+				</targetParams>
 				<ticksBetweenBurstShots>0</ticksBetweenBurstShots>
 				<burstShotCount>1</burstShotCount>
 				<recoilPattern>Mounted</recoilPattern>
@@ -360,9 +191,9 @@
 			<li Class="CombatExtended.CompProperties_Charges">
 				<chargeSpeeds>
 					<li>30</li>
+					<li>40</li>
+					<li>50</li>
 					<li>60</li>
-					<li>90</li>
-					<li>120</li>
 				</chargeSpeeds>
 			</li>
 			<li Class="CombatExtended.CompProperties_AmmoUser">
@@ -371,12 +202,6 @@
 				<ammoSet>AmmoSet_600mmKarlGerat_indirect_Shells</ammoSet>
 			</li>
 		</comps>
-		<modExtensions>
-			<li Class="AbsolutelyMoreCannons.TurretClampingExtension">
-				<maxVerticalDeviation>5</maxVerticalDeviation>
-				<maxRotationDeviation>5</maxRotationDeviation>
-			</li>
-		</modExtensions>
 	</ThingDef>
 	
 </Defs>

@@ -13,6 +13,20 @@ import apiRoutes from './routes/api.js';
 export async function buildApp({ logger = false, dbFile = DB_PATH } = {}) {
   const db = await getDb(dbFile);
 
+  // Auto-re-extract when schema adds new turret fields (such as graphics.drawSize & muzzleFlash)
+  try {
+    const sample = db.get('SELECT data_json FROM turrets LIMIT 1');
+    if (sample) {
+      const parsed = JSON.parse(sample.data_json);
+      if (!parsed.muzzleFlash || parsed.graphics?.drawSize === undefined) {
+        const { runExtraction } = await import('./services/extractService.js');
+        runExtraction(db);
+      }
+    }
+  } catch {
+    // Ignore on empty or fresh DB
+  }
+
   const fastify = Fastify({
     logger,
     bodyLimit: 32 * 1024 * 1024, // snapshot restore payloads can be large

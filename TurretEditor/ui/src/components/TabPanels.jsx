@@ -37,6 +37,9 @@ export function BasicTab({ draft, set, dirty }) {
           {f('stats.mass', 'Mass (kg)', { type: 'number', step: '0.01' })}
           {f('stats.bulk', 'Bulk', { type: 'number', step: '0.01' })}
           {f('stats.cooldownTime', 'Turret Cooldown Time (s)', { type: 'number', step: '0.1' })}
+          {f('size', 'Footprint Size (x,y)', { placeholder: '3,3' })}
+          {f('interactionCellOffset', 'Interaction Cell Offset (x,y,z)', { placeholder: '(0,0,-1)' })}
+          {f('graphics.drawSize', 'Base Draw Size (x,y)', { placeholder: '(9,9)' })}
           {f('stats.topDrawSize', 'Turret Top Draw Size', { type: 'number', step: '0.1' })}
           {f('stats.constructionSkill', 'Construction Skill Required', { type: 'number' })}
         </div>
@@ -298,6 +301,7 @@ export function BarrelTab({ draft, set, dirty }) {
                 {f('barrel.firing.flashColor', 'Flash Color (RGBA)', { placeholder: '(1,0.7,0.3,1)' })}
                 {f('barrel.firing.flashSize', 'Flash Size', { type: 'number', step: '0.5' })}
                 {f('barrel.firing.flashBrightness', 'Flash Brightness', { type: 'number', step: '0.1' })}
+                {f('barrel.firing.flashOffset', 'Flash Offset (from barrel tip)', { type: 'number', step: '0.1' })}
                 {f('barrel.firing.projectileSpawnOffset', 'Projectile Spawn Offset', { type: 'number', step: '0.1' })}
                 {f('barrel.firing.burstSound', 'Sustained Burst SoundDef')}
                 <div>
@@ -346,6 +350,7 @@ export function SmokeTab({ draft, set, dirty }) {
             {draft.smoker.muzzle.enabled && (
               <div className="grid" style={{ marginTop: 8 }}>
                 {f('smoker.muzzle.fleckDef', 'FleckDef')}
+                {f('smoker.muzzle.offset', 'Muzzle Offset (x,y,z)', { placeholder: '(0, 0, 3)' })}
                 {f('smoker.muzzle.particleCount', 'Particle Count', { type: 'number' })}
                 {f('smoker.muzzle.velocity', 'Velocity (cells/s)', { type: 'number', step: '0.5' })}
                 {f('smoker.muzzle.particleSize', 'Size Multiplier', {
@@ -361,6 +366,9 @@ export function SmokeTab({ draft, set, dirty }) {
             {draft.smoker.heat.enabled && (
               <div className="grid" style={{ marginTop: 8 }}>
                 {f('smoker.heat.fleckDef', 'FleckDef')}
+                {f('smoker.heat.offset', 'Heat Offset (x,y,z)', { placeholder: '(0, 0, 1.5)' })}
+                {f('smoker.heat.emissionPoints', 'Emission Points', { type: 'number' })}
+                {f('smoker.heat.emissionSpacing', 'Emission Spacing (cells)', { type: 'number', step: '0.1' })}
                 {f('smoker.heat.threshold', 'Heat Threshold (shots)', { type: 'number' })}
                 {f('smoker.heat.decayRate', 'Decay Rate (/s)', { type: 'number', step: '0.01' })}
                 {f('smoker.heat.emissionRate', 'Emission Rate (/s)', { type: 'number', step: '0.1' })}
@@ -374,6 +382,7 @@ export function SmokeTab({ draft, set, dirty }) {
             {draft.smoker.shockwave.enabled && (
               <div className="grid" style={{ marginTop: 8 }}>
                 {f('smoker.shockwave.fleckDef', 'FleckDef')}
+                {f('smoker.shockwave.offset', 'Shockwave Offset (x,y,z)', { placeholder: '(0, 0, 5)' })}
                 {f('smoker.shockwave.radius', 'Radius (cells)', { type: 'number', step: '0.5' })}
                 {f('smoker.shockwave.density', 'Particle Density', { type: 'number' })}
                 {f('smoker.shockwave.fadeOutSpeed', 'Fade Out Speed', { type: 'number', step: '0.1' })}

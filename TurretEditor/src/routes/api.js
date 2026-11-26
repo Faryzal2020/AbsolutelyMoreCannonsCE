@@ -1,3 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { TEXTURES_DIR, MUZZLE_FLASH_ASSETS_DIR } from '../paths.js';
+import { MUZZLE_FLASH_DEFS } from '../xml/extract.js';
 import { runExtraction } from '../services/extractService.js';
 import { computeDiffs } from '../services/diffService.js';
 import { runInjection, runRollback, listBackups } from '../services/injectService.js';
@@ -208,4 +212,71 @@ export default async function apiRoutes(fastify, { db }) {
       key: t.key, label: t.label, container: t.container, cls: t.cls,
     })),
   }));
+
+  /**
+   * Serve a texture from Common/Textures by RimWorld texPath.
+   * Supports Graphic_Single file paths and Graphic_Random / Graphic_Collection directory paths.
+   */
+  fastify.get('/api/texture', async (request, reply) => {
+    const rawPath = String(request.query.texPath || '').trim();
+    const frame = parseInt(request.query.frame ?? '0', 10) || 0;
+    if (!rawPath || rawPath.includes('..')) {
+      return reply.code(400).send({ ok: false, error: 'Invalid texPath' });
+    }
+
+    const baseTarget = path.resolve(TEXTURES_DIR, ...rawPath.split('/'));
+    const texturesRoot = path.resolve(TEXTURES_DIR);
+    if (!baseTarget.startsWith(texturesRoot)) {
+      return reply.code(403).send({ ok: false, error: 'Forbidden path' });
+    }
+
+    let resolvedFile = null;
+    if (fs.existsSync(`${baseTarget}.png`)) {
+      resolvedFile = `${baseTarget}.png`;
+    } else if (fs.existsSync(`${baseTarget}.jpg`)) {
+      resolvedFile = `${baseTarget}.jpg`;
+    } else if (fs.existsSync(baseTarget) && fs.statSync(baseTarget).isDirectory()) {
+      const files = fs.readdirSync(baseTarget)
+        .filter((f) => /\.(png|jpg)$/i.test(f))
+        .sort();
+      if (files.length > 0) {
+        const picked = files[Math.min(Math.max(0, frame), files.length - 1)];
+        resolvedFile = path.join(baseTarget, picked);
+      }
+    }
+
+    if (!resolvedFile || !fs.existsSync(resolvedFile)) {
+      return reply.code(404).send({ ok: false, error: `Texture not found: ${rawPath}` });
+    }
+
+    const ext = path.extname(resolvedFile).toLowerCase();
+    const mime = ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png';
+    return reply
+      .header('Content-Type', mime)
+      .header('Cache-Control', 'public, max-age=300')
+      .send(fs.readFileSync(resolvedFile));
+  });
+
+  /**
+   * Serve extracted Muzzle Flash mod sprite sheets by MuzzleFlashDef name or filename.
+   */
+  fastify.get('/api/muzzle-flash-texture/:defOrFile', async (request, reply) => {
+    const param = String(request.params.defOrFile || '').trim();
+    const defInfo = MUZZLE_FLASH_DEFS[param];
+    const fileName = defInfo ? defInfo.texture : param;
+
+    if (!fileName || fileName.includes('..') || fileName.includes('/') || fileName.includes('\\')) {
+      return reply.code(400).send({ ok: false, error: 'Invalid muzzle flash texture identifier' });
+    }
+
+    const absFile = path.join(MUZZLE_FLASH_ASSETS_DIR, fileName);
+    if (!fs.existsSync(absFile)) {
+      return reply.code(404).send({ ok: false, error: `Muzzle flash texture not found: ${fileName}` });
+    }
+
+    return reply
+      .header('Content-Type', 'image/png')
+      .header('Cache-Control', 'public, max-age=3600')
+      .send(fs.readFileSync(absFile));
+  });
 }

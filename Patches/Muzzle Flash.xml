@@ -401,13 +401,13 @@
 				</li>
 			
 				<li Class="PatchOperationAddModExtension">
-					<xpath>Defs/ThingDef[defName="Turret_600mmKarlGerat_Weapon"]</xpath>
+					<xpath>Defs/ThingDef[defName="Turret_600mmKarlGerat_indirect_Weapon"]</xpath>
 					<value>
 						<li Class="MuzzleFlash.MuzzleFlashProps">
-							<def>MF_StandardMuzzleFalshThree</def>
-							<drawSize>(3,3)</drawSize>
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(6,8)</drawSize>
 							<offsets>
-								<li>(2.9,0)</li>
+								<li>(3,0)</li>
 							</offsets>
 						</li>
 					</value>

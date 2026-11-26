@@ -139,4 +139,22 @@ test('read-only API surface', async (t) => {
     assert.equal(body.dryRun, true);
     assert.equal(body.restoredCount, 0, 'nothing was injected in this suite');
   });
+
+  await t.test('texture inspector fields (graphics.drawSize and muzzleFlash) and texture serving routes work', async () => {
+    const { body } = await app.get('/api/turrets/Turret_20mmFlak38_Base');
+    assert.equal(body.ok, true);
+    assert.equal(body.turret.graphics.drawSize, '(9,9)');
+    assert.equal(body.turret.muzzleFlash.enabled, true);
+    assert.equal(body.turret.muzzleFlash.def, 'MF_StandardMuzzleFalsh');
+    assert.equal(body.turret.muzzleFlash.drawSize, '(1.5,1.5)');
+    assert.deepEqual(body.turret.muzzleFlash.offsets, ['(2.8,0)']);
+
+    const mfRes = await app.fastify.inject({
+      method: 'GET',
+      url: '/api/muzzle-flash-texture/MF_StandardMuzzleFalsh',
+    });
+    assert.equal(mfRes.statusCode, 200);
+    assert.equal(mfRes.headers['content-type'], 'image/png');
+    assert.ok(mfRes.rawPayload.length > 1000);
+  });
 });

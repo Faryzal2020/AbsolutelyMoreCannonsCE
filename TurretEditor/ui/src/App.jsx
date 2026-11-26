@@ -12,6 +12,7 @@ import SnapshotsModal from './components/SnapshotsModal.jsx';
 import ExportModal from './components/ExportModal.jsx';
 import AuditModal from './components/AuditModal.jsx';
 import InjectModal from './components/InjectModal.jsx';
+import TextureInspector from './components/TextureInspector.jsx';
 
 const CATEGORY_FILTERS = [
   { id: 'all', label: 'All' },
@@ -231,8 +232,27 @@ export default function App() {
 
         {/* View Tab Navigation */}
         <div className="mode-switch" style={{ marginRight: '16px' }}>
-          <button className={viewTab === 'turrets' ? 'live' : ''} onClick={() => { setViewTab('turrets'); setFilter('all'); }}>Turrets ({turrets.length})</button>
-          <button className={viewTab === 'ammo' ? 'live' : ''} onClick={() => { setViewTab('ammo'); setFilter('all'); }}>Ammunition ({ammoList.length})</button>
+          <button
+            className={viewTab === 'turrets' ? 'live' : ''}
+            aria-pressed={viewTab === 'turrets'}
+            onClick={() => { setViewTab('turrets'); setFilter('all'); }}
+          >
+            Turrets ({turrets.length})
+          </button>
+          <button
+            className={viewTab === 'ammo' ? 'live' : ''}
+            aria-pressed={viewTab === 'ammo'}
+            onClick={() => { setViewTab('ammo'); setFilter('all'); }}
+          >
+            Ammunition ({ammoList.length})
+          </button>
+          <button
+            className={viewTab === 'textures' ? 'live' : ''}
+            aria-pressed={viewTab === 'textures'}
+            onClick={() => setViewTab('textures')}
+          >
+            Texture Inspector
+          </button>
         </div>
 
         <div className="mode-switch" role="group" aria-label="Injection mode">
@@ -252,62 +272,71 @@ export default function App() {
         </Button>
       </header>
 
-      <div className="page">
+      <div className={`page${viewTab === 'textures' ? ' page-textures' : ''}`}>
         {!live && (
           <div className="note">
             Sandbox mode is on. Edits are saved to SQLite, but nothing is written to XML until you switch to Live.
           </div>
         )}
 
-        <Metrics metrics={metrics} modifiedCount={modifiedCount} />
+        {viewTab === 'textures' ? (
+          <TextureInspector
+            turrets={turrets}
+            onEdit={setEditing}
+          />
+        ) : (
+          <>
+            <Metrics metrics={metrics} modifiedCount={modifiedCount} />
 
-        <div className="panel">
-          <div className="panel-head">
-            <h2>{viewTab === 'turrets' ? 'Turret Matrix' : 'Ammunition Matrix'}</h2>
-            <span className="muted">
-              {viewTab === 'turrets' ? `${visibleTurrets.length} of ${turrets.length} shown` : `${visibleAmmo.length} of ${ammoList.length} shown`}
-            </span>
-            <span className="spacer" />
-            {viewTab === 'turrets' && (
-              <>
-                <Button icon="undo" small disabled={!undoStack.length} onClick={undo}>Undo</Button>
-                <Button icon="redo" small disabled={!redoStack.length} onClick={redo}>Redo</Button>
-                <span className="divider" />
-                <Button icon="camera" small onClick={() => setModal('snapshots')}>Snapshots</Button>
-                <Button icon="warn" small onClick={() => setModal('audit')}>
-                  Audit{metrics?.errors ? ` (${metrics.errors})` : ''}
-                </Button>
-                <Button icon="download" small onClick={() => setModal('export')}>Export Matrix</Button>
-              </>
-            )}
-            <Button icon="revert" small variant="danger" disabled={!modifiedCount} onClick={revertAll}>Revert All</Button>
-          </div>
+            <div className="panel">
+              <div className="panel-head">
+                <h2>{viewTab === 'turrets' ? 'Turret Matrix' : 'Ammunition Matrix'}</h2>
+                <span className="muted">
+                  {viewTab === 'turrets' ? `${visibleTurrets.length} of ${turrets.length} shown` : `${visibleAmmo.length} of ${ammoList.length} shown`}
+                </span>
+                <span className="spacer" />
+                {viewTab === 'turrets' && (
+                  <>
+                    <Button icon="undo" small disabled={!undoStack.length} onClick={undo}>Undo</Button>
+                    <Button icon="redo" small disabled={!redoStack.length} onClick={redo}>Redo</Button>
+                    <span className="divider" />
+                    <Button icon="camera" small onClick={() => setModal('snapshots')}>Snapshots</Button>
+                    <Button icon="warn" small onClick={() => setModal('audit')}>
+                      Audit{metrics?.errors ? ` (${metrics.errors})` : ''}
+                    </Button>
+                    <Button icon="download" small onClick={() => setModal('export')}>Export Matrix</Button>
+                  </>
+                )}
+                <Button icon="revert" small variant="danger" disabled={!modifiedCount} onClick={revertAll}>Revert All</Button>
+              </div>
 
-          <div className="panel-body" style={{ borderBottom: '1px solid var(--line)' }}>
-            <Filters
-              search={search} onSearch={setSearch}
-              filter={filter} onFilter={setFilter}
-              options={viewTab === 'turrets' ? CATEGORY_FILTERS : ammoFamilies}
-            />
-          </div>
+              <div className="panel-body" style={{ borderBottom: '1px solid var(--line)' }}>
+                <Filters
+                  search={search} onSearch={setSearch}
+                  filter={filter} onFilter={setFilter}
+                  options={viewTab === 'turrets' ? CATEGORY_FILTERS : ammoFamilies}
+                />
+              </div>
 
-          {viewTab === 'turrets' ? (
-            <Matrix
-              turrets={visibleTurrets}
-              ready={ready}
-              onEdit={setEditing}
-              onDiff={setDiffing}
-              onRevert={revertOne}
-            />
-          ) : (
-            <AmmoMatrix
-              ammoList={visibleAmmo}
-              ready={ready}
-              onEdit={setEditingAmmo}
-              onRevert={revertOneAmmo}
-            />
-          )}
-        </div>
+              {viewTab === 'turrets' ? (
+                <Matrix
+                  turrets={visibleTurrets}
+                  ready={ready}
+                  onEdit={setEditing}
+                  onDiff={setDiffing}
+                  onRevert={revertOne}
+                />
+              ) : (
+                <AmmoMatrix
+                  ammoList={visibleAmmo}
+                  ready={ready}
+                  onEdit={setEditingAmmo}
+                  onRevert={revertOneAmmo}
+                />
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       {editingTurret && (

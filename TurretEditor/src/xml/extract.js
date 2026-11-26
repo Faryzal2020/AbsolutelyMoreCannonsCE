@@ -1,9 +1,96 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DefIndex, findXmlFiles } from './defIndex.js';
-import { BUILDINGS_DIR, DEFS_DIR, TEXTURES_DIR, MOD_ROOT, rel } from '../paths.js';
+import { BUILDINGS_DIR, DEFS_DIR, TEXTURES_DIR, PATCHES_DIR, MOD_ROOT, rel } from '../paths.js';
 import { FIELDS, coerce, setPath, getPath } from './fieldMap.js';
 import { liTexts } from './tree.js';
+import { scanChildren, toTree } from './scanner.js';
+
+export const MUZZLE_FLASH_DEFS = {
+  MF_StandardMuzzleFalsh: {
+    defName: 'MF_StandardMuzzleFalsh',
+    texture: 'MuzzleFlashOne5x5.png',
+    defaultSize: [0.8, 0.8],
+    splits: [5, 5],
+    drawOffsetMultiplier: [0.37, 0],
+    framesPerAnimation: 5,
+    lightIntensity: 1.4,
+  },
+  MF_StandardMuzzleFalshTwo: {
+    defName: 'MF_StandardMuzzleFalshTwo',
+    texture: 'MuzzleFlashTwo4x5.png',
+    defaultSize: [0.8, 0.8],
+    splits: [5, 4],
+    drawOffsetMultiplier: [0.37, 0],
+    framesPerAnimation: 5,
+    lightIntensity: 1.3,
+  },
+  MF_StandardMuzzleFalshThree: {
+    defName: 'MF_StandardMuzzleFalshThree',
+    texture: 'MuzzleFlashThree4x5.png',
+    defaultSize: [0.8, 0.8],
+    splits: [5, 4],
+    drawOffsetMultiplier: [0.32, 0],
+    framesPerAnimation: 5,
+    lightIntensity: 1.3,
+  },
+  MF_ChargedMuzzleFalsh: {
+    defName: 'MF_ChargedMuzzleFalsh',
+    texture: 'MuzzleFlashCharged4x5.png',
+    defaultSize: [1.2, 1.2],
+    splits: [5, 4],
+    drawOffsetMultiplier: [0.4, 0],
+    framesPerAnimation: 5,
+    lightIntensity: 1.1,
+  },
+};
+
+export function extractMuzzleFlashPatches(patchesDir = PATCHES_DIR) {
+  const byWeaponDef = new Map();
+  const patchFile = path.join(patchesDir, 'Muzzle Flash.xml');
+  if (!fs.existsSync(patchFile)) return byWeaponDef;
+
+  try {
+    const src = fs.readFileSync(patchFile, 'utf8');
+    const roots = scanChildren(src, 0, src.length);
+    const patchRoot = roots.find((r) => r.tag === 'Patch');
+    if (!patchRoot) return byWeaponDef;
+
+    const tree = toTree(src, patchRoot);
+    const visit = (node) => {
+      if (node.tag === 'li' && (node.attrs?.Class || '').includes('PatchOperationAddModExtension')) {
+        const xpath = node.children.find((c) => c.tag === 'xpath')?.text || '';
+        const m = xpath.match(/defName\s*=\s*["']([^"']+)["']/);
+        const valueNode = node.children.find((c) => c.tag === 'value');
+        const propsNode = valueNode?.children.find((c) => (c.attrs?.Class || '').includes('MuzzleFlashProps'));
+        if (m && propsNode) {
+          const weaponDef = m[1];
+          const def = propsNode.children.find((c) => c.tag === 'def')?.text || 'MF_StandardMuzzleFalsh';
+          const drawSize = propsNode.children.find((c) => c.tag === 'drawSize')?.text || '(0.8,0.8)';
+          const offsetsNode = propsNode.children.find((c) => c.tag === 'offsets');
+          const offsets = offsetsNode ? liTexts(offsetsNode) : [];
+          const isAlternately = (propsNode.children.find((c) => c.tag === 'isAlternately')?.text || '').toLowerCase() === 'true';
+          const defInfo = MUZZLE_FLASH_DEFS[def] || MUZZLE_FLASH_DEFS.MF_StandardMuzzleFalsh;
+          byWeaponDef.set(weaponDef, {
+            enabled: true,
+            def,
+            drawSize,
+            offsets,
+            isAlternately,
+            texture: defInfo.texture,
+            splits: defInfo.splits,
+            drawOffsetMultiplier: defInfo.drawOffsetMultiplier,
+          });
+        }
+      }
+      for (const child of node.children || []) visit(child);
+    };
+    visit(tree);
+  } catch {
+    // Ignore malformed optional patch file
+  }
+  return byWeaponDef;
+}
 
 const MANNED_PARENTS = new Set(['AMCTurretMannedBase', 'AMCArtilleryBase']);
 const AUTO_PARENTS = new Set(['AMCTurretAutoBase', 'AMCArtilleryAutoBase']);
@@ -67,7 +154,7 @@ function blankTurret() {
     terrainAffordanceNeeded: '', researchPrerequisites: '', interactionCellOffset: '',
     designationCategory: '', fillPercent: null, pathCost: null, passability: '',
     placeWorkers: '', hasInteractionCell: false,
-    graphics: { shadowVolume: '', shadowOffset: '' },
+    graphics: { drawSize: '', shadowVolume: '', shadowOffset: '' },
     building: {
       aiCombatDangerous: false, turretBurstWarmupTime: null,
       spawnedConceptLearnOpportunity: '', buildingTags: '',
@@ -151,6 +238,10 @@ function blankTurret() {
       },
     },
     textures: { building: '', icon: '', weapon: '' },
+    muzzleFlash: {
+      enabled: false, def: '', drawSize: '', offsets: [], isAlternately: false,
+      texture: '', splits: [5, 5], drawOffsetMultiplier: [0.37, 0],
+    },
     warnings: [],
   };
 }
@@ -333,8 +424,12 @@ export function extractAll() {
 
   // Link dual-mode partners in both directions so the UI can offer parallel edit.
   const byDef = new Map(turrets.map((t) => [t.defName, t]));
+  const muzzleFlashPatches = extractMuzzleFlashPatches();
   for (const t of turrets) {
     t.linkedModeDef = t.comps.swapAltDef && byDef.has(t.comps.swapAltDef) ? t.comps.swapAltDef : '';
+    if (t.weaponDefName && muzzleFlashPatches.has(t.weaponDefName)) {
+      t.muzzleFlash = muzzleFlashPatches.get(t.weaponDefName);
+    }
   }
 
   const files = new Map();

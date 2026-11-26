@@ -19,6 +19,12 @@ export function makeFixture() {
     // tooling; copying them would let rollback tests restore unrelated files.
     filter: (src) => !src.endsWith('.xml.bak'),
   });
+  if (fs.existsSync(path.join(REAL_MOD_ROOT, 'Patches'))) {
+    fs.cpSync(path.join(REAL_MOD_ROOT, 'Patches'), path.join(root, 'Patches'), {
+      recursive: true,
+      filter: (src) => !src.endsWith('.xml.bak'),
+    });
+  }
 
   process.env.AMC_MOD_ROOT = root;
   process.env.AMC_DB_PATH = path.join(root, 'DevTools', 'turret_editor.db');
