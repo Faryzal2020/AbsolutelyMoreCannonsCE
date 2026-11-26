@@ -50,7 +50,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>4</muzzleParticleCount>
 				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 7)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 7.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>20~30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -64,7 +64,7 @@
 				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 7)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
@@ -78,7 +78,7 @@
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
 				<shockwaveRadius>5</shockwaveRadius> <!-- radius in cells -->
 				<shockwaveDensity>50</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 6.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveOffset>(0, 0, 7)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>2.5</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 				<shockwaveFadeOutSpeed>0.4</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
 				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
@@ -139,6 +139,7 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+		  		<projectileSpawnOffset>7</projectileSpawnOffset>
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
@@ -280,14 +281,14 @@
 				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 4)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
 
 				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
 				<heatEmissionPoints>4</heatEmissionPoints> <!-- number of emission points along barrel -->
-				<heatEmissionSpacing>0.5</heatEmissionSpacing> <!-- distance between points in cells -->
+				<heatEmissionSpacing>0.3</heatEmissionSpacing> <!-- distance between points in cells -->
 				
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
@@ -341,12 +342,13 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+		  		<projectileSpawnOffset>4</projectileSpawnOffset>
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
 				<flashSize>35</flashSize>
 				<flashBrightness>3.0</flashBrightness>
-				<flashOffset>-4</flashOffset>
+				<flashOffset>-5</flashOffset>
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
 				<flashIntensityCurve>
 					<points>

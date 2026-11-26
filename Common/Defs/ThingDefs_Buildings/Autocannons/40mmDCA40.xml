@@ -47,7 +47,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>1</muzzleParticleCount>
 				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 3)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 3.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -73,8 +73,8 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>1</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>2</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveRadius>2</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>20</shockwaveDensity> <!-- number of particles in the ring -->
 				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>3</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
@@ -141,9 +141,10 @@
 				</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
+					<projectileSpawnOffset>3.6</projectileSpawnOffset>
 					<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
-					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
 					<flashSize>12</flashSize>
 					<flashBrightness>2</flashBrightness>
 					<flashOffset>1</flashOffset>  <!-- Offset from barrel tip -->

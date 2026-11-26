@@ -42,33 +42,45 @@
 		<designatorDropdown>Group_AMC_122mmGvozdika</designatorDropdown>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<muzzleParticleCount>3</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 4.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>30</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>15~25</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<heatThreshold>4</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.2</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 1.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.7</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+				<shockwaveRadius>3</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -125,6 +137,7 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>4.5</projectileSpawnOffset>
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
@@ -234,33 +247,45 @@
 		<designatorDropdown>Group_AMC_122mmGvozdika</designatorDropdown>
 		<comps>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
-			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
+			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
+				<!-- Muzzle Smoke -->
 				<muzzleEnabled>true</muzzleEnabled>
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
-				<muzzleParticleCount>2</muzzleParticleCount>
-				<muzzleSpawnDuration>5</muzzleSpawnDuration>
-				<muzzleOffset>(0, 0, 3)</muzzleOffset>
-				<muzzleVelocity>15</muzzleVelocity>
-				<muzzleVelDuration>30</muzzleVelDuration>
-				<muzzleParticleSize>1.5</muzzleParticleSize>
-				<muzzleSpawnDelay>1</muzzleSpawnDelay>
+				<muzzleParticleCount>3</muzzleParticleCount>
+				<muzzleSpawnDuration>5</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
+				<muzzleOffset>(0, 0, 2.5)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
+				<muzzleVelDuration>10~20</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
+				<directionCone>4</directionCone>
+				<muzzleParticleSize>3~5</muzzleParticleSize> <!-- size multiplier (1.0 = default) -->
+				<muzzleSpawnDelay>1</muzzleSpawnDelay> <!-- ticks to delay spawn after firing -->
+				
+				<!-- Heat Smoke -->
 				<heatEnabled>true</heatEnabled>
 				<heatFleckDef>AMC_HeatSmoke</heatFleckDef>
-				<heatThreshold>4</heatThreshold>
-				<heatDecayRate>0.9</heatDecayRate>
-				<decayIncrease>0.12</decayIncrease>
-				<heatOffset>(0, 0, 1.5)</heatOffset>
-				<heatEmissionRate>2</heatEmissionRate>
-				<emissionIncrease>0.4</emissionIncrease>
-				<heatParticleSize>0.6</heatParticleSize>
-				<heatEmissionPoints>3</heatEmissionPoints>
-				<heatEmissionSpacing>0.5</heatEmissionSpacing>
+				<heatThreshold>4</heatThreshold> <!-- shots required to start emitting heat smoke -->
+				<heatDecayRate>0.2</heatDecayRate> <!-- heat loss per second -->
+				<decayIncrease>0.08</decayIncrease>
+
+				<heatOffset>(0, 0, 0.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+
+				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
+				<emissionIncrease>0.9</emissionIncrease>
+
+				<heatParticleSize>0.6</heatParticleSize> <!-- size multiplier (1.0 = default) -->
+				<heatEmissionPoints>3</heatEmissionPoints> <!-- number of emission points along barrel -->
+				<heatEmissionSpacing>0.3</heatEmissionSpacing> <!-- distance between points in cells -->
+				
+				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>4</shockwaveRadius>
-				<shockwaveDensity>40</shockwaveDensity>
-				<shockwaveOffset>(0, 0, 4)</shockwaveOffset>
-				<shockwaveParticleSize>1.5</shockwaveParticleSize>
+				<shockwaveRadius>3</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>40</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 2.4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveParticleSize>2</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
+				<shockwaveFadeOutSpeed>0.5</shockwaveFadeOutSpeed> <!-- fade out speed multiplier (1.0 = default) -->
+				<shockwaveGradientDensity>false</shockwaveGradientDensity> <!-- gradient density (1.0 = 100% at center, 0.1 = 10% at edge) -->
+				<shockwaveGradientParticleSize>true</shockwaveGradientParticleSize> <!-- gradient particle size (1.0 = 100% at center, 0.1 = 10% at edge) -->
 			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -312,10 +337,11 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>2</projectileSpawnOffset>
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
-				<flashSize>35</flashSize>
+				<flashSize>30</flashSize>
 				<flashBrightness>3.0</flashBrightness>
 				<flashOffset>-4</flashOffset>
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>

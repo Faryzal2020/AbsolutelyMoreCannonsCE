@@ -57,7 +57,7 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(2.4,2)</drawSize>
 							<offsets>
-								<li>(2.8,0)</li>
+								<li>(3.2,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -70,7 +70,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(2.4,2)</drawSize>
 							<offsets>
-								<li>(3.6,0)</li>
+								<li>(4.1,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -83,8 +83,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(2.4,2)</drawSize>
 							<offsets>
-								<li>(2.7,0.2)</li>
-								<li>(2.7,-0.2)</li>
+								<li>(3,0.2)</li>
+								<li>(3,-0.2)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -111,7 +111,7 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(3.2,0)</li>
+								<li>(3.6,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -124,8 +124,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(3.6,-0.3)</li>
-								<li>(3.6,0.3)</li>
+								<li>(4,-0.3)</li>
+								<li>(4,0.3)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -291,7 +291,19 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(1.5,1.5)</drawSize>
 							<offsets>
-								<li>(2.4,0)</li>
+								<li>(1.4,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_75mmLEIG18_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(1,2)</drawSize>
+							<offsets>
+								<li>(1,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -302,9 +314,21 @@
 					<value>
 						<li Class="MuzzleFlash.MuzzleFlashProps">
 							<def>MF_StandardMuzzleFalsh</def>
-							<drawSize>(1.5,1.5)</drawSize>
+							<drawSize>(2.5,2.5)</drawSize>
 							<offsets>
-								<li>(5,0)</li>
+								<li>(4.5,0)</li>
+							</offsets>
+						</li>
+					</value>
+				</li>
+				<li Class="PatchOperationAddModExtension">
+					<xpath>Defs/ThingDef[defName="Turret_122mmGvozdika_indirect_Weapon"]</xpath>
+					<value>
+						<li Class="MuzzleFlash.MuzzleFlashProps">
+							<def>MF_StandardMuzzleFalsh</def>
+							<drawSize>(2,3)</drawSize>
+							<offsets>
+								<li>(1.6,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -343,7 +367,7 @@
 							<def>MF_StandardMuzzleFalshThree</def>
 							<drawSize>(3.8,4)</drawSize>
 							<offsets>
-								<li>(9,0)</li>
+								<li>(8.5,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -381,7 +405,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(2.3,3.8)</drawSize>
 							<offsets>
-								<li>(3.9,0)</li>
+								<li>(3.4,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -476,7 +500,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(2.5,5)</drawSize>
 							<offsets>
-								<li>(3.4,0)</li>
+								<li>(3.0,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -573,7 +597,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(5,5)</drawSize>
 							<offsets>
-								<li>(4.2,0)</li>
+								<li>(4.6,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -586,7 +610,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(2.5,5)</drawSize>
 							<offsets>
-								<li>(1.8,0)</li>
+								<li>(1.7,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -612,7 +636,7 @@
 							<def>MF_StandardMuzzleFalsh</def>
 							<drawSize>(2,5)</drawSize>
 							<offsets>
-								<li>(2.7,0)</li>
+								<li>(1.9,0)</li>
 							</offsets>
 						</li>
 					</value>

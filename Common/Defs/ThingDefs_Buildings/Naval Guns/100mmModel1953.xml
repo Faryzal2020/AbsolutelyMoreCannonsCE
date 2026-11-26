@@ -91,7 +91,7 @@
 				<heatDecayRate>0.24</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.08</decayIncrease>
 
-				<heatOffset>(0, 0, 2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 2.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>3.5</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>0.9</emissionIncrease>
@@ -161,7 +161,7 @@
 				</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
-					<projectileSpawnOffset>5.5</projectileSpawnOffset>
+					<projectileSpawnOffset>4.5</projectileSpawnOffset>
 					<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->

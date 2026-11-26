@@ -149,6 +149,7 @@
 				</recoilAnimation>
 				<firingAnimation>
 					<enabled>true</enabled>
+					<projectileSpawnOffset>1.5</projectileSpawnOffset>
 					<durationTicks>4</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 					<drawFlash>true</drawFlash>
 					<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->

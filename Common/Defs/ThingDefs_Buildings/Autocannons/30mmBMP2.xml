@@ -53,7 +53,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>1</muzzleParticleCount>
 				<muzzleSpawnDuration>-20</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 3)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 3.2)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>15</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -142,10 +142,11 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>3.2</projectileSpawnOffset>
 				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<drawFlash>true</drawFlash>
-					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-					<flashSize>12</flashSize>
+				<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
+				<flashSize>12</flashSize>
 				<flashBrightness>1.5</flashBrightness>
 				<flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->

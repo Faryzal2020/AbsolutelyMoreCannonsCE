@@ -53,7 +53,7 @@
 				<muzzleFleckDef>AMC_MuzzleSmoke</muzzleFleckDef>
 				<muzzleParticleCount>1</muzzleParticleCount>
 				<muzzleSpawnDuration>1</muzzleSpawnDuration> <!-- ticks to spread out particle spawning -->
-				<muzzleOffset>(0, 0, 3)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<muzzleOffset>(0, 0, 4)</muzzleOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<muzzleVelocity>20</muzzleVelocity> <!-- cells per second initial velocity -->
 				<muzzleVelDuration>30</muzzleVelDuration> <!-- ticks for directional motion before transitioning to wind -->
 				<directionCone>4</directionCone>
@@ -67,7 +67,7 @@
 				<heatDecayRate>0.6</heatDecayRate> <!-- heat loss per second -->
 				<decayIncrease>0.1</decayIncrease>
 
-				<heatOffset>(0, 0, 2.5)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<heatOffset>(0, 0, 2)</heatOffset> <!-- offset in cells (x, y, z) from turret center -->
 
 				<heatEmissionRate>1</heatEmissionRate> <!-- particles per second while above threshold -->
 				<emissionIncrease>1</emissionIncrease>
@@ -79,8 +79,8 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>1</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>2</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveRadius>2</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>20</shockwaveDensity> <!-- number of particles in the ring -->
 				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>3</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
@@ -140,30 +140,31 @@
 					<li>12</li>
 				</selectableBurstCounts>
 				<recoilAnimation>
-				<maxDistance>0.6</maxDistance>
-				<recoilDuration>20</recoilDuration>
-				<returnDuration>15</returnDuration>
-				<useRecoilCurve>true</useRecoilCurve>
-				<useReturnCurve>false</useReturnCurve>
-				<affectsRotation>false</affectsRotation>
+					<maxDistance>0.6</maxDistance>
+					<recoilDuration>20</recoilDuration>
+					<returnDuration>15</returnDuration>
+					<useRecoilCurve>true</useRecoilCurve>
+					<useReturnCurve>false</useReturnCurve>
+					<affectsRotation>false</affectsRotation>
 				</recoilAnimation>
 				<firingAnimation>
-				<enabled>true</enabled>
-				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
-				<drawFlash>true</drawFlash>
-				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>15</flashSize>
-				<flashBrightness>2</flashBrightness>
-				<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
-				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
-				<flashIntensityCurve>
-					<points>
-					<li>(0, 1)</li>      <!-- Full brightness at start -->
-					<li>(0.3, 0.9)</li>  <!-- Still bright -->
-					<li>(0.6, 0.6)</li>  <!-- Fading -->
-					<li>(1, 0)</li>      <!-- Faded out -->
-					</points>
-				</flashIntensityCurve>
+					<enabled>true</enabled>
+					<projectileSpawnOffset>4</projectileSpawnOffset>
+					<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+					<drawFlash>true</drawFlash>
+					<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
+					<flashSize>15</flashSize>
+					<flashBrightness>2</flashBrightness>
+					<flashOffset>-2</flashOffset>  <!-- Offset from barrel tip -->
+					<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
+					<flashIntensityCurve>
+						<points>
+						<li>(0, 1)</li>      <!-- Full brightness at start -->
+						<li>(0.3, 0.9)</li>  <!-- Still bright -->
+						<li>(0.6, 0.6)</li>  <!-- Fading -->
+						<li>(1, 0)</li>      <!-- Faded out -->
+						</points>
+					</flashIntensityCurve>
 				</firingAnimation>
 			</li>
 		</modExtensions>

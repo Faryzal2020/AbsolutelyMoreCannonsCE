@@ -88,7 +88,7 @@
             <clipPath>Reload/Small</clipPath>
           </li>
         </grains>
-        <volumeRange>50~25</volumeRange>
+        <volumeRange>50~75</volumeRange>
         <pitchRange>0.8~1.2</pitchRange>
         <distRange>0~49.53489</distRange>
         <sustainLoop>False</sustainLoop>
@@ -111,7 +111,7 @@
             <clipPath>Reload/AutoloaderL</clipPath>
           </li>
         </grains>
-        <volumeRange>50~25</volumeRange>
+        <volumeRange>50~75</volumeRange>
         <pitchRange>0.8~1.2</pitchRange>
         <distRange>0~49.53489</distRange>
         <sustainLoop>False</sustainLoop>

@@ -120,8 +120,8 @@
 				<durationTicks>10</durationTicks>
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>
-				<flashSize>4</flashSize>
-				<flashBrightness>4.0</flashBrightness>
+				<flashSize>45</flashSize>
+				<flashBrightness>5.0</flashBrightness>
 				<flashOffset>-2</flashOffset>
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>
 				<flashIntensityCurve>

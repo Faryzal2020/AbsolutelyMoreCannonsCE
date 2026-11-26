@@ -67,9 +67,9 @@
 				<!-- Shockwave Smoke -->
 				<shockwaveEnabled>true</shockwaveEnabled>
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
-				<shockwaveRadius>1</shockwaveRadius> <!-- radius in cells -->
-				<shockwaveDensity>3</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 3)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveRadius>2</shockwaveRadius> <!-- radius in cells -->
+				<shockwaveDensity>20</shockwaveDensity> <!-- number of particles in the ring -->
+				<shockwaveOffset>(0, 0, 3.5)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>3</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
@@ -133,6 +133,7 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
+				<projectileSpawnOffset>3.2</projectileSpawnOffset>
 				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.8,0.45,1)</flashColor>  <!-- Orange/yellow -->
