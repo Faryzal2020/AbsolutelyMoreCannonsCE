@@ -47,3 +47,6 @@ TurretEditor/public/
 DevTools/turret_editor.db
 DevTools/turret_editor.db-shm
 DevTools/turret_editor.db-wal
+
+# Turret editor injection backups (local working state)
+*.xml.bak

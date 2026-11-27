@@ -6,11 +6,11 @@ import { extractAllAmmo } from '../xml/extractAmmo.js';
 const isBlank = (v) => v === null || v === undefined || v === '';
 
 /** Field-aware equality: null and "" mean the same thing in RimWorld XML. */
-function sameValue(a, b, type) {
+export function sameValue(a, b, type) {
   if (isBlank(a) && isBlank(b)) return true;
   if (isBlank(a) || isBlank(b)) return false;
-  if (type === 'bool') return Boolean(a) === Boolean(b);
-  if (type === 'int' || type === 'float') return Number(a) === Number(b);
+  if (type === 'bool' || type === 'boolean') return Boolean(a) === Boolean(b);
+  if (type === 'int' || type === 'float' || type === 'number') return Number(a) === Number(b);
   if (type === 'list') {
     const norm = (v) => String(v).split(',').map((s) => s.trim()).filter(Boolean).join(',');
     return norm(a) === norm(b);
@@ -18,7 +18,7 @@ function sameValue(a, b, type) {
   return String(a) === String(b);
 }
 
-function costsEqual(a = [], b = []) {
+export function costsEqual(a = [], b = []) {
   if (a.length !== b.length) return false;
   const key = (rows) => rows.map((r) => `${r.thingDef}=${r.count}`).sort().join('|');
   return key(a) === key(b);
@@ -31,8 +31,14 @@ function gateOpen(obj, field) {
 
 /**
  * Compute every pending change for one turret: DB state vs on-disk state.
+ *
+ * When `original` (the record as extracted) is given the diff is three-way: a
+ * key is only written if the user changed it (current != original). Without
+ * that, a field that changed on disk after extraction would differ from the
+ * stale database copy and be silently reverted by the next injection.
  */
-export function diffTurret(current, disk) {
+export function diffTurret(current, disk, original = null) {
+  const edited = (key, type) => !original || !sameValue(getPath(current, key), getPath(original, key), type);
   const changes = [];
   if (!disk) {
     return [{
@@ -45,6 +51,7 @@ export function diffTurret(current, disk) {
     const now = Boolean(getPath(current, toggle.key));
     const was = Boolean(getPath(disk, toggle.key));
     if (now === was) continue;
+    if (!edited(toggle.key, 'bool')) continue;
 
     // A weapon-side comp has to be added to the weapon ThingDef, in the weapon's
     // file — writing it into the building def would attach it to the wrong thing.
@@ -68,6 +75,7 @@ export function diffTurret(current, disk) {
     const to = getPath(current, field.key);
     const from = getPath(disk, field.key);
     if (sameValue(from, to, field.type)) continue;
+    if (!edited(field.key, field.type)) continue;
     changes.push({
       kind: 'field',
       defName: field.doc === 'weapon' ? current.weaponDefName : current.defName,
@@ -81,7 +89,7 @@ export function diffTurret(current, disk) {
     });
   }
 
-  if (!costsEqual(current.costs, disk.costs)) {
+  if (!costsEqual(current.costs, disk.costs) && (!original || !costsEqual(current.costs, original.costs))) {
     changes.push({
       kind: 'costList',
       defName: current.defName, ownerDefName: current.defName, doc: 'building',
@@ -93,7 +101,7 @@ export function diffTurret(current, disk) {
   return changes;
 }
 
-export function diffAmmo(current, disk) {
+export function diffAmmo(current, disk, original = null) {
   const changes = [];
   if (!disk) return changes;
 
@@ -101,6 +109,7 @@ export function diffAmmo(current, disk) {
     const to = getPath(current, field.key);
     const from = getPath(disk, field.key);
     if (sameValue(from, to, field.type)) continue;
+    if (original && sameValue(to, getPath(original, field.key), field.type)) continue;
 
     const targets = [];
     if (field.doc === 'ammo') {
@@ -151,13 +160,13 @@ export function diffAmmo(current, disk) {
  */
 export function computeDiffs(db, onlyDefs = null) {
   const diskTurrets = diskSnapshot();
-  const turretRows = db.all('SELECT def_name, data_json FROM turrets WHERE modified = 1 ORDER BY def_name');
+  const turretRows = db.all('SELECT def_name, data_json, original_json FROM turrets WHERE modified = 1 ORDER BY def_name');
 
   const result = [];
   for (const row of turretRows) {
     if (onlyDefs && !onlyDefs.includes(row.def_name)) continue;
     const current = JSON.parse(row.data_json);
-    const changes = diffTurret(current, diskTurrets.get(row.def_name));
+    const changes = diffTurret(current, diskTurrets.get(row.def_name), JSON.parse(row.original_json));
     if (changes.length) {
       result.push({
         defName: row.def_name,
@@ -170,7 +179,7 @@ export function computeDiffs(db, onlyDefs = null) {
     }
   }
 
-  const ammoRows = db.all('SELECT def_name, data_json FROM ammo WHERE modified = 1 ORDER BY def_name');
+  const ammoRows = db.all('SELECT def_name, data_json, original_json FROM ammo WHERE modified = 1 ORDER BY def_name');
   if (ammoRows.length) {
     const { ammo: diskAmmoList } = extractAllAmmo();
     const diskAmmoMap = new Map(diskAmmoList.map((a) => [a.defName, a]));
@@ -178,7 +187,7 @@ export function computeDiffs(db, onlyDefs = null) {
     for (const row of ammoRows) {
       if (onlyDefs && !onlyDefs.includes(row.def_name)) continue;
       const current = JSON.parse(row.data_json);
-      const changes = diffAmmo(current, diskAmmoMap.get(row.def_name));
+      const changes = diffAmmo(current, diskAmmoMap.get(row.def_name), JSON.parse(row.original_json));
       if (changes.length) {
         result.push({
           defName: row.def_name,

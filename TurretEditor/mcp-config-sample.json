@@ -5,20 +5,16 @@
     "Claude Code (.mcp.json), Cursor (.cursor/mcp.json), Antigravity or any other",
     "stdio MCP client. Replace the absolute path with your own checkout.",
     "",
-    "The mod root is resolved from the script's own location, so no working",
-    "directory is needed. The two env vars are optional overrides: point them at a",
-    "copy of the mod if you want the AI to experiment without touching your files."
+    "The mod root and database are resolved from the script's own location, so no",
+    "working directory or env is needed. Optional overrides: AMC_MOD_ROOT and AMC_DB_PATH,",
+    "to point the AI at a copy of the mod so it can experiment without touching your files."
   ],
   "mcpServers": {
     "amc-turret-editor": {
       "command": "node",
       "args": [
-        "/Users/visiadidayateknologi/Documents/AbsolutelyMoreCannonsCE/TurretEditor/mcp-server.js"
-      ],
-      "env": {
-        "AMC_MOD_ROOT": "/Users/visiadidayateknologi/Documents/AbsolutelyMoreCannonsCE",
-        "AMC_DB_PATH": "/Users/visiadidayateknologi/Documents/AbsolutelyMoreCannonsCE/DevTools/turret_editor.db"
-      }
+        "/Users/visiadidayateknologi/Library/Application Support/Steam/steamapps/common/RimWorld/Mods/AbsolutelyMoreCannonsCE/TurretEditor/mcp-server.js"
+      ]
     }
   }
 }

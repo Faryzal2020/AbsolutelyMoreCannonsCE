@@ -68,6 +68,9 @@ namespace AbsolutelyMoreCannons
             // Patch enclosed manned turrets at runtime
             HarmonyPatches_EnclosedTurret.TryPatchEnclosedTurrets(harmony);
 
+            // Patch open-top turret seats & gun shields (CompProperties_EnclosedTurret.seatOffset)
+            HarmonyPatches_OpenTopTurret.TryPatchOpenTop(harmony);
+
             // Patch turret view transfer at runtime
             HarmonyPatches_TurretViewTransfer.TryPatchTurretViewTransfer(harmony);
 

@@ -145,8 +145,10 @@ namespace AbsolutelyMoreCannons
         public float turretHeadWeight = -1f;
 
         /// <summary>
-        /// Custom vertical barrel height (shot height in vertical cells / meters) from which projectiles are launched and line-of-sight is evaluated.
-        /// Overrides Combat Extended's default fillPercent * 0.85f shotHeight calculation when set > 0.
+        /// Height of the barrel PIVOT (trunnion) above ground, in CE vertical cells (~metres). It is the same for a gun's
+        /// direct- and indirect-fire variants. Projectiles spawn at this height, projectileSpawnOffset cells forward
+        /// (horizontal); the spawn point is not rotated by barrel pitch. CE's firing solution is computed from that spawn
+        /// point. Open-top gunners' heads sit at this height. Overrides CE's default fillPercent-based shotHeight when > 0.
         /// Default -1f falls back to CE's default shotHeight calculation.
         /// </summary>
         public float barrelHeight = -1f;

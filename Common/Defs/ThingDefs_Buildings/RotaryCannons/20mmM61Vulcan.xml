@@ -36,6 +36,19 @@
 			<turretBurstCooldownTime>0.4</turretBurstCooldownTime>
 		</building>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<explosiveProtection>0.3</explosiveProtection>   <!-- blast damage reduction (fragments go through the shield check instead) -->
+				<flameProtection>0</flameProtection>             <!-- open top: no fire protection -->
+				<meleeProtection>0</meleeProtection>             <!-- open top: no melee protection -->
+				<generalProtection>0</generalProtection>           <!-- open top: no protection from unclassified damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
+				<seatOffset>(0.7,0,-0.7)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>360</shieldArc>             <!-- all-round shield -->
+				<shieldHeight>1.75</shieldHeight>      <!-- shield top above ground (barrelHeight 2 - 0.25) -->
+				<shieldArmor>10</shieldArmor>          <!-- mm RHA: stops rifle FMJ (CE 6-7), not AP / .50 -->
+			</li>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 				<basePowerConsumption>500</basePowerConsumption>

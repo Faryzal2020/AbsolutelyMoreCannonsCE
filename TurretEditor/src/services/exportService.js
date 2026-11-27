@@ -74,6 +74,10 @@ const TURRET_COLUMNS = [
   { key: 'explosiveProtection', header: 'Explosive Protection', group: 'Comps & FCS', width: 17, type: 'number', get: (t) => t.comps.enclosed?.explosiveProtection },
   { key: 'temperatureProtection', header: 'Temp Protection', group: 'Comps & FCS', width: 15, type: 'number', get: (t) => t.comps.enclosed?.temperatureProtection },
   { key: 'hidePawnGraphics', header: 'Hide Pawn Graphics', group: 'Comps & FCS', width: 16, get: (t) => yesNo(t.comps.enclosed?.hidePawnGraphics) },
+  { key: 'seatOffset', header: 'Seat Offset', group: 'Comps & FCS', width: 14, get: (t) => t.comps.enclosed?.seatOffset ?? '' },
+  { key: 'shieldArc', header: 'Shield Arc', group: 'Comps & FCS', width: 12, type: 'number', get: (t) => t.comps.enclosed?.shieldArc },
+  { key: 'shieldHeight', header: 'Shield Height', group: 'Comps & FCS', width: 13, type: 'number', get: (t) => t.comps.enclosed?.shieldHeight },
+  { key: 'shieldArmor', header: 'Shield Armor', group: 'Comps & FCS', width: 13, type: 'number', get: (t) => t.comps.enclosed?.shieldArmor },
 
   // Barrel
   { key: 'barrelExtension', header: 'Barrel Extension', group: 'Barrel & Animations', width: 15, get: (t) => yesNo(t.barrel.enabled) },

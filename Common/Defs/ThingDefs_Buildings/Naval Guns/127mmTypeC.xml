@@ -363,7 +363,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<barrelHeight>2.6</barrelHeight>
+				<barrelHeight>2.3</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M127mmTypeC_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>

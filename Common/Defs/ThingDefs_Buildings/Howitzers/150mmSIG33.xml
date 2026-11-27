@@ -41,6 +41,19 @@
 		</building>
 		<designatorDropdown>Group_AMC_150mmSIG33</designatorDropdown>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<explosiveProtection>0.3</explosiveProtection>   <!-- blast damage reduction (fragments go through the shield check instead) -->
+				<flameProtection>0</flameProtection>             <!-- open top: no fire protection -->
+				<meleeProtection>0</meleeProtection>             <!-- open top: no melee protection -->
+				<generalProtection>0</generalProtection>           <!-- open top: no protection from unclassified damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
+				<seatOffset>(0,0,-0.9)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>100</shieldArc>             <!-- front shield only -->
+				<shieldHeight>0.95</shieldHeight>      <!-- shield top above ground (barrelHeight 1.2 - 0.25) -->
+				<shieldArmor>8</shieldArmor>          <!-- mm RHA: stops 5.56 FMJ (CE 6) and 7.62 FMJ (7), not AP -->
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
 				<muzzleEnabled>true</muzzleEnabled>
@@ -214,6 +227,19 @@
 		</building>
 		<designatorDropdown>Group_AMC_150mmSIG33</designatorDropdown>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<explosiveProtection>0.3</explosiveProtection>   <!-- blast damage reduction (fragments go through the shield check instead) -->
+				<flameProtection>0</flameProtection>             <!-- open top: no fire protection -->
+				<meleeProtection>0</meleeProtection>             <!-- open top: no melee protection -->
+				<generalProtection>0</generalProtection>           <!-- open top: no protection from unclassified damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
+				<seatOffset>(0,0,-0.9)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>100</shieldArc>             <!-- front shield only -->
+				<shieldHeight>0.95</shieldHeight>      <!-- shield top above ground (barrelHeight 1.2 - 0.25) -->
+				<shieldArmor>8</shieldArmor>          <!-- mm RHA: stops 5.56 FMJ (CE 6) and 7.62 FMJ (7), not AP -->
+			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 75mmPak40) -->
 				<muzzleEnabled>true</muzzleEnabled>
@@ -258,7 +284,7 @@
     <interactionCellOffset>(0,0,-2)</interactionCellOffset>
     <modExtensions>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
-			<barrelHeight>1.5</barrelHeight>
+			<barrelHeight>1.2</barrelHeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M150mmSIG33_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

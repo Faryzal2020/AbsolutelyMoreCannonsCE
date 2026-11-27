@@ -78,7 +78,9 @@ test('spreadsheet export', async (t) => {
     const row = rows.find((r) => r[headers.indexOf('Def Name')] === NAVAL);
     assert.ok(row);
     assert.equal(row[headers.indexOf('Max Hit Points')], '1792');
-    assert.equal(row[headers.indexOf('Turret Cooldown (s)')], '3.3');
+    const xml = fixture.read('Common/Defs/ThingDefs_Buildings/Naval Guns/127mmMark16.xml');
+    const cooldown = xml.match(/<turretBurstCooldownTime>([^<]+)<\/turretBurstCooldownTime>/)[1];
+    assert.equal(row[headers.indexOf('Turret Cooldown (s)')], String(Number(cooldown)));
     assert.equal(row[headers.indexOf('Manned')], 'Yes');
     assert.equal(row[headers.indexOf('Power Draw (W)')], '500');
     assert.equal(row[headers.indexOf('Resource Costs')], 'Steel x900; ComponentIndustrial x20; Plasteel x30; ComponentSpacer x5');

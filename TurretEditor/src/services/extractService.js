@@ -1,13 +1,34 @@
+import fs from 'node:fs';
 import { extractAll } from '../xml/extract.js';
+import { findXmlFiles, checksum } from '../xml/defIndex.js';
 import { extractAllAmmo } from '../xml/extractAmmo.js';
 import { resetTables, setMeta, getMeta } from '../db.js';
-import { abs } from '../paths.js';
+import { abs, rel, DEFS_DIR, PATCHES_DIR } from '../paths.js';
 import { upsertTurret, extensionRows } from './persist.js';
 import { upsertAmmoRecord } from './ammoService.js';
+
+export const CHECKSUMS_KEY = 'disk_checksums';
+
+/** sha1 of every def and patch file, keyed by mod-relative path. */
+export function diskChecksums() {
+  const out = {};
+  for (const dir of [DEFS_DIR, PATCHES_DIR]) {
+    for (const file of findXmlFiles(dir)) {
+      try {
+        out[rel(file)] = checksum(fs.readFileSync(file, 'utf8'));
+      } catch {
+        out[rel(file)] = null;
+      }
+    }
+  }
+  return out;
+}
 
 /** Full XML -> SQLite ingest. Wipes and repopulates every extracted table. */
 export function runExtraction(db) {
   const started = Date.now();
+  // Fingerprint first: if a file changes mid-extraction the next sync catches it.
+  const sums = diskChecksums();
   const { turrets, files, malformed, knownDefs } = extractAll();
   const { ammo } = extractAllAmmo();
 
@@ -40,6 +61,7 @@ export function runExtraction(db) {
     setMeta(db, 'turret_count', turrets.length);
     setMeta(db, 'ammo_count', ammo.length);
     setMeta(db, 'known_defs', JSON.stringify(knownDefs));
+    setMeta(db, CHECKSUMS_KEY, JSON.stringify(sums));
   });
 
   write();

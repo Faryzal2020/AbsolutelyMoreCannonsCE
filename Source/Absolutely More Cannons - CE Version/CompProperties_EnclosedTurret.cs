@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Verse;
 using RimWorld;
+using UnityEngine;
 
 namespace AbsolutelyMoreCannons
 {
@@ -78,9 +79,48 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public string dismountGizmoIcon = "UI/Commands/Deselect";
 
+        // ---------------- Open-top seat & gun shield ----------------
+
+        /// <summary>
+        /// Seat position in cells, in the turret-top-local frame (+Z along the barrel, +X to the barrel's right),
+        /// rotating with the turret top. Unset (NaN sentinel) keeps the classic enclosed behaviour.
+        /// RimWorld XML field parsing does not support Nullable, hence the sentinel.
+        /// </summary>
+        public Vector3 seatOffset = new Vector3(float.NaN, 0f, float.NaN);
+
+        /// <summary>Total shield width in degrees, centred on the barrel. 0 = no shield, 360 = all round.</summary>
+        public float shieldArc = 0f;
+
+        /// <summary>Top edge of the shield in CE height units above ground (same units as barrelHeight; ~metres).</summary>
+        public float shieldHeight = 0f;
+
+        /// <summary>Sharp armour of the shield (CE mm RHA), compared with a round's sharp penetration.</summary>
+        public float shieldArmor = 0f;
+
+
+        public bool HasSeat => !float.IsNaN(seatOffset.x);
+
+        public bool HasShield => HasSeat && shieldArc > 0f;
+
         public CompProperties_EnclosedTurret()
         {
             compClass = typeof(CompEnclosedTurret);
+        }
+
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string e in base.ConfigErrors(parentDef))
+            {
+                yield return e;
+            }
+            if (HasSeat && hidePawnGraphics)
+            {
+                yield return "[AMC OpenTop] seatOffset is set but hidePawnGraphics is true; the gunner stays hidden.";
+            }
+            if (shieldArc > 0f && !HasSeat)
+            {
+                yield return "[AMC OpenTop] shield fields need seatOffset.";
+            }
         }
 
         /// <summary>
@@ -88,7 +128,25 @@ namespace AbsolutelyMoreCannons
         /// </summary>
         public float GetProtectionFor(DamageDef damageDef)
         {
-            if (damageDef == null) return generalProtection;
+            switch (GetCategoryFor(damageDef, out float custom))
+            {
+                case ProtectionCategory.Custom: return custom;
+                case ProtectionCategory.Flame: return flameProtection;
+                case ProtectionCategory.Explosive: return explosiveProtection;
+                case ProtectionCategory.Bullet: return bulletProtection;
+                case ProtectionCategory.Melee: return meleeProtection;
+                default: return generalProtection;
+            }
+        }
+
+        /// <summary>
+        /// Classifies a DamageDef into the protection category GetProtectionFor uses.
+        /// <paramref name="customProtection"/> is set when a customProtections entry matches.
+        /// </summary>
+        public ProtectionCategory GetCategoryFor(DamageDef damageDef, out float customProtection)
+        {
+            customProtection = 0f;
+            if (damageDef == null) return ProtectionCategory.General;
 
             // Check custom DamageDef list first
             if (customProtections != null && customProtections.Count > 0)
@@ -97,7 +155,8 @@ namespace AbsolutelyMoreCannons
                 {
                     if (customProtections[i] != null && customProtections[i].damageDef == damageDef)
                     {
-                        return customProtections[i].protection;
+                        customProtection = customProtections[i].protection;
+                        return ProtectionCategory.Custom;
                     }
                 }
             }
@@ -107,29 +166,40 @@ namespace AbsolutelyMoreCannons
             // Flame / Burn
             if (damageDef == DamageDefOf.Flame || damageDef == DamageDefOf.Burn || defName.Contains("Flame") || defName.Contains("Burn"))
             {
-                return flameProtection;
+                return ProtectionCategory.Flame;
             }
 
             // Explosive / Shrapnel / Fragment / Bomb
             if (damageDef == DamageDefOf.Bomb || damageDef.isExplosive || defName.Contains("Bomb") || defName.Contains("Fragment") || defName.Contains("Explosion") || defName.Contains("Shrapnel"))
             {
-                return explosiveProtection;
+                return ProtectionCategory.Explosive;
             }
 
             // Bullet / Sharp
             if (damageDef == DamageDefOf.Bullet || (damageDef.armorCategory != null && damageDef.armorCategory.defName == "Sharp") || defName.Contains("Bullet") || defName.Contains("Arrow"))
             {
-                return bulletProtection;
+                return ProtectionCategory.Bullet;
             }
 
             // Melee / Blunt / Cut / Stab / Bite / Scratch
             if (damageDef == DamageDefOf.Blunt || damageDef == DamageDefOf.Cut || damageDef == DamageDefOf.Stab || damageDef == DamageDefOf.Bite || damageDef == DamageDefOf.Scratch || (damageDef.armorCategory != null && damageDef.armorCategory.defName == "Blunt"))
             {
-                return meleeProtection;
+                return ProtectionCategory.Melee;
             }
 
-            return generalProtection;
+            return ProtectionCategory.General;
         }
+    }
+
+    /// <summary>Protection categories used by CompProperties_EnclosedTurret.GetProtectionFor.</summary>
+    public enum ProtectionCategory
+    {
+        General,
+        Custom,
+        Flame,
+        Explosive,
+        Bullet,
+        Melee,
     }
 
     /// <summary>

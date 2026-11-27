@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Icon, Pill } from './ui.jsx';
+import { openTopOverlay, parseVec3, rotateVecXZ } from '../openTopOverlay.js';
 
 const SUBFOLDER_ORDER = [
   'Autocannons',
@@ -26,21 +27,6 @@ function parseVec2(raw, fallback = [1, 1]) {
   return fallback;
 }
 
-/** Parse "(x, y, z)" or "x,y" into [x, y, z] */
-function parseVec3(raw, fallback = [0, 0, 0]) {
-  if (raw === null || raw === undefined || raw === '') return fallback;
-  const s = String(raw).replace(/[()]/g, '').trim();
-  if (!s) return fallback;
-  const parts = s.split(',').map((p) => parseFloat(p.trim()));
-  if (parts.length === 2 && Number.isFinite(parts[0]) && Number.isFinite(parts[1])) {
-    return [parts[0], 0, parts[1]];
-  }
-  if (parts.length >= 3 && Number.isFinite(parts[0]) && Number.isFinite(parts[1]) && Number.isFinite(parts[2])) {
-    return [parts[0], parts[1], parts[2]];
-  }
-  return fallback;
-}
-
 /** Parse "(r,g,b,a)" or "(r,g,b)" where channels are 0..1 (or 0..255) into { r, g, b, a } in 0..1 */
 function parseColorRGBA(raw, fallback = { r: 1, g: 0.75, b: 0.35, a: 1 }) {
   if (!raw) return fallback;
@@ -53,21 +39,6 @@ function parseColorRGBA(raw, fallback = { r: 1, g: 0.75, b: 0.35, a: 1 }) {
     g: parts[1] * scale,
     b: parts[2] * scale,
     a: Number.isFinite(parts[3]) ? (parts[3] > 1 ? parts[3] / 255 : parts[3]) : 1,
-  };
-}
-
-/**
- * RimWorld clockwise rotation around Y axis (0° = North/+Z, 90° = East/+X):
- * x' = x*cos(θ) + z*sin(θ)
- * z' = -x*sin(θ) + z*cos(θ)
- */
-function rotateVecXZ(x, z, angleDeg) {
-  const rad = (angleDeg * Math.PI) / 180;
-  const cos = Math.cos(rad);
-  const sin = Math.sin(rad);
-  return {
-    x: x * cos + z * sin,
-    z: -x * sin + z * cos,
   };
 }
 
@@ -164,6 +135,8 @@ const DEFAULT_LAYERS = {
   muzzleFlash: true,
   firingFlash: true,
   interactionCell: true,
+  seat: true,
+  shield: true,
   projectileSpawn: true,
   smokeMuzzle: true,
   smokeHeat: true,
@@ -1098,6 +1071,49 @@ export default function TextureInspector({ turrets, onEdit }) {
       );
     }
 
+    // 8b. Open-top seat & gun shield (CompProperties_EnclosedTurret.seatOffset / shield*), rotating with the top.
+    // Seat offset is relative to the turret DrawPos (world origin here). Canvas angle = compass angle - 90°.
+    const openTop = openTopOverlay(activeTurret, rotation);
+    if (openTop) {
+      const seatScreen = toScreen(openTop.seat.x, openTop.seat.z);
+      if (layers.shield && openTop.shield) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.85)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (openTop.shield.full) {
+          ctx.arc(seatScreen.x, seatScreen.y, tilePx, 0, Math.PI * 2);
+        } else {
+          const a1 = ((openTop.shield.fromDeg - 90) * Math.PI) / 180;
+          const a2 = ((openTop.shield.toDeg - 90) * Math.PI) / 180;
+          ctx.moveTo(seatScreen.x, seatScreen.y);
+          ctx.arc(seatScreen.x, seatScreen.y, tilePx, a1, a2, false);
+          ctx.closePath();
+        }
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = '11px sans-serif';
+        ctx.fillText(openTop.label, seatScreen.x + tilePx * 0.6, seatScreen.y + tilePx + 12);
+        ctx.restore();
+      }
+      if (layers.seat) {
+        ctx.save();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.25)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(seatScreen.x, seatScreen.y, tilePx * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#f59e0b';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.fillText('Seat', seatScreen.x + tilePx * 0.55, seatScreen.y - tilePx * 0.3);
+        ctx.restore();
+      }
+    }
+
     // 9. projectileSpawnOffset Marker (Rotates with turret head, per-barrel if multi-barrel)
     // Matches HarmonyPatches.Postfix_Verb_LaunchProjectileCE_IncrementBarrelCount:
     // forwardDir * projectileSpawnOffset + rightDir * ((barrelIndex - (N-1)/2) * barrelSpacing)
@@ -1577,6 +1593,36 @@ export default function TextureInspector({ turrets, onEdit }) {
                 />
                 <span className="tex-marker-swatch" style={{ color: '#16a34a' }}>
                   {markerGlyph} Interaction Cell
+                </span>
+              </label>
+
+              <label
+                className={`tex-check${!openTopOverlay(activeTurret, rotation) ? ' disabled' : ''}`}
+                title={`seatOffset: ${activeTurret.comps?.enclosed?.seatOffset || 'none'}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={layers.seat}
+                  disabled={!openTopOverlay(activeTurret, rotation)}
+                  onChange={() => toggleLayer('seat')}
+                />
+                <span className="tex-marker-swatch" style={{ color: '#f59e0b' }}>
+                  ● Gunner Seat
+                </span>
+              </label>
+
+              <label
+                className={`tex-check${!openTopOverlay(activeTurret, rotation)?.shield ? ' disabled' : ''}`}
+                title={`shieldArc: ${activeTurret.comps?.enclosed?.shieldArc ?? 'none'}°, shieldHeight: ${activeTurret.comps?.enclosed?.shieldHeight ?? '-'}, shieldArmor: ${activeTurret.comps?.enclosed?.shieldArmor ?? '-'}mm`}
+              >
+                <input
+                  type="checkbox"
+                  checked={layers.shield}
+                  disabled={!openTopOverlay(activeTurret, rotation)?.shield}
+                  onChange={() => toggleLayer('shield')}
+                />
+                <span className="tex-marker-swatch" style={{ color: '#f59e0b' }}>
+                  ◔ Gun Shield
                 </span>
               </label>
 

@@ -64,9 +64,32 @@ namespace AbsolutelyMoreCannons
             }
         }
 
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (Props.HasSeat)
+            {
+                OpenTopSeatUtility.Register(this);
+            }
+        }
+
+        // No PostDeSpawn override: the mod compiles against the 1.5 reference (PostDeSpawn(Map)) but runs on
+        // 1.7 (PostDeSpawn(Map, DestroyMode)), so an override would never be called. The seat registry prunes
+        // despawned turrets itself (see OpenTopSeatUtility.SeatedTurrets).
+
         public override void CompTick()
         {
             base.CompTick();
+
+            // Open-top seat: the gunner faces the barrel while seated.
+            if (Props.HasSeat)
+            {
+                Pawn gunner = OpenTopSeatUtility.SeatedGunner(this);
+                if (gunner != null)
+                {
+                    gunner.Rotation = Rot4.FromAngleFlat(OpenTopSeatUtility.TopAngle(Turret));
+                }
+            }
 
             if (!parent.IsHashIntervalTick(30)) return;
 

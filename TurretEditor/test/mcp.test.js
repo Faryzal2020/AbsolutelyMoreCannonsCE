@@ -154,14 +154,15 @@ test('MCP tool surface', async (t) => {
     assert.equal(fixture.read(FILE), pristine);
   });
 
-  await t.test('extract_defs refuses while an edit is pending', async () => {
+  await t.test('extract_defs keeps a pending edit by replaying it', async () => {
     const { isError, body } = await mcp.call('extract_defs');
-    assert.equal(isError, true);
-    assert.equal(body.pending, 1);
-    assert.match(body.error, /pending edits/);
+    assert.equal(isError, false);
+    assert.deepEqual(body.preserved, { turrets: 1, ammo: 0 });
+    assert.deepEqual(body.conflicts, []);
 
-    const row = mcp.db.get('SELECT max_hp FROM turrets WHERE def_name = ?', TURRET);
-    assert.equal(row.max_hp, 2500, 'the edit survived the refusal');
+    const row = mcp.db.get('SELECT max_hp, modified FROM turrets WHERE def_name = ?', TURRET);
+    assert.equal(row.max_hp, 2500, 'the edit survived re-extraction');
+    assert.equal(row.modified, 1);
   });
 
   await t.test('inject_xml_changes previews by default', async () => {

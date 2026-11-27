@@ -22,6 +22,10 @@ import {
 import { APP_ROOT } from '../paths.js';
 import { TOOLS, TOOL_BY_NAME } from './tools.js';
 import { fieldCatalogue } from './fieldPatch.js';
+import { syncIfStale } from '../services/syncService.js';
+
+/** Tools that never read extracted data, so they skip the disk re-sync. */
+const NO_SYNC = new Set(['get_field_catalogue', 'extract_defs']);
 
 const { version } = JSON.parse(fs.readFileSync(path.join(APP_ROOT, 'package.json'), 'utf8'));
 
@@ -75,7 +79,12 @@ export function createMcpServer({ db }) {
     if (invalid) return asResult({ ok: false, error: invalid }, true);
 
     try {
+      // The XML may have changed since the last call (hand edits, git, the web
+      // editor). Re-sync first so no tool works from stale values; pending edits
+      // are replayed, and the client is told what happened.
+      const diskSync = NO_SYNC.has(tool.name) ? null : syncIfStale(db);
       const payload = tool.handler(db, args);
+      if (diskSync && payload && typeof payload === 'object') payload.diskSync = diskSync;
       return asResult(payload, payload?.ok === false);
     } catch (err) {
       return asResult({ ok: false, error: err.message }, true);

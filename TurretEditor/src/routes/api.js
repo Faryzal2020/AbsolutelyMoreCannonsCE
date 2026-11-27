@@ -148,9 +148,10 @@ export default async function apiRoutes(fastify, { db }) {
   fastify.post('/api/rollback', async (request) => runRollback(db, {
     keepBackups: request.body?.keepBackups === true,
     dryRun: request.body?.dryRun === true,
+    force: request.body?.force === true,
   }));
 
-  fastify.get('/api/backups', async () => ({ ok: true, backups: listBackups() }));
+  fastify.get('/api/backups', async () => ({ ok: true, backups: listBackups(db) }));
 
   // --- reporting --------------------------------------------------------
   fastify.get('/api/metrics', async () => ({ ok: true, ...metrics(db) }));

@@ -137,6 +137,10 @@ test('editing across every field family', async (t) => {
           explosiveProtection: 0.2,
           temperatureProtection: 0.0,
           hidePawnGraphics: false,
+          seatOffset: '(0,0,-0.9)',
+          shieldArc: 120,
+          shieldHeight: 0.85,
+          shieldArmor: 6,
         },
       },
     });
@@ -147,12 +151,27 @@ test('editing across every field family', async (t) => {
     assert.ok(after.includes('CompProperties_EnclosedTurret'));
     assert.ok(after.includes('<bulletProtection>0.8</bulletProtection>'));
     assert.ok(after.includes('<hidePawnGraphics>false</hidePawnGraphics>'));
+    assert.ok(after.includes('<seatOffset>(0,0,-0.9)</seatOffset>'));
+    assert.ok(after.includes('<shieldArc>120</shieldArc>'));
 
     await app.post('/api/extract');
     const { body: reread } = await app.get(`/api/turrets/${VULCAN}`);
     assert.equal(reread.turret.comps.enclosed.enabled, true);
     assert.equal(reread.turret.comps.enclosed.bulletProtection, 0.8);
     assert.equal(reread.turret.comps.enclosed.hidePawnGraphics, false);
+    assert.equal(reread.turret.comps.enclosed.seatOffset, '(0,0,-0.9)');
+    assert.equal(reread.turret.comps.enclosed.shieldArc, 120);
+    assert.equal(reread.turret.comps.enclosed.shieldHeight, 0.85);
+    assert.equal(reread.turret.comps.enclosed.shieldArmor, 6);
+
+    // Clearing an open-top field removes the tag instead of writing an empty one RimWorld cannot parse.
+    await app.put(`/api/turrets/${VULCAN}`, { comps: { enclosed: { seatOffset: '', shieldArc: null } } });
+    const { body: cleared } = await app.post('/api/inject', { defNames: [VULCAN] });
+    assert.equal(cleared.skippedCount, 0, JSON.stringify(cleared.skipped));
+    const afterClear = fixture.read(VULCAN_FILE);
+    assert.ok(!afterClear.includes('<seatOffset>'), 'seatOffset tag removed');
+    assert.ok(!afterClear.includes('<seatOffset></seatOffset>'));
+    assert.ok(!afterClear.includes('<shieldArc>'), 'shieldArc tag removed');
   });
 
   await t.test('a dry run reports changes without touching disk', async () => {

@@ -6,6 +6,9 @@ const TURRET = 'Turret_127mmMark16_Base';
 const WEAPON = 'Turret_127mmMark16_Weapon';
 const FILE = 'Common/Defs/ThingDefs_Buildings/Naval Guns/127mmMark16.xml';
 
+/** Read the live value instead of hard-coding balance numbers that keep changing. */
+const xmlNumber = (xml, tag) => Number(xml.match(new RegExp(`<${tag}>([^<]+)</${tag}>`))[1]);
+
 /**
  * The full acceptance flow, run against a copy of the real mod XML:
  * extract -> edit -> inject -> verify on disk -> rollback -> verify restored.
@@ -38,25 +41,25 @@ test('XML -> SQLite -> XML round trip', async (t) => {
     assert.ok(turret, `${TURRET} was extracted`);
 
     // Own statBases values.
-    assert.equal(turret.stats.maxHitPoints, 1792);
-    assert.equal(turret.stats.workToBuild, 44000);
-    assert.equal(turret.stats.cooldownTime, 3.3);
+    assert.equal(turret.stats.maxHitPoints, xmlNumber(pristine, 'MaxHitPoints'));
+    assert.equal(turret.stats.workToBuild, xmlNumber(pristine, 'WorkToBuild'));
+    assert.equal(turret.stats.cooldownTime, xmlNumber(pristine, 'turretBurstCooldownTime'));
 
     // Linked weapon def.
     assert.equal(turret.weaponDefName, WEAPON);
-    assert.equal(turret.ballistics.sightsEfficiency, 4);
-    assert.equal(turret.ballistics.maxRange, 23700);
-    assert.equal(turret.ammo.magazineSize, 50);
+    assert.equal(turret.ballistics.sightsEfficiency, xmlNumber(pristine, 'SightsEfficiency'));
+    assert.equal(turret.ballistics.maxRange, xmlNumber(pristine, 'range'));
+    assert.equal(turret.ammo.magazineSize, xmlNumber(pristine, 'magazineSize'));
 
     // Comps and mod extensions.
     assert.equal(turret.comps.isPowered, true);
-    assert.equal(turret.comps.powerWatts, 500);
+    assert.equal(turret.comps.powerWatts, xmlNumber(pristine, 'basePowerConsumption'));
     assert.equal(turret.comps.hasModeSwap, true);
     assert.equal(turret.comps.swapAltDef, 'Turret_127mmMark16_indirect_Base');
     assert.equal(turret.smoker.enabled, true);
-    assert.equal(turret.smoker.shockwave.radius, 5);
+    assert.equal(turret.smoker.shockwave.radius, xmlNumber(pristine, 'shockwaveRadius'));
     assert.equal(turret.barrel.enabled, true);
-    assert.equal(turret.barrel.recoil.recoilDuration, 15);
+    assert.equal(turret.barrel.recoil.recoilDuration, xmlNumber(pristine, 'recoilDuration'));
     assert.equal(turret.modified, false);
 
     // Inheritance from AMCTurretBase / AMCTurretMannedBase resolved.

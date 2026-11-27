@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Console test runner for the Unity-free OpenTopGeometry math used by the mod.
+       Run: dotnet run, project Source/OpenTopGeometry.Tests (prints ALL PASS, exit 0) -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="../Absolutely More Cannons - CE Version/OpenTopGeometry.cs" Link="OpenTopGeometry.cs" />
+  </ItemGroup>
+</Project>

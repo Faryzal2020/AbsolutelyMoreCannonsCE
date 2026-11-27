@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { makeFixture, startMcp, countOccurrences } from './helpers.js';
@@ -13,6 +14,11 @@ const OTOMELARA = 'Turret_76mmOtomelaraC_Base';
  */
 test('MCP building-side comps and identity fields', async (t) => {
   const fixture = makeFixture();
+  // The live mod has since given this pair a NonSnapTurretExtension; strip it
+  // from the throwaway copy so adding one from scratch is still exercised.
+  const stripped = fixture.read(FILE).replace(
+    /[ \t]*<li Class="CombatExtended\.NonSnapTurretExtension">[\s\S]*?<\/li>[^\S\n]*\n/g, '');
+  fs.writeFileSync(fixture.file(FILE), stripped);
   const mcp = await startMcp();
   t.after(async () => { await mcp.close(); fixture.cleanup(); });
 

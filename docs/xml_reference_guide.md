@@ -17,6 +17,7 @@ This document serves as the complete technical specification and XML parameter r
    - [TurretTrackingExtension](#turrettrackingextension)
 2. [ThingComponents & CompProperties (`<comps>`)](#2-thingcomponents--compproperties-comps)
    - [CompProperties_AccuracyOverride](#compproperties_accuracyoverride)
+   - [CompProperties_EnclosedTurret (open-top seat & gun shield)](#compproperties_enclosedturret-open-top-seat--gun-shield)
    - [CompProperties_TurretBarrel](#compproperties_turretbarrel)
    - [CompProperties_TurretFCS](#compproperties_turretfcs)
    - [CompProperties_TurretModeSwap](#compproperties_turretmodeswap)
@@ -112,6 +113,7 @@ DefModExtensions are custom data structures attached to RimWorld `Def`s inside t
 | `<underBarrelGraphic>` | `GraphicData` | `null` | Optional static graphic rendered underneath the barrel but above the turret base (rotates with turret head). |
 | `<barrelOffset>` | `Vector3` | `(0, 0, 0)` | Pivot vector offset `(X, Y, Z)` from the turret base center to the barrel base. |
 | `<barrelDrawSize>` | `float` | `1.0` | Visual scale multiplier for barrel rendering. |
+| `<barrelHeight>` | `float` | `-1` (CE default) | Height of the barrel **pivot** (trunnion) above ground, CE vertical cells (~m). Same value for a gun's direct- and indirect-fire variants. Projectiles spawn at this height, `projectileSpawnOffset` tiles forward (not rotated by pitch); CE's firing solution is computed from that spawn point. Open-top gunners' heads sit at this height. |
 | `<drawLayerOffset>` | `float` | `0.05` | Altitude layer offset for ordering relative to base and top. |
 | `<drawOnTop>` | `bool` | `false` | When `true`, renders the barrel graphic after and on top of the turret top graphic. |
 | `<drawWhenDestroyed>` | `bool` | `true` | When `true`, renders barrel graphic even when turret building is destroyed. |
@@ -234,6 +236,23 @@ ThingComponents are active runtime components defined inside the `<comps>` list 
 | `<swayReduction>` | `float` | `0.0` | Fractional sway reduction (`0.2` = 20% reduction). |
 | `<recoilReduction>` | `float` | `0.0` | Fractional recoil reduction (`0.3` = 30% reduction). |
 | `<spreadReduction>` | `float` | `0.0` | Fractional spread reduction (`0.25` = 25% reduction). |
+
+---
+
+### `CompProperties_EnclosedTurret` (open-top seat & gun shield)
+* **Comp Class**: `AbsolutelyMoreCannons.CompEnclosedTurret`
+* **Target Def**: `ThingDef` (manned turrets)
+* **Description**: Besides the flat per-damage-type protection of an enclosed turret, an open-mount gun can seat its gunner on
+  the rotating turret top behind a gun shield that physically intercepts CE projectiles. See
+  `Common/Defs/ThingDefs_Buildings/Turret_XML_Documentation.md` (section 6) for how shots are resolved.
+
+#### Open-top parameters:
+| Tag | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `<seatOffset>` | `Vector3` | unset | Seat in cells, turret-top frame (`+Z` along the barrel, `+X` barrel's right). Unset = fully enclosed. Needs `hidePawnGraphics` false. |
+| `<shieldArc>` | `float` | `0` | Shield width in degrees, centred on the barrel. `360` = all round. |
+| `<shieldHeight>` | `float` | `0` | Shield top, CE height units above ground (same as `barrelHeight`). |
+| `<shieldArmor>` | `float` | `0` | Shield sharp armour (mm RHA) vs the round's sharp penetration. |
 
 ---
 

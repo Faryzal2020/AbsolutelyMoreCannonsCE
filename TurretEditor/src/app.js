@@ -21,6 +21,10 @@ export async function buildApp({ logger = false, dbFile = DB_PATH } = {}) {
       if (!parsed.muzzleFlash || parsed.graphics?.drawSize === undefined) {
         const { runExtraction } = await import('./services/extractService.js');
         runExtraction(db);
+      } else {
+        // Pick up XML edited while the editor was closed, keeping pending edits.
+        const { syncIfStale } = await import('./services/syncService.js');
+        syncIfStale(db);
       }
     }
   } catch {

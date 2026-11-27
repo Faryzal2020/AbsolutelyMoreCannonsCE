@@ -178,6 +178,7 @@ function blankTurret() {
         enabled: false, bulletProtection: null, explosiveProtection: null, flameProtection: null,
         meleeProtection: null, temperatureProtection: null, generalProtection: null,
         hidePawnGraphics: true, centerPawnPosition: true,
+        seatOffset: null, shieldArc: null, shieldHeight: null, shieldArmor: null,
       },
     },
     ballistics: {
@@ -188,8 +189,15 @@ function blankTurret() {
       soundCast: '', soundCastTail: '', circularError: null, indirectFirePenalty: null,
       requireLineOfSight: false, stopBurstWithoutLos: false, ignorePartialLoSBlocker: false,
       forceNormalTimeSpeed: false, hasStandardCommand: false, canTargetLocations: false,
+      weaponMass: null,
     },
     ammo: { ammoSet: '', magazineSize: null, reloadTime: null },
+    cookOff: {
+      enabled: false, maxExplosiveRadius: null, maxDamage: null, minPenForCookOff: null,
+      highPenForCookOff: null, hitPointsPercentThreshold: null, hasBaseAmmoRack: false,
+      chanceToStartFire: null, cookOffChanceMultiplier: null, destroyTurretOnCookOff: true,
+    },
+    lightPenalty: { enabled: false, pitchDarkGlowThreshold: null, litPenaltyMultiplier: null, darkPenaltyMultiplier: null },
     clamping: { enabled: false, maxVerticalDeviation: null, maxRotationDeviation: null },
     gunDraw: { enabled: false, casingOffset: '', casingAngleOffset: null },
     fireModes: {
@@ -215,6 +223,7 @@ function blankTurret() {
       barrelAmount: null, barrelSpacing: null, sequentialFiring: false,
       selectableBursts: { enabled: false, counts: '' },
       maxRPMs: '',
+      barrelHeight: null, turretHeadWeight: null, actuatorStrength: null, controlMode: '',
       graphic: { texPath: '', graphicClass: '', drawSize: '' },
       underGraphic: { texPath: '', graphicClass: '', drawSize: '' },
       recoil: { enabled: false, maxDistance: null, recoilDuration: null, returnDuration: null, useRecoilCurve: false, useReturnCurve: false, affectsRotation: false },
@@ -364,6 +373,7 @@ function parseOne(entry, index, hasDef) {
   t.nonSnap.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'NonSnapTurretExtension' }]);
   t.spray.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretSprayDisciplineExtension' }]);
   t.smoker.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretSmoker' }]);
+  t.cookOff.enabled = hasElement(merged, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretAmmoCookOff' }]);
 
   // Weapon-side comps and extensions live on the gun def, not the building.
   if (mergedWeapon) {
@@ -372,6 +382,7 @@ function parseOne(entry, index, hasDef) {
     t.fireModes.enabled = hasElement(mergedWeapon, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_FireModes' }]);
     t.charges.enabled = hasElement(mergedWeapon, [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_Charges' }]);
     t.chargeBoost.enabled = hasElement(mergedWeapon, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretChargeBoostExtension' }]);
+    t.lightPenalty.enabled = hasElement(mergedWeapon, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretLightPenaltyExtension' }]);
   }
   t.barrel.enabled = hasElement(merged, [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretBarrelExtension' }]);
   t.barrel.selectableBursts.enabled = hasElement(merged, [

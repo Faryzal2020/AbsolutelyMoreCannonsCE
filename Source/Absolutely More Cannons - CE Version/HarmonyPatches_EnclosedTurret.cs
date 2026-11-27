@@ -297,6 +297,8 @@ namespace AbsolutelyMoreCannons
         {
             if (__instance != null && __instance.IsManningEnclosedTurret(out Building turret, out CompEnclosedTurret comp) && (comp.Props.centerPawnPosition || comp.Props.centerPawnName))
             {
+                // Open-top seat: defer to the Pawn_DrawTracker.DrawPos patch (HarmonyPatches_OpenTopTurret).
+                if (comp.Props.HasSeat) return true;
                 __result = turret.DrawPos;
                 return false;
             }
@@ -309,6 +311,17 @@ namespace AbsolutelyMoreCannons
             absorbed = false;
             if (__instance != null && __instance.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp))
             {
+                // Open-top gun shield: projectile hits (bullets, fragments, shield penetrations) were already
+                // resolved physically by OpenTopShield, so no flat reduction. Blast damage still uses explosiveProtection.
+                if (comp.Props.HasShield)
+                {
+                    ProtectionCategory cat = comp.Props.GetCategoryFor(dinfo.Def, out _);
+                    if (cat == ProtectionCategory.Bullet || (cat == ProtectionCategory.Explosive && !OpenTopContext.InBlast))
+                    {
+                        return true;
+                    }
+                }
+
                 float protection = comp.Props.GetProtectionFor(dinfo.Def);
 
                 if (protection >= 1.0f)
@@ -379,16 +392,27 @@ namespace AbsolutelyMoreCannons
         // 6. Suppression Immunity Postfix & Prefix
         public static void Postfix_CompSuppressable_CanReactToSuppression(ThingComp __instance, ref bool __result)
         {
-            if (__result && __instance.parent is Pawn pawn && pawn.IsManningEnclosedTurret(out _, out _))
+            if (__result && __instance.parent is Pawn pawn && pawn.IsManningEnclosedTurret(out _, out CompEnclosedTurret comp))
             {
+                // Open-top seat: suppression is filtered by direction in AddSuppression instead.
+                if (comp.Props.HasSeat) return;
                 __result = false;
             }
         }
 
-        public static bool Prefix_CompSuppressable_AddSuppression(ThingComp __instance)
+        public static bool Prefix_CompSuppressable_AddSuppression(ThingComp __instance, IntVec3 origin)
         {
-            if (__instance.parent is Pawn pawn && pawn.IsManningEnclosedTurret(out _, out _))
+            if (__instance.parent is Pawn pawn && pawn.IsManningEnclosedTurret(out Building turret, out CompEnclosedTurret comp))
             {
+                if (comp.Props.HasSeat)
+                {
+                    // Open-top seat: immune only to fire coming from inside the shield arc (360 = always).
+                    Vector3 seat = OpenTopSeatUtility.SeatWorldPos(turret, comp);
+                    Vector3 from = origin.ToVector3Shifted();
+                    bool shielded = OpenTopGeometry.InShieldArc(seat.x - from.x, seat.z - from.z,
+                        OpenTopSeatUtility.TopAngle(turret), comp.Props.shieldArc);
+                    return !shielded;
+                }
                 return false; // Skip AddSuppression
             }
             return true;

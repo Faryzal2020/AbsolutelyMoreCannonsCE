@@ -11,6 +11,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { getDb, closeDb } from './src/db.js';
 import { runExtraction } from './src/services/extractService.js';
 import { extractionState } from './src/mcp/tools.js';
+import { syncIfStale } from './src/services/syncService.js';
 import { createMcpServer } from './src/mcp/server.js';
 import { MOD_ROOT, DB_PATH } from './src/paths.js';
 
@@ -32,6 +33,13 @@ async function main() {
     log(`  extracted ${result.counts.turrets} turrets, ${result.counts.ammo} ammo in ${result.durationMs}ms`);
   } else {
     log(`  ${state.turrets} turrets, ${state.ammo} ammo, ${state.pending} with pending edits`);
+    // Pick up XML changed while the server was not running; pending edits are replayed.
+    const sync = syncIfStale(db);
+    if (sync) {
+      const n = sync.files.changed.length + sync.files.added.length + sync.files.removed.length;
+      log(`  re-synced from disk (${sync.reason}${n ? `, ${n} file(s)` : ''}); `
+        + `${sync.preserved.turrets + sync.preserved.ammo} pending edit(s) kept, ${sync.conflicts.length} conflict(s)`);
+    }
   }
 
   await createMcpServer({ db }).connect(new StdioServerTransport());

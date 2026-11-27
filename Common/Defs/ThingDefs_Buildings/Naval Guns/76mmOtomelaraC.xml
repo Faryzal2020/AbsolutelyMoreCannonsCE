@@ -401,7 +401,7 @@
 				<minAngleWeight>0.1</minAngleWeight>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<barrelHeight>2.3</barrelHeight>
+				<barrelHeight>2.0</barrelHeight>
 				<selectableBurstCounts>
 					<li>1</li>
 					<li>3</li>

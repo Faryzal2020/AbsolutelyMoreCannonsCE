@@ -328,7 +328,7 @@
 		</researchPrerequisites>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-				<barrelHeight>2.5</barrelHeight>
+				<barrelHeight>2.1</barrelHeight>
 				<barrelGraphic>
 				<texPath>Things/Building/U152mmMsta_Barrel_Indirect</texPath>
 				<graphicClass>Graphic_Single</graphicClass>

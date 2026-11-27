@@ -132,8 +132,8 @@ export function openApiSpec() {
         post: {
           tags: ['pipeline'],
           summary: 'Restore every .xml.bak over its .xml and re-extract',
-          description: 'Restores every .xml.bak under Common/Defs, including backups created by other tooling. Use dryRun, or GET /api/backups, to preview first.',
-          requestBody: json({ type: 'object', properties: { keepBackups: { type: 'boolean' }, dryRun: { type: 'boolean' } } }),
+          description: 'Restores the .xml.bak files this editor wrote whose target is unchanged since its last write. Untracked or stale backups (which would revert newer work) are skipped unless force is true. Use dryRun, or GET /api/backups, to preview first.',
+          requestBody: json({ type: 'object', properties: { keepBackups: { type: 'boolean' }, dryRun: { type: 'boolean' }, force: { type: 'boolean' } } }),
           responses: { 200: ok('Rollback report') },
         },
       },

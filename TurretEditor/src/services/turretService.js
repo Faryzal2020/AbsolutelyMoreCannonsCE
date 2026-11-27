@@ -126,7 +126,7 @@ export function previewXml(db, defName) {
   if (!turret) return null;
 
   const disk = diskSnapshot();
-  const changes = diffTurret(turret, disk.get(defName));
+  const changes = diffTurret(turret, disk.get(defName), getOriginal(db, defName));
 
   const targets = [{ role: 'building', defName: turret.defName, filePath: turret.filePath }];
   if (turret.weaponDefName && turret.weaponFilePath) {

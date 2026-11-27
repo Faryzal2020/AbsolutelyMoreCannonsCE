@@ -5,13 +5,16 @@
  * REST API use, so there is exactly one implementation of the XML pipeline.
  * Schemas are hand-written JSON Schema, matching the style of routes/openapi.js.
  *
- * Two hazards shape the design:
- *   - `runExtraction` wipes the extracted tables, so anything that triggers it
- *     is gated behind an explicit flag when edits are pending.
+ * Three hazards shape the design:
+ *   - The database is a snapshot of the XML. server.js re-syncs it before every
+ *     call (syncIfStale) so no tool reads or writes from stale values.
+ *   - `runExtraction` wipes the extracted tables, so every re-read goes through
+ *     `reextractPreservingEdits`, and discarding edits needs an explicit flag.
  *   - `runInjection` writes to the user's XML files, so it previews by default.
  */
 
 import { runExtraction } from '../services/extractService.js';
+import { reextractPreservingEdits } from '../services/syncService.js';
 import { computeDiffs } from '../services/diffService.js';
 import { runInjection, runRollback, listBackups } from '../services/injectService.js';
 import {
@@ -298,54 +301,53 @@ export const TOOLS = [
       },
     },
     handler: (db, { defNames = null, dryRun = true }) => {
+      if (Array.isArray(defNames) && !defNames.length) return fail('defNames is empty; omit it to inject every pending edit.');
       const result = runInjection(db, { defNames, dryRun });
       return injectSummary(result, ammoDefNames(db));
     },
   },
   {
     name: 'list_backups',
-    description: 'Every .xml.bak under Common/Defs, with the file it would restore.',
+    description: 'Every .xml.bak under Common/Defs, with the file it would restore and whether '
+      + 'rollback_xml considers it safe to restore (restorable / reason).',
     inputSchema: { type: 'object', properties: {} },
-    handler: () => ({ ok: true, backups: listBackups() }),
+    handler: (db) => ({ ok: true, backups: listBackups(db) }),
   },
   {
     name: 'rollback_xml',
     description:
-      'Restore EVERY .xml.bak under Common/Defs over its .xml file. This is global and '
-      + 'all-or-nothing — it cannot roll back a single def — and it deletes the backups '
-      + 'unless keepBackups is true. The database is re-extracted afterwards.',
+      'Restore .xml.bak files over their .xml. Works per file, not per def. Only backups '
+      + 'written by inject_xml_changes whose file has not changed since are restored; '
+      + 'untracked or stale backups (restoring them would revert newer work such as hand '
+      + 'edits or commits) are listed under "skipped" unless force is true. Deletes the '
+      + 'restored backups unless keepBackups is true. Pending edits are preserved.',
     inputSchema: {
       type: 'object',
       properties: {
         keepBackups: bool('Leave the .xml.bak files in place after restoring.'),
         dryRun: bool('List what would be restored without writing.', true),
+        force: bool('Also restore untracked/stale backups. Reverts any later changes to those files.'),
       },
     },
-    handler: (db, { keepBackups = false, dryRun = true }) =>
-      runRollback(db, { keepBackups, dryRun }),
+    handler: (db, { keepBackups = false, dryRun = true, force = false }) =>
+      runRollback(db, { keepBackups, dryRun, force }),
   },
 
   // --- extraction -------------------------------------------------------
   {
     name: 'extract_defs',
     description:
-      'Re-read every XML file into the database. WARNING: this wipes the extracted tables, '
-      + 'so any pending edit that has not been injected is lost. Refuses while edits are '
-      + 'pending unless force is true.',
+      'Re-read every XML file into the database. Pending edits are kept: they are replayed '
+      + 'on top of the fresh values, and any key that also changed on disk is reported under '
+      + '"conflicts" (the pending edit wins). Pass force=true to discard every pending edit '
+      + 'instead. Rarely needed: every tool call already re-syncs when the XML changed.',
     inputSchema: {
       type: 'object',
-      properties: { force: bool('Discard pending edits and re-extract anyway.') },
+      properties: { force: bool('Discard pending edits and re-extract from disk.') },
     },
     handler: (db, { force = false }) => {
-      const pending = pendingEdits(db);
-      if (pending && !force) {
-        return fail(
-          `${pending} record(s) have pending edits that re-extraction would discard. `
-          + 'Inject or revert them first, or call again with force=true.',
-          { pending },
-        );
-      }
-      return runExtraction(db);
+      if (force) return { ...runExtraction(db), discarded: true };
+      return reextractPreservingEdits(db);
     },
   },
 

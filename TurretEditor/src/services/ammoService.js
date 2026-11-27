@@ -92,26 +92,36 @@ export function updateAmmo(db, defName, patch) {
     if (!current.indirect.shellingDamage) current.indirect.shellingDamage = 0.1;
   }
 
-  current.modified = true;
-  upsertAmmoRecord(db, current, { modified: true, originalJson: current.originalJson });
+  // The extracted original must survive edits, or revert and the three-way
+  // diff would both compare against the edited record.
+  const row = db.get('SELECT file_id, original_json FROM ammo WHERE def_name = ?', defName);
+  delete current.modified;
+  const modified = JSON.stringify(current) !== JSON.stringify(stripModified(JSON.parse(row.original_json)));
+  upsertAmmoRecord(db, current, { fileId: row.file_id, modified, originalJson: row.original_json });
+  current.modified = modified;
   return current;
 }
 
+function stripModified(item) {
+  const { modified, ...rest } = item;
+  return rest;
+}
+
 export function revertAmmo(db, defName) {
-  const row = db.get('SELECT original_json FROM ammo WHERE def_name = ?', defName);
+  const row = db.get('SELECT file_id, original_json FROM ammo WHERE def_name = ?', defName);
   if (!row) return null;
   const original = JSON.parse(row.original_json);
   original.modified = false;
-  upsertAmmoRecord(db, original, { modified: false, originalJson: row.original_json });
+  upsertAmmoRecord(db, original, { fileId: row.file_id, modified: false, originalJson: row.original_json });
   return original;
 }
 
 export function revertAllAmmo(db) {
-  const rows = db.all('SELECT def_name, original_json FROM ammo WHERE modified = 1');
+  const rows = db.all('SELECT def_name, file_id, original_json FROM ammo WHERE modified = 1');
   for (const r of rows) {
     const original = JSON.parse(r.original_json);
     original.modified = false;
-    upsertAmmoRecord(db, original, { modified: false, originalJson: r.original_json });
+    upsertAmmoRecord(db, original, { fileId: r.file_id, modified: false, originalJson: r.original_json });
   }
   return rows.length;
 }

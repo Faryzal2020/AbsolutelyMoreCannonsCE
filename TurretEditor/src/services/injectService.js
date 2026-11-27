@@ -5,18 +5,60 @@ import { FIELD_BY_KEY, TOGGLE_BY_KEY, serialise } from '../xml/fieldMap.js';
 import { AMMO_FIELD_BY_KEY } from '../xml/fieldMapAmmo.js';
 import {
   setValue, setListValue, setCostList, addComponent, removeComponent,
-  SKIP_NO_CHANGE,
+  SKIP_NO_CHANGE, removeValue,
 } from '../xml/editor.js';
+import { getMeta, setMeta } from '../db.js';
+import { checksum } from '../xml/defIndex.js';
 import { computeDiffs } from './diffService.js';
-import { runExtraction } from './extractService.js';
+import { reextractPreservingEdits } from './syncService.js';
 
-/** Copy file -> file.xml.bak, but never overwrite an existing backup: the
- *  first one holds the pristine original that rollback must restore. */
-function ensureBackup(absPath) {
+/*
+ * Backup ledger. Every .xml.bak this tool writes is recorded in `meta` with the
+ * checksum of the content the tool last wrote over its target. That checksum
+ * is what makes a backup trustworthy:
+ *
+ *   target still matches it  -> nobody touched the file since our last write,
+ *                               so the backup is the pristine pre-session file
+ *                               and rollback may restore it.
+ *   target does not match    -> the file moved on (hand edit, git pull, an
+ *                               older backup left behind by other tooling),
+ *                               so restoring the backup would silently revert
+ *                               that newer work.
+ */
+const LEDGER_KEY = 'backup_ledger';
+
+function readLedger(db) {
+  try { return JSON.parse(getMeta(db, LEDGER_KEY) || '{}'); } catch { return {}; }
+}
+function writeLedger(db, ledger) {
+  setMeta(db, LEDGER_KEY, JSON.stringify(ledger));
+}
+
+/** Whether a backup is safe to restore, and why not when it isn't. */
+function backupStatus(ledger, bakRel, targetAbs) {
+  const entry = ledger[bakRel];
+  if (!entry) return { trusted: false, reason: 'untracked: not written by this editor database' };
+  if (!fs.existsSync(targetAbs)) return { trusted: false, reason: 'target file missing' };
+  if (checksum(fs.readFileSync(targetAbs, 'utf8')) !== entry.writtenChecksum) {
+    return { trusted: false, reason: 'target changed since the editor last wrote it' };
+  }
+  return { trusted: true, reason: null };
+}
+
+/**
+ * Make sure file.xml.bak holds the state from before this editing session.
+ * An existing backup is kept only while it is still trusted; a stale or
+ * untracked one is refreshed from the current file, which is the real
+ * pre-injection state.
+ */
+function ensureBackup(ledger, absPath) {
   const bak = `${absPath}.bak`;
-  if (fs.existsSync(bak)) return { created: false, path: rel(bak) };
+  const bakRel = rel(bak);
+  const exists = fs.existsSync(bak);
+  if (exists && backupStatus(ledger, bakRel, absPath).trusted) return { created: false, path: bakRel };
   fs.copyFileSync(absPath, bak);
-  return { created: true, path: rel(bak) };
+  ledger[bakRel] = { createdAt: new Date().toISOString(), writtenChecksum: null };
+  return { created: !exists, refreshed: exists, path: bakRel };
 }
 
 /** Apply one change descriptor to an in-memory file body. */
@@ -41,6 +83,10 @@ export function applyChange(content, change) {
         ? change.to
         : String(change.to ?? '').split(',').map((s) => s.trim()).filter(Boolean);
       return setListValue(content, change.defName, field.path, items);
+    }
+    // Optional tags whose empty value RimWorld cannot parse (e.g. a Vector3) are removed instead of emptied.
+    if (field.removeWhenEmpty && (change.to === null || change.to === undefined || String(change.to).trim() === '')) {
+      return removeValue(content, change.defName, field.path);
     }
     const value = serialise(field.type, change.to);
     return setValue(content, change.defName, field.path, value);
@@ -70,7 +116,9 @@ export function runInjection(db, { defNames = null, dryRun = false } = {}) {
   const applied = [];
   const skipped = [];
   const backups = [];
+  const refreshedBackups = [];
   const touchedFiles = [];
+  const ledger = readLedger(db);
 
   for (const [filePath, changes] of byFile) {
     const absPath = abs(filePath);
@@ -99,9 +147,11 @@ export function runInjection(db, { defNames = null, dryRun = false } = {}) {
     }
 
     if (!dryRun) {
-      const bak = ensureBackup(absPath);
+      const bak = ensureBackup(ledger, absPath);
       if (bak.created) backups.push(bak.path);
+      if (bak.refreshed) refreshedBackups.push(bak.path);
       fs.writeFileSync(absPath, content, 'utf8');
+      ledger[bak.path].writtenChecksum = checksum(content);
     }
     touchedFiles.push(filePath);
     applied.push(...localApplied);
@@ -109,8 +159,10 @@ export function runInjection(db, { defNames = null, dryRun = false } = {}) {
 
   let reExtract = null;
   if (!dryRun && touchedFiles.length) {
+    writeLedger(db, ledger);
     // Re-ingest so data_json / original_json agree with what is now on disk.
-    reExtract = runExtraction(db);
+    // Edits outside a `defNames` filter are still pending and must survive.
+    reExtract = reextractPreservingEdits(db);
   }
 
   return {
@@ -120,6 +172,7 @@ export function runInjection(db, { defNames = null, dryRun = false } = {}) {
     filesWritten: touchedFiles.length,
     files: touchedFiles,
     backups,
+    refreshedBackups,
     appliedCount: applied.length,
     skippedCount: skipped.length,
     applied: applied.map(({ defName, key, label, from, to, xmlPath, filePath }) =>
@@ -127,6 +180,7 @@ export function runInjection(db, { defNames = null, dryRun = false } = {}) {
     skipped: skipped.map(({ defName, key, label, reason, xmlPath, filePath }) =>
       ({ defName, key, label, reason, xmlPath, filePath })),
     reExtract: reExtract && reExtract.counts,
+    stillPending: reExtract ? reExtract.preserved : null,
   };
 }
 
@@ -142,35 +196,62 @@ function findBackups(dir) {
 }
 
 /**
- * Restore every *.xml.bak back over its *.xml and drop the backup.
- * @param {{keepBackups?:boolean}} options
+ * Restore *.xml.bak files over their *.xml.
+ *
+ * Only backups the editor itself wrote, whose target has not changed since,
+ * are restored. Anything else would revert work done after the backup was
+ * taken, so it is reported under `skipped` unless `force` is set.
+ * @param {{keepBackups?:boolean, dryRun?:boolean, force?:boolean}} options
  */
-export function runRollback(db, { keepBackups = false, dryRun = false } = {}) {
+export function runRollback(db, { keepBackups = false, dryRun = false, force = false } = {}) {
+  const ledger = readLedger(db);
   const restored = [];
+  const skipped = [];
   for (const bak of findBackups(DEFS_DIR)) {
     const target = bak.slice(0, -'.bak'.length);
+    const bakRel = rel(bak);
+    const status = backupStatus(ledger, bakRel, target);
+    if (!status.trusted && !force) {
+      skipped.push({ file: rel(target), backup: bakRel, reason: status.reason });
+      continue;
+    }
     if (!dryRun) {
       fs.copyFileSync(bak, target);
-      if (!keepBackups) fs.rmSync(bak);
+      if (keepBackups) {
+        ledger[bakRel] = { ...(ledger[bakRel] || { createdAt: new Date().toISOString() }),
+          writtenChecksum: checksum(fs.readFileSync(target, 'utf8')) };
+      } else {
+        fs.rmSync(bak);
+        delete ledger[bakRel];
+      }
     }
     restored.push(rel(target));
   }
 
-  const reExtract = !dryRun && restored.length ? runExtraction(db) : null;
+  if (!dryRun && restored.length) writeLedger(db, ledger);
+  const reExtract = !dryRun && restored.length ? reextractPreservingEdits(db) : null;
   return {
     ok: true,
     dryRun,
     restoredCount: restored.length,
     restored,
+    skippedCount: skipped.length,
+    skipped,
     reExtract: reExtract && reExtract.counts,
   };
 }
 
-export function listBackups() {
-  return findBackups(DEFS_DIR).map((b) => ({
-    backup: rel(b),
-    target: rel(b.slice(0, -'.bak'.length)),
-    size: fs.statSync(b).size,
-    modifiedAt: fs.statSync(b).mtime.toISOString(),
-  }));
+export function listBackups(db = null) {
+  const ledger = db ? readLedger(db) : null;
+  return findBackups(DEFS_DIR).map((b) => {
+    const target = b.slice(0, -'.bak'.length);
+    const status = ledger ? backupStatus(ledger, rel(b), target) : null;
+    return {
+      backup: rel(b),
+      target: rel(target),
+      size: fs.statSync(b).size,
+      modifiedAt: fs.statSync(b).mtime.toISOString(),
+      ...(status ? { restorable: status.trusted, ...(status.reason ? { reason: status.reason } : {}) } : {}),
+    };
+  });
 }

@@ -289,7 +289,7 @@
     	<interactionCellOffset>(0,0,-2)</interactionCellOffset>
 		<modExtensions>
 			<li Class="AbsolutelyMoreCannons.TurretBarrelExtension"> <!-- PLACEHOLDER: copied unadjusted, needs visual tuning (values from 152mmMsta) -->
-				<barrelHeight>2.1</barrelHeight>
+				<barrelHeight>1.75</barrelHeight>
 				<barrelGraphic>
 					<texPath>Things/Building/M152mmAkatsiya_Barrel_Indirect</texPath>
 					<graphicClass>Graphic_Single</graphicClass>

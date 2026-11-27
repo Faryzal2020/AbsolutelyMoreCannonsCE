@@ -30,6 +30,8 @@ export const CLAMPING_EXT = [{ tag: 'modExtensions' }, { tag: 'li', cls: 'Turret
 export const GUNDRAW_EXT = [{ tag: 'modExtensions' }, { tag: 'li', cls: 'GunDrawExtension' }];
 export const FIREMODES_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_FireModes' }];
 export const CHARGES_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_Charges' }];
+export const COOKOFF_COMP = [{ tag: 'comps' }, { tag: 'li', cls: 'CompProperties_TurretAmmoCookOff' }];
+export const LIGHT_PENALTY_EXT = [{ tag: 'modExtensions' }, { tag: 'li', cls: 'TurretLightPenaltyExtension' }];
 export const SHOOT_VERB = [{ tag: 'verbs' }, { tag: 'li', match: { tag: 'verbClass', contains: 'Verb_Shoot' } }];
 
 const f = (key, doc, path, type, label, extra = {}) => ({ key, doc, path, type, label, ...extra });
@@ -94,6 +96,10 @@ export const FIELDS = [
   f('comps.enclosed.generalProtection', 'building', [...ENCLOSED_COMP, { tag: 'generalProtection' }], 'float', 'General Protection', { gate: 'comps.enclosed.enabled' }),
   f('comps.enclosed.hidePawnGraphics', 'building', [...ENCLOSED_COMP, { tag: 'hidePawnGraphics' }], 'bool', 'Hide Pawn Graphics', { gate: 'comps.enclosed.enabled' }),
   f('comps.enclosed.centerPawnPosition', 'building', [...ENCLOSED_COMP, { tag: 'centerPawnPosition' }], 'bool', 'Center Pawn Position', { gate: 'comps.enclosed.enabled' }),
+  f('comps.enclosed.seatOffset', 'building', [...ENCLOSED_COMP, { tag: 'seatOffset' }], 'string', 'Seat Offset (x,0,z)', { gate: 'comps.enclosed.enabled', removeWhenEmpty: true }),
+  f('comps.enclosed.shieldArc', 'building', [...ENCLOSED_COMP, { tag: 'shieldArc' }], 'float', 'Shield Arc (deg, 360 = all round)', { gate: 'comps.enclosed.enabled', removeWhenEmpty: true }),
+  f('comps.enclosed.shieldHeight', 'building', [...ENCLOSED_COMP, { tag: 'shieldHeight' }], 'float', 'Shield Height (above ground)', { gate: 'comps.enclosed.enabled', removeWhenEmpty: true }),
+  f('comps.enclosed.shieldArmor', 'building', [...ENCLOSED_COMP, { tag: 'shieldArmor' }], 'float', 'Shield Armor (mm RHA)', { gate: 'comps.enclosed.enabled', removeWhenEmpty: true }),
 
   // ---- Fire arc, suppression immunity ----------------------------------
   f('comps.fireArc.spanMin', 'building', [...FIREARC_COMP, { tag: 'spanRange' }, { tag: 'min' }], 'int', 'Fire Arc Min Span (deg)', { gate: 'comps.hasFireArc' }),
@@ -157,6 +163,24 @@ export const FIELDS = [
 
   // ---- Weapon identity -------------------------------------------------
   f('gun.soundInteract', 'weapon', [{ tag: 'soundInteract' }], 'string', 'Interact SoundDef'),
+  f('ballistics.weaponMass', 'weapon', [{ tag: 'statBases' }, { tag: 'Mass' }], 'float', 'Gun Mass (kg)'),
+
+  // ---- Ammo cook-off (CompProperties_TurretAmmoCookOff.cs) -------------
+  f('cookOff.maxExplosiveRadius', 'building', [...COOKOFF_COMP, { tag: 'maxExplosiveRadius' }], 'float', 'Cook-off Max Explosion Radius', { gate: 'cookOff.enabled' }),
+  f('cookOff.maxDamage', 'building', [...COOKOFF_COMP, { tag: 'maxDamage' }], 'int', 'Cook-off Max Damage', { gate: 'cookOff.enabled' }),
+  f('cookOff.minPenForCookOff', 'building', [...COOKOFF_COMP, { tag: 'minPenForCookOff' }], 'float', 'Cook-off Min Penetration', { gate: 'cookOff.enabled' }),
+  f('cookOff.highPenForCookOff', 'building', [...COOKOFF_COMP, { tag: 'highPenForCookOff' }], 'float', 'Cook-off High Penetration', { gate: 'cookOff.enabled' }),
+  f('cookOff.hitPointsPercentThreshold', 'building', [...COOKOFF_COMP, { tag: 'hitPointsPercentThreshold' }], 'float', 'Cook-off HP Threshold', { gate: 'cookOff.enabled' }),
+  f('cookOff.hasBaseAmmoRack', 'building', [...COOKOFF_COMP, { tag: 'hasBaseAmmoRack' }], 'bool', 'Cook-off Base Ammo Rack', { gate: 'cookOff.enabled' }),
+  f('cookOff.chanceToStartFire', 'building', [...COOKOFF_COMP, { tag: 'chanceToStartFire' }], 'float', 'Cook-off Fire Chance', { gate: 'cookOff.enabled' }),
+  f('cookOff.cookOffChanceMultiplier', 'building', [...COOKOFF_COMP, { tag: 'cookOffChanceMultiplier' }], 'float', 'Cook-off Chance Multiplier', { gate: 'cookOff.enabled' }),
+  f('cookOff.destroyTurretOnCookOff', 'building', [...COOKOFF_COMP, { tag: 'destroyTurretOnCookOff' }], 'bool', 'Cook-off Destroys Turret', { gate: 'cookOff.enabled' }),
+
+  // ---- Light penalty (TurretLightPenaltyExtension.cs, on the gun def) ---
+  f('lightPenalty.pitchDarkGlowThreshold', 'weapon', [...LIGHT_PENALTY_EXT, { tag: 'pitchDarkGlowThreshold' }], 'float', 'Pitch Dark Glow Threshold', { gate: 'lightPenalty.enabled' }),
+  f('lightPenalty.litPenaltyMultiplier', 'weapon', [...LIGHT_PENALTY_EXT, { tag: 'litPenaltyMultiplier' }], 'float', 'Lit Penalty Multiplier', { gate: 'lightPenalty.enabled' }),
+  f('lightPenalty.darkPenaltyMultiplier', 'weapon', [...LIGHT_PENALTY_EXT, { tag: 'darkPenaltyMultiplier' }], 'float', 'Dark Penalty Multiplier', { gate: 'lightPenalty.enabled' }),
+
   f('gun.weaponTags', 'weapon', [{ tag: 'weaponTags' }], 'list', 'Weapon Tags'),
   f('gun.nightVisionEfficiency', 'weapon', [{ tag: 'statBases' }, { tag: 'NightVisionEfficiency_Weapon' }], 'float', 'Night Vision Efficiency'),
   f('textures.weapon', 'weapon', [{ tag: 'graphicData' }, { tag: 'texPath' }], 'string', 'Gun Texture Path'),
@@ -192,6 +216,11 @@ export const FIELDS = [
   f('barrel.offset', 'building', [...BARREL_EXT, { tag: 'barrelOffset' }], 'string', 'Barrel Offset', { gate: 'barrel.enabled' }),
   f('barrel.drawOnTop', 'building', [...BARREL_EXT, { tag: 'drawOnTop' }], 'bool', 'Draw On Top', { gate: 'barrel.enabled' }),
   f('barrel.barrelAmount', 'building', [...BARREL_EXT, { tag: 'barrelAmount' }], 'int', 'Barrel Count', { gate: 'barrel.enabled' }),
+  // Clamping / actuator model on the barrel extension (TurretBarrelExtension.cs).
+  f('barrel.barrelHeight', 'building', [...BARREL_EXT, { tag: 'barrelHeight' }], 'float', 'Barrel Height', { gate: 'barrel.enabled' }),
+  f('barrel.turretHeadWeight', 'building', [...BARREL_EXT, { tag: 'turretHeadWeight' }], 'float', 'Turret Head Weight', { gate: 'barrel.enabled' }),
+  f('barrel.actuatorStrength', 'building', [...BARREL_EXT, { tag: 'actuatorStrength' }], 'float', 'Actuator Strength', { gate: 'barrel.enabled' }),
+  f('barrel.controlMode', 'building', [...BARREL_EXT, { tag: 'controlMode' }], 'string', 'Turret Control Mode', { gate: 'barrel.enabled' }),
   f('barrel.barrelSpacing', 'building', [...BARREL_EXT, { tag: 'barrelSpacing' }], 'float', 'Barrel Spacing', { gate: 'barrel.enabled' }),
   f('barrel.sequentialFiring', 'building', [...BARREL_EXT, { tag: 'sequentialFiring' }], 'bool', 'Sequential Alternating Fire', { gate: 'barrel.enabled' }),
   f('barrel.selectableBursts.counts', 'building', [...BARREL_EXT, { tag: 'selectableBurstCounts' }], 'list', 'Selectable Burst Counts', { gate: 'barrel.selectableBursts.enabled' }),
@@ -315,6 +344,9 @@ export const COMPONENT_TOGGLES = [
   { key: 'spray.enabled', doc: 'building', container: 'modExtensions', cls: 'TurretSprayDisciplineExtension', label: 'Spray Discipline',
     body: '<li Class="AbsolutelyMoreCannons.TurretSprayDisciplineExtension">\n  <defaultEnableSprayDiscipline>true</defaultEnableSprayDiscipline>\n  <shotsPerTarget>10</shotsPerTarget>\n  <cycleConeDegrees>10</cycleConeDegrees>\n</li>' },
 
+  { key: 'cookOff.enabled', doc: 'building', container: 'comps', cls: 'CompProperties_TurretAmmoCookOff', label: 'Ammo Cook-off',
+    body: '<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">\n  <maxExplosiveRadius>5.5</maxExplosiveRadius>\n  <maxDamage>170</maxDamage>\n  <minPenForCookOff>12</minPenForCookOff>\n  <highPenForCookOff>40</highPenForCookOff>\n</li>' },
+
   // Weapon-side components. `doc` routes the add/remove to the weapon ThingDef
   // and its file instead of the building's.
   { key: 'chargeBoost.enabled', doc: 'weapon', container: 'modExtensions', cls: 'TurretChargeBoostExtension', label: 'Charge Boost',
@@ -325,6 +357,8 @@ export const COMPONENT_TOGGLES = [
     body: '<li Class="CombatExtended.GunDrawExtension">\n  <CasingOffset>0,0</CasingOffset>\n  <CasingAngleOffset>180</CasingAngleOffset>\n</li>' },
   { key: 'fireModes.enabled', doc: 'weapon', container: 'comps', cls: 'CompProperties_FireModes', label: 'Fire Modes',
     body: '<li Class="CombatExtended.CompProperties_FireModes">\n  <aiUseBurstMode>true</aiUseBurstMode>\n  <aiAimMode>AimedShot</aiAimMode>\n</li>' },
+  { key: 'lightPenalty.enabled', doc: 'weapon', container: 'modExtensions', cls: 'TurretLightPenaltyExtension', label: 'Light Penalty',
+    body: '<li Class="AbsolutelyMoreCannons.TurretLightPenaltyExtension">\n  <pitchDarkGlowThreshold>0.25</pitchDarkGlowThreshold>\n  <litPenaltyMultiplier>0.25</litPenaltyMultiplier>\n  <darkPenaltyMultiplier>1</darkPenaltyMultiplier>\n</li>' },
   { key: 'charges.enabled', doc: 'weapon', container: 'comps', cls: 'CompProperties_Charges', label: 'Charge Speeds',
     body: '<li Class="CombatExtended.CompProperties_Charges">\n  <chargeSpeeds>\n    <li>30</li>\n  </chargeSpeeds>\n</li>' },
 ];

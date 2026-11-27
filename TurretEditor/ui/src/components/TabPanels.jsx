@@ -240,6 +240,17 @@ export function CompsTab({ draft, set, dirty, allTurrets }) {
               <Toggle label="Center pawn position & name over turret" checked={draft.comps.enclosed?.centerPawnPosition}
                 onChange={(v) => set('comps.enclosed.centerPawnPosition', v)} />
             </div>
+            <div style={{ marginTop: 8 }}>
+              <div className="muted" style={{ fontSize: 12, marginBottom: 4 }}>
+                Open-top seat &amp; gun shield (leave Seat Offset empty for a fully enclosed turret; needs hide pawn graphics off)
+              </div>
+              <div className="grid">
+                {f('comps.enclosed.seatOffset', 'Seat Offset (x,0,z), +Z along barrel')}
+                {f('comps.enclosed.shieldArc', 'Shield Arc (deg, 360 = all round)', { type: 'number', step: '10' })}
+                {f('comps.enclosed.shieldHeight', 'Shield Height (above ground)', { type: 'number', step: '0.05' })}
+                {f('comps.enclosed.shieldArmor', 'Shield Armor (mm RHA)', { type: 'number', step: '1' })}
+              </div>
+            </div>
           </div>
         )}
       </Section>

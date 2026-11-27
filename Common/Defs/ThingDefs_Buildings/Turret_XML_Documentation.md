@@ -186,6 +186,43 @@ These optional components and extensions can be added to the turret building `Th
   </li>
   ```
 
+##### Open-top seat & gun shield (same comp)
+For open-mount guns (DCA 40, Deacon, Vulcan, Flak 38, Flak M42, leIG 18, sIG 33, BL Mk1, ...): the gunner sits on the
+turret top at a seat that turns with the turret, and a gun shield physically intercepts Combat Extended projectiles.
+Leave `seatOffset` out for a fully enclosed turret: nothing below changes anything then.
+
+* **Parameters**:
+  * `<seatOffset>`: (`Vector3`, `(x,0,z)`, cells) Seat position in the **turret-top frame**: `+Z` along the barrel, `+X` to
+    the barrel's right; rotated with the turret top (compass, clockwise, 0 = North). Requires `hidePawnGraphics = false`.
+    The gunner is drawn, aimed at, hit, and caught by explosions at the seat (blasts use the seat cell, not the interaction cell).
+  * `<shieldArc>`: (`float`, degrees, default 0) Total shield width centred on the barrel. `0` = no shield, `360` = all round.
+  * `<shieldHeight>`: (`float`, CE height units above ground ≈ metres, same units as `barrelHeight`) Top edge of the shield.
+  * `<shieldArmor>`: (`float`, mm RHA) Compared with a round's **sharp** penetration. CE rifle FMJ is ~6-7, rifle AP ~12, .50 FMJ 14.
+* **How a shot is resolved** (projectiles headed for a seated gunner):
+  1. The gunner's hitbox spans from his head (the turret's `barrelHeight` = barrel pivot height, else 1.45) down by his body height, clamped at the
+     ground. The turret hull (`fillPercent`, 0.7) is checked first, so low shots hit the turret.
+  2. If the shot comes from inside `shieldArc` **and** hits at or below `shieldHeight`, it strikes the **turret** instead
+     (normal CE damage; HE detonates there). Non-explosive rounds then compare penetration with `shieldArmor`:
+     more → the gunner takes the hit with the leftover penetration; otherwise sparks + smoke and no damage.
+  3. Shots from outside the arc, or above the shield (head, plunging fire) hit the gunner normally.
+* **Protection fields with a shield set**: projectile hits on the gunner (bullets, fragments, shield penetrations) skip the
+  flat `bulletProtection` / `explosiveProtection`; blast damage still uses `explosiveProtection`. Suppression immunity applies
+  only to fire from inside the shield arc. Set `flameProtection` / `temperatureProtection` to 0 for open tops (defaults are 1.0).
+* **Usage**:
+  ```xml
+  <li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+    <explosiveProtection>0.3</explosiveProtection>
+    <flameProtection>0</flameProtection>
+    <temperatureProtection>0</temperatureProtection>
+    <hidePawnGraphics>false</hidePawnGraphics>
+    <seatOffset>(0,0,-0.9)</seatOffset>   <!-- behind the gun -->
+    <shieldArc>120</shieldArc>            <!-- front shield; 360 for all-round -->
+    <shieldHeight>0.85</shieldHeight>
+    <shieldArmor>10</shieldArmor>
+  </li>
+  ```
+* **Tuning**: the TurretEditor Texture Inspector shows the seat and the shield wedge rotating with the head-rotation slider.
+
 #### 7. `CompProperties_TurretViewTransfer`
 * **Class**: `AbsolutelyMoreCannons.CompProperties_TurretViewTransfer`
 * **Target**: Turret Building Def (Large / High-fill turrets)

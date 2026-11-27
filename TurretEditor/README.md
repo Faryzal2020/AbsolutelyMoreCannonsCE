@@ -131,11 +131,11 @@ and `AMC_DB_PATH` at a copy of the mod if you want the AI to experiment without 
 | `get_diffs` | Pending changes as `key`, `from`, `to` |
 | `preview_turret_xml` | Side-by-side XML for one def |
 | `inject_xml_changes` | Write to disk — **previews unless `dryRun: false`** |
-| `list_backups` / `rollback_xml` | Inspect and restore `.xml.bak` files |
-| `extract_defs` | Re-read the XML — refuses while edits are pending |
+| `list_backups` / `rollback_xml` | Inspect and restore `.xml.bak` files the editor wrote |
+| `extract_defs` | Re-read the XML, replaying pending edits (`force` discards them) |
 | `list_ammo` / `get_ammo` / `revert_ammo` | Ammo defs, read and revert |
 
-### Three things the tools do differently to the REST API
+### Four things the tools do differently to the REST API
 
 **Field keys are validated.** `update_turret` takes flat dotted keys — `stats.maxHitPoints`,
 `ballistics.cooldown`, `ammo.magazineSize` — checked against `fieldMap.js` and translated into the nested
@@ -151,9 +151,16 @@ switched-off comp are rejected the same way, unless the same call switches the c
 model's context on one call. Listings read the indexed columns instead — about 14 KB for all 65 turrets,
 26x smaller than the records and 34x smaller than the raw XML — and full detail stays behind `get_turret`.
 
-**Destructive calls are opt-in.** `inject_xml_changes` and `rollback_xml` dry-run unless told otherwise,
-and `extract_defs` refuses to wipe the tables while any edit is still pending, since re-extraction
-discards anything that has not been injected. Pass `force: true` to override.
+**Destructive calls are opt-in.** `inject_xml_changes` and `rollback_xml` dry-run unless told otherwise.
+`extract_defs` keeps pending edits by replaying them on the fresh values; only `force: true` discards them.
+
+**The database follows the XML.** SQLite is a snapshot, and the XML keeps changing underneath it — hand
+edits, `git pull`, the web editor. A fingerprint of every def and patch file is recorded at extraction;
+before each tool call (and at server start) it is compared with disk, and on any difference the XML is
+re-read and pending edits are replayed on top. The call's result then carries a `diskSync` block listing
+the changed files and any `conflicts` — keys edited both in the database and on disk, where the pending
+edit wins. Injection is also three-way: only keys you actually edited are written, so a field that changed
+on disk after extraction is never reverted by a stale database copy.
 
 ## Spreadsheet export
 
@@ -195,12 +202,17 @@ what the export dialog renders as its preview.
 
 ## Backups and rollback
 
-The first injection of a file copies it to `<file>.xml.bak`; later injections leave that backup alone, so
-it always holds the pristine pre-injection content.
+The first injection of a file copies it to `<file>.xml.bak`, and the editor records (in the `meta` table)
+the checksum of what it wrote. Later injections keep that backup while the file is still exactly what the
+editor last wrote, so it holds the pre-session original.
 
-`POST /api/rollback` restores **every** `.xml.bak` it finds under `Common/Defs`, including backups left by
-other tooling. Preview first with `GET /api/backups` or `POST /api/rollback -d '{"dryRun":true}'`; the
-dashboard shows the on-disk backup count under the metrics panel.
+Rollback only restores a backup the editor can vouch for: one it wrote itself, whose target has not changed
+since. A backup left by other tooling, or one whose file was since hand-edited or updated from git, would
+silently revert that newer work, so it is reported under `skipped` instead (pass `force: true` to restore it
+anyway). An injection into such a file refreshes the stale backup from the current file first.
+`GET /api/backups` / `list_backups` show `restorable` and the reason for each backup.
+
+`.xml.bak` files are local working state: keep them out of git (`*.xml.bak` in `.gitignore`).
 
 ## Database
 

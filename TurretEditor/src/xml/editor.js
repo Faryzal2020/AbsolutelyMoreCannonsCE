@@ -180,6 +180,15 @@ export function setValue(src, defName, path, text) {
   return { content: insertChild(src, chain[chain.length - 1], body), changed: true };
 }
 
+/** Remove the scalar leaf at `path` inside the def `defName` (no-op when absent). */
+export function removeValue(src, defName, path) {
+  const defNode = findDefBlock(src, defName);
+  if (!defNode) return { content: src, changed: false, reason: SKIP_DEF_MISSING };
+  const { node } = resolvePath(src, defNode, path);
+  if (!node) return { content: src, changed: false, reason: SKIP_NO_CHANGE };
+  return { content: removeNode(src, node), changed: true };
+}
+
 /** Replace a `<li>` list such as selectableBurstCounts or maxRPMs. */
 export function setListValue(src, defName, path, items) {
   const inner = items.map((v) => `  <li>${encodeEntities(v)}</li>`).join('\n');

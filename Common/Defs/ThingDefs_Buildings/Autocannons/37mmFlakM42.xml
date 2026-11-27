@@ -33,6 +33,19 @@
 			<turretBurstCooldownTime>0.3</turretBurstCooldownTime>
 		</building>
 		<comps>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<explosiveProtection>0.3</explosiveProtection>   <!-- blast damage reduction (fragments go through the shield check instead) -->
+				<flameProtection>0</flameProtection>             <!-- open top: no fire protection -->
+				<meleeProtection>0</meleeProtection>             <!-- open top: no melee protection -->
+				<generalProtection>0</generalProtection>           <!-- open top: no protection from unclassified damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
+				<seatOffset>(0,0,-0.9)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>120</shieldArc>             <!-- front shield only -->
+				<shieldHeight>1.45</shieldHeight>      <!-- shield top above ground (barrelHeight 1.7 - 0.25) -->
+				<shieldArmor>10</shieldArmor>          <!-- mm RHA: stops rifle FMJ (CE 6-7), not AP / .50 -->
+			</li>
       		<li Class="AbsolutelyMoreCannons.CompProperties_TurretBarrel" />
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -99,9 +112,6 @@
 				<angleWeightMultiplier>1.5</angleWeightMultiplier>
 				<!-- Minimum weight divisor to prevent division by zero -->
 				<minAngleWeight>0.1</minAngleWeight>
-			</li>
-			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
-				<preventOperatorSuppression>true</preventOperatorSuppression>
 			</li>
 			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
 				<enableMidBurstTracking>true</enableMidBurstTracking>

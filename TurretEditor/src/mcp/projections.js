@@ -117,6 +117,7 @@ export function injectSummary(result, ammoDefNames) {
     filesWritten: result.filesWritten,
     files: result.files,
     backups: result.backups,
+    ...(result.refreshedBackups?.length ? { refreshedBackups: result.refreshedBackups } : {}),
     appliedCount: result.appliedCount,
     skippedCount: result.skippedCount,
     // Ammo diffs ride along in the same injection pass, so they are called out
@@ -125,5 +126,6 @@ export function injectSummary(result, ammoDefNames) {
     applied: result.applied.map((c) => ({ defName: c.defName, key: c.key, from: c.from, to: c.to })),
     skipped: result.skipped.map((c) => ({ defName: c.defName, key: c.key, reason: c.reason })),
     reExtract: result.reExtract,
+    ...(result.stillPending ? { stillPending: result.stillPending } : {}),
   };
 }
