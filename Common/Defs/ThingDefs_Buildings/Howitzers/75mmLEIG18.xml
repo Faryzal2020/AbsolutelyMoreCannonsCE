@@ -48,8 +48,8 @@
 				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
 				<hidePawnGraphics>false</hidePawnGraphics>
 				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
-				<seatOffset>(0,0,-0.9)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
-				<shieldArc>100</shieldArc>             <!-- front shield only -->
+				<seatOffset>(-0.8,0,-0.7)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>70</shieldArc>             <!-- front shield only -->
 				<shieldHeight>0.75</shieldHeight>      <!-- shield top above ground (barrelHeight 1.0 - 0.25) -->
 				<shieldArmor>8</shieldArmor>          <!-- mm RHA: stops 5.56 FMJ (CE 6) and 7.62 FMJ (7), not AP -->
 			</li>
@@ -246,8 +246,8 @@
 				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
 				<hidePawnGraphics>false</hidePawnGraphics>
 				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
-				<seatOffset>(0,0,-0.9)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
-				<shieldArc>100</shieldArc>             <!-- front shield only -->
+				<seatOffset>(-0.8,0,-0.7)</seatOffset>    <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>70</shieldArc>             <!-- front shield only -->
 				<shieldHeight>0.75</shieldHeight>      <!-- shield top above ground (barrelHeight 1.0 - 0.25) -->
 				<shieldArmor>8</shieldArmor>          <!-- mm RHA: stops 5.56 FMJ (CE 6) and 7.62 FMJ (7), not AP -->
 			</li>

@@ -33,10 +33,18 @@
 			<turretBurstCooldownTime>5</turretBurstCooldownTime>
 		</building>
 		<comps>
-			<li Class="AbsolutelyMoreCannons.CompProperties_AccuracyOverride">
-				<swayReduction>0.5</swayReduction>
-				<recoilReduction>0.5</recoilReduction>
-				<spreadReduction>0.5</spreadReduction>
+			<li Class="AbsolutelyMoreCannons.CompProperties_EnclosedTurret">
+				<explosiveProtection>0</explosiveProtection>  <!-- blast damage reduction (fragments go through the shield check instead) -->
+				<flameProtection>0</flameProtection>             <!-- open top: no fire protection -->
+				<meleeProtection>0</meleeProtection>             <!-- open top: no melee protection -->
+				<generalProtection>0</generalProtection>           <!-- open top: no protection from unclassified damage -->
+				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
+				<hidePawnGraphics>false</hidePawnGraphics>
+				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
+				<seatOffset>(0.6,0,-0.9)</seatOffset>  <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<shieldArc>0</shieldArc>             
+				<shieldHeight>1</shieldHeight>      <!-- shield top above ground (barrelHeight 1.2 - 0.25) -->
+				<shieldArmor>0</shieldArmor>          <!-- mm RHA: stops rifle FMJ (CE 6-7), not AP / .50 -->
 			</li>
 			<!-- Smoke Effects -->
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretSmoker">
@@ -72,7 +80,7 @@
 				<shockwaveFleckDef>AMC_ShockwaveSmoke</shockwaveFleckDef>
 				<shockwaveRadius>2</shockwaveRadius> <!-- radius in cells -->
 				<shockwaveDensity>20</shockwaveDensity> <!-- number of particles in the ring -->
-				<shockwaveOffset>(0, 0, 2)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
+				<shockwaveOffset>(0, 0, 4)</shockwaveOffset> <!-- offset in cells (x, y, z) from turret center -->
 				<shockwaveParticleSize>1.1</shockwaveParticleSize> <!-- size multiplier (1.0 = default) -->
 			</li>
 			<li Class="AbsolutelyMoreCannons.CompProperties_TurretAmmoCookOff">
@@ -93,8 +101,25 @@
 		</researchPrerequisites>
     	<interactionCellOffset>(0,0,-1)</interactionCellOffset>
 		<modExtensions>
+			<li Class="CombatExtended.NonSnapTurretExtension">
+				<!-- Turn speed in degrees per tick (e.g. 0.5 = 30°/sec, 1.0 = 60°/sec, 2.0 = 120°/sec) -->
+				<speed>1.5</speed> 
+				<!-- Angle range (in degrees) preferred for target selection -->
+				<preferedAngleRange>30</preferedAngleRange>
+				<!-- Multiplier for angle weighting in target scoring -->
+				<angleWeightMultiplier>1.5</angleWeightMultiplier>
+				<!-- Minimum weight divisor to prevent division by zero -->
+				<minAngleWeight>0.1</minAngleWeight>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretSuppressionImmunityExtension">
+				<preventOperatorSuppression>true</preventOperatorSuppression>
+			</li>
+			<li Class="AbsolutelyMoreCannons.TurretTrackingExtension">
+				<enableMidBurstTracking>true</enableMidBurstTracking>
+			</li>
 		<li Class="AbsolutelyMoreCannons.TurretBarrelExtension">
-			<barrelHeight>0.95</barrelHeight>
+				<barrelHeight>1.2</barrelHeight>
+				<turretHeadWeight>1.2</turretHeadWeight>
 			<barrelGraphic>
 				<texPath>Things/Building/M106mmM40_Barrel</texPath>
 				<graphicClass>Graphic_Single</graphicClass>
@@ -103,7 +128,9 @@
 			<barrelOffset>(0,0,0.0)</barrelOffset>
 			<barrelDrawSize>12.0</barrelDrawSize>
 			<drawOnTop>false</drawOnTop>
-			<barrelAmount>2</barrelAmount>
+				<barrelAmount>2</barrelAmount>
+				<barrelSpacing>0.5</barrelSpacing>
+				<sequentialFiring>true</sequentialFiring>
 			<recoilAnimation>
 				<maxDistance>0</maxDistance>
 				<recoilDuration>0</recoilDuration>
@@ -114,12 +141,13 @@
 			</recoilAnimation>
 			<firingAnimation>
 				<enabled>true</enabled>
-				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<projectileSpawnOffset>2</projectileSpawnOffset>
+				<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
-				<flashSize>15</flashSize>
+				<flashSize>20</flashSize>
 				<flashBrightness>2</flashBrightness>
-				<flashOffset>0</flashOffset>  <!-- Offset from barrel tip -->
+				<flashOffset>-3</flashOffset>  <!-- Offset from barrel tip -->
 				<muzzleFlashEffect>AMC_MuzzleFlashLight</muzzleFlashEffect>  <!-- Optional EffecterDef for muzzle flash -->
 				<flashIntensityCurve>
 					<points>

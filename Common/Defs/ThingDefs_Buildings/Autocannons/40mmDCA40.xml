@@ -41,7 +41,7 @@
 				<temperatureProtection>0</temperatureProtection> <!-- open top: no climate protection -->
 				<hidePawnGraphics>false</hidePawnGraphics>
 				<!-- Open-top seat & gun shield (placeholder values, tune in game) -->
-				<seatOffset>(0.7,0,-0.7)</seatOffset>  <!-- turret-top frame: +Z along barrel, +X barrel's right -->
+				<seatOffset>(0.6,0,0)</seatOffset>  <!-- turret-top frame: +Z along barrel, +X barrel's right -->
 				<shieldArc>360</shieldArc>             <!-- all-round shield -->
 				<shieldHeight>0.95</shieldHeight>      <!-- shield top above ground (barrelHeight 1.2 - 0.25) -->
 				<shieldArmor>10</shieldArmor>          <!-- mm RHA: stops rifle FMJ (CE 6-7), not AP / .50 -->
@@ -140,8 +140,8 @@
 				</selectableBurstCounts>
 				<recoilAnimation>
 					<maxDistance>0.3</maxDistance>
-					<recoilDuration>5</recoilDuration>
-					<returnDuration>7</returnDuration>
+					<recoilDuration>8</recoilDuration>
+					<returnDuration>8</returnDuration>
 					<useRecoilCurve>true</useRecoilCurve>
 					<useReturnCurve>false</useReturnCurve>
 					<affectsRotation>false</affectsRotation>

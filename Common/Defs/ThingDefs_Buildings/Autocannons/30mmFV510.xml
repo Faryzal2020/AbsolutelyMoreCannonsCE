@@ -131,9 +131,9 @@
 				<li>9</li>
 			</selectableBurstCounts>
 			<recoilAnimation>
-				<maxDistance>0.6</maxDistance>
-				<recoilDuration>9</recoilDuration>
-				<returnDuration>10</returnDuration>
+				<maxDistance>0.5</maxDistance>
+				<recoilDuration>8</recoilDuration>
+				<returnDuration>8</returnDuration>
 				<useRecoilCurve>true</useRecoilCurve>
 				<useReturnCurve>false</useReturnCurve>
 				<affectsRotation>false</affectsRotation>
@@ -141,7 +141,7 @@
 			<firingAnimation>
 				<enabled>true</enabled>
 				<projectileSpawnOffset>4</projectileSpawnOffset>
-				<durationTicks>9</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
+				<durationTicks>10</durationTicks>  <!-- 2 seconds (120 ticks) for debugging -->
 				<drawFlash>true</drawFlash>
 				<flashColor>(1,0.7,0.3,1)</flashColor>  <!-- Orange/yellow -->
 				<flashSize>12</flashSize>

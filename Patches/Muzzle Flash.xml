@@ -154,7 +154,7 @@
 							<def>MF_StandardMuzzleFalshThree</def>
 							<drawSize>(2.1,2.1)</drawSize>
 							<offsets>
-								<li>(3.4,0)</li>
+								<li>(3.7,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -193,7 +193,7 @@
 							<def>MF_StandardMuzzleFalshThree</def>
 							<drawSize>(3.2,3)</drawSize>
 							<offsets>
-								<li>(4.5,0)</li>
+								<li>(4.2,0)</li>
 							</offsets>
 						</li>
 					</value>
@@ -232,8 +232,8 @@
 							<def>MF_StandardMuzzleFalshTwo</def>
 							<drawSize>(3,3)</drawSize>
 							<offsets>
-								<li>(2.8,-0.2)</li>
-								<li>(2.8,0.2)</li>
+								<li>(2,-0.2)</li>
+								<li>(2,0.2)</li>
 							</offsets>
 							<isAlternately>true</isAlternately>
 						</li>
@@ -247,7 +247,7 @@
 							<def>MF_StandardMuzzleFalshThree</def>
 							<drawSize>(3.6,3.2)</drawSize>
 							<offsets>
-								<li>(5.8,0)</li>
+								<li>(5.2,0)</li>
 							</offsets>
 						</li>
 					</value>
